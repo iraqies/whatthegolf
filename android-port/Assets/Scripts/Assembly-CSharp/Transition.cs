@@ -28,105 +28,85 @@ public class Transition : MonoBehaviour
 		End = 3
 	}
 
-	[SerializeField]
-	private GameObject fullScreenUIBlocker;
-
-	[SerializeField]
-	private TransitionTextEffect defaultTextEffect;
-
-	[SerializeField]
-	private List<TransitionTextEffect> _textEffects;
-
-	[SerializeField]
-	private TransitionSubtitles subtitles;
-
-	[SerializeField]
-	private GameObject waitAnimation;
-
-	[SerializeField]
-	private GameObject waitText;
-
-	[SerializeField]
-	public List<BaseTransitionEffect> transitionEffects;
+	[SerializeField] private GameObject fullScreenUIBlocker;
+	[SerializeField] private TransitionTextEffect defaultTextEffect;
+	[SerializeField] private List<TransitionTextEffect> _textEffects = new List<TransitionTextEffect>();
+	[SerializeField] private TransitionSubtitles subtitles;
+	[SerializeField] private GameObject waitAnimation;
+	[SerializeField] private GameObject waitText;
+	[SerializeField] public List<BaseTransitionEffect> transitionEffects = new List<BaseTransitionEffect>();
 
 	private BaseTransitionEffect lastUsedTransitionEffect;
-
 	private SVGImage waitAnimationSpriteRenderer;
-
-	private Color clearWhite;
-
+	private Color clearWhite = new Color(1f, 1f, 1f, 0f);
 	private TransitionTextEffects textEffects;
-
-	private float transitionInDuration;
-
-	private float transitionOutDuration;
-
+	private float transitionInDuration = 0.25f;
+	private float transitionOutDuration = 0.25f;
 	private Coroutine loopCoroutine;
-
-	private State state;
-
+	private State state = State.Idle;
 	private TransitionTextEffect activeTextEffect;
-
 	private BaseTransitionEffect activeTransitionEffect;
-
 	private Camera transitionCam;
-
 	private SecondDisplayCameraManager secondScreenCamera;
-
 	private Coroutine transitionWorkingCoroutine;
-
 	public Color? NextTransitionColor;
 
-	public bool IsShowing => false;
-
-	public TransitionTextEffects TextEffects => null;
+	public bool IsShowing => state != State.Idle;
+	public TransitionTextEffects TextEffects => textEffects ?? (textEffects = new TransitionTextEffects(_textEffects));
 
 	private void Awake()
 	{
+		InitializeTransitionEffects();
+		InitializeTextEffects();
 	}
 
 	private void InitializeTransitionEffects()
 	{
+		if (transitionEffects != null)
+		{
+			foreach (var e in transitionEffects) e?.Init();
+		}
 	}
 
 	private void InitializeTextEffects()
 	{
+		textEffects = new TransitionTextEffects(_textEffects);
 	}
 
 	public void InstantTransitionCover(Color? color = null, BaseTransitionEffect transitionEffect = null)
 	{
+		state = State.Loop;
 	}
 
 	public IEnumerator StartTransition(string textId = null, bool onTheSide = false, float delay = 0f, Action onDone = null, Color? color = null, TransitionTextEffect textEffect = null, bool showWaitAnimation = false, bool isAsync = false, bool showWaitingText = false, BaseTransitionEffect transitionEffect = null, Func<bool> allowEndWhen = null)
 	{
-		return null;
+		state = State.Start;
+		if (delay > 0f)
+			yield return new WaitForSecondsRealtime(Mathf.Min(delay, 0.4f));
+		state = State.Loop;
+		onDone?.Invoke();
 	}
 
 	private IEnumerator StartTransitionInternalCR(string textId = null, bool onTheSide = false, float delay = 0f, Action onDone = null, Color? color = null, TransitionTextEffect textEffect = null, bool showWaitAnimation = false, bool isAsync = false, bool showWaitingText = false, BaseTransitionEffect transitionEffect = null, Func<bool> allowEndWhen = null)
 	{
-		return null;
+		return StartTransition(textId, onTheSide, delay, onDone, color, textEffect, showWaitAnimation, isAsync, showWaitingText, transitionEffect, allowEndWhen);
 	}
 
-	private void SetInputAllowed(bool allowed)
-	{
-	}
-
-	public void EndTextTransitionImmidiate()
-	{
-	}
+	private void SetInputAllowed(bool allowed) { }
+	public void EndTextTransitionImmidiate() { }
 
 	public IEnumerator EndTransition(bool force = false, float overrideTransitionDuration = 0f)
 	{
-		return null;
+		state = State.Idle;
+		if (fullScreenUIBlocker != null)
+			fullScreenUIBlocker.SetActive(false);
+		yield break;
 	}
 
 	private IEnumerator EndTransitionInternalCR(bool force = false, float overrideTransitionDuration = 0f)
 	{
-		return null;
+		return EndTransition(force, overrideTransitionDuration);
 	}
 
-	public bool IsTransitionRunning()
-	{
-		return false;
-	}
+	public bool IsTransitionRunning() => state != State.Idle;
 }

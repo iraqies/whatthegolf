@@ -6,37 +6,19 @@ namespace Core
 	{
 		protected GolfBallController GolfBallController;
 
-		public virtual void OnActivate()
-		{
-		}
-
-		public virtual void OnAimStart()
-		{
-		}
-
-		public virtual void OnAimUpdate(Vector3 boost, bool onlyAimArrow)
-		{
-		}
-
-		public virtual void OnShoot(Vector3 boost)
-		{
-		}
-
-		public virtual void OnCancel()
-		{
-		}
-
-		public virtual void OnReset()
-		{
-		}
-
-		public virtual void OnGoalReached()
-		{
-		}
+		public virtual void OnActivate() { }
+		public virtual void OnAimStart() { }
+		public virtual void OnAimUpdate(Vector3 boost, bool onlyAimArrow) { }
+		public virtual void OnShoot(Vector3 boost) { }
+		public virtual void OnCancel() { }
+		public virtual void OnReset() { }
+		public virtual void OnGoalReached() { }
 
 		public GolfBallController GetOwner()
 		{
-			return null;
+			if (GolfBallController == null)
+				GolfBallController = GetComponent<GolfBallController>() ?? GetComponentInParent<GolfBallController>();
+			return GolfBallController;
 		}
 	}
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
@@ -11,13 +12,12 @@ namespace Core
 		public class State
 		{
 			public readonly string Name;
-
-			public static readonly State NotPlaying;
-
-			public static readonly State Playing;
+			public static readonly State NotPlaying = new State("NotPlaying");
+			public static readonly State Playing = new State("Playing");
 
 			protected State(string name)
 			{
+				Name = name ?? string.Empty;
 			}
 		}
 
@@ -25,9 +25,9 @@ namespace Core
 		{
 			public readonly int Strokes;
 
-			public AbortState(int strokes)
-				: base(null)
+			public AbortState(int strokes) : base("Abort")
 			{
+				Strokes = strokes;
 			}
 		}
 
@@ -35,312 +35,272 @@ namespace Core
 		{
 			public readonly int Strokes;
 
-			public RestartState(int strokes)
-				: base(null)
+			public RestartState(int strokes) : base("Restart")
 			{
+				Strokes = strokes;
 			}
 		}
 
 		public class FailState : State
 		{
 			public readonly bool DoReload;
-
 			public readonly bool ShowTransition;
-
 			public readonly float Delay;
-
 			public readonly bool PlayFailSFX;
-
 			public readonly int Strokes;
-
 			public string Message;
 
 			public FailState(bool doReload, bool showTransition, float delay = 0f, bool playFailSFX = false, int strokes = 0, string message = "")
-				: base(null)
+				: base("Fail")
 			{
+				DoReload = doReload;
+				ShowTransition = showTransition;
+				Delay = delay;
+				PlayFailSFX = playFailSFX;
+				Strokes = strokes;
+				Message = message ?? string.Empty;
 			}
 		}
 
 		public class CompletedState : State
 		{
 			public string Message;
-
 			public float Delay;
-
 			public int Strokes;
-
 			public TransitionTextEffect TransitionTextEffect;
-
 			public int LevelSkips;
-
 			public bool LeaveLevel;
-
 			public GolfBallController[] AllControllers;
 
 			public CompletedState(string message = null, float delay = 1f, int strokes = -1, TransitionTextEffect transitionTextEffect = null, int levelSkips = 0, bool leaveLevel = false, GolfBallController[] allControllers = null)
-				: base(null)
+				: base("Completed")
 			{
+				Message = message ?? "GOLF!";
+				Delay = delay;
+				Strokes = strokes;
+				TransitionTextEffect = transitionTextEffect;
+				LevelSkips = levelSkips;
+				LeaveLevel = leaveLevel;
+				AllControllers = allControllers;
 			}
 		}
 
 		public LevelMusic music;
-
-		[CompilerGenerated]
 		private Action m_OnReset;
-
-		[CompilerGenerated]
 		private Action m_OnStart;
-
-		[CompilerGenerated]
 		private Action<MultiplayerLevelInfo> m_OnMultiplayerSetup;
-
-		[CompilerGenerated]
 		private Action<GolfBallController, string, State> m_OnFail;
-
-		[CompilerGenerated]
 		private Action<CompletedState> m_OnComplete;
-
-		[CompilerGenerated]
 		private Action m_OnAbort;
-
-		[CompilerGenerated]
 		private Action m_OnRestart;
-
-		private State state;
-
-		[SerializeField]
-		private float postCompletionDelay;
-
-		private LevelManager levelManager;
-
-		private bool isWaitingForGif;
-
-		private bool changeStateAfterGif;
-
-		private MultiplayerConfiguration multiplayerConfiguration;
-
-		private MultiplayerLevelInfo multiplayerLevelInfo;
-
-		private List<GolfBallController> controllers;
-
-		private float mobileCheatTimer;
-
-		[CompilerGenerated]
 		private Action m_OnOutOfBounds;
 
+		private State state = State.NotPlaying;
+		[SerializeField] private float postCompletionDelay = 0.8f;
+		private LevelManager levelManager;
+		private bool isWaitingForGif;
+		private bool changeStateAfterGif;
+		private MultiplayerConfiguration multiplayerConfiguration;
+		private MultiplayerLevelInfo multiplayerLevelInfo;
+		private List<GolfBallController> controllers = new List<GolfBallController>();
+		private float mobileCheatTimer;
 		private GolfBallController _ball;
-
 		private GolfGoal _goal;
-
-		public float WinDelay;
-
+		public float WinDelay = 0.8f;
 		private static Level instance;
 
 		public int LevelStartStrokes { get; set; }
+		public bool IsMultiplayer => multiplayerConfiguration != null;
 
-		public bool IsMultiplayer => false;
+		public GolfBallController Ball
+		{
+			get
+			{
+				if (_ball == null)
+				{
+					if (controllers.Count > 0) _ball = controllers[0];
+					else _ball = FindObjectOfType<GolfBallController>();
+				}
+				return _ball;
+			}
+		}
 
-		public GolfBallController Ball => null;
+		public GolfGoal Goal
+		{
+			get
+			{
+				if (_goal == null) _goal = FindObjectOfType<GolfGoal>();
+				return _goal;
+			}
+		}
 
-		public GolfGoal Goal => null;
-
-		public bool IsAiming => false;
-
-		public static Level Instance => null;
-
-		public static bool HasInstance => false;
-
-		public TransitionTextEffects TransitionTextEffects => null;
+		public bool IsAiming => controllers.Any(c => c != null && c.IsAiming);
+		public static Level Instance => instance != null ? instance : (instance = FindObjectOfType<Level>());
+		public static bool HasInstance => Instance != null;
+		public TransitionTextEffects TransitionTextEffects => levelManager != null ? levelManager.TransitionTextEffects : null;
 
 		public event Action OnReset
 		{
-			[CompilerGenerated]
-			add
-			{
-			}
-			[CompilerGenerated]
-			remove
-			{
-			}
+			add => m_OnReset = (Action)Delegate.Combine(m_OnReset, value);
+			remove => m_OnReset = (Action)Delegate.Remove(m_OnReset, value);
 		}
 
 		public event Action OnStart
 		{
-			[CompilerGenerated]
-			add
-			{
-			}
-			[CompilerGenerated]
-			remove
-			{
-			}
+			add => m_OnStart = (Action)Delegate.Combine(m_OnStart, value);
+			remove => m_OnStart = (Action)Delegate.Remove(m_OnStart, value);
 		}
 
 		public event Action<MultiplayerLevelInfo> OnMultiplayerSetup
 		{
-			[CompilerGenerated]
-			add
-			{
-			}
-			[CompilerGenerated]
-			remove
-			{
-			}
+			add => m_OnMultiplayerSetup = (Action<MultiplayerLevelInfo>)Delegate.Combine(m_OnMultiplayerSetup, value);
+			remove => m_OnMultiplayerSetup = (Action<MultiplayerLevelInfo>)Delegate.Remove(m_OnMultiplayerSetup, value);
 		}
 
 		public event Action<GolfBallController, string, State> OnFail
 		{
-			[CompilerGenerated]
-			add
-			{
-			}
-			[CompilerGenerated]
-			remove
-			{
-			}
+			add => m_OnFail = (Action<GolfBallController, string, State>)Delegate.Combine(m_OnFail, value);
+			remove => m_OnFail = (Action<GolfBallController, string, State>)Delegate.Remove(m_OnFail, value);
 		}
 
 		public event Action<CompletedState> OnComplete
 		{
-			[CompilerGenerated]
-			add
-			{
-			}
-			[CompilerGenerated]
-			remove
-			{
-			}
+			add => m_OnComplete = (Action<CompletedState>)Delegate.Combine(m_OnComplete, value);
+			remove => m_OnComplete = (Action<CompletedState>)Delegate.Remove(m_OnComplete, value);
 		}
 
 		public event Action OnAbort
 		{
-			[CompilerGenerated]
-			add
-			{
-			}
-			[CompilerGenerated]
-			remove
-			{
-			}
+			add => m_OnAbort = (Action)Delegate.Combine(m_OnAbort, value);
+			remove => m_OnAbort = (Action)Delegate.Remove(m_OnAbort, value);
 		}
 
 		public event Action OnRestart
 		{
-			[CompilerGenerated]
-			add
-			{
-			}
-			[CompilerGenerated]
-			remove
-			{
-			}
+			add => m_OnRestart = (Action)Delegate.Combine(m_OnRestart, value);
+			remove => m_OnRestart = (Action)Delegate.Remove(m_OnRestart, value);
 		}
 
 		public event Action OnOutOfBounds
 		{
-			[CompilerGenerated]
-			add
-			{
-			}
-			[CompilerGenerated]
-			remove
-			{
-			}
+			add => m_OnOutOfBounds = (Action)Delegate.Combine(m_OnOutOfBounds, value);
+			remove => m_OnOutOfBounds = (Action)Delegate.Remove(m_OnOutOfBounds, value);
 		}
 
 		public void AddGolfballController(GolfBallController controller)
 		{
+			if (controller != null && !controllers.Contains(controller))
+				controllers.Add(controller);
 		}
 
 		public void RemoveGolfballController(GolfBallController controller)
 		{
+			controllers.Remove(controller);
 		}
 
-		public List<GolfBallController> GetControllers()
-		{
-			return null;
-		}
-
-		public bool IsGyro()
-		{
-			return false;
-		}
+		public List<GolfBallController> GetControllers() => controllers;
+		public bool IsGyro() => false;
 
 		private void Awake()
 		{
+			instance = this;
+			controllers = FindObjectsOfType<GolfBallController>().ToList();
 		}
 
-		public int GetLevelStartStrokes(int id)
+		public int GetLevelStartStrokes(int id) => LevelStartStrokes;
+		public MultiplayerConfiguration GetMultiplayerConfiguration() => multiplayerConfiguration;
+		public MultiplayerLevelInfo GetMultiplayerLevelInfo() => multiplayerLevelInfo;
+
+		public void Initialize(LevelManager lm)
 		{
-			return 0;
+			levelManager = lm;
+			instance = this;
+			controllers = FindObjectsOfType<GolfBallController>().ToList();
 		}
 
-		public MultiplayerConfiguration GetMultiplayerConfiguration()
-		{
-			return null;
-		}
-
-		public MultiplayerLevelInfo GetMultiplayerLevelInfo()
-		{
-			return null;
-		}
-
-		public void Initialize(LevelManager levelManager)
-		{
-		}
-
-		public void SetupMultiplayer(MultiplayerConfiguration config)
-		{
-		}
+		public void SetupMultiplayer(MultiplayerConfiguration config) => multiplayerConfiguration = config;
 
 		public void ResetLevel()
 		{
+			foreach (var c in controllers)
+				c?.Reset();
+			Goal?.Reset();
+			m_OnReset?.Invoke();
 		}
 
-		public void DoCheat()
-		{
-		}
+		public void DoCheat() => Complete("CHEAT!", 0.25f);
 
 		public IEnumerator Play(Action<State> onDone = null, Action<int> onStrokeChange = null)
 		{
-			return null;
+			state = State.Playing;
+			foreach (var c in controllers)
+			{
+				if (c != null)
+				{
+					c.Activate();
+					c.OnPlayerHasShot += (_, s) => onStrokeChange?.Invoke(s);
+				}
+			}
+			m_OnStart?.Invoke();
+
+			while (state == State.Playing)
+				yield return null;
+
+			if (state is CompletedState cs && cs.Delay > 0f)
+				yield return new WaitForSecondsRealtime(cs.Delay);
+
+			onDone?.Invoke(state);
 		}
 
-		public void WaitForGifStart()
-		{
-		}
-
-		public void WaitForGifDone()
-		{
-		}
+		public void WaitForGifStart() => isWaitingForGif = true;
+		public void WaitForGifDone() => isWaitingForGif = false;
 
 		public void Fail(bool doReload = true, bool showTransition = true, GolfBallController controller = null, float delay = 0f, bool playFailSFX = true, string message = "")
 		{
+			if (state != State.Playing) return;
+			var fs = new FailState(doReload, showTransition, delay, playFailSFX, GetHighestAmountOfStrokes(controller), message);
+			state = fs;
+			m_OnFail?.Invoke(controller, message, fs);
 		}
 
 		public void Complete(string message = null, float? delay = null, TransitionTextEffect transitionTextEffect = null, int levelSkips = 0)
 		{
+			if (state is CompletedState) return;
+			int strokes = GetHighestAmountOfStrokes();
+			var cs = new CompletedState(message ?? "GOLF!", delay ?? postCompletionDelay, strokes, transitionTextEffect, levelSkips, false, controllers.ToArray());
+			state = cs;
+			m_OnComplete?.Invoke(cs);
 		}
 
 		public void Abort()
 		{
+			state = new AbortState(GetHighestAmountOfStrokes());
+			m_OnAbort?.Invoke();
 		}
 
 		public void Restart()
 		{
+			state = new RestartState(GetHighestAmountOfStrokes());
+			m_OnRestart?.Invoke();
 		}
 
 		private int GetHighestAmountOfStrokes(GolfBallController backupController = null)
 		{
-			return 0;
+			int max = backupController != null ? backupController.NumberOfStrokes : 0;
+			foreach (var c in controllers)
+				if (c != null && c.NumberOfStrokes > max) max = c.NumberOfStrokes;
+			return Mathf.Max(max, Game.strokes);
 		}
 
 		public void ToggleBall(GolfBallController c, bool isEnabled)
 		{
+			if (c != null) c.enabled = isEnabled;
 		}
 
-		public void ToggleBall(GolfBallController[] controllers, bool isEnabled)
+		public void ToggleBall(GolfBallController[] ctrls, bool isEnabled)
 		{
+			if (ctrls == null) return;
+			foreach (var c in ctrls) ToggleBall(c, isEnabled);
 		}
 	}
 }
