@@ -1,93 +1,48 @@
-using Il2CppDummyDll;
-
 namespace Newtonsoft.Json.Utilities
 {
-	[Token(Token = "0x2000040")]
 	internal enum PrimitiveTypeCode
 	{
-		[Token(Token = "0x400014B")]
 		Empty = 0,
-		[Token(Token = "0x400014C")]
 		Object = 1,
-		[Token(Token = "0x400014D")]
 		Char = 2,
-		[Token(Token = "0x400014E")]
 		CharNullable = 3,
-		[Token(Token = "0x400014F")]
 		Boolean = 4,
-		[Token(Token = "0x4000150")]
 		BooleanNullable = 5,
-		[Token(Token = "0x4000151")]
 		SByte = 6,
-		[Token(Token = "0x4000152")]
 		SByteNullable = 7,
-		[Token(Token = "0x4000153")]
 		Int16 = 8,
-		[Token(Token = "0x4000154")]
 		Int16Nullable = 9,
-		[Token(Token = "0x4000155")]
 		UInt16 = 10,
-		[Token(Token = "0x4000156")]
 		UInt16Nullable = 11,
-		[Token(Token = "0x4000157")]
 		Int32 = 12,
-		[Token(Token = "0x4000158")]
 		Int32Nullable = 13,
-		[Token(Token = "0x4000159")]
 		Byte = 14,
-		[Token(Token = "0x400015A")]
 		ByteNullable = 15,
-		[Token(Token = "0x400015B")]
 		UInt32 = 16,
-		[Token(Token = "0x400015C")]
 		UInt32Nullable = 17,
-		[Token(Token = "0x400015D")]
 		Int64 = 18,
-		[Token(Token = "0x400015E")]
 		Int64Nullable = 19,
-		[Token(Token = "0x400015F")]
 		UInt64 = 20,
-		[Token(Token = "0x4000160")]
 		UInt64Nullable = 21,
-		[Token(Token = "0x4000161")]
 		Single = 22,
-		[Token(Token = "0x4000162")]
 		SingleNullable = 23,
-		[Token(Token = "0x4000163")]
 		Double = 24,
-		[Token(Token = "0x4000164")]
 		DoubleNullable = 25,
-		[Token(Token = "0x4000165")]
 		DateTime = 26,
-		[Token(Token = "0x4000166")]
 		DateTimeNullable = 27,
-		[Token(Token = "0x4000167")]
 		DateTimeOffset = 28,
-		[Token(Token = "0x4000168")]
 		DateTimeOffsetNullable = 29,
-		[Token(Token = "0x4000169")]
 		Decimal = 30,
-		[Token(Token = "0x400016A")]
 		DecimalNullable = 31,
-		[Token(Token = "0x400016B")]
 		Guid = 32,
-		[Token(Token = "0x400016C")]
 		GuidNullable = 33,
-		[Token(Token = "0x400016D")]
 		TimeSpan = 34,
-		[Token(Token = "0x400016E")]
 		TimeSpanNullable = 35,
-		[Token(Token = "0x400016F")]
 		BigInteger = 36,
-		[Token(Token = "0x4000170")]
 		BigIntegerNullable = 37,
-		[Token(Token = "0x4000171")]
 		Uri = 38,
-		[Token(Token = "0x4000172")]
 		String = 39,
-		[Token(Token = "0x4000173")]
 		Bytes = 40,
-		[Token(Token = "0x4000174")]
 		DBNull = 41
 	}
 }

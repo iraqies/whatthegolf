@@ -1,7 +1,6 @@
 {
   "name": "AWSSDK.Kinesis",
   "references": [
-    "Il2CppDummyDll",
     "AWSSDK.Core"
   ],
   "allowUnsafeCode": true

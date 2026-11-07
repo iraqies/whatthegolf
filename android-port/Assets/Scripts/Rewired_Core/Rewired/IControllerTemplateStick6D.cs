@@ -1,79 +1,27 @@
-using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Rewired
 {
-	[Token(Token = "0x200006D")]
 	public interface IControllerTemplateStick6D : IControllerTemplateElement
 	{
-		[Token(Token = "0x1700013F")]
-		Vector3 position
-		{
-			[Token(Token = "0x6000312")]
-			get;
-		}
+		Vector3 position { get; }
 
-		[Token(Token = "0x17000140")]
-		Vector3 positionPrev
-		{
-			[Token(Token = "0x6000313")]
-			get;
-		}
+		Vector3 positionPrev { get; }
 
-		[Token(Token = "0x17000141")]
-		Vector3 rotation
-		{
-			[Token(Token = "0x6000314")]
-			get;
-		}
+		Vector3 rotation { get; }
 
-		[Token(Token = "0x17000142")]
-		Vector3 rotationPrev
-		{
-			[Token(Token = "0x6000315")]
-			get;
-		}
+		Vector3 rotationPrev { get; }
 
-		[Token(Token = "0x17000143")]
-		IControllerTemplateAxis positionX
-		{
-			[Token(Token = "0x6000316")]
-			get;
-		}
+		IControllerTemplateAxis positionX { get; }
 
-		[Token(Token = "0x17000144")]
-		IControllerTemplateAxis positionY
-		{
-			[Token(Token = "0x6000317")]
-			get;
-		}
+		IControllerTemplateAxis positionY { get; }
 
-		[Token(Token = "0x17000145")]
-		IControllerTemplateAxis positionZ
-		{
-			[Token(Token = "0x6000318")]
-			get;
-		}
+		IControllerTemplateAxis positionZ { get; }
 
-		[Token(Token = "0x17000146")]
-		IControllerTemplateAxis rotationX
-		{
-			[Token(Token = "0x6000319")]
-			get;
-		}
+		IControllerTemplateAxis rotationX { get; }
 
-		[Token(Token = "0x17000147")]
-		IControllerTemplateAxis rotationY
-		{
-			[Token(Token = "0x600031A")]
-			get;
-		}
+		IControllerTemplateAxis rotationY { get; }
 
-		[Token(Token = "0x17000148")]
-		IControllerTemplateAxis rotationZ
-		{
-			[Token(Token = "0x600031B")]
-			get;
-		}
+		IControllerTemplateAxis rotationZ { get; }
 	}
 }

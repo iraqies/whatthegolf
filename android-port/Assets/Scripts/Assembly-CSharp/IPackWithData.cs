@@ -1,33 +1,10 @@
-using Il2CppDummyDll;
-
-[Token(Token = "0x2000025")]
 public interface IPackWithData
 {
-	[Token(Token = "0x1700001E")]
-	string TitleID
-	{
-		[Token(Token = "0x6000090")]
-		get;
-	}
+	string TitleID { get; }
 
-	[Token(Token = "0x1700001F")]
-	string ContentID
-	{
-		[Token(Token = "0x6000091")]
-		get;
-	}
+	string ContentID { get; }
 
-	[Token(Token = "0x17000020")]
-	string PackID
-	{
-		[Token(Token = "0x6000092")]
-		get;
-	}
+	string PackID { get; }
 
-	[Token(Token = "0x17000021")]
-	string PackName
-	{
-		[Token(Token = "0x6000093")]
-		get;
-	}
+	string PackName { get; }
 }

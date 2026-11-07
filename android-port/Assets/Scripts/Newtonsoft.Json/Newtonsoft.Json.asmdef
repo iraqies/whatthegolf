@@ -1,7 +1,5 @@
 {
   "name": "Newtonsoft.Json",
-  "references": [
-    "Il2CppDummyDll"
-  ],
+  "references": [],
   "allowUnsafeCode": true
 }

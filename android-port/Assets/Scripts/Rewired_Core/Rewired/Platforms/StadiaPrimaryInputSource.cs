@@ -1,12 +1,10 @@
-using Il2CppDummyDll;
+using System.ComponentModel;
 
 namespace Rewired.Platforms
 {
-	[Token(Token = "0x2000192")]
-	[Attribute(Name = "EditorBrowsableAttribute", RVA = "0x19125C", Offset = "0x19125C")]
+	[EditorBrowsable]
 	public enum StadiaPrimaryInputSource
 	{
-		[Token(Token = "0x40008E5")]
 		Native = 0
 	}
 }

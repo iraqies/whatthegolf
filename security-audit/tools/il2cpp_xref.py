@@ -6,18 +6,14 @@ This tool decodes every instruction of the code sections and records:
   - direct calls and tail calls (BL / B imm26) -> callee method names
   - ADRP + LDR/ADD pairs that land on a string-literal slot, a TypeInfo slot
     or a MethodInfo slot -> the literal / type / method each method touches
-so you can ask "which methods send web requests" or "who uses this URL"
-without trusting any name-based guess.
 
 Usage:
-  il2cpp_xref.py build  <UnityFramework> <script.json> <index.pkl>
-  il2cpp_xref.py callers <index.pkl> <callee-regex>        methods that call a matching method
-  il2cpp_xref.py strings <index.pkl> <literal-regex>       methods that use a matching string literal
-  il2cpp_xref.py types   <index.pkl> <typeinfo-regex>      methods that touch a matching TypeInfo
-  il2cpp_xref.py summary <index.pkl> <method-regex>        callees, literals and types for matching methods
-  il2cpp_xref.py disasm  <index.pkl> <UnityFramework> <method-regex>   annotated disassembly
+  il2cpp_xref.py build   <UnityFramework> <script.json> <index.pkl>
+  il2cpp_xref.py callers <index.pkl> <callee-regex>
+  il2cpp_xref.py strings <index.pkl> <literal-regex>
+  il2cpp_xref.py types   <index.pkl> <typeinfo-regex>
+  il2cpp_xref.py summary <index.pkl> <method-regex>
 """
-import bisect
 import json
 import pickle
 import re
@@ -137,9 +133,67 @@ def cmd_callers(idx, rx):
     out = defaultdict(set)
     for caller, callees in idx["calls"].items():
         for c in callees & targets:
-            out[c].add(caller)
+            out[nm(idx, c)].add(caller)
     for minfo_addr, n in idx["methodinfo"].items():
         if r.search(n):
             for owner, refs in idx["minfo_refs"].items():
                 if minfo_addr in refs:
-                    out[("minfo", n)].add(
+                    out[f"[minfo] {n}"].add(owner)
+    for tgt, callers in sorted(out.items()):
+        print(f"=== {tgt} ({len(callers)} callers) ===")
+        for c in sorted(callers):
+            print(f"  0x{c:x}  {nm(idx, c)}")
+
+
+def cmd_strings(idx, rx):
+    r = re.compile(rx)
+    for owner, addrs in sorted(idx["str_refs"].items()):
+        hits = [idx["strings"][a] for a in sorted(addrs) if r.search(idx["strings"][a])]
+        if hits:
+            print(f"0x{owner:x}  {nm(idx, owner)}")
+            for h in hits:
+                print(f"    str: {h!r}")
+
+
+def cmd_types(idx, rx):
+    r = re.compile(rx)
+    for owner, addrs in sorted(idx["type_refs"].items()):
+        hits = [idx["typeinfo"][a] for a in sorted(addrs) if r.search(idx["typeinfo"][a])]
+        if hits:
+            print(f"0x{owner:x}  {nm(idx, owner)}")
+            for h in hits:
+                print(f"    type: {h}")
+
+
+def cmd_summary(idx, rx):
+    r = re.compile(rx)
+    for a, n in sorted(idx["names"].items()):
+        if not r.search(n):
+            continue
+        print(f"=== 0x{a:x}  {n} ===")
+        for c in sorted(idx["calls"].get(a, ())):
+            print(f"  call -> 0x{c:x}  {nm(idx, c)}")
+        for m in sorted(idx["minfo_refs"].get(a, ())):
+            print(f"  minfo -> {idx['methodinfo'][m]}")
+        for t in sorted(idx["type_refs"].get(a, ())):
+            print(f"  type  -> {idx['typeinfo'][t]}")
+        for s in sorted(idx["str_refs"].get(a, ())):
+            print(f"  str   -> {idx['strings'][s]!r}")
+
+
+def main():
+    cmd = sys.argv[1]
+    if cmd == "build":
+        build(sys.argv[2], sys.argv[3], sys.argv[4])
+    elif cmd == "callers":
+        cmd_callers(load(sys.argv[2]), sys.argv[3])
+    elif cmd == "strings":
+        cmd_strings(load(sys.argv[2]), sys.argv[3])
+    elif cmd == "types":
+        cmd_types(load(sys.argv[2]), sys.argv[3])
+    elif cmd == "summary":
+        cmd_summary(load(sys.argv[2]), sys.argv[3])
+
+
+if __name__ == "__main__":
+    main()

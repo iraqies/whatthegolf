@@ -1,90 +1,49 @@
-using Il2CppDummyDll;
+using System.ComponentModel;
 
 namespace Rewired.Platforms
 {
-	[Token(Token = "0x2000183")]
-	[Attribute(Name = "EditorBrowsableAttribute", RVA = "0x191130", Offset = "0x191130")]
+	[EditorBrowsable]
 	public enum Platform
 	{
-		[Token(Token = "0x4000887")]
 		Unknown = 0,
-		[Token(Token = "0x4000888")]
 		Windows = 1,
-		[Token(Token = "0x4000889")]
 		WindowsAppStore = 2,
-		[Token(Token = "0x400088A")]
 		WindowsPhone8 = 3,
-		[Token(Token = "0x400088B")]
 		OSX = 4,
-		[Token(Token = "0x400088C")]
 		iOS = 5,
-		[Token(Token = "0x400088D")]
 		Linux = 6,
-		[Token(Token = "0x400088E")]
 		Android = 7,
-		[Token(Token = "0x400088F")]
 		Blackberry = 8,
-		[Token(Token = "0x4000890")]
 		Webplayer = 9,
-		[Token(Token = "0x4000891")]
 		Xbox360 = 10,
-		[Token(Token = "0x4000892")]
 		XboxOne = 11,
-		[Token(Token = "0x4000893")]
 		PS3 = 12,
-		[Token(Token = "0x4000894")]
 		PS4 = 13,
-		[Token(Token = "0x4000895")]
 		PSVita = 14,
-		[Token(Token = "0x4000896")]
 		PSMobile = 15,
-		[Token(Token = "0x4000897")]
 		Wii = 16,
-		[Token(Token = "0x4000898")]
 		Flash = 17,
-		[Token(Token = "0x4000899")]
 		WiiU = 18,
-		[Token(Token = "0x400089A")]
 		WebGL = 19,
-		[Token(Token = "0x400089B")]
 		Tizen = 20,
-		[Token(Token = "0x400089C")]
 		Xenon = 21,
-		[Token(Token = "0x400089D")]
 		STV = 22,
-		[Token(Token = "0x400089E")]
 		NACL = 23,
-		[Token(Token = "0x400089F")]
 		NACL_Webplayer = 24,
-		[Token(Token = "0x40008A0")]
 		NACL_Chrome = 25,
-		[Token(Token = "0x40008A1")]
 		SamsungTV = 26,
-		[Token(Token = "0x40008A2")]
 		Pepper = 27,
-		[Token(Token = "0x40008A3")]
 		tvOS = 28,
-		[Token(Token = "0x40008A4")]
 		WindowsUWP = 29,
-		[Token(Token = "0x40008A5")]
 		Windows81Store = 30,
-		[Token(Token = "0x40008A6")]
 		N3DS = 31,
-		[Token(Token = "0x40008A7")]
 		Switch = 32,
-		[Token(Token = "0x40008A8")]
 		Ouya = 100,
-		[Token(Token = "0x40008A9")]
 		AmazonFireTV = 101,
-		[Token(Token = "0x40008AA")]
 		RazerForgeTV = 102,
-		[Token(Token = "0x40008AB")]
 		Stadia = 103,
-		[Token(Token = "0x40008AC")]
 		GameCoreXboxOne = 104,
-		[Token(Token = "0x40008AD")]
 		GameCoreScarlett = 105,
-		[Token(Token = "0x40008AE")]
 		PS5 = 106
 	}
 }

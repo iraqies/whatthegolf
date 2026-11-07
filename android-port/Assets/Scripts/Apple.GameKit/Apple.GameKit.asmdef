@@ -1,7 +1,6 @@
 {
   "name": "Apple.GameKit",
   "references": [
-    "Il2CppDummyDll",
     "Apple.Core.Runtime"
   ],
   "allowUnsafeCode": true

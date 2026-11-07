@@ -1,40 +1,17 @@
 using System.Collections.Generic;
-using Il2CppDummyDll;
 
 namespace Amazon.Runtime
 {
-	[Token(Token = "0x20000FD")]
 	public interface IRequestMetrics
 	{
-		[Token(Token = "0x17000250")]
-		Dictionary<Metric, List<object>> Properties
-		{
-			[Token(Token = "0x60008A9")]
-			get;
-		}
+		Dictionary<Metric, List<object>> Properties { get; }
 
-		[Token(Token = "0x17000251")]
-		Dictionary<Metric, List<IMetricsTiming>> Timings
-		{
-			[Token(Token = "0x60008AA")]
-			get;
-		}
+		Dictionary<Metric, List<IMetricsTiming>> Timings { get; }
 
-		[Token(Token = "0x17000252")]
-		Dictionary<Metric, long> Counters
-		{
-			[Token(Token = "0x60008AB")]
-			get;
-		}
+		Dictionary<Metric, long> Counters { get; }
 
-		[Token(Token = "0x17000253")]
-		bool IsEnabled
-		{
-			[Token(Token = "0x60008AC")]
-			get;
-		}
+		bool IsEnabled { get; }
 
-		[Token(Token = "0x60008AD")]
 		string ToJSON();
 	}
 }

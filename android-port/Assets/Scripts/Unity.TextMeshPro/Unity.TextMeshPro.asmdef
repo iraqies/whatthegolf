@@ -1,7 +1,6 @@
 {
   "name": "Unity.TextMeshPro",
   "references": [
-    "Il2CppDummyDll",
     "UnityEngine.UI"
   ],
   "allowUnsafeCode": true

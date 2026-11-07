@@ -1,7 +1,6 @@
 {
   "name": "Triband.QR",
   "references": [
-    "Il2CppDummyDll",
     "zxing.unity"
   ],
   "allowUnsafeCode": true

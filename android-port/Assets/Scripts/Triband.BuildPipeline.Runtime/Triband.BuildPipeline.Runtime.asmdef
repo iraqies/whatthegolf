@@ -1,7 +1,6 @@
 {
   "name": "Triband.BuildPipeline.Runtime",
   "references": [
-    "Il2CppDummyDll",
     "Triband.Core.Runtime"
   ],
   "allowUnsafeCode": true

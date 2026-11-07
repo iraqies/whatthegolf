@@ -1,7 +1,6 @@
 {
   "name": "Cinemachine",
   "references": [
-    "Il2CppDummyDll",
     "Unity.Timeline",
     "UnityEngine.UI"
   ],

@@ -1,7 +1,5 @@
 {
   "name": "Unity.2D.IK.Runtime",
-  "references": [
-    "Il2CppDummyDll"
-  ],
+  "references": [],
   "allowUnsafeCode": true
 }

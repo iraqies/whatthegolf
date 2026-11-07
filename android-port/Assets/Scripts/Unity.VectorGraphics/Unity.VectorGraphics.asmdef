@@ -1,7 +1,6 @@
 {
   "name": "Unity.VectorGraphics",
   "references": [
-    "Il2CppDummyDll",
     "UnityEngine.UI"
   ],
   "allowUnsafeCode": true

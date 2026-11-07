@@ -1,7 +1,5 @@
 {
   "name": "Apple.Core.Runtime",
-  "references": [
-    "Il2CppDummyDll"
-  ],
+  "references": [],
   "allowUnsafeCode": true
 }

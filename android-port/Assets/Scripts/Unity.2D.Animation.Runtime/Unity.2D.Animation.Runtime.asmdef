@@ -1,7 +1,6 @@
 {
   "name": "Unity.2D.Animation.Runtime",
   "references": [
-    "Il2CppDummyDll",
     "Unity.Mathematics"
   ],
   "allowUnsafeCode": true

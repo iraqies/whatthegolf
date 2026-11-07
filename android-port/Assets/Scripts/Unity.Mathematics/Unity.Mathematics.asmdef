@@ -1,7 +1,5 @@
 {
   "name": "Unity.Mathematics",
-  "references": [
-    "Il2CppDummyDll"
-  ],
+  "references": [],
   "allowUnsafeCode": true
 }

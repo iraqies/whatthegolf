@@ -1,7 +1,6 @@
 {
   "name": "Coffee.UIParticle",
   "references": [
-    "Il2CppDummyDll",
     "UnityEngine.UI"
   ],
   "allowUnsafeCode": true

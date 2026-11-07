@@ -1,83 +1,43 @@
-using Il2CppDummyDll;
-
 namespace TMPro
 {
-	[Token(Token = "0x200005C")]
 	public enum TextAlignmentOptions
 	{
-		[Token(Token = "0x4000311")]
 		TopLeft = 257,
-		[Token(Token = "0x4000312")]
 		Top = 258,
-		[Token(Token = "0x4000313")]
 		TopRight = 260,
-		[Token(Token = "0x4000314")]
 		TopJustified = 264,
-		[Token(Token = "0x4000315")]
 		TopFlush = 272,
-		[Token(Token = "0x4000316")]
 		TopGeoAligned = 288,
-		[Token(Token = "0x4000317")]
 		Left = 513,
-		[Token(Token = "0x4000318")]
 		Center = 514,
-		[Token(Token = "0x4000319")]
 		Right = 516,
-		[Token(Token = "0x400031A")]
 		Justified = 520,
-		[Token(Token = "0x400031B")]
 		Flush = 528,
-		[Token(Token = "0x400031C")]
 		CenterGeoAligned = 544,
-		[Token(Token = "0x400031D")]
 		BottomLeft = 1025,
-		[Token(Token = "0x400031E")]
 		Bottom = 1026,
-		[Token(Token = "0x400031F")]
 		BottomRight = 1028,
-		[Token(Token = "0x4000320")]
 		BottomJustified = 1032,
-		[Token(Token = "0x4000321")]
 		BottomFlush = 1040,
-		[Token(Token = "0x4000322")]
 		BottomGeoAligned = 1056,
-		[Token(Token = "0x4000323")]
 		BaselineLeft = 2049,
-		[Token(Token = "0x4000324")]
 		Baseline = 2050,
-		[Token(Token = "0x4000325")]
 		BaselineRight = 2052,
-		[Token(Token = "0x4000326")]
 		BaselineJustified = 2056,
-		[Token(Token = "0x4000327")]
 		BaselineFlush = 2064,
-		[Token(Token = "0x4000328")]
 		BaselineGeoAligned = 2080,
-		[Token(Token = "0x4000329")]
 		MidlineLeft = 4097,
-		[Token(Token = "0x400032A")]
 		Midline = 4098,
-		[Token(Token = "0x400032B")]
 		MidlineRight = 4100,
-		[Token(Token = "0x400032C")]
 		MidlineJustified = 4104,
-		[Token(Token = "0x400032D")]
 		MidlineFlush = 4112,
-		[Token(Token = "0x400032E")]
 		MidlineGeoAligned = 4128,
-		[Token(Token = "0x400032F")]
 		CaplineLeft = 8193,
-		[Token(Token = "0x4000330")]
 		Capline = 8194,
-		[Token(Token = "0x4000331")]
 		CaplineRight = 8196,
-		[Token(Token = "0x4000332")]
 		CaplineJustified = 8200,
-		[Token(Token = "0x4000333")]
 		CaplineFlush = 8208,
-		[Token(Token = "0x4000334")]
 		CaplineGeoAligned = 8224,
-		[Token(Token = "0x4000335")]
 		Converted = 65535
 	}
 }

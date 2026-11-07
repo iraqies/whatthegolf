@@ -1,97 +1,50 @@
-using Il2CppDummyDll;
-
 namespace Rewired
 {
-	[Token(Token = "0x20000AB")]
 	internal enum InputPlatform
 	{
-		[Token(Token = "0x4000384")]
 		Unknown = 0,
-		[Token(Token = "0x4000385")]
 		WindowsDirectInput = 1,
-		[Token(Token = "0x4000386")]
 		WindowsRawInput = 2,
-		[Token(Token = "0x4000387")]
 		WindowsXInput = 3,
-		[Token(Token = "0x4000388")]
 		WindowsFallback = 4,
-		[Token(Token = "0x4000389")]
 		WindowsUWP = 5,
-		[Token(Token = "0x400038A")]
 		WindowsUWPFallback = 6,
-		[Token(Token = "0x400038B")]
 		OSXNative = 7,
-		[Token(Token = "0x400038C")]
 		OSXFallback = 8,
-		[Token(Token = "0x400038D")]
 		LinuxNative = 9,
-		[Token(Token = "0x400038E")]
 		LinuxFallback = 10,
-		[Token(Token = "0x400038F")]
 		LinuxFallback_PreConfigured = 11,
-		[Token(Token = "0x4000390")]
 		AndroidFallback = 12,
-		[Token(Token = "0x4000391")]
 		AmazonFireTVFallback = 13,
-		[Token(Token = "0x4000392")]
 		RazerForgeTVFallback = 14,
-		[Token(Token = "0x4000393")]
 		iOSFallback = 15,
-		[Token(Token = "0x4000394")]
 		WindowsPhone8Fallback = 16,
-		[Token(Token = "0x4000395")]
 		BlackberryFallback = 17,
-		[Token(Token = "0x4000396")]
 		PS3Fallback = 18,
-		[Token(Token = "0x4000397")]
 		PS4Fallback = 19,
-		[Token(Token = "0x4000398")]
 		PSMFallback = 20,
-		[Token(Token = "0x4000399")]
 		PSVitaFallback = 21,
-		[Token(Token = "0x400039A")]
 		XBox360Fallback = 22,
-		[Token(Token = "0x400039B")]
 		XBoxOneFallback = 23,
-		[Token(Token = "0x400039C")]
 		WiiFallback = 24,
-		[Token(Token = "0x400039D")]
 		WiiUFallback = 25,
-		[Token(Token = "0x400039E")]
 		Fallback = 26,
-		[Token(Token = "0x400039F")]
 		Ouya = 27,
-		[Token(Token = "0x40003A0")]
 		XboxOne = 28,
-		[Token(Token = "0x40003A1")]
 		GameCore = 29,
-		[Token(Token = "0x40003A2")]
 		PS4 = 30,
-		[Token(Token = "0x40003A3")]
 		PS5 = 31,
-		[Token(Token = "0x40003A4")]
 		NintendoSwitch = 32,
-		[Token(Token = "0x40003A5")]
 		NintendoSwitchFallback = 33,
-		[Token(Token = "0x40003A6")]
 		Stadia = 34,
-		[Token(Token = "0x40003A7")]
 		Custom = 35,
-		[Token(Token = "0x40003A8")]
 		InternalDriver = 36,
-		[Token(Token = "0x40003A9")]
 		SDL2 = 37,
-		[Token(Token = "0x40003AA")]
 		SDL2Windows = 38,
-		[Token(Token = "0x40003AB")]
 		SDL2OSX = 39,
-		[Token(Token = "0x40003AC")]
 		SDL2Linux = 40,
-		[Token(Token = "0x40003AD")]
 		Steam = 41,
-		[Token(Token = "0x40003AE")]
 		WebGL = 42,
-		[Token(Token = "0x40003AF")]
 		AppleGameController = 43
 	}
 }

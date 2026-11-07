@@ -1,51 +1,19 @@
-using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Rewired
 {
-	[Token(Token = "0x2000069")]
 	public interface IControllerTemplateDPad : IControllerTemplateElement
 	{
-		[Token(Token = "0x17000127")]
-		Vector2 value
-		{
-			[Token(Token = "0x60002FA")]
-			get;
-		}
+		Vector2 value { get; }
 
-		[Token(Token = "0x17000128")]
-		Vector2 valuePrev
-		{
-			[Token(Token = "0x60002FB")]
-			get;
-		}
+		Vector2 valuePrev { get; }
 
-		[Token(Token = "0x17000129")]
-		IControllerTemplateButton up
-		{
-			[Token(Token = "0x60002FC")]
-			get;
-		}
+		IControllerTemplateButton up { get; }
 
-		[Token(Token = "0x1700012A")]
-		IControllerTemplateButton right
-		{
-			[Token(Token = "0x60002FD")]
-			get;
-		}
+		IControllerTemplateButton right { get; }
 
-		[Token(Token = "0x1700012B")]
-		IControllerTemplateButton down
-		{
-			[Token(Token = "0x60002FE")]
-			get;
-		}
+		IControllerTemplateButton down { get; }
 
-		[Token(Token = "0x1700012C")]
-		IControllerTemplateButton left
-		{
-			[Token(Token = "0x60002FF")]
-			get;
-		}
+		IControllerTemplateButton left { get; }
 	}
 }

@@ -1,37 +1,15 @@
-using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Rewired
 {
-	[Token(Token = "0x200006C")]
 	public interface IControllerTemplateYoke : IControllerTemplateElement
 	{
-		[Token(Token = "0x1700013B")]
-		Vector2 value
-		{
-			[Token(Token = "0x600030E")]
-			get;
-		}
+		Vector2 value { get; }
 
-		[Token(Token = "0x1700013C")]
-		Vector2 valuePrev
-		{
-			[Token(Token = "0x600030F")]
-			get;
-		}
+		Vector2 valuePrev { get; }
 
-		[Token(Token = "0x1700013D")]
-		IControllerTemplateAxis rotation
-		{
-			[Token(Token = "0x6000310")]
-			get;
-		}
+		IControllerTemplateAxis rotation { get; }
 
-		[Token(Token = "0x1700013E")]
-		IControllerTemplateAxis pushPull
-		{
-			[Token(Token = "0x6000311")]
-			get;
-		}
+		IControllerTemplateAxis pushPull { get; }
 	}
 }

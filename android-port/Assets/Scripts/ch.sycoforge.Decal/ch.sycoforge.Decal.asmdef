@@ -1,7 +1,5 @@
 {
   "name": "ch.sycoforge.Decal",
-  "references": [
-    "Il2CppDummyDll"
-  ],
+  "references": [],
   "allowUnsafeCode": true
 }

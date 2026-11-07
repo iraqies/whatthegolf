@@ -1,25 +1,11 @@
-using Il2CppDummyDll;
-
 namespace Newtonsoft.Json
 {
-	[Token(Token = "0x200000F")]
 	public interface IJsonLineInfo
 	{
-		[Token(Token = "0x17000001")]
-		int LineNumber
-		{
-			[Token(Token = "0x600000F")]
-			get;
-		}
+		int LineNumber { get; }
 
-		[Token(Token = "0x17000002")]
-		int LinePosition
-		{
-			[Token(Token = "0x6000010")]
-			get;
-		}
+		int LinePosition { get; }
 
-		[Token(Token = "0x600000E")]
 		bool HasLineInfo();
 	}
 }

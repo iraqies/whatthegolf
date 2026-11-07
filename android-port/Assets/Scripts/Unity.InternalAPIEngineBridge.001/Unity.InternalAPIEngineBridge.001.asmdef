@@ -1,7 +1,5 @@
 {
   "name": "Unity.InternalAPIEngineBridge.001",
-  "references": [
-    "Il2CppDummyDll"
-  ],
+  "references": [],
   "allowUnsafeCode": true
 }
