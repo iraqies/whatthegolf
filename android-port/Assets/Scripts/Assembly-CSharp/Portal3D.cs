@@ -1,63 +1,57 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x20002E3")]
 public class Portal3D : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4000FD8")]
+	[FieldOffset(Offset = "0x18")]
+	[SerializeField]
+	private Portal3D ConnectedPortal;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4000FD9")]
+	[FieldOffset(Offset = "0x20")]
+	public Animation PortalAnimation;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4000FDA")]
+	[FieldOffset(Offset = "0x28")]
+	private bool used;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4000FDB")]
+	[FieldOffset(Offset = "0x2C")]
+	private readonly float cooldown;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4000FDC")]
+	[FieldOffset(Offset = "0x30")]
+	private float cooldownTimer;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x6000D45")]
+	[Address(RVA = "0x161B4B8", Offset = "0x161B4B8", VA = "0x161B4B8")]
+	private void OnTriggerEnter(Collider collision)
+	{
+	}
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x6000D46")]
+	[Address(RVA = "0x161B5E8", Offset = "0x161B5E8", VA = "0x161B5E8")]
+	private void OnTriggerStay(Collider other)
+	{
+	}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x6000D47")]
+	[Address(RVA = "0x161B5F8", Offset = "0x161B5F8", VA = "0x161B5F8")]
+	private void Update()
+	{
+	}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x6000D48")]
+	[Address(RVA = "0x161B650", Offset = "0x161B650", VA = "0x161B650")]
+	private void OnDrawGizmos()
+	{
+	}
 
-	4. This script is unnecessary.
-
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
-
-	5. Script Content Level 0
-
-		AssetRipper was set to not load any script information.
-
-	6. Cpp2IL failed to decompile Il2Cpp data
-
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x6000D49")]
+	[Address(RVA = "0x161B6D8", Offset = "0x161B6D8", VA = "0x161B6D8")]
+	public Portal3D()
+	{
+	}
 }

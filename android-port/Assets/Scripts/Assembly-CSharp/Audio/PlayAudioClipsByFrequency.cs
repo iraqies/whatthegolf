@@ -1,66 +1,152 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Audio
 {
+	[Token(Token = "0x2001344")]
 	public class PlayAudioClipsByFrequency : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x400671B")]
+		[FieldOffset(Offset = "0x18")]
+		[SerializeField]
+		private ClipSettingsCollection clips;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x400671C")]
+		[FieldOffset(Offset = "0x20")]
+		[SerializeField]
+		private AudioSource customAudioSource;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x400671D")]
+		[FieldOffset(Offset = "0x28")]
+		[SerializeField]
+		private float startFrequency;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x400671E")]
+		[FieldOffset(Offset = "0x2C")]
+		[SerializeField]
+		private bool startOnAwake;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x400671F")]
+		[FieldOffset(Offset = "0x30")]
+		private float nextPlayTime;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4006720")]
+		[FieldOffset(Offset = "0x34")]
+		private float volumeModifier;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4006721")]
+		[FieldOffset(Offset = "0x38")]
+		private float pitchModifier;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4006722")]
+		[FieldOffset(Offset = "0x3C")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x59DDC", Offset = "0x59DDC")]
+		private float Frequency__BackingField;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4006723")]
+		[FieldOffset(Offset = "0x40")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x59DEC", Offset = "0x59DEC")]
+		private float Delay__BackingField;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4006724")]
+		[FieldOffset(Offset = "0x44")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x59DFC", Offset = "0x59DFC")]
+		private bool IsPlaying__BackingField;
 
-		5. Script Content Level 0
+		[Token(Token = "0x17000A22")]
+		public float Frequency
+		{
+			[Token(Token = "0x60059EA")]
+			[Address(RVA = "0x15E952C", Offset = "0x15E952C", VA = "0x15E952C")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x72188", Offset = "0x72188")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x60059EB")]
+			[Address(RVA = "0x15E9534", Offset = "0x15E9534", VA = "0x15E9534")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x72198", Offset = "0x72198")]
+			private set
+			{
+			}
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x17000A23")]
+		public float Delay
+		{
+			[Token(Token = "0x60059EC")]
+			[Address(RVA = "0x15E953C", Offset = "0x15E953C", VA = "0x15E953C")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x721A8", Offset = "0x721A8")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x60059ED")]
+			[Address(RVA = "0x15E9544", Offset = "0x15E9544", VA = "0x15E9544")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x721B8", Offset = "0x721B8")]
+			private set
+			{
+			}
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x17000A24")]
+		public bool IsPlaying
+		{
+			[Token(Token = "0x60059EE")]
+			[Address(RVA = "0x15E954C", Offset = "0x15E954C", VA = "0x15E954C")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x721C8", Offset = "0x721C8")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x60059EF")]
+			[Address(RVA = "0x15E9554", Offset = "0x15E9554", VA = "0x15E9554")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x721D8", Offset = "0x721D8")]
+			private set
+			{
+			}
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x60059F0")]
+		[Address(RVA = "0x15E955C", Offset = "0x15E955C", VA = "0x15E955C")]
+		public void Play()
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x60059F1")]
+		[Address(RVA = "0x15E958C", Offset = "0x15E958C", VA = "0x15E958C")]
+		public void Stop()
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x60059F2")]
+		[Address(RVA = "0x15E9594", Offset = "0x15E9594", VA = "0x15E9594")]
+		public void SetModifiers(float vol, float pitch)
+		{
+		}
 
-		*/
+		[Token(Token = "0x60059F3")]
+		[Address(RVA = "0x15E959C", Offset = "0x15E959C", VA = "0x15E959C")]
+		public void SetFrequency(float freq)
+		{
+		}
+
+		[Token(Token = "0x60059F4")]
+		[Address(RVA = "0x15E95B4", Offset = "0x15E95B4", VA = "0x15E95B4")]
+		private void Awake()
+		{
+		}
+
+		[Token(Token = "0x60059F5")]
+		[Address(RVA = "0x15E95E0", Offset = "0x15E95E0", VA = "0x15E95E0")]
+		private void Update()
+		{
+		}
+
+		[Token(Token = "0x60059F6")]
+		[Address(RVA = "0x15E973C", Offset = "0x15E973C", VA = "0x15E973C")]
+		public PlayAudioClipsByFrequency()
+		{
+		}
 	}
 }

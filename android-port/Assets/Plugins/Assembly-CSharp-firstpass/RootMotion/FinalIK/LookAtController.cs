@@ -1,66 +1,132 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace RootMotion.FinalIK
 {
+	[Token(Token = "0x20001CA")]
 	public class LookAtController : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4000C13")]
+		[FieldOffset(Offset = "0x18")]
+		public LookAtIK ik;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000C14")]
+		[FieldOffset(Offset = "0x20")]
+		public Transform target;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000C15")]
+		[FieldOffset(Offset = "0x28")]
+		[Attribute(Name = "RangeAttribute", RVA = "0x36A88", Offset = "0x36A88")]
+		public float weight;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4000C16")]
+		[FieldOffset(Offset = "0x2C")]
+		public Vector3 offset;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4000C17")]
+		[FieldOffset(Offset = "0x38")]
+		public float targetSwitchSmoothTime;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000C18")]
+		[FieldOffset(Offset = "0x3C")]
+		public float weightSmoothTime;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4000C19")]
+		[FieldOffset(Offset = "0x40")]
+		public bool smoothTurnTowardsTarget;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4000C1A")]
+		[FieldOffset(Offset = "0x44")]
+		public float maxRadiansDelta;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4000C1B")]
+		[FieldOffset(Offset = "0x48")]
+		public float maxMagnitudeDelta;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4000C1C")]
+		[FieldOffset(Offset = "0x4C")]
+		public float slerpSpeed;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4000C1D")]
+		[FieldOffset(Offset = "0x50")]
+		public Vector3 pivotOffsetFromRoot;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4000C1E")]
+		[FieldOffset(Offset = "0x5C")]
+		public float minDistance;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4000C1F")]
+		[FieldOffset(Offset = "0x60")]
+		[Attribute(Name = "RangeAttribute", RVA = "0x36AA0", Offset = "0x36AA0")]
+		public float maxRootAngle;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x4000C20")]
+		[FieldOffset(Offset = "0x68")]
+		private Transform lastTarget;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x4000C21")]
+		[FieldOffset(Offset = "0x70")]
+		private float switchWeight;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x4000C22")]
+		[FieldOffset(Offset = "0x74")]
+		private float switchWeightV;
 
-		*/
+		[Token(Token = "0x4000C23")]
+		[FieldOffset(Offset = "0x78")]
+		private float weightV;
+
+		[Token(Token = "0x4000C24")]
+		[FieldOffset(Offset = "0x7C")]
+		private Vector3 lastPosition;
+
+		[Token(Token = "0x4000C25")]
+		[FieldOffset(Offset = "0x88")]
+		private Vector3 dir;
+
+		[Token(Token = "0x4000C26")]
+		[FieldOffset(Offset = "0x94")]
+		private bool lastSmoothTowardsTarget;
+
+		[Token(Token = "0x170001AC")]
+		private Vector3 pivot
+		{
+			[Token(Token = "0x6000D3A")]
+			[Address(RVA = "0x13A8EE8", Offset = "0x13A8EE8", VA = "0x13A8EE8")]
+			get
+			{
+				return default;
+			}
+		}
+
+		[Token(Token = "0x6000D38")]
+		[Address(RVA = "0x13A8E78", Offset = "0x13A8E78", VA = "0x13A8E78")]
+		private void Start()
+		{
+		}
+
+		[Token(Token = "0x6000D39")]
+		[Address(RVA = "0x13A8F78", Offset = "0x13A8F78", VA = "0x13A8F78")]
+		private void LateUpdate()
+		{
+		}
+
+		[Token(Token = "0x6000D3B")]
+		[Address(RVA = "0x13A94BC", Offset = "0x13A94BC", VA = "0x13A94BC")]
+		private void ApplyMinDistance()
+		{
+		}
+
+		[Token(Token = "0x6000D3C")]
+		[Address(RVA = "0x13A95A8", Offset = "0x13A95A8", VA = "0x13A95A8")]
+		private void RootRotation()
+		{
+		}
+
+		[Token(Token = "0x6000D3D")]
+		[Address(RVA = "0x13A97A0", Offset = "0x13A97A0", VA = "0x13A97A0")]
+		public LookAtController()
+		{
+		}
 	}
 }

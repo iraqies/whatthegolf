@@ -1,63 +1,66 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x20001E8")]
 public class Weightlifter : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4000914")]
+	[FieldOffset(Offset = "0x18")]
+	public float startDelay;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4000915")]
+	[FieldOffset(Offset = "0x1C")]
+	public float explosionForce;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4000916")]
+	[FieldOffset(Offset = "0x20")]
+	public float explosionRadius;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4000917")]
+	[FieldOffset(Offset = "0x28")]
+	public Transform explosionForceOrigin;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4000918")]
+	[FieldOffset(Offset = "0x30")]
+	public Rigidbody weight;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4000919")]
+	[FieldOffset(Offset = "0x38")]
+	public Rigidbody[] props;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x400091A")]
+	[FieldOffset(Offset = "0x40")]
+	public Rigidbody weightLifterRigid;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x400091B")]
+	[FieldOffset(Offset = "0x48")]
+	private float timeAtStart;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x400091C")]
+	[FieldOffset(Offset = "0x4C")]
+	private bool didCollapse;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x6000889")]
+	[Address(RVA = "0x1751988", Offset = "0x1751988", VA = "0x1751988")]
+	private void Awake()
+	{
+	}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x600088A")]
+	[Address(RVA = "0x17519C4", Offset = "0x17519C4", VA = "0x17519C4")]
+	private void OnTriggerEnter(Collider other)
+	{
+	}
 
-	5. Script Content Level 0
+	[Token(Token = "0x600088B")]
+	[Address(RVA = "0x1751A58", Offset = "0x1751A58", VA = "0x1751A58")]
+	public void Collapse()
+	{
+	}
 
-		AssetRipper was set to not load any script information.
-
-	6. Cpp2IL failed to decompile Il2Cpp data
-
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x600088C")]
+	[Address(RVA = "0x1751D34", Offset = "0x1751D34", VA = "0x1751D34")]
+	public Weightlifter()
+	{
+	}
 }

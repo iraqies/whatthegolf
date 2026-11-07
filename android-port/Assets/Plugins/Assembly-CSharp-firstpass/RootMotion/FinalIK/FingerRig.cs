@@ -1,66 +1,116 @@
+using System.Runtime.InteropServices;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace RootMotion.FinalIK
 {
-	public class FingerRig : MonoBehaviour
+	[Token(Token = "0x2000141")]
+	public class FingerRig : SolverManager
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x40007BA")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x34")]
+		[Attribute(Name = "RangeAttribute", RVA = "0x35B00", Offset = "0x35B00")]
+		public float weight;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40007BB")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x38")]
+		public Finger[] fingers;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40007BC")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x40")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x35B18", Offset = "0x35B18")]
+		private bool initiated__BackingField;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x17000126")]
+		public bool initiated
+		{
+			[Token(Token = "0x60008B0")]
+			[Address(RVA = "0x1371BF8", Offset = "0x1371BF8", VA = "0x1371BF8")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x38FD4", Offset = "0x38FD4")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x60008B1")]
+			[Address(RVA = "0x1371C00", Offset = "0x1371C00", VA = "0x1371C00")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x38FE4", Offset = "0x38FE4")]
+			private set
+			{
+			}
+		}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x60008B2")]
+		[Address(RVA = "0x1371C08", Offset = "0x1371C08", VA = "0x1371C08")]
+		public bool IsValid(ref string errorMessage)
+		{
+			return default;
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x60008B3")]
+		[Address(RVA = "0x1371C8C", Offset = "0x1371C8C", VA = "0x1371C8C")]
+		[Attribute(Name = "ContextMenu", RVA = "0x38FF4", Offset = "0x38FF4")]
+		public void AutoDetect()
+		{
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x60008B4")]
+		[Address(RVA = "0x1371FDC", Offset = "0x1371FDC", VA = "0x1371FDC")]
+		public void AddFinger(Transform bone1, Transform bone2, Transform bone3, Transform tip, [Optional] Transform target)
+		{
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x60008B5")]
+		[Address(RVA = "0x1372154", Offset = "0x1372154", VA = "0x1372154")]
+		public void RemoveFinger(int index)
+		{
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x60008B6")]
+		[Address(RVA = "0x1371ED8", Offset = "0x1371ED8", VA = "0x1371ED8")]
+		private void AddChildrenRecursive(Transform parent, ref Transform[] array)
+		{
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x60008B7")]
+		[Address(RVA = "0x13722DC", Offset = "0x13722DC", VA = "0x13722DC", Slot = "4")]
+		protected override void InitiateSolver()
+		{
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x60008B8")]
+		[Address(RVA = "0x13723A0", Offset = "0x13723A0", VA = "0x13723A0")]
+		public void UpdateFingerSolvers()
+		{
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x60008B9")]
+		[Address(RVA = "0x1372418", Offset = "0x1372418", VA = "0x1372418")]
+		public void FixFingerTransforms()
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x60008BA")]
+		[Address(RVA = "0x1372494", Offset = "0x1372494", VA = "0x1372494")]
+		public void StoreDefaultLocalState()
+		{
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x60008BB")]
+		[Address(RVA = "0x1372504", Offset = "0x1372504", VA = "0x1372504", Slot = "5")]
+		protected override void UpdateSolver()
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x60008BC")]
+		[Address(RVA = "0x1372580", Offset = "0x1372580", VA = "0x1372580", Slot = "6")]
+		protected override void FixTransforms()
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x60008BD")]
+		[Address(RVA = "0x1372600", Offset = "0x1372600", VA = "0x1372600")]
+		public FingerRig()
+		{
+		}
 	}
 }

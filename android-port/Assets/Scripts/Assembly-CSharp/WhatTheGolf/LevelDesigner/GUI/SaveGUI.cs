@@ -1,66 +1,148 @@
+using Il2CppDummyDll;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using WhatTheGolf.LevelDesigner.Events;
 
 namespace WhatTheGolf.LevelDesigner.GUI
 {
-	public class SaveGUI : MonoBehaviour
+	[Token(Token = "0x200129D")]
+	public class SaveGUI : BaseGUI, IRequireEvents<GUIEvent>, IRequireEvents
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4006473")]
+		[FieldOffset(Offset = "0x40")]
+		[SerializeField]
+		private LevelCoverButtonGUI levelCoverButtonGUI;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4006474")]
+		[FieldOffset(Offset = "0x48")]
+		[SerializeField]
+		private Button saveButton;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4006475")]
+		[FieldOffset(Offset = "0x50")]
+		[SerializeField]
+		private GameObject publishedLabel;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4006476")]
+		[FieldOffset(Offset = "0x58")]
+		[SerializeField]
+		private Button saveAsButton;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4006477")]
+		[FieldOffset(Offset = "0x60")]
+		[SerializeField]
+		private Button closeButton;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4006478")]
+		[FieldOffset(Offset = "0x68")]
+		[SerializeField]
+		private Button optionsButton;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4006479")]
+		[FieldOffset(Offset = "0x70")]
+		[SerializeField]
+		private Sprite actionIcon;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x400647A")]
+		[FieldOffset(Offset = "0x78")]
+		[SerializeField]
+		private TextMeshProUGUI levelName;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x400647B")]
+		[FieldOffset(Offset = "0x80")]
+		[SerializeField]
+		private TextMeshProUGUI description;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x400647C")]
+		[FieldOffset(Offset = "0x88")]
+		private SerializableLevelData levelData;
 
-		5. Script Content Level 0
+		[Token(Token = "0x400647D")]
+		[FieldOffset(Offset = "0x90")]
+		private bool m_IsVisible;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x170009D5")]
+		public override bool isActiveOnOpen
+		{
+			[Token(Token = "0x600565A")]
+			[Address(RVA = "0x166BAA4", Offset = "0x166BAA4", VA = "0x166BAA4", Slot = "4")]
+			get
+			{
+				return default;
+			}
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x600565B")]
+		[Address(RVA = "0x166BAAC", Offset = "0x166BAAC", VA = "0x166BAAC", Slot = "6")]
+		public override void Init()
+		{
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x600565C")]
+		[Address(RVA = "0x166BCF0", Offset = "0x166BCF0", VA = "0x166BCF0")]
+		private void CloseButton_OnSelected()
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x600565D")]
+		[Address(RVA = "0x166BDC4", Offset = "0x166BDC4", VA = "0x166BDC4")]
+		private void LevelCoverButtonGUI_OnSelected(SerializableLevelData obj)
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x600565E")]
+		[Address(RVA = "0x166BDC8", Offset = "0x166BDC8", VA = "0x166BDC8")]
+		private void Save()
+		{
+		}
 
-		*/
+		[Token(Token = "0x600565F")]
+		[Address(RVA = "0x166BEE0", Offset = "0x166BEE0", VA = "0x166BEE0")]
+		private void SaveNew()
+		{
+		}
+
+		[Token(Token = "0x6005660")]
+		[Address(RVA = "0x166BF5C", Offset = "0x166BF5C", VA = "0x166BF5C")]
+		private void SaveAs()
+		{
+		}
+
+		[Token(Token = "0x6005661")]
+		[Address(RVA = "0x166BFD8", Offset = "0x166BFD8", VA = "0x166BFD8")]
+		private void OpenLevelOptions()
+		{
+		}
+
+		[Token(Token = "0x6005662")]
+		[Address(RVA = "0x166C12C", Offset = "0x166C12C", VA = "0x166C12C", Slot = "7")]
+		public void OnEvent(GUIEvent evt)
+		{
+		}
+
+		[Token(Token = "0x6005663")]
+		[Address(RVA = "0x166C1C4", Offset = "0x166C1C4", VA = "0x166C1C4")]
+		private void Show()
+		{
+		}
+
+		[Token(Token = "0x6005664")]
+		[Address(RVA = "0x166BCF4", Offset = "0x166BCF4", VA = "0x166BCF4")]
+		private void Hide()
+		{
+		}
+
+		[Token(Token = "0x6005665")]
+		[Address(RVA = "0x166C4A0", Offset = "0x166C4A0", VA = "0x166C4A0")]
+		private void Disable()
+		{
+		}
+
+		[Token(Token = "0x6005666")]
+		[Address(RVA = "0x166C5C8", Offset = "0x166C5C8", VA = "0x166C5C8")]
+		public SaveGUI()
+		{
+		}
 	}
 }

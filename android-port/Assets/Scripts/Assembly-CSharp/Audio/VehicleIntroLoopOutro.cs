@@ -1,66 +1,129 @@
+using System.Collections.Generic;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Audio
 {
+	[Token(Token = "0x20013E3")]
 	public class VehicleIntroLoopOutro : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4006AE3")]
+		[FieldOffset(Offset = "0x18")]
+		public List<WheelJoint2D> joints;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4006AE4")]
+		[FieldOffset(Offset = "0x20")]
+		public GolfBallController ballController;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4006AE5")]
+		[FieldOffset(Offset = "0x28")]
+		public bool useEngine;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4006AE6")]
+		[FieldOffset(Offset = "0x30")]
+		public IntroLoopOutro introLoopOutro;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4006AE7")]
+		[FieldOffset(Offset = "0x38")]
+		public float minWheelSpeed;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4006AE8")]
+		[FieldOffset(Offset = "0x3C")]
+		public float maxWheelSpeed;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4006AE9")]
+		[FieldOffset(Offset = "0x40")]
+		public float wheelMaxDelta;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4006AEA")]
+		[FieldOffset(Offset = "0x44")]
+		public float minVolume;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4006AEB")]
+		[FieldOffset(Offset = "0x48")]
+		public float maxVolume;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4006AEC")]
+		[FieldOffset(Offset = "0x4C")]
+		public float minPitch;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4006AED")]
+		[FieldOffset(Offset = "0x50")]
+		public float maxPitch;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4006AEE")]
+		[FieldOffset(Offset = "0x54")]
+		public bool useSuspension;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4006AEF")]
+		[FieldOffset(Offset = "0x58")]
+		public RandomAudioClips clips;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x4006AF0")]
+		[FieldOffset(Offset = "0x60")]
+		public float minTranslation;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x4006AF1")]
+		[FieldOffset(Offset = "0x64")]
+		public float maxTranslation;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x4006AF2")]
+		[FieldOffset(Offset = "0x68")]
+		public float cooldown;
 
-		*/
+		[Token(Token = "0x4006AF3")]
+		[FieldOffset(Offset = "0x6C")]
+		public float maxRecordedSpeed;
+
+		[Token(Token = "0x4006AF4")]
+		[FieldOffset(Offset = "0x70")]
+		public float lastRecordedTranslation;
+
+		[Token(Token = "0x4006AF5")]
+		[FieldOffset(Offset = "0x74")]
+		public float maxRecordedTranslation;
+
+		[Token(Token = "0x4006AF6")]
+		[FieldOffset(Offset = "0x78")]
+		private float wheelSpeed;
+
+		[Token(Token = "0x4006AF7")]
+		[FieldOffset(Offset = "0x7C")]
+		private float lastWheelSpeed;
+
+		[Token(Token = "0x4006AF8")]
+		[FieldOffset(Offset = "0x80")]
+		private float nextEventTime;
+
+		[Token(Token = "0x6005CBF")]
+		[Address(RVA = "0x17496F8", Offset = "0x17496F8", VA = "0x17496F8")]
+		private void Awake()
+		{
+		}
+
+		[Token(Token = "0x6005CC0")]
+		[Address(RVA = "0x1749774", Offset = "0x1749774", VA = "0x1749774")]
+		private void Update()
+		{
+		}
+
+		[Token(Token = "0x6005CC1")]
+		[Address(RVA = "0x17497B4", Offset = "0x17497B4", VA = "0x17497B4")]
+		private void HandleWheelspeed()
+		{
+		}
+
+		[Token(Token = "0x6005CC2")]
+		[Address(RVA = "0x17499B0", Offset = "0x17499B0", VA = "0x17499B0")]
+		private void HandleSuspension()
+		{
+		}
+
+		[Token(Token = "0x6005CC3")]
+		[Address(RVA = "0x1749BF0", Offset = "0x1749BF0", VA = "0x1749BF0")]
+		public VehicleIntroLoopOutro()
+		{
+		}
 	}
 }

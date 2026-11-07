@@ -1,63 +1,250 @@
+using System;
+using System.Runtime.InteropServices;
+using Audio;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class ExplosionBarrel : MonoBehaviour
+[Token(Token = "0x2000B00")]
+public class ExplosionBarrel : MonoBehaviour, IAudioEvent
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4003D43")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x18")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x50738", Offset = "0x50738")]
+	private Action<Collider, ExplosionBarrel> m_OnExplode;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4003D44")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x20")]
+	public UnityEvent OnExplodeEvent;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4003D45")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
+	public PlayClipOnAudioEvent ExplosionSFX;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4003D46")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x30")]
+	public float startCooldown;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4003D47")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x34")]
+	public bool canExplode;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4003D48")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x38")]
+	public ParticleSystem ps;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4003D49")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x40")]
+	public float impactThreshold;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4003D4A")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x44")]
+	public float radius;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4003D4B")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x48")]
+	public float power;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4003D4C")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x50")]
+	public Renderer normalRender;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4003D4D")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x58")]
+	public Renderer burnedRender;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4003D4E")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x60")]
+	public bool screenShake;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4003D4F")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x64")]
+	public float PlayerBlockDuration;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4003D50")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x68")]
+	public bool DestroyOnExplosion;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4003D51")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x69")]
+	public bool KeepOldVelocity;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4003D52")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x6C")]
+	public float hitObjectExplosionForce;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x4003D53")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x70")]
+	public Vector3 hitObjectExplosionForceModsMinRange;
 
-	*/
+	[Token(Token = "0x4003D54")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x7C")]
+	public Vector3 hitObjectExplosionForceModsMaxRange;
+
+	[Token(Token = "0x4003D55")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x88")]
+	public bool applyNormalExplosionToHitObject;
+
+	[Token(Token = "0x4003D56")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x8C")]
+	public LayerMask ignoreLayers;
+
+	[Token(Token = "0x4003D57")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x90")]
+	public bool ExplodeOnOutOfBounds;
+
+	[Token(Token = "0x4003D58")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x91")]
+	public bool AddRandomAngularVelocity;
+
+	[Token(Token = "0x4003D59")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x94")]
+	private float ignoreTime;
+
+	[Token(Token = "0x4003D5A")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x98")]
+	private float startTime;
+
+	[Token(Token = "0x4003D5B")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x9C")]
+	public bool didExplode;
+
+	[Token(Token = "0x4003D5C")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0xA0")]
+	private float explosionTime;
+
+	[Token(Token = "0x4003D5D")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0xA4")]
+	private bool shouldExplode;
+
+	[Token(Token = "0x4003D5E")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0xA8")]
+	private Rigidbody rigid;
+
+	[Token(Token = "0x4003D5F")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0xB0")]
+	private Collider[] nearbyColliders;
+
+	[Token(Token = "0x4003D60")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0xB8")]
+	private Rigidbody[] nearbyRigids;
+
+	[Token(Token = "0x4003D61")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0xC0")]
+	private float allowedExplodeTime;
+
+	[Token(Token = "0x4003D62")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0xC4")]
+	private bool initialized;
+
+	[Token(Token = "0x4003D63")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0xC8")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x50748", Offset = "0x50748")]
+	private Action<Vector3> OnAudioEvent__BackingField;
+
+	[Token(Token = "0x4003D64")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0xD0")]
+	private GolfBallController ball;
+
+	[Token(Token = "0x17000562")]
+	public Action<Vector3> OnAudioEvent
+	{
+		[Token(Token = "0x600346E")]
+		[Address(RVA = "0x1451110", Offset = "0x1451110", VA = "0x1451110", Slot = "4")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x6A768", Offset = "0x6A768")]
+		get
+		{
+			return null;
+		}
+		[Token(Token = "0x600346F")]
+		[Address(RVA = "0x1451118", Offset = "0x1451118", VA = "0x1451118", Slot = "5")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x6A778", Offset = "0x6A778")]
+		set
+		{
+		}
+	}
+
+	[Token(Token = "0x1400006F")]
+	public event Action<Collider, ExplosionBarrel> OnExplode
+	{
+		[Token(Token = "0x600346C")]
+		[Address(RVA = "0x144E6D4", Offset = "0x144E6D4", VA = "0x144E6D4")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x6A748", Offset = "0x6A748")]
+		add
+		{
+		}
+		[Token(Token = "0x600346D")]
+		[Address(RVA = "0x145106C", Offset = "0x145106C", VA = "0x145106C")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x6A758", Offset = "0x6A758")]
+		remove
+		{
+		}
+	}
+
+	[Token(Token = "0x6003470")]
+	[Address(RVA = "0x1451120", Offset = "0x1451120", VA = "0x1451120")]
+	private void Start()
+	{
+	}
+
+	[Token(Token = "0x6003471")]
+	[Address(RVA = "0x1451268", Offset = "0x1451268", VA = "0x1451268")]
+	private void OnCollisionEnter(Collision collision)
+	{
+	}
+
+	[Token(Token = "0x6003472")]
+	[Address(RVA = "0x1451D6C", Offset = "0x1451D6C", VA = "0x1451D6C")]
+	private void OnTriggerEnter(Collider other)
+	{
+	}
+
+	[Token(Token = "0x6003473")]
+	[Address(RVA = "0x1451E54", Offset = "0x1451E54", VA = "0x1451E54")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x6003474")]
+	[Address(RVA = "0x1451EEC", Offset = "0x1451EEC", VA = "0x1451EEC")]
+	public void SetExplosionTimer(float delay)
+	{
+	}
+
+	[Token(Token = "0x6003475")]
+	[Address(RVA = "0x1451F2C", Offset = "0x1451F2C", VA = "0x1451F2C")]
+	public void CanExplode()
+	{
+	}
+
+	[Token(Token = "0x6003476")]
+	[Address(RVA = "0x1451EBC", Offset = "0x1451EBC", VA = "0x1451EBC")]
+	public void Explode([Optional] Collider col)
+	{
+	}
+
+	[Token(Token = "0x6003477")]
+	[Address(RVA = "0x14513B4", Offset = "0x14513B4", VA = "0x14513B4")]
+	private void Explode(Vector3 normal, [Optional] Collider col)
+	{
+	}
+
+	[Token(Token = "0x6003478")]
+	[Address(RVA = "0x1451F38", Offset = "0x1451F38", VA = "0x1451F38")]
+	public void Reset()
+	{
+	}
+
+	[Token(Token = "0x6003479")]
+	[Address(RVA = "0x1451F84", Offset = "0x1451F84", VA = "0x1451F84")]
+	private void OnDrawGizmosSelected()
+	{
+	}
+
+	[Token(Token = "0x600347A")]
+	[Address(RVA = "0x1451FC0", Offset = "0x1451FC0", VA = "0x1451FC0")]
+	public ExplosionBarrel()
+	{
+	}
 }

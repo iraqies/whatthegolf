@@ -1,63 +1,157 @@
-using UnityEngine;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using Il2CppDummyDll;
 
-public class ListWithEvents : MonoBehaviour
+[Token(Token = "0x2000005")]
+[AttributeAttribute(Name = "DefaultMemberAttribute", RVA = "0x1B7A00", Offset = "0x1B7A00")]
+internal class ListWithEvents<T> : IList<T>, ICollection<T>, IEnumerable<T>, IEnumerable
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4000005")]
+	[FieldOffset(Offset = "0x0")]
+	private List<T> m_List;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4000006")]
+	[FieldOffset(Offset = "0x0")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x1B7CB8", Offset = "0x1B7CB8")]
+	private Action<T> m_OnElementAdded;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4000007")]
+	[FieldOffset(Offset = "0x0")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x1B7CC8", Offset = "0x1B7CC8")]
+	private Action<T> m_OnElementRemoved;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	// C# has no syntax for parameterized property 'Item'.
+	// Its 'property:' attributes below are ignored by the compiler (CS0657).
+	[property: Token(Token = "0x17000002")]
+	[Token(Token = "0x6000010")]
+	public T get_Item(int index)
+	{
+		return (T)null;
+	}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x6000011")]
+	public void set_Item(int index, T value)
+	{
+	}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x17000003")]
+	public int Count
+	{
+		[Token(Token = "0x6000012")]
+		get
+		{
+			return default;
+		}
+	}
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x17000004")]
+	public bool IsReadOnly
+	{
+		[Token(Token = "0x6000013")]
+		get
+		{
+			return default;
+		}
+	}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x14000001")]
+	public event Action<T> OnElementAdded
+	{
+		[Token(Token = "0x600000A")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x1B82AC", Offset = "0x1B82AC")]
+		add
+		{
+		}
+		[Token(Token = "0x600000B")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x1B82BC", Offset = "0x1B82BC")]
+		remove
+		{
+		}
+	}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x14000002")]
+	public event Action<T> OnElementRemoved
+	{
+		[Token(Token = "0x600000C")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x1B82CC", Offset = "0x1B82CC")]
+		add
+		{
+		}
+		[Token(Token = "0x600000D")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x1B82DC", Offset = "0x1B82DC")]
+		remove
+		{
+		}
+	}
 
-	4. This script is unnecessary.
+	[Token(Token = "0x600000E")]
+	private void InvokeAdded(T element)
+	{
+	}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x600000F")]
+	private void InvokeRemoved(T element)
+	{
+	}
 
-	5. Script Content Level 0
+	[Token(Token = "0x6000014")]
+	public void Add(T item)
+	{
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x6000015")]
+	public void Clear()
+	{
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x6000016")]
+	public bool Contains(T item)
+	{
+		return default;
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x6000017")]
+	public void CopyTo(T[] array, int arrayIndex)
+	{
+	}
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x6000018")]
+	public IEnumerator<T> GetEnumerator()
+	{
+		return null;
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x6000019")]
+	public int IndexOf(T item)
+	{
+		return default;
+	}
 
-	*/
+	[Token(Token = "0x600001A")]
+	public void Insert(int index, T item)
+	{
+	}
+
+	[Token(Token = "0x600001B")]
+	public bool Remove(T item)
+	{
+		return default;
+	}
+
+	[Token(Token = "0x600001C")]
+	public void RemoveAt(int index)
+	{
+	}
+
+	[Token(Token = "0x600001D")]
+	private IEnumerator System_002ECollections_002EIEnumerable_002EGetEnumerator()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x600001E")]
+	public ListWithEvents()
+	{
+	}
 }

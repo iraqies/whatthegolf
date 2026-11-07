@@ -1,63 +1,69 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000204")]
 public class AddForceInArea : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x40009DC")]
+	[FieldOffset(Offset = "0x18")]
+	[SerializeField]
+	private bool executeOnStart;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x40009DD")]
+	[FieldOffset(Offset = "0x1C")]
+	[SerializeField]
+	private float radius;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x40009DE")]
+	[FieldOffset(Offset = "0x20")]
+	[SerializeField]
+	private float force;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x40009DF")]
+	[FieldOffset(Offset = "0x24")]
+	[SerializeField]
+	private Vector3 forceDirection;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x40009E0")]
+	[FieldOffset(Offset = "0x30")]
+	[SerializeField]
+	private ForceMode forceMode;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x40009E1")]
+	[FieldOffset(Offset = "0x34")]
+	[SerializeField]
+	private int maxOthersAffected;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x40009E2")]
+	[FieldOffset(Offset = "0x38")]
+	[SerializeField]
+	private LayerMask acceptedLayers;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x40009E3")]
+	[FieldOffset(Offset = "0x40")]
+	private Collider[] colliders;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x6000908")]
+	[Address(RVA = "0x1406ACC", Offset = "0x1406ACC", VA = "0x1406ACC")]
+	private void Start()
+	{
+	}
 
-	4. This script is unnecessary.
+	[Token(Token = "0x6000909")]
+	[Address(RVA = "0x1406B48", Offset = "0x1406B48", VA = "0x1406B48")]
+	public void Execute()
+	{
+	}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x600090A")]
+	[Address(RVA = "0x1406CE0", Offset = "0x1406CE0", VA = "0x1406CE0")]
+	private void OnDrawGizmosSelected()
+	{
+	}
 
-	5. Script Content Level 0
-
-		AssetRipper was set to not load any script information.
-
-	6. Cpp2IL failed to decompile Il2Cpp data
-
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x600090B")]
+	[Address(RVA = "0x1406D30", Offset = "0x1406D30", VA = "0x1406D30")]
+	public AddForceInArea()
+	{
+	}
 }

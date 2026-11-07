@@ -1,66 +1,203 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.Playables;
 
 namespace RootMotion
 {
-	public class Baker : MonoBehaviour
+	[Token(Token = "0x20000D3")]
+	public abstract class Baker : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Serializable]
+		[Token(Token = "0x20000D4")]
+		public enum Mode
+		{
+			[Token(Token = "0x400046A")]
+			AnimationClips = 0,
+			[Token(Token = "0x400046B")]
+			AnimationStates = 1,
+			[Token(Token = "0x400046C")]
+			PlayableDirector = 2,
+			[Token(Token = "0x400046D")]
+			Realtime = 3
+		}
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x400045B")]
+		[FieldOffset(Offset = "0x18")]
+		[AttributeAttribute(Name = "RangeAttribute", RVA = "0x35360", Offset = "0x35360")]
+		public int frameRate;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x400045C")]
+		[FieldOffset(Offset = "0x1C")]
+		[AttributeAttribute(Name = "RangeAttribute", RVA = "0x3537C", Offset = "0x3537C")]
+		public float keyReductionError;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x400045D")]
+		[FieldOffset(Offset = "0x20")]
+		public Mode mode;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x400045E")]
+		[FieldOffset(Offset = "0x28")]
+		public AnimationClip[] animationClips;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x400045F")]
+		[FieldOffset(Offset = "0x30")]
+		public string[] animationStates;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4000460")]
+		[FieldOffset(Offset = "0x38")]
+		public bool loop;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4000461")]
+		[FieldOffset(Offset = "0x40")]
+		public string saveToFolder;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4000462")]
+		[FieldOffset(Offset = "0x48")]
+		public string appendName;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4000463")]
+		[FieldOffset(Offset = "0x50")]
+		public string saveName;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4000464")]
+		[FieldOffset(Offset = "0x58")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3539C", Offset = "0x3539C")]
+		private bool isBaking__BackingField;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4000465")]
+		[FieldOffset(Offset = "0x5C")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x353AC", Offset = "0x353AC")]
+		private float bakingProgress__BackingField;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4000466")]
+		[FieldOffset(Offset = "0x60")]
+		[SerializeField]
+		public Animator animator;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x4000467")]
+		[FieldOffset(Offset = "0x68")]
+		[SerializeField]
+		public PlayableDirector director;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x4000468")]
+		[FieldOffset(Offset = "0x70")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x353DC", Offset = "0x353DC")]
+		private float clipLength__BackingField;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x170000CC")]
+		public bool isBaking
+		{
+			[Token(Token = "0x6000554")]
+			[Address(RVA = "0x12F55FC", Offset = "0x12F55FC", VA = "0x12F55FC")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x38254", Offset = "0x38254")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000555")]
+			[Address(RVA = "0x12F5604", Offset = "0x12F5604", VA = "0x12F5604")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x38264", Offset = "0x38264")]
+			private set
+			{
+			}
+		}
 
-		*/
+		[Token(Token = "0x170000CD")]
+		public float bakingProgress
+		{
+			[Token(Token = "0x6000556")]
+			[Address(RVA = "0x12F560C", Offset = "0x12F560C", VA = "0x12F560C")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x38274", Offset = "0x38274")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000557")]
+			[Address(RVA = "0x12F5614", Offset = "0x12F5614", VA = "0x12F5614")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x38284", Offset = "0x38284")]
+			private set
+			{
+			}
+		}
+
+		[Token(Token = "0x170000CE")]
+		protected float clipLength
+		{
+			[Token(Token = "0x600055D")]
+			[Address(RVA = "0x12F561C", Offset = "0x12F561C", VA = "0x12F561C")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x38294", Offset = "0x38294")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x600055E")]
+			[Address(RVA = "0x12F5624", Offset = "0x12F5624", VA = "0x12F5624")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x382A4", Offset = "0x382A4")]
+			private set
+			{
+			}
+		}
+
+		[Token(Token = "0x6000550")]
+		[Address(RVA = "0x12F54DC", Offset = "0x12F54DC", VA = "0x12F54DC")]
+		[AttributeAttribute(Name = "ContextMenu", RVA = "0x38174", Offset = "0x38174")]
+		private void OpenUserManual()
+		{
+		}
+
+		[Token(Token = "0x6000551")]
+		[Address(RVA = "0x12F5524", Offset = "0x12F5524", VA = "0x12F5524")]
+		[AttributeAttribute(Name = "ContextMenu", RVA = "0x381AC", Offset = "0x381AC")]
+		private void OpenScriptReference()
+		{
+		}
+
+		[Token(Token = "0x6000552")]
+		[Address(RVA = "0x12F556C", Offset = "0x12F556C", VA = "0x12F556C")]
+		[AttributeAttribute(Name = "ContextMenu", RVA = "0x381E4", Offset = "0x381E4")]
+		private void SupportGroup()
+		{
+		}
+
+		[Token(Token = "0x6000553")]
+		[Address(RVA = "0x12F55B4", Offset = "0x12F55B4", VA = "0x12F55B4")]
+		[AttributeAttribute(Name = "ContextMenu", RVA = "0x3821C", Offset = "0x3821C")]
+		private void ASThread()
+		{
+		}
+
+		[Token(Token = "0x6000558")]
+		protected abstract Transform GetCharacterRoot();
+
+		[Token(Token = "0x6000559")]
+		protected abstract void OnStartBaking();
+
+		[Token(Token = "0x600055A")]
+		protected abstract void OnSetLoopFrame(float time);
+
+		[Token(Token = "0x600055B")]
+		protected abstract void OnSetCurves(ref AnimationClip clip);
+
+		[Token(Token = "0x600055C")]
+		protected abstract void OnSetKeyframes(float time, bool lastFrame);
+
+		[Token(Token = "0x600055F")]
+		[Address(RVA = "0x12F562C", Offset = "0x12F562C", VA = "0x12F562C")]
+		public void StartBaking()
+		{
+		}
+
+		[Token(Token = "0x6000560")]
+		[Address(RVA = "0x12F5630", Offset = "0x12F5630", VA = "0x12F5630")]
+		public void StopBaking()
+		{
+		}
+
+		[Token(Token = "0x6000561")]
+		[Address(RVA = "0x12F5634", Offset = "0x12F5634", VA = "0x12F5634")]
+		protected Baker()
+		{
+		}
 	}
 }

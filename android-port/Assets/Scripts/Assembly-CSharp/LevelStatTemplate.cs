@@ -1,63 +1,61 @@
+using Il2CppDummyDll;
+using OldMoatGames;
+using TMPro;
 using UnityEngine;
 
+[Token(Token = "0x20008DE")]
 public class LevelStatTemplate : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x400307E")]
+	[FieldOffset(Offset = "0x18")]
+	public TextMeshProUGUI LevelStats;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x400307F")]
+	[FieldOffset(Offset = "0x20")]
+	public AnimatedGifPlayer GifImage;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4003080")]
+	[FieldOffset(Offset = "0x28")]
+	public bool GifCompleted;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4003081")]
+	[FieldOffset(Offset = "0x30")]
+	private string level;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x6002902")]
+	[Address(RVA = "0x1530B54", Offset = "0x1530B54", VA = "0x1530B54")]
+	private void Start()
+	{
+	}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x6002903")]
+	[Address(RVA = "0x1530BE8", Offset = "0x1530BE8", VA = "0x1530BE8")]
+	public void OpenGif()
+	{
+	}
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x6002904")]
+	[Address(RVA = "0x1530D04", Offset = "0x1530D04", VA = "0x1530D04")]
+	public void SetStats(string levelName, int hole, int strokes)
+	{
+	}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x6002905")]
+	[Address(RVA = "0x1530FEC", Offset = "0x1530FEC", VA = "0x1530FEC")]
+	private void GifImage_OnReady()
+	{
+	}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x6002906")]
+	[Address(RVA = "0x15310AC", Offset = "0x15310AC", VA = "0x15310AC")]
+	public LevelStatTemplate()
+	{
+	}
 
-	4. This script is unnecessary.
-
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
-
-	5. Script Content Level 0
-
-		AssetRipper was set to not load any script information.
-
-	6. Cpp2IL failed to decompile Il2Cpp data
-
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x6002907")]
+	[Address(RVA = "0x15310B4", Offset = "0x15310B4", VA = "0x15310B4")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x674D8", Offset = "0x674D8")]
+	private void _003CGifImage_OnReady_003Eb__7_0(float t)
+	{
+	}
 }

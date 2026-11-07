@@ -1,63 +1,117 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000CEC")]
 public class FollowTransform : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x400463A")]
+	[FieldOffset(Offset = "0x18")]
+	public Transform Target;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x400463B")]
+	[FieldOffset(Offset = "0x20")]
+	public Vector3 FollowAxis;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x400463C")]
+	[FieldOffset(Offset = "0x2C")]
+	public float FollowSpeed;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x400463D")]
+	[FieldOffset(Offset = "0x30")]
+	public bool UsePhysics;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x400463E")]
+	[FieldOffset(Offset = "0x31")]
+	public bool FollowUpVector;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x400463F")]
+	[FieldOffset(Offset = "0x32")]
+	public bool FollowRotation;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4004640")]
+	[FieldOffset(Offset = "0x33")]
+	public bool TransformPositionOffset;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4004641")]
+	[FieldOffset(Offset = "0x34")]
+	public bool InverseTransformPositionOffset;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4004642")]
+	[FieldOffset(Offset = "0x38")]
+	public Vector3 RotationOffset;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4004643")]
+	[FieldOffset(Offset = "0x44")]
+	public Vector3 PositionOffset;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4004644")]
+	[FieldOffset(Offset = "0x50")]
+	public Vector3 LookDirectionAxis;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4004645")]
+	[FieldOffset(Offset = "0x5C")]
+	public Vector2 HeightRange;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4004646")]
+	[FieldOffset(Offset = "0x68")]
+	private Rigidbody rigid;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4004647")]
+	[FieldOffset(Offset = "0x70")]
+	public float LookSpeed;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4004648")]
+	[FieldOffset(Offset = "0x74")]
+	public bool LookAtTarget;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x6003D1D")]
+	[Address(RVA = "0x147041C", Offset = "0x147041C", VA = "0x147041C")]
+	private void Awake()
+	{
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x6003D1E")]
+	[Address(RVA = "0x1470478", Offset = "0x1470478", VA = "0x1470478")]
+	public void ManualFollowUpdate()
+	{
+	}
 
-	*/
+	[Token(Token = "0x6003D1F")]
+	[Address(RVA = "0x14706D0", Offset = "0x14706D0", VA = "0x14706D0")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x6003D20")]
+	[Address(RVA = "0x147048C", Offset = "0x147048C", VA = "0x147048C")]
+	private void FixedUpdate()
+	{
+	}
+
+	[Token(Token = "0x6003D21")]
+	[Address(RVA = "0x1470888", Offset = "0x1470888", VA = "0x1470888")]
+	private Vector3 GetPosition()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6003D22")]
+	[Address(RVA = "0x1470C38", Offset = "0x1470C38", VA = "0x1470C38")]
+	private Quaternion GetRotation()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6003D23")]
+	[Address(RVA = "0x1470AD4", Offset = "0x1470AD4", VA = "0x1470AD4")]
+	private Quaternion GetLookRotation()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6003D24")]
+	[Address(RVA = "0x1470CBC", Offset = "0x1470CBC", VA = "0x1470CBC")]
+	public FollowTransform()
+	{
+	}
 }

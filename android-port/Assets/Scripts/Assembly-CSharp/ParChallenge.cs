@@ -1,63 +1,190 @@
+using System;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
-public class ParChallenge : MonoBehaviour
+[Token(Token = "0x2000415")]
+public class ParChallenge : Challenge
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Serializable]
+	[Token(Token = "0x2000416")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3F9DC", Offset = "0x3F9DC")]
+	private sealed class _003C_003Ec
+	{
+		[Token(Token = "0x400165F")]
+		[FieldOffset(Offset = "0x0")]
+		public static readonly _003C_003Ec _003C_003E9;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4001660")]
+		[FieldOffset(Offset = "0x8")]
+		public static Action<float> _003C_003E9__24_0;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x6001340")]
+		[Address(RVA = "0x182253C", Offset = "0x182253C", VA = "0x182253C")]
+		public _003C_003Ec()
+		{
+		}
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x6001341")]
+		[Address(RVA = "0x1822544", Offset = "0x1822544", VA = "0x1822544")]
+		internal void _003COnShoot_003Eb__24_0(float v)
+		{
+		}
+	}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x400164B")]
+	[FieldOffset(Offset = "0xA4")]
+	public int ScoreToBeat;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x400164C")]
+	[FieldOffset(Offset = "0xA8")]
+	public Rigidbody controllerRigid;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x400164D")]
+	[FieldOffset(Offset = "0xB0")]
+	public GolfBallController SpecificController;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x400164E")]
+	[FieldOffset(Offset = "0xB8")]
+	public bool FindAdditionalControllers;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x400164F")]
+	[FieldOffset(Offset = "0xB9")]
+	public bool BlockShootingAfterLastShot;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4001650")]
+	[FieldOffset(Offset = "0xBA")]
+	public bool AutoFail;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4001651")]
+	[FieldOffset(Offset = "0xBC")]
+	public float AutoFailThreshold;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4001652")]
+	[FieldOffset(Offset = "0xC0")]
+	public float AutoFailTimer;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4001653")]
+	[FieldOffset(Offset = "0xC4")]
+	public bool DoDelayedFailOnAllShotsUsed;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4001654")]
+	[FieldOffset(Offset = "0xC8")]
+	public float Delay;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4001655")]
+	[FieldOffset(Offset = "0xCC")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x4D61C", Offset = "0x4D61C")]
+	private bool IsLastShotOrPast__BackingField;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4001656")]
+	[FieldOffset(Offset = "0xD0")]
+	private AutoFailBase m_customAutoFail;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x4001657")]
+	[FieldOffset(Offset = "0xD8")]
+	private GolfBallController controller;
 
-	*/
+	[Token(Token = "0x4001658")]
+	[FieldOffset(Offset = "0xE0")]
+	private GolfBallController[] additionalControllers;
+
+	[Token(Token = "0x4001659")]
+	[FieldOffset(Offset = "0xE8")]
+	private bool checkVelocity;
+
+	[Token(Token = "0x400165A")]
+	[FieldOffset(Offset = "0xEC")]
+	private float m_failTimer;
+
+	[Token(Token = "0x400165B")]
+	[FieldOffset(Offset = "0xF0")]
+	private float m_startFailCheckTime;
+
+	[Token(Token = "0x400165C")]
+	[FieldOffset(Offset = "0xF4")]
+	private int strokeCount;
+
+	[Token(Token = "0x400165D")]
+	[FieldOffset(Offset = "0xF8")]
+	private Vector3 _lastPosition;
+
+	[Token(Token = "0x400165E")]
+	[FieldOffset(Offset = "0x104")]
+	private Vector3 _movementDelta;
+
+	[Token(Token = "0x1700022B")]
+	public bool IsLastShotOrPast
+	{
+		[Token(Token = "0x6001334")]
+		[Address(RVA = "0x15D958C", Offset = "0x15D958C", VA = "0x15D958C")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x61E3C", Offset = "0x61E3C")]
+		get
+		{
+			return default;
+		}
+		[Token(Token = "0x6001335")]
+		[Address(RVA = "0x15D9594", Offset = "0x15D9594", VA = "0x15D9594")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x61E4C", Offset = "0x61E4C")]
+		private set
+		{
+		}
+	}
+
+	[Token(Token = "0x6001336")]
+	[Address(RVA = "0x15D959C", Offset = "0x15D959C", VA = "0x15D959C", Slot = "8")]
+	protected override void Activate()
+	{
+	}
+
+	[Token(Token = "0x6001337")]
+	[Address(RVA = "0x15D99C4", Offset = "0x15D99C4", VA = "0x15D99C4", Slot = "5")]
+	public override string GetDescription()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6001338")]
+	[Address(RVA = "0x15D9B08", Offset = "0x15D9B08", VA = "0x15D9B08", Slot = "6")]
+	public override string GetWinMessageID()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6001339")]
+	[Address(RVA = "0x15D9B6C", Offset = "0x15D9B6C", VA = "0x15D9B6C")]
+	private void OnShoot(GolfBallController controller, int strokes)
+	{
+	}
+
+	[Token(Token = "0x600133A")]
+	[Address(RVA = "0x15D9FE8", Offset = "0x15D9FE8", VA = "0x15D9FE8", Slot = "9")]
+	protected override void ChallengeUpdate()
+	{
+	}
+
+	[Token(Token = "0x600133B")]
+	[Address(RVA = "0x15DA1F0", Offset = "0x15DA1F0", VA = "0x15DA1F0")]
+	private void MovementFailCheck(Vector3 movement)
+	{
+	}
+
+	[Token(Token = "0x600133C")]
+	[Address(RVA = "0x15DA270", Offset = "0x15DA270", VA = "0x15DA270", Slot = "10")]
+	public override void OnLevelComplete(Level.CompletedState completedState)
+	{
+	}
+
+	[Token(Token = "0x600133D")]
+	[Address(RVA = "0x15DA318", Offset = "0x15DA318", VA = "0x15DA318")]
+	public ParChallenge()
+	{
+	}
+
+	[Token(Token = "0x600133E")]
+	[Address(RVA = "0x15DA338", Offset = "0x15DA338", VA = "0x15DA338")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x61E5C", Offset = "0x61E5C")]
+	private void _003COnShoot_003Eb__24_1()
+	{
+	}
 }

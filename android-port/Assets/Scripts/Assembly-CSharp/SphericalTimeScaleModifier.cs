@@ -1,63 +1,88 @@
+using CameraStack;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000B8A")]
 public class SphericalTimeScaleModifier : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x400402F")]
+	[FieldOffset(Offset = "0x18")]
+	public TimeControl TimeControl;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4004030")]
+	[FieldOffset(Offset = "0x20")]
+	public float MinTimeScale;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4004031")]
+	[FieldOffset(Offset = "0x28")]
+	private CBFollow followCam;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4004032")]
+	[FieldOffset(Offset = "0x30")]
+	public float MinElevation;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4004033")]
+	[FieldOffset(Offset = "0x34")]
+	public float MaxRotationAngle;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4004034")]
+	[FieldOffset(Offset = "0x38")]
+	public float RotationMoveSpeed;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4004035")]
+	[FieldOffset(Offset = "0x40")]
+	private SphereCollider collider;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4004036")]
+	[FieldOffset(Offset = "0x48")]
+	private float startElevation;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4004037")]
+	[FieldOffset(Offset = "0x4C")]
+	private float rotTarget;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4004038")]
+	[FieldOffset(Offset = "0x50")]
+	private Transform playerEntered;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4004039")]
+	[FieldOffset(Offset = "0x58")]
+	private bool playerHasExit;
 
-	5. Script Content Level 0
+	[Token(Token = "0x60037AB")]
+	[Address(RVA = "0x16D2654", Offset = "0x16D2654", VA = "0x16D2654")]
+	private void Start()
+	{
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x60037AC")]
+	[Address(RVA = "0x16D2730", Offset = "0x16D2730", VA = "0x16D2730")]
+	private void OnTriggerEnter(Collider other)
+	{
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x60037AD")]
+	[Address(RVA = "0x16D2860", Offset = "0x16D2860", VA = "0x16D2860")]
+	private void Update()
+	{
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x60037AE")]
+	[Address(RVA = "0x16D2D78", Offset = "0x16D2D78", VA = "0x16D2D78")]
+	private void OnTriggerExit(Collider other)
+	{
+	}
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x60037AF")]
+	[Address(RVA = "0x16D2E84", Offset = "0x16D2E84", VA = "0x16D2E84")]
+	public SphericalTimeScaleModifier()
+	{
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x60037B0")]
+	[Address(RVA = "0x16D2EAC", Offset = "0x16D2EAC", VA = "0x16D2EAC")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x6AD0C", Offset = "0x6AD0C")]
+	private void _003CStart_003Eb__11_0(CameraBehavior cb)
+	{
+	}
 }

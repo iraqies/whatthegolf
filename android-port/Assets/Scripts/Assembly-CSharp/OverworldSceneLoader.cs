@@ -1,63 +1,100 @@
-using UnityEngine;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using Il2CppDummyDll;
 
-public class OverworldSceneLoader : MonoBehaviour
+[Token(Token = "0x20001B8")]
+public static class OverworldSceneLoader
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[StructLayout((LayoutKind)3)]
+	[Token(Token = "0x20001B9")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x3DFF0", Offset = "0x3DFF0")]
+	private struct _003CLoadOverworld_003Ed__0 : IAsyncStateMachine
+	{
+		[Token(Token = "0x40007B7")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x0")]
+		public int _003C_003E1__state;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40007B8")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x8")]
+		public AsyncVoidMethodBuilder _003C_003Et__builder;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40007B9")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
+		public ContentPack pack;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40007BA")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x30")]
+		public bool tunnel;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40007BB")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x38")]
+		private TaskAwaiter<bool> _003C_003Eu__1;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x60007A2")]
+		[Address(RVA = "0x181CE68", Offset = "0x181CE68", VA = "0x181CE68", Slot = "4")]
+		private void MoveNext()
+		{
+		}
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x60007A3")]
+		[Address(RVA = "0x181D02C", Offset = "0x181D02C", VA = "0x181D02C", Slot = "5")]
+		[DebuggerHidden]
+		private void SetStateMachine(IAsyncStateMachine stateMachine)
+		{
+		}
+	}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[StructLayout((LayoutKind)3)]
+	[Token(Token = "0x20001BA")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x3E000", Offset = "0x3E000")]
+	private struct _003CTryLoadOverworld_003Ed__1 : IAsyncStateMachine
+	{
+		[Token(Token = "0x40007BC")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x0")]
+		public int _003C_003E1__state;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x40007BD")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x8")]
+		public AsyncTaskMethodBuilder<bool> _003C_003Et__builder;
 
-	4. This script is unnecessary.
+		[Token(Token = "0x40007BE")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x20")]
+		public ContentPack pack;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x40007BF")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
+		public bool tunnel;
 
-	5. Script Content Level 0
+		[Token(Token = "0x40007C0")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x30")]
+		private TaskAwaiter _003C_003Eu__1;
 
-		AssetRipper was set to not load any script information.
+		[Token(Token = "0x60007A4")]
+		[Address(RVA = "0x181D038", Offset = "0x181D038", VA = "0x181D038", Slot = "4")]
+		private void MoveNext()
+		{
+		}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x60007A5")]
+		[Address(RVA = "0x181D3DC", Offset = "0x181D3DC", VA = "0x181D3DC", Slot = "5")]
+		[DebuggerHidden]
+		private void SetStateMachine(IAsyncStateMachine stateMachine)
+		{
+		}
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x60007A0")]
+	[Address(RVA = "0x15CB1D4", Offset = "0x15CB1D4", VA = "0x15CB1D4")]
+	public static void LoadOverworld(ContentPack pack, bool tunnel)
+	{
+	}
 
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x60007A1")]
+	[Address(RVA = "0x15CB274", Offset = "0x15CB274", VA = "0x15CB274")]
+	public static Task<bool> TryLoadOverworld(ContentPack pack, bool tunnel)
+	{
+		return null;
+	}
 }

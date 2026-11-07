@@ -1,63 +1,118 @@
+using System;
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000007")]
 public class DailyChallengeAchievement : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Serializable]
+	[Token(Token = "0x2000008")]
+	[SerializeField]
+	private struct WeekdayAcheivements
+	{
+		[Token(Token = "0x4000018")]
+		[FieldOffset(Offset = "0x0")]
+		public DayOfWeek day;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000019")]
+		[FieldOffset(Offset = "0x8")]
+		public UnlockAchievement achievement;
+	}
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x2000009")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3D178", Offset = "0x3D178")]
+	private sealed class _003C_003Ec__DisplayClass10_0
+	{
+		[Token(Token = "0x400001A")]
+		[FieldOffset(Offset = "0x10")]
+		public DayOfWeek d;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x6000022")]
+		[Address(RVA = "0x1794304", Offset = "0x1794304", VA = "0x1794304")]
+		public _003C_003Ec__DisplayClass10_0()
+		{
+		}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x6000023")]
+		[Address(RVA = "0x179430C", Offset = "0x179430C", VA = "0x179430C")]
+		internal bool _003CUpdateDailyChallengeAchievements_003Eb__0(WeekdayAcheivements w)
+		{
+			return default;
+		}
+	}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4000011")]
+	[FieldOffset(Offset = "0x18")]
+	[SerializeField]
+	private List<WeekdayAcheivements> weekdayAcheivements;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4000012")]
+	private const string PlayerPrefLastDailyChallengeDate = "LAST_DAILY";
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4000013")]
+	private const string PlayerPrefLastDailyChallengeDateCount = "LAST_DAILY_COUNT";
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4000014")]
+	[FieldOffset(Offset = "0x20")]
+	public UnlockAchievement dailyFirst;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4000015")]
+	[FieldOffset(Offset = "0x28")]
+	public UnlockAchievement daily9;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4000016")]
+	[FieldOffset(Offset = "0x30")]
+	public UnlockAchievement daily18;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4000017")]
+	[FieldOffset(Offset = "0x0")]
+	public static DailyChallengeAchievement Instance;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x600001B")]
+	[Address(RVA = "0x18C8DB4", Offset = "0x18C8DB4", VA = "0x18C8DB4")]
+	private void Awake()
+	{
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x600001C")]
+	[Address(RVA = "0x18C8E0C", Offset = "0x18C8E0C", VA = "0x18C8E0C")]
+	private static int DateToDay(DateTime date)
+	{
+		return default;
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x600001D")]
+	[Address(RVA = "0x18C8E54", Offset = "0x18C8E54", VA = "0x18C8E54")]
+	[AttributeAttribute(Name = "ContextMenu", RVA = "0x5D02C", Offset = "0x5D02C")]
+	public void UpdateDailyChallengeAchievements(DailyChallengePackStarter menu)
+	{
+	}
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x600001E")]
+	[Address(RVA = "0x18C91BC", Offset = "0x18C91BC", VA = "0x18C91BC")]
+	public static int GetCurrentDailyChallengeCount()
+	{
+		return default;
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x600001F")]
+	[Address(RVA = "0x18C92E4", Offset = "0x18C92E4", VA = "0x18C92E4")]
+	public static bool WasLastDailyChallengeDateToday()
+	{
+		return default;
+	}
 
-	*/
+	[Token(Token = "0x6000020")]
+	[Address(RVA = "0x18C8FF4", Offset = "0x18C8FF4", VA = "0x18C8FF4")]
+	public static int IncrementPlayedCount()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6000021")]
+	[Address(RVA = "0x18C9684", Offset = "0x18C9684", VA = "0x18C9684")]
+	public DailyChallengeAchievement()
+	{
+	}
 }

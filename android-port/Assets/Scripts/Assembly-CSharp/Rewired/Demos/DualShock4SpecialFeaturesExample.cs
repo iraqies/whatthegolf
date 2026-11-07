@@ -1,66 +1,164 @@
+using System.Collections.Generic;
+using Il2CppDummyDll;
+using Rewired.ControllerExtensions;
 using UnityEngine;
 
 namespace Rewired.Demos
 {
+	[Token(Token = "0x2001164")]
 	public class DualShock4SpecialFeaturesExample : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x2001165")]
+		private class Touch
+		{
+			[Token(Token = "0x4005BF9")]
+			[FieldOffset(Offset = "0x10")]
+			public GameObject go;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x4005BFA")]
+			[FieldOffset(Offset = "0x18")]
+			public int touchId;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x6004F74")]
+			[Address(RVA = "0x179DE50", Offset = "0x179DE50", VA = "0x179DE50")]
+			public Touch()
+			{
+			}
+		}
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x2001166")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x47E6C", Offset = "0x47E6C")]
+		private sealed class _003C_003Ec__DisplayClass20_0
+		{
+			[Token(Token = "0x4005BFB")]
+			[FieldOffset(Offset = "0x10")]
+			public int touchId;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+			[Token(Token = "0x6004F75")]
+			[Address(RVA = "0x179DE24", Offset = "0x179DE24", VA = "0x179DE24")]
+			public _003C_003Ec__DisplayClass20_0()
+			{
+			}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+			[Token(Token = "0x6004F76")]
+			[Address(RVA = "0x179DE2C", Offset = "0x179DE2C", VA = "0x179DE2C")]
+			internal bool _003CHandleTouchpad_003Eb__0(Touch x)
+			{
+				return default;
+			}
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4005BF0")]
+		private const int maxTouches = 2;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4005BF1")]
+		[FieldOffset(Offset = "0x18")]
+		public int playerId;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4005BF2")]
+		[FieldOffset(Offset = "0x20")]
+		public Transform touchpadTransform;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4005BF3")]
+		[FieldOffset(Offset = "0x28")]
+		public GameObject lightObject;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4005BF4")]
+		[FieldOffset(Offset = "0x30")]
+		public Transform accelerometerTransform;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4005BF5")]
+		[FieldOffset(Offset = "0x38")]
+		private List<Touch> touches;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4005BF6")]
+		[FieldOffset(Offset = "0x40")]
+		private Queue<Touch> unusedTouches;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x4005BF7")]
+		[FieldOffset(Offset = "0x48")]
+		private bool isFlashing;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x4005BF8")]
+		[FieldOffset(Offset = "0x50")]
+		private GUIStyle textStyle;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x1700088D")]
+		private Player player
+		{
+			[Token(Token = "0x6004F68")]
+			[Address(RVA = "0x14372E8", Offset = "0x14372E8", VA = "0x14372E8")]
+			get
+			{
+				return null;
+			}
+		}
 
-		*/
+		[Token(Token = "0x6004F69")]
+		[Address(RVA = "0x1437364", Offset = "0x1437364", VA = "0x1437364")]
+		private void Awake()
+		{
+		}
+
+		[Token(Token = "0x6004F6A")]
+		[Address(RVA = "0x143758C", Offset = "0x143758C", VA = "0x143758C")]
+		private void Update()
+		{
+		}
+
+		[Token(Token = "0x6004F6B")]
+		[Address(RVA = "0x143892C", Offset = "0x143892C", VA = "0x143892C")]
+		private void OnGUI()
+		{
+		}
+
+		[Token(Token = "0x6004F6C")]
+		[Address(RVA = "0x1438640", Offset = "0x1438640", VA = "0x1438640")]
+		private void ResetOrientation()
+		{
+		}
+
+		[Token(Token = "0x6004F6D")]
+		[Address(RVA = "0x1438454", Offset = "0x1438454", VA = "0x1438454")]
+		private void SetRandomLightColor()
+		{
+		}
+
+		[Token(Token = "0x6004F6E")]
+		[Address(RVA = "0x1438848", Offset = "0x1438848", VA = "0x1438848")]
+		private void StartLightFlash()
+		{
+		}
+
+		[Token(Token = "0x6004F6F")]
+		[Address(RVA = "0x143876C", Offset = "0x143876C", VA = "0x143876C")]
+		private void StopLightFlash()
+		{
+		}
+
+		[Token(Token = "0x6004F70")]
+		[Address(RVA = "0x1437BAC", Offset = "0x1437BAC", VA = "0x1437BAC")]
+		private IDualShock4Extension GetFirstDS4(Player player)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6004F71")]
+		[Address(RVA = "0x1437368", Offset = "0x1437368", VA = "0x1437368")]
+		private void InitializeTouchObjects()
+		{
+		}
+
+		[Token(Token = "0x6004F72")]
+		[Address(RVA = "0x1437F10", Offset = "0x1437F10", VA = "0x1437F10")]
+		private void HandleTouchpad(IDualShock4Extension ds4)
+		{
+		}
+
+		[Token(Token = "0x6004F73")]
+		[Address(RVA = "0x143934C", Offset = "0x143934C", VA = "0x143934C")]
+		public DualShock4SpecialFeaturesExample()
+		{
+		}
 	}
 }

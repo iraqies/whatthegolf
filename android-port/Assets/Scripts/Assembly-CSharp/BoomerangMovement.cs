@@ -1,63 +1,164 @@
+using Audio;
+using Il2CppDummyDll;
+using RootMotion.Dynamics;
 using UnityEngine;
 
+[Token(Token = "0x200020A")]
 public class BoomerangMovement : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x40009F1")]
+	[FieldOffset(Offset = "0x18")]
+	public Transform ReturnPoint;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x40009F2")]
+	[FieldOffset(Offset = "0x20")]
+	public float RotateSpeed;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x40009F3")]
+	[FieldOffset(Offset = "0x24")]
+	public float ModelRotateSpeed;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x40009F4")]
+	[FieldOffset(Offset = "0x28")]
+	public float FlySpeed;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x40009F5")]
+	[FieldOffset(Offset = "0x30")]
+	public HammerThrowingCamera HammerCamera;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x40009F6")]
+	[FieldOffset(Offset = "0x38")]
+	public Transform Model;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x40009F7")]
+	[FieldOffset(Offset = "0x40")]
+	public float MaxVelocity;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x40009F8")]
+	[FieldOffset(Offset = "0x44")]
+	public float VelocityDampen;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x40009F9")]
+	[FieldOffset(Offset = "0x48")]
+	public Transform Center;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x40009FA")]
+	[FieldOffset(Offset = "0x50")]
+	public float ReturnThreshold;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x40009FB")]
+	[FieldOffset(Offset = "0x58")]
+	public PuppetMaster Puppet;
 
-	5. Script Content Level 0
+	[Token(Token = "0x40009FC")]
+	[FieldOffset(Offset = "0x60")]
+	public TrailRenderer trail;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x40009FD")]
+	[FieldOffset(Offset = "0x68")]
+	public AnimationCurve RotationCurve;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x40009FE")]
+	[FieldOffset(Offset = "0x70")]
+	public DropPropOnShoot PropDropper;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x40009FF")]
+	[FieldOffset(Offset = "0x78")]
+	public float TrailVelocityThreshold;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4000A00")]
+	[FieldOffset(Offset = "0x80")]
+	public Collider Collider;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x4000A01")]
+	[FieldOffset(Offset = "0x88")]
+	public ClipSettingsCollection sfxOnShoot;
 
-	*/
+	[Token(Token = "0x4000A02")]
+	[FieldOffset(Offset = "0x90")]
+	public ClipSettingsCollection sfxOnPickup;
+
+	[Token(Token = "0x4000A03")]
+	[FieldOffset(Offset = "0x98")]
+	public AudioSource whooshSource;
+
+	[Token(Token = "0x4000A04")]
+	[FieldOffset(Offset = "0xA0")]
+	public MinMax velocityForAudioModulation;
+
+	[Token(Token = "0x4000A05")]
+	[FieldOffset(Offset = "0xA8")]
+	public MinMax volumeRange;
+
+	[Token(Token = "0x4000A06")]
+	[FieldOffset(Offset = "0xB0")]
+	public MinMax pitchRange;
+
+	[Token(Token = "0x4000A07")]
+	[FieldOffset(Offset = "0xB8")]
+	private Rigidbody rigid;
+
+	[Token(Token = "0x4000A08")]
+	[FieldOffset(Offset = "0xC0")]
+	private PuppetMasterProp prop;
+
+	[Token(Token = "0x4000A09")]
+	[FieldOffset(Offset = "0xC8")]
+	private Quaternion origRot;
+
+	[Token(Token = "0x4000A0A")]
+	[FieldOffset(Offset = "0xD8")]
+	private float throwTimer;
+
+	[Token(Token = "0x4000A0B")]
+	[FieldOffset(Offset = "0xDC")]
+	private bool resetting;
+
+	[Token(Token = "0x4000A0C")]
+	[FieldOffset(Offset = "0xE0")]
+	private Vector3 propBoost;
+
+	[Token(Token = "0x4000A0D")]
+	[FieldOffset(Offset = "0xF0")]
+	private Rigidbody pickedUpRigid;
+
+	[Token(Token = "0x4000A0E")]
+	[FieldOffset(Offset = "0xF8")]
+	private float timeAtAwake;
+
+	[Token(Token = "0x600091D")]
+	[Address(RVA = "0x1618790", Offset = "0x1618790", VA = "0x1618790")]
+	private void Awake()
+	{
+	}
+
+	[Token(Token = "0x600091E")]
+	[Address(RVA = "0x16188E0", Offset = "0x16188E0", VA = "0x16188E0")]
+	private void PropDropped(Vector3 boost)
+	{
+	}
+
+	[Token(Token = "0x600091F")]
+	[Address(RVA = "0x1618920", Offset = "0x1618920", VA = "0x1618920")]
+	private void FixedUpdate()
+	{
+	}
+
+	[Token(Token = "0x6000920")]
+	[Address(RVA = "0x1619004", Offset = "0x1619004", VA = "0x1619004")]
+	private void HandleAudioWhileFlying()
+	{
+	}
+
+	[Token(Token = "0x6000921")]
+	[Address(RVA = "0x16191F8", Offset = "0x16191F8", VA = "0x16191F8")]
+	private void OnCollisionEnter(Collision other)
+	{
+	}
+
+	[Token(Token = "0x6000922")]
+	[Address(RVA = "0x1619348", Offset = "0x1619348", VA = "0x1619348")]
+	public BoomerangMovement()
+	{
+	}
 }

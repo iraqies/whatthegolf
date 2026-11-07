@@ -1,63 +1,141 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Core;
+using Il2CppDummyDll;
+using RootMotion.Demos;
+using RootMotion.Dynamics;
 using UnityEngine;
 
-public class PortalblePuppet : MonoBehaviour
+[Token(Token = "0x20002E4")]
+public class PortalblePuppet : PortableObject
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x20002E5")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3ED2C", Offset = "0x3ED2C")]
+	private sealed class _003CPortCR_003Ed__7 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x4000FE1")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000FE2")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000FE3")]
+		[FieldOffset(Offset = "0x20")]
+		public PortalblePuppet _003C_003E4__this;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4000FE4")]
+		[FieldOffset(Offset = "0x28")]
+		public Vector3 position;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x17000194")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x6000D50")]
+			[Address(RVA = "0x182AA54", Offset = "0x182AA54", VA = "0x182AA54", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x17000195")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x6000D52")]
+			[Address(RVA = "0x182AA9C", Offset = "0x182AA9C", VA = "0x182AA9C", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6000D4D")]
+		[Address(RVA = "0x182A7D0", Offset = "0x182A7D0", VA = "0x182A7D0")]
+		[DebuggerHidden]
+		public _003CPortCR_003Ed__7(int _003C_003E1__state)
+		{
+		}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6000D4E")]
+		[Address(RVA = "0x182A7FC", Offset = "0x182A7FC", VA = "0x182A7FC", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x6000D4F")]
+		[Address(RVA = "0x182A800", Offset = "0x182A800", VA = "0x182A800", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
 
-	4. This script is unnecessary.
+		[Token(Token = "0x6000D50")]
+		[Address(RVA = "0x182AA54", Offset = "0x182AA54", VA = "0x182AA54", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6000D51")]
+		[Address(RVA = "0x182AA5C", Offset = "0x182AA5C", VA = "0x182AA5C", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
 
-	5. Script Content Level 0
+		[Token(Token = "0x6000D52")]
+		[Address(RVA = "0x182AA9C", Offset = "0x182AA9C", VA = "0x182AA9C", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4000FDD")]
+	[FieldOffset(Offset = "0x18")]
+	[SerializeField]
+	private PuppetMaster Puppet;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4000FDE")]
+	[FieldOffset(Offset = "0x20")]
+	[SerializeField]
+	private UserControlThirdPerson Character;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4000FDF")]
+	[FieldOffset(Offset = "0x28")]
+	[SerializeField]
+	private Transform Root;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4000FE0")]
+	[FieldOffset(Offset = "0x30")]
+	[SerializeField]
+	private GolfBallController Controller;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x6000D4A")]
+	[Address(RVA = "0x161C774", Offset = "0x161C774", VA = "0x161C774", Slot = "4")]
+	public override void Port(Vector3 position)
+	{
+	}
 
-	*/
+	[Token(Token = "0x6000D4B")]
+	[Address(RVA = "0x161C814", Offset = "0x161C814", VA = "0x161C814")]
+	private IEnumerator PortCR(Vector3 position)
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6000D4C")]
+	[Address(RVA = "0x161C8AC", Offset = "0x161C8AC", VA = "0x161C8AC")]
+	public PortalblePuppet()
+	{
+	}
 }

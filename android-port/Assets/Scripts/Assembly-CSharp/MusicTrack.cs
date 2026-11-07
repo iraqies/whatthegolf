@@ -1,63 +1,181 @@
+using System;
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using WwiseData;
+using WwiseInteractiveMusicHierarchyData;
 
+[Serializable]
+[Token(Token = "0x2000D33")]
 public class MusicTrack : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Serializable]
+	[Token(Token = "0x2000D34")]
+	public class AudioclipInfo
+	{
+		[Token(Token = "0x40047D7")]
+		[FieldOffset(Offset = "0x10")]
+		public AudioClip clip;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40047D8")]
+		[FieldOffset(Offset = "0x18")]
+		public AssetReference clipAssetReference;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40047D9")]
+		[FieldOffset(Offset = "0x20")]
+		public string id;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40047DA")]
+		[FieldOffset(Offset = "0x28")]
+		public string filename;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40047DB")]
+		[FieldOffset(Offset = "0x30")]
+		public AsyncOperationHandle<AudioClip> asyncOperationHandle;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x6003E56")]
+		[Address(RVA = "0x1806528", Offset = "0x1806528", VA = "0x1806528")]
+		public AudioclipInfo()
+		{
+		}
+	}
 
-	3. Assembly Reconstruction has not been implemented.
+	[Serializable]
+	[Token(Token = "0x2000D35")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x447B0", Offset = "0x447B0")]
+	private sealed class _003C_003Ec
+	{
+		[Token(Token = "0x40047DC")]
+		[FieldOffset(Offset = "0x0")]
+		public static readonly _003C_003Ec _003C_003E9;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x40047DD")]
+		[FieldOffset(Offset = "0x8")]
+		public static Func<MusicClip, double> _003C_003E9__22_0;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x6003E58")]
+		[Address(RVA = "0x1806504", Offset = "0x1806504", VA = "0x1806504")]
+		public _003C_003Ec()
+		{
+		}
 
-	4. This script is unnecessary.
+		[Token(Token = "0x6003E59")]
+		[Address(RVA = "0x180650C", Offset = "0x180650C", VA = "0x180650C")]
+		internal double _003CGetLength_003Eb__22_0(MusicClip c)
+		{
+			return default;
+		}
+	}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x40047C5")]
+	[FieldOffset(Offset = "0x18")]
+	public PurpleMusicTrack data;
 
-	5. Script Content Level 0
+	[Token(Token = "0x40047C6")]
+	[FieldOffset(Offset = "0x20")]
+	public FluffyMusicTrack dataOther;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x40047C7")]
+	[FieldOffset(Offset = "0x28")]
+	public WwiseDocumentInteractiveMusicWorkUnitChildrenListMusicSwitchContainerChildrenListMusicPlaylistContainerChildrenListMusicSegmentMusicTrack updateData;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x40047C8")]
+	[FieldOffset(Offset = "0x30")]
+	public List<AudioclipInfo> files;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x40047C9")]
+	[FieldOffset(Offset = "0x38")]
+	public float volume;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x40047CA")]
+	[FieldOffset(Offset = "0x3C")]
+	public bool hasRTPCurve;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x40047CB")]
+	[FieldOffset(Offset = "0x40")]
+	public string rtpcName;
 
-	*/
+	[Token(Token = "0x40047CC")]
+	[FieldOffset(Offset = "0x48")]
+	public string rtpcRef;
+
+	[Token(Token = "0x40047CD")]
+	[FieldOffset(Offset = "0x50")]
+	public AnimationCurve rtpcDataCurve;
+
+	[Token(Token = "0x40047CE")]
+	[FieldOffset(Offset = "0x58")]
+	public Dictionary<string, int> clipCounter;
+
+	[Token(Token = "0x40047CF")]
+	[FieldOffset(Offset = "0x60")]
+	public bool overrideTempo;
+
+	[Token(Token = "0x40047D0")]
+	[FieldOffset(Offset = "0x68")]
+	public double tempo;
+
+	[Token(Token = "0x40047D1")]
+	[FieldOffset(Offset = "0x70")]
+	public double playAt;
+
+	[Token(Token = "0x40047D2")]
+	[FieldOffset(Offset = "0x78")]
+	public double currentTime;
+
+	[Token(Token = "0x40047D3")]
+	[FieldOffset(Offset = "0x80")]
+	public List<MusicClip> clips;
+
+	[Token(Token = "0x40047D4")]
+	[FieldOffset(Offset = "0x88")]
+	public float rtpcValue;
+
+	[Token(Token = "0x40047D5")]
+	[FieldOffset(Offset = "0x8C")]
+	public float currentVolume;
+
+	[Token(Token = "0x40047D6")]
+	[FieldOffset(Offset = "0x90")]
+	public float unityVolume;
+
+	[Token(Token = "0x6003E50")]
+	[Address(RVA = "0x1589578", Offset = "0x1589578", VA = "0x1589578")]
+	public bool IsPlaying()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6003E51")]
+	[Address(RVA = "0x1588A3C", Offset = "0x1588A3C", VA = "0x1588A3C")]
+	public void UpdatePlaying(float parentVolume, float parentFadeVolume)
+	{
+	}
+
+	[Token(Token = "0x6003E52")]
+	[Address(RVA = "0x1589220", Offset = "0x1589220", VA = "0x1589220")]
+	public void Stop()
+	{
+	}
+
+	[Token(Token = "0x6003E53")]
+	[Address(RVA = "0x15896D8", Offset = "0x15896D8", VA = "0x15896D8")]
+	public double GetLength()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6003E54")]
+	[Address(RVA = "0x1588F80", Offset = "0x1588F80", VA = "0x1588F80")]
+	public void Play(MusicSegment.PlayInfo info)
+	{
+	}
+
+	[Token(Token = "0x6003E55")]
+	[Address(RVA = "0x158980C", Offset = "0x158980C", VA = "0x158980C")]
+	public MusicTrack()
+	{
+	}
 }

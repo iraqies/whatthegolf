@@ -1,63 +1,141 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x20001E0")]
 public class Vehicle : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x40008D2")]
+	[FieldOffset(Offset = "0x18")]
+	public bool controllable;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x40008D3")]
+	[FieldOffset(Offset = "0x20")]
+	public Transform vehicleModel;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x40008D4")]
+	[FieldOffset(Offset = "0x28")]
+	public Rigidbody sphere;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x40008D5")]
+	[FieldOffset(Offset = "0x30")]
+	public ParticleSystem smoke;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x40008D6")]
+	[FieldOffset(Offset = "0x38")]
+	public Transform body;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x40008D7")]
+	[FieldOffset(Offset = "0x40")]
+	[Attribute(Name = "RangeAttribute", RVA = "0x4A47C", Offset = "0x4A47C")]
+	public float acceleration;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x40008D8")]
+	[FieldOffset(Offset = "0x44")]
+	[Attribute(Name = "RangeAttribute", RVA = "0x4A498", Offset = "0x4A498")]
+	public float steering;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x40008D9")]
+	[FieldOffset(Offset = "0x48")]
+	[Attribute(Name = "RangeAttribute", RVA = "0x4A4B4", Offset = "0x4A4B4")]
+	public float jumpForce;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x40008DA")]
+	[FieldOffset(Offset = "0x4C")]
+	[Attribute(Name = "RangeAttribute", RVA = "0x4A4D4", Offset = "0x4A4D4")]
+	public float gravity;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x40008DB")]
+	[FieldOffset(Offset = "0x50")]
+	[Attribute(Name = "RangeAttribute", RVA = "0x4A4EC", Offset = "0x4A4EC")]
+	public float drift;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x40008DC")]
+	[FieldOffset(Offset = "0x58")]
+	private Transform container;
 
-	5. Script Content Level 0
+	[Token(Token = "0x40008DD")]
+	[FieldOffset(Offset = "0x60")]
+	private Transform wheelFrontLeft;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x40008DE")]
+	[FieldOffset(Offset = "0x68")]
+	private Transform wheelFrontRight;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x40008DF")]
+	[FieldOffset(Offset = "0x70")]
+	private TrailRenderer trailLeft;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x40008E0")]
+	[FieldOffset(Offset = "0x78")]
+	private TrailRenderer trailRight;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x40008E1")]
+	[FieldOffset(Offset = "0x80")]
+	private float speed;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x40008E2")]
+	[FieldOffset(Offset = "0x84")]
+	private float speedTarget;
 
-	*/
+	[Token(Token = "0x40008E3")]
+	[FieldOffset(Offset = "0x88")]
+	private float rotate;
+
+	[Token(Token = "0x40008E4")]
+	[FieldOffset(Offset = "0x8C")]
+	private float rotateTarget;
+
+	[Token(Token = "0x40008E5")]
+	[FieldOffset(Offset = "0x90")]
+	private bool nearGround;
+
+	[Token(Token = "0x40008E6")]
+	[FieldOffset(Offset = "0x91")]
+	private bool onGround;
+
+	[Token(Token = "0x40008E7")]
+	[FieldOffset(Offset = "0x94")]
+	private Vector3 containerBase;
+
+	[Token(Token = "0x6000861")]
+	[Address(RVA = "0x1748A8C", Offset = "0x1748A8C", VA = "0x1748A8C")]
+	private void Awake()
+	{
+	}
+
+	[Token(Token = "0x6000862")]
+	[Address(RVA = "0x1748AD8", Offset = "0x1748AD8", VA = "0x1748AD8")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x6000863")]
+	[Address(RVA = "0x17490CC", Offset = "0x17490CC", VA = "0x17490CC")]
+	private void FixedUpdate()
+	{
+	}
+
+	[Token(Token = "0x6000864")]
+	[Address(RVA = "0x1749414", Offset = "0x1749414", VA = "0x1749414")]
+	public void ControlAccelerate()
+	{
+	}
+
+	[Token(Token = "0x6000865")]
+	[Address(RVA = "0x174942C", Offset = "0x174942C", VA = "0x174942C")]
+	public void ControlSteer(int direction)
+	{
+	}
+
+	[Token(Token = "0x6000866")]
+	[Address(RVA = "0x174944C", Offset = "0x174944C", VA = "0x174944C")]
+	public void SetPosition(Vector3 position, Quaternion rotation)
+	{
+	}
+
+	[Token(Token = "0x6000867")]
+	[Address(RVA = "0x1749530", Offset = "0x1749530", VA = "0x1749530")]
+	public Vehicle()
+	{
+	}
 }

@@ -1,63 +1,71 @@
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x20006F7")]
 public class GolfTarget : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x20006F8")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x41200", Offset = "0x41200")]
+	private sealed class _003C_003Ec__DisplayClass4_0
+	{
+		[Token(Token = "0x4002493")]
+		[FieldOffset(Offset = "0x10")]
+		public Vector3 startScale;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4002494")]
+		[FieldOffset(Offset = "0x1C")]
+		public Vector3 endScale;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4002495")]
+		[FieldOffset(Offset = "0x28")]
+		public GolfTarget _003C_003E4__this;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x6002029")]
+		[Address(RVA = "0x17B6004", Offset = "0x17B6004", VA = "0x17B6004")]
+		public _003C_003Ec__DisplayClass4_0()
+		{
+		}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x600202A")]
+		[Address(RVA = "0x17B600C", Offset = "0x17B600C", VA = "0x17B600C")]
+		internal void _003COnCollisionEnter_003Eb__0(float t)
+		{
+		}
+	}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x400248F")]
+	[FieldOffset(Offset = "0x18")]
+	public List<AudioClip> HitClips;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4002490")]
+	[FieldOffset(Offset = "0x20")]
+	public bool isCompleted;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4002491")]
+	[FieldOffset(Offset = "0x24")]
+	public LayerMask AcceptedLayers;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4002492")]
+	[FieldOffset(Offset = "0x28")]
+	public IncrementLevelMusicRTPC IncrementRTPC;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x6002026")]
+	[Address(RVA = "0x14A4728", Offset = "0x14A4728", VA = "0x14A4728")]
+	private void OnCollisionEnter(Collision collision)
+	{
+	}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x6002027")]
+	[Address(RVA = "0x14A495C", Offset = "0x14A495C", VA = "0x14A495C")]
+	public GolfTarget()
+	{
+	}
 
-	5. Script Content Level 0
-
-		AssetRipper was set to not load any script information.
-
-	6. Cpp2IL failed to decompile Il2Cpp data
-
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x6002028")]
+	[Address(RVA = "0x14A4964", Offset = "0x14A4964", VA = "0x14A4964")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x658C8", Offset = "0x658C8")]
+	private void _003COnCollisionEnter_003Eb__4_1()
+	{
+	}
 }

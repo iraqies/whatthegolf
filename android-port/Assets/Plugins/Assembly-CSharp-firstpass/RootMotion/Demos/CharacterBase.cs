@@ -1,66 +1,133 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace RootMotion.Demos
 {
-	public class CharacterBase : MonoBehaviour
+	[Token(Token = "0x200024F")]
+	[Attribute(Name = "RequireComponent", RVA = "0x34054", Offset = "0x34054")]
+	[Attribute(Name = "RequireComponent", RVA = "0x34054", Offset = "0x34054")]
+	public abstract class CharacterBase : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4000F05")]
+		[FieldOffset(Offset = "0x18")]
+		public Transform gravityTarget;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000F06")]
+		[FieldOffset(Offset = "0x20")]
+		public float gravityMultiplier;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000F07")]
+		[FieldOffset(Offset = "0x24")]
+		public float airborneThreshold;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4000F08")]
+		[FieldOffset(Offset = "0x28")]
+		public float slopeStartAngle;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4000F09")]
+		[FieldOffset(Offset = "0x2C")]
+		public float slopeEndAngle;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000F0A")]
+		[FieldOffset(Offset = "0x30")]
+		public float spherecastRadius;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4000F0B")]
+		[FieldOffset(Offset = "0x34")]
+		public LayerMask groundLayers;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4000F0C")]
+		[FieldOffset(Offset = "0x38")]
+		private PhysicMaterial zeroFrictionMaterial;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4000F0D")]
+		[FieldOffset(Offset = "0x40")]
+		private PhysicMaterial highFrictionMaterial;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4000F0E")]
+		[FieldOffset(Offset = "0x48")]
+		protected Rigidbody r;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4000F0F")]
+		protected const float half = 0.5f;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4000F10")]
+		[FieldOffset(Offset = "0x50")]
+		protected float originalHeight;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4000F11")]
+		[FieldOffset(Offset = "0x54")]
+		protected Vector3 originalCenter;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x4000F12")]
+		[FieldOffset(Offset = "0x60")]
+		protected CapsuleCollider capsule;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x6000F46")]
+		public abstract void Move(Vector3 deltaPosition, Quaternion deltaRotation);
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x6000F47")]
+		[Address(RVA = "0x135C6F0", Offset = "0x135C6F0", VA = "0x135C6F0")]
+		protected Vector3 GetGravity()
+		{
+			return default;
+		}
 
-		*/
+		[Token(Token = "0x6000F48")]
+		[Address(RVA = "0x135C830", Offset = "0x135C830", VA = "0x135C830", Slot = "5")]
+		protected virtual void Start()
+		{
+		}
+
+		[Token(Token = "0x6000F49")]
+		[Address(RVA = "0x135C9E4", Offset = "0x135C9E4", VA = "0x135C9E4", Slot = "6")]
+		protected virtual RaycastHit GetSpherecastHit()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000F4A")]
+		[Address(RVA = "0x135CB88", Offset = "0x135CB88", VA = "0x135CB88")]
+		public float GetAngleFromForward(Vector3 worldDirection)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000F4B")]
+		[Address(RVA = "0x135CBF0", Offset = "0x135CBF0", VA = "0x135CBF0")]
+		protected void RigidbodyRotateAround(Vector3 point, Vector3 axis, float angle)
+		{
+		}
+
+		[Token(Token = "0x6000F4C")]
+		[Address(RVA = "0x135CD10", Offset = "0x135CD10", VA = "0x135CD10")]
+		protected void ScaleCapsule(float mlp)
+		{
+		}
+
+		[Token(Token = "0x6000F4D")]
+		[Address(RVA = "0x135CE34", Offset = "0x135CE34", VA = "0x135CE34")]
+		protected void HighFriction()
+		{
+		}
+
+		[Token(Token = "0x6000F4E")]
+		[Address(RVA = "0x135CE58", Offset = "0x135CE58", VA = "0x135CE58")]
+		protected void ZeroFriction()
+		{
+		}
+
+		[Token(Token = "0x6000F4F")]
+		[Address(RVA = "0x135CE7C", Offset = "0x135CE7C", VA = "0x135CE7C")]
+		protected float GetSlopeDamper(Vector3 velocity, Vector3 groundNormal)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000F50")]
+		[Address(RVA = "0x135CEDC", Offset = "0x135CEDC", VA = "0x135CEDC")]
+		protected CharacterBase()
+		{
+		}
 	}
 }

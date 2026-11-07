@@ -1,66 +1,73 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Audio
 {
+	[Token(Token = "0x20013C5")]
 	public class TrafficCarAudio : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4006A53")]
+		[FieldOffset(Offset = "0x18")]
+		public CarAgent carAgent;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4006A54")]
+		[FieldOffset(Offset = "0x20")]
+		public RandomAudioClips clipOnSpeedUp;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4006A55")]
+		[FieldOffset(Offset = "0x28")]
+		public RandomAudioClips clipsOnFallingOffSide;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4006A56")]
+		[FieldOffset(Offset = "0x30")]
+		public AudioSource audioSource;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4006A57")]
+		[FieldOffset(Offset = "0x38")]
+		private bool isInitialSpawn;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4006A58")]
+		[FieldOffset(Offset = "0x40")]
+		private TrafficController trafficController;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4006A59")]
+		[FieldOffset(Offset = "0x48")]
+		private bool hasCarFallen;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6005C41")]
+		[Address(RVA = "0x172105C", Offset = "0x172105C", VA = "0x172105C")]
+		private void Awake()
+		{
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x6005C42")]
+		[Address(RVA = "0x1721250", Offset = "0x1721250", VA = "0x1721250")]
+		private void OnEnable()
+		{
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6005C43")]
+		[Address(RVA = "0x1721460", Offset = "0x1721460", VA = "0x1721460")]
+		private void CarAgent_OnCarSpeeding()
+		{
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x6005C44")]
+		[Address(RVA = "0x1721508", Offset = "0x1721508", VA = "0x1721508")]
+		private void CarAgent__OnCarFallingOffSide()
+		{
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x6005C45")]
+		[Address(RVA = "0x1721560", Offset = "0x1721560", VA = "0x1721560")]
+		private void CarAgent_onOutOfBounds()
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
-
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x6005C46")]
+		[Address(RVA = "0x1721594", Offset = "0x1721594", VA = "0x1721594")]
+		public TrafficCarAudio()
+		{
+		}
 	}
 }

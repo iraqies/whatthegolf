@@ -1,63 +1,175 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using CameraStack;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x20005AE")]
 public class MiniGolfCourseSwitchGoal : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x20005AF")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x407F0", Offset = "0x407F0")]
+	private sealed class _003C_003Ec__DisplayClass9_0
+	{
+		[Token(Token = "0x4001CFD")]
+		[FieldOffset(Offset = "0x10")]
+		public MiniGolfCourseSwitchGoal _003C_003E4__this;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4001CFE")]
+		[FieldOffset(Offset = "0x18")]
+		public Vector3 s;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x60019D2")]
+		[Address(RVA = "0x17F72A0", Offset = "0x17F72A0", VA = "0x17F72A0")]
+		public _003C_003Ec__DisplayClass9_0()
+		{
+		}
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x60019D3")]
+		[Address(RVA = "0x17F72A8", Offset = "0x17F72A8", VA = "0x17F72A8")]
+		internal void _003CWaitForGoal_003Eb__0(float t)
+		{
+		}
+	}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x20005B0")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x40800", Offset = "0x40800")]
+	private sealed class _003CWaitForGoal_003Ed__9 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x4001CFF")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4001D00")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4001D01")]
+		[FieldOffset(Offset = "0x20")]
+		public MiniGolfCourseSwitchGoal _003C_003E4__this;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x170002CE")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x60019D7")]
+			[Address(RVA = "0x17F767C", Offset = "0x17F767C", VA = "0x17F767C", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x170002CF")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x60019D9")]
+			[Address(RVA = "0x17F76C4", Offset = "0x17F76C4", VA = "0x17F76C4", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
 
-	4. This script is unnecessary.
+		[Token(Token = "0x60019D4")]
+		[Address(RVA = "0x17F7380", Offset = "0x17F7380", VA = "0x17F7380")]
+		[DebuggerHidden]
+		public _003CWaitForGoal_003Ed__9(int _003C_003E1__state)
+		{
+		}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x60019D5")]
+		[Address(RVA = "0x17F73AC", Offset = "0x17F73AC", VA = "0x17F73AC", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
 
-	5. Script Content Level 0
+		[Token(Token = "0x60019D6")]
+		[Address(RVA = "0x17F73B0", Offset = "0x17F73B0", VA = "0x17F73B0", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
 
-		AssetRipper was set to not load any script information.
+		[Token(Token = "0x60019D7")]
+		[Address(RVA = "0x17F767C", Offset = "0x17F767C", VA = "0x17F767C", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x60019D8")]
+		[Address(RVA = "0x17F7684", Offset = "0x17F7684", VA = "0x17F7684", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x60019D9")]
+		[Address(RVA = "0x17F76C4", Offset = "0x17F76C4", VA = "0x17F76C4", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4001CF6")]
+	[FieldOffset(Offset = "0x18")]
+	public float Delay;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x4001CF7")]
+	[FieldOffset(Offset = "0x20")]
+	public string HitText;
 
-	*/
+	[Token(Token = "0x4001CF8")]
+	[FieldOffset(Offset = "0x28")]
+	public Transform NextHolePosition;
+
+	[Token(Token = "0x4001CF9")]
+	[FieldOffset(Offset = "0x30")]
+	public GolfBallController Controller;
+
+	[Token(Token = "0x4001CFA")]
+	[FieldOffset(Offset = "0x38")]
+	private Transform cameraFollow;
+
+	[Token(Token = "0x4001CFB")]
+	[FieldOffset(Offset = "0x40")]
+	private CBFollow follow;
+
+	[Token(Token = "0x4001CFC")]
+	[FieldOffset(Offset = "0x48")]
+	private bool transitionStarted;
+
+	[Token(Token = "0x60019CE")]
+	[Address(RVA = "0x15676AC", Offset = "0x15676AC", VA = "0x15676AC")]
+	private void Start()
+	{
+	}
+
+	[Token(Token = "0x60019CF")]
+	[Address(RVA = "0x156779C", Offset = "0x156779C", VA = "0x156779C")]
+	private void OnCollisionEnter(Collision other)
+	{
+	}
+
+	[Token(Token = "0x60019D0")]
+	[Address(RVA = "0x15678B4", Offset = "0x15678B4", VA = "0x15678B4")]
+	private IEnumerator WaitForGoal()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x60019D1")]
+	[Address(RVA = "0x1567928", Offset = "0x1567928", VA = "0x1567928")]
+	public MiniGolfCourseSwitchGoal()
+	{
+	}
 }

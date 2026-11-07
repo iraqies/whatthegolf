@@ -1,5 +1,7 @@
 {
   "name": "Triband.MountainGenerator.Runtime",
-  "references": [],
+  "references": [
+    "Il2CppDummyDll"
+  ],
   "allowUnsafeCode": true
 }

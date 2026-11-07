@@ -1,5 +1,7 @@
 {
   "name": "WTG.MountainBuilding",
-  "references": [],
+  "references": [
+    "Il2CppDummyDll"
+  ],
   "allowUnsafeCode": true
 }

@@ -1,66 +1,162 @@
-using UnityEngine;
+using System;
+using Il2CppDummyDll;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceLocations;
+using UnityEngine.ResourceManagement.Util;
 
 namespace UnityEngine.ResourceManagement.ResourceProviders
 {
-	public class ResourceProviderBase : MonoBehaviour
+	[Token(Token = "0x200005A")]
+	public abstract class ResourceProviderBase : IResourceProvider, IInitializableObject
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x200005B")]
+		private class BaseInitAsyncOp : AsyncOperationBase<bool>
+		{
+			[Token(Token = "0x40000E8")]
+			[FieldOffset(Offset = "0x98")]
+			private Func<bool> m_CallBack;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x6000210")]
+			[Address(RVA = "0x2A77D60", Offset = "0x2A77D60", VA = "0x2A77D60")]
+			public void Init(Func<bool> callback)
+			{
+			}
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x6000211")]
+			[Address(RVA = "0x2A77D68", Offset = "0x2A77D68", VA = "0x2A77D68", Slot = "33")]
+			protected override bool InvokeWaitForCompletion()
+			{
+				return default;
+			}
 
-		2. Incorrect dll files were provided to AssetRipper.
+			[Token(Token = "0x6000212")]
+			[Address(RVA = "0x2A77DDC", Offset = "0x2A77DDC", VA = "0x2A77DDC", Slot = "28")]
+			protected override void Execute()
+			{
+			}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+			[Token(Token = "0x6000213")]
+			[Address(RVA = "0x2A70988", Offset = "0x2A70988", VA = "0x2A70988")]
+			public BaseInitAsyncOp()
+			{
+			}
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x200005C")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x1B7C10", Offset = "0x1B7C10")]
+		private sealed class _003C_003Ec__DisplayClass10_0
+		{
+			[Token(Token = "0x40000E9")]
+			[FieldOffset(Offset = "0x10")]
+			public ResourceProviderBase _003C_003E4__this;
 
-		3. Assembly Reconstruction has not been implemented.
+			[Token(Token = "0x40000EA")]
+			[FieldOffset(Offset = "0x18")]
+			public string id;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+			[Token(Token = "0x40000EB")]
+			[FieldOffset(Offset = "0x20")]
+			public string data;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+			[Token(Token = "0x6000214")]
+			[Address(RVA = "0x2A70980", Offset = "0x2A70980", VA = "0x2A70980")]
+			public _003C_003Ec__DisplayClass10_0()
+			{
+			}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+			[Token(Token = "0x6000215")]
+			[Address(RVA = "0x2A77D34", Offset = "0x2A77D34", VA = "0x2A77D34")]
+			internal bool _003CInitializeAsync_003Eb__0()
+			{
+				return default;
+			}
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x40000E6")]
+		[FieldOffset(Offset = "0x10")]
+		protected string m_ProviderId;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x40000E7")]
+		[FieldOffset(Offset = "0x18")]
+		protected ProviderBehaviourFlags m_BehaviourFlags;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x17000057")]
+		public virtual string ProviderId
+		{
+			[Token(Token = "0x6000206")]
+			[Address(RVA = "0x2A70694", Offset = "0x2A70694", VA = "0x2A70694", Slot = "12")]
+			get
+			{
+				return null;
+			}
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x17000058")]
+		private ProviderBehaviourFlags UnityEngine_002EResourceManagement_002EResourceProviders_002EIResourceProvider_002EBehaviourFlags
+		{
+			[Token(Token = "0x600020E")]
+			[Address(RVA = "0x2A709E0", Offset = "0x2A709E0", VA = "0x2A709E0", Slot = "9")]
+			get
+			{
+				return UnityEngine_002EResourceManagement_002EResourceProviders_002EIResourceProvider_002Eget_BehaviourFlags();
+			}
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x6000207")]
+		[Address(RVA = "0x2A706EC", Offset = "0x2A706EC", VA = "0x2A706EC", Slot = "13")]
+		public virtual bool Initialize(string id, string data)
+		{
+			return default;
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x6000208")]
+		[Address(RVA = "0x2A70710", Offset = "0x2A70710", VA = "0x2A70710", Slot = "14")]
+		public virtual bool CanProvide(Type t, IResourceLocation location)
+		{
+			return default;
+		}
 
-		*/
+		[Token(Token = "0x6000209")]
+		[Address(RVA = "0x2A7075C", Offset = "0x2A7075C", VA = "0x2A7075C", Slot = "3")]
+		public override string ToString()
+		{
+			return null;
+		}
+
+		[Token(Token = "0x600020A")]
+		[Address(RVA = "0x2A70768", Offset = "0x2A70768", VA = "0x2A70768", Slot = "15")]
+		public virtual void Release(IResourceLocation location, object obj)
+		{
+		}
+
+		[Token(Token = "0x600020B")]
+		[Address(RVA = "0x2A7076C", Offset = "0x2A7076C", VA = "0x2A7076C", Slot = "16")]
+		public virtual Type GetDefaultType(IResourceLocation location)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x600020C")]
+		public abstract void Provide(ProvideHandle provideHandle);
+
+		[Token(Token = "0x600020D")]
+		[Address(RVA = "0x2A707F4", Offset = "0x2A707F4", VA = "0x2A707F4", Slot = "18")]
+		public virtual AsyncOperationHandle<bool> InitializeAsync(ResourceManager rm, string id, string data)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x600020E")]
+		[Address(RVA = "0x2A709E0", Offset = "0x2A709E0", VA = "0x2A709E0", Slot = "9")]
+		private ProviderBehaviourFlags UnityEngine_002EResourceManagement_002EResourceProviders_002EIResourceProvider_002Eget_BehaviourFlags()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x600020F")]
+		[Address(RVA = "0x2A5D29C", Offset = "0x2A5D29C", VA = "0x2A5D29C")]
+		protected ResourceProviderBase()
+		{
+		}
 	}
 }

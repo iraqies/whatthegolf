@@ -1,63 +1,107 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x20006FF")]
 public class FishLocation : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x40024B3")]
+	[FieldOffset(Offset = "0x0")]
+	public static int fishCaught;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x40024B4")]
+	[FieldOffset(Offset = "0x18")]
+	public float maxTime;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x40024B5")]
+	[FieldOffset(Offset = "0x1C")]
+	public float minTime;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x40024B6")]
+	[FieldOffset(Offset = "0x20")]
+	private float randomTime;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x40024B7")]
+	[FieldOffset(Offset = "0x24")]
+	private float timer;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x40024B8")]
+	[FieldOffset(Offset = "0x28")]
+	public GameObject flagFish;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x40024B9")]
+	[FieldOffset(Offset = "0x30")]
+	private GameObject flagFishClone;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x40024BA")]
+	[FieldOffset(Offset = "0x38")]
+	private Transform golfTransform;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x40024BB")]
+	[FieldOffset(Offset = "0x40")]
+	private bool caught;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x40024BC")]
+	[FieldOffset(Offset = "0x48")]
+	private ParticleSystem waves;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x40024BD")]
+	[FieldOffset(Offset = "0x50")]
+	private Vector3 waveScale;
 
-	5. Script Content Level 0
+	[Token(Token = "0x40024BE")]
+	[FieldOffset(Offset = "0x5C")]
+	private bool shark;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x40024BF")]
+	[FieldOffset(Offset = "0x60")]
+	private Vector3 accelInput;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x40024C0")]
+	[FieldOffset(Offset = "0x70")]
+	private Transform fisherTransform;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x40024C1")]
+	[FieldOffset(Offset = "0x78")]
+	public GameObject somethingElse;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x40024C2")]
+	[FieldOffset(Offset = "0x80")]
+	private GameObject something;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x6002049")]
+	[Address(RVA = "0x1467990", Offset = "0x1467990", VA = "0x1467990")]
+	[Attribute(Name = "RuntimeInitializeOnLoadMethodAttribute", RVA = "0x6590C", Offset = "0x6590C")]
+	private static void Init()
+	{
+	}
 
-	*/
+	[Token(Token = "0x600204A")]
+	[Address(RVA = "0x14679F4", Offset = "0x14679F4", VA = "0x14679F4")]
+	private void Start()
+	{
+	}
+
+	[Token(Token = "0x600204B")]
+	[Address(RVA = "0x1467B20", Offset = "0x1467B20", VA = "0x1467B20")]
+	private void OnTriggerStay(Collider other)
+	{
+	}
+
+	[Token(Token = "0x600204C")]
+	[Address(RVA = "0x14684D0", Offset = "0x14684D0", VA = "0x14684D0")]
+	private void OnTriggerExit(Collider other)
+	{
+	}
+
+	[Token(Token = "0x600204D")]
+	[Address(RVA = "0x1468604", Offset = "0x1468604", VA = "0x1468604")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x600204E")]
+	[Address(RVA = "0x146878C", Offset = "0x146878C", VA = "0x146878C")]
+	public FishLocation()
+	{
+	}
 }

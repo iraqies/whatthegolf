@@ -1,63 +1,80 @@
+using Audio;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x20007BE")]
 public class ChampagneBottle : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x40028EE")]
+	[FieldOffset(Offset = "0x18")]
+	public int BurstInterval;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x40028EF")]
+	[FieldOffset(Offset = "0x1C")]
+	public float Burstduration;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x40028F0")]
+	[FieldOffset(Offset = "0x20")]
+	public GolfBallController Controller;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x40028F1")]
+	[FieldOffset(Offset = "0x28")]
+	public RandomAudioClips BurstClip;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x40028F2")]
+	[FieldOffset(Offset = "0x30")]
+	public AudioEnvelopeSettings FlowEnvelope;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x40028F3")]
+	[FieldOffset(Offset = "0x38")]
+	public SimpleEnvelope simpleEnvelope;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x40028F4")]
+	[FieldOffset(Offset = "0x40")]
+	public AudioSource FlowSource;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x40028F5")]
+	[FieldOffset(Offset = "0x48")]
+	private ParticleSystem particles;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x40028F6")]
+	[FieldOffset(Offset = "0x50")]
+	private ConstantForce force;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x40028F7")]
+	[FieldOffset(Offset = "0x58")]
+	private int strokeCounter;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x40028F8")]
+	[FieldOffset(Offset = "0x5C")]
+	private bool hasBurst;
 
-	5. Script Content Level 0
+	[Token(Token = "0x40028F9")]
+	[FieldOffset(Offset = "0x60")]
+	private float burstTimer;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x6002370")]
+	[Address(RVA = "0x18959F4", Offset = "0x18959F4", VA = "0x18959F4")]
+	private void Start()
+	{
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x6002371")]
+	[Address(RVA = "0x1895B6C", Offset = "0x1895B6C", VA = "0x1895B6C")]
+	private void ControllerOnOnShoot(Vector3 vector3)
+	{
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x6002372")]
+	[Address(RVA = "0x1895D78", Offset = "0x1895D78", VA = "0x1895D78")]
+	private void Update()
+	{
+	}
 
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x6002373")]
+	[Address(RVA = "0x1895EC8", Offset = "0x1895EC8", VA = "0x1895EC8")]
+	public ChampagneBottle()
+	{
+	}
 }

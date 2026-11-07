@@ -1,63 +1,185 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Audio;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.Events;
 
+[Token(Token = "0x2000323")]
 public class Teleportable : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x2000324")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3EFC0", Offset = "0x3EFC0")]
+	private sealed class _003CTeleportCR_003Ed__12 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x4001173")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4001174")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4001175")]
+		[FieldOffset(Offset = "0x20")]
+		public Teleportable _003C_003E4__this;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4001176")]
+		[FieldOffset(Offset = "0x28")]
+		public TeleportHole connection;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4001177")]
+		[FieldOffset(Offset = "0x30")]
+		public Vector3 holeEscapeDir;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4001178")]
+		[FieldOffset(Offset = "0x3C")]
+		public float holeEscapeForce;
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4001179")]
+		[FieldOffset(Offset = "0x40")]
+		private Rigidbody _003Cr_003E5__2;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x170001B1")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x6000E78")]
+			[Address(RVA = "0x1861BAC", Offset = "0x1861BAC", VA = "0x1861BAC", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x170001B2")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x6000E7A")]
+			[Address(RVA = "0x1861BF4", Offset = "0x1861BF4", VA = "0x1861BF4", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
 
-	4. This script is unnecessary.
+		[Token(Token = "0x6000E75")]
+		[Address(RVA = "0x1861618", Offset = "0x1861618", VA = "0x1861618")]
+		[DebuggerHidden]
+		public _003CTeleportCR_003Ed__12(int _003C_003E1__state)
+		{
+		}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6000E76")]
+		[Address(RVA = "0x1861644", Offset = "0x1861644", VA = "0x1861644", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
 
-	5. Script Content Level 0
+		[Token(Token = "0x6000E77")]
+		[Address(RVA = "0x1861648", Offset = "0x1861648", VA = "0x1861648", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
 
-		AssetRipper was set to not load any script information.
+		[Token(Token = "0x6000E78")]
+		[Address(RVA = "0x1861BAC", Offset = "0x1861BAC", VA = "0x1861BAC", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x6000E79")]
+		[Address(RVA = "0x1861BB4", Offset = "0x1861BB4", VA = "0x1861BB4", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x6000E7A")]
+		[Address(RVA = "0x1861BF4", Offset = "0x1861BF4", VA = "0x1861BF4", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4001169")]
+	[FieldOffset(Offset = "0x18")]
+	[SerializeField]
+	private float force;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x400116A")]
+	[FieldOffset(Offset = "0x20")]
+	[SerializeField]
+	private Rigidbody rigid;
 
-	*/
+	[Token(Token = "0x400116B")]
+	[FieldOffset(Offset = "0x28")]
+	[SerializeField]
+	private Transform tail;
+
+	[Token(Token = "0x400116C")]
+	[FieldOffset(Offset = "0x30")]
+	[SerializeField]
+	private bool playSound;
+
+	[Token(Token = "0x400116D")]
+	[FieldOffset(Offset = "0x31")]
+	[SerializeField]
+	private bool rotateUp;
+
+	[Token(Token = "0x400116E")]
+	[FieldOffset(Offset = "0x34")]
+	[SerializeField]
+	private float afterTeleportEventTimer;
+
+	[Token(Token = "0x400116F")]
+	[FieldOffset(Offset = "0x38")]
+	[SerializeField]
+	private AudioClipSettings overrideClips;
+
+	[Token(Token = "0x4001170")]
+	[FieldOffset(Offset = "0x40")]
+	public UnityEvent OnTeleport;
+
+	[Token(Token = "0x4001171")]
+	[FieldOffset(Offset = "0x48")]
+	public UnityEvent OnDelayAfterTeleport;
+
+	[Token(Token = "0x4001172")]
+	[FieldOffset(Offset = "0x50")]
+	private float lastTeleportTime;
+
+	[Token(Token = "0x6000E71")]
+	[Address(RVA = "0x16F7F48", Offset = "0x16F7F48", VA = "0x16F7F48")]
+	private void Start()
+	{
+	}
+
+	[Token(Token = "0x6000E72")]
+	[Address(RVA = "0x16F7BA0", Offset = "0x16F7BA0", VA = "0x16F7BA0")]
+	public void Teleport(TeleportHole connection, Vector3 holeEscapeDir, float holeEscapeForce)
+	{
+	}
+
+	[Token(Token = "0x6000E73")]
+	[Address(RVA = "0x16F8058", Offset = "0x16F8058", VA = "0x16F8058")]
+	public IEnumerator TeleportCR(TeleportHole connection, Vector3 holeEscapeDir, float holeEscapeForce)
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6000E74")]
+	[Address(RVA = "0x16F80F8", Offset = "0x16F80F8", VA = "0x16F80F8")]
+	public Teleportable()
+	{
+	}
 }

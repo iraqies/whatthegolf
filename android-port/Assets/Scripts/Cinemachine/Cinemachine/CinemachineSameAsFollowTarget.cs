@@ -1,66 +1,52 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Cinemachine
 {
-	public class CinemachineSameAsFollowTarget : MonoBehaviour
+	[Token(Token = "0x200004E")]
+	public class CinemachineSameAsFollowTarget : CinemachineComponentBase
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x40001BB")]
+		[FieldOffset(Offset = "0x50")]
+		[Attribute(Name = "FormerlySerializedAsAttribute", RVA = "0x78DA0", Offset = "0x78DA0")]
+		public float m_Damping;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40001BC")]
+		[FieldOffset(Offset = "0x54")]
+		private Quaternion m_PreviousReferenceOrientation;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x17000061")]
+		public override bool IsValid
+		{
+			[Token(Token = "0x60001CA")]
+			[Address(RVA = "0x18FD8F4", Offset = "0x18FD8F4", VA = "0x18FD8F4", Slot = "4")]
+			get
+			{
+				return default;
+			}
+		}
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x17000062")]
+		public override CinemachineCore.Stage Stage
+		{
+			[Token(Token = "0x60001CB")]
+			[Address(RVA = "0x18FD98C", Offset = "0x18FD98C", VA = "0x18FD98C", Slot = "6")]
+			get
+			{
+				return default;
+			}
+		}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x60001CC")]
+		[Address(RVA = "0x18FD994", Offset = "0x18FD994", VA = "0x18FD994", Slot = "7")]
+		public override void MutateCameraState(ref CameraState curState, float deltaTime)
+		{
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
-
-		3. Assembly Reconstruction has not been implemented.
-
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
-
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
-
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
-
-		5. Script Content Level 0
-
-			AssetRipper was set to not load any script information.
-
-		6. Cpp2IL failed to decompile Il2Cpp data
-
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x60001CD")]
+		[Address(RVA = "0x18FDA64", Offset = "0x18FDA64", VA = "0x18FDA64")]
+		public CinemachineSameAsFollowTarget()
+		{
+		}
 	}
 }

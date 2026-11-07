@@ -1,63 +1,81 @@
+using Il2CppDummyDll;
+using PlayFab;
 using UnityEngine;
 
-public class PlayFabSharedSettings : MonoBehaviour
+[Token(Token = "0x20002BA")]
+public class PlayFabSharedSettings : ScriptableObject
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4000EBC")]
+	[FieldOffset(Offset = "0x18")]
+	public string TitleId;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4000EBD")]
+	[FieldOffset(Offset = "0x20")]
+	internal string VerticalName;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4000EBE")]
+	[FieldOffset(Offset = "0x28")]
+	public string ProductionEnvironmentUrl;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4000EBF")]
+	[FieldOffset(Offset = "0x30")]
+	public WebRequestType RequestType;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4000EC0")]
+	[FieldOffset(Offset = "0x38")]
+	public string AdvertisingIdType;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4000EC1")]
+	[FieldOffset(Offset = "0x40")]
+	public string AdvertisingIdValue;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4000EC2")]
+	[FieldOffset(Offset = "0x48")]
+	public bool DisableAdvertising;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4000EC3")]
+	[FieldOffset(Offset = "0x49")]
+	public bool DisableDeviceInfo;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4000EC4")]
+	[FieldOffset(Offset = "0x4A")]
+	public bool DisableFocusTimeCollection;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4000EC5")]
+	[FieldOffset(Offset = "0x4C")]
+	public int RequestTimeout;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4000EC6")]
+	[FieldOffset(Offset = "0x50")]
+	public bool RequestKeepAlive;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4000EC7")]
+	[FieldOffset(Offset = "0x51")]
+	public bool CompressApiData;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4000EC8")]
+	[FieldOffset(Offset = "0x54")]
+	public PlayFabLogLevel LogLevel;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4000EC9")]
+	[FieldOffset(Offset = "0x58")]
+	public string LoggerHost;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4000ECA")]
+	[FieldOffset(Offset = "0x60")]
+	public int LoggerPort;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4000ECB")]
+	[FieldOffset(Offset = "0x64")]
+	public bool EnableRealTimeLogging;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x4000ECC")]
+	[FieldOffset(Offset = "0x68")]
+	public int LogCapLimit;
 
-	*/
+	[Token(Token = "0x6000C86")]
+	[Address(RVA = "0x15F0A08", Offset = "0x15F0A08", VA = "0x15F0A08")]
+	public PlayFabSharedSettings()
+	{
+	}
 }

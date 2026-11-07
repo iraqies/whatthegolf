@@ -1,66 +1,87 @@
+using System.Runtime.InteropServices;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Apple.GameKit.AccessPoint
 {
-	public class GKAccessPointService : MonoBehaviour
+	[Token(Token = "0x2000014")]
+	public static class GKAccessPointService
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[PreserveSig]
+		[Token(Token = "0x6000026")]
+		[Address(RVA = "0x12E7B14", Offset = "0x12E7B14", VA = "0x12E7B14")]
+		private static extern void GameKitWrapper_AccessPoint_Show(GKAccessPointLocation location, bool showHighlights);
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x6000027")]
+		[Address(RVA = "0x12E7B18", Offset = "0x12E7B18", VA = "0x12E7B18")]
+		public static void Show(GKAccessPointLocation location, bool showHighlights = true)
+		{
+		}
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[PreserveSig]
+		[Token(Token = "0x6000028")]
+		[Address(RVA = "0x12E7B1C", Offset = "0x12E7B1C", VA = "0x12E7B1C")]
+		private static extern void GameKitWrapper_AccessPoint_Hide();
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x6000029")]
+		[Address(RVA = "0x12E7B20", Offset = "0x12E7B20", VA = "0x12E7B20")]
+		public static void Hide()
+		{
+		}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x600002A")]
+		[Address(RVA = "0x12E7B24", Offset = "0x12E7B24", VA = "0x12E7B24")]
+		public static bool IsVisible()
+		{
+			return default;
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[PreserveSig]
+		[Token(Token = "0x600002B")]
+		[Address(RVA = "0x12E7C14", Offset = "0x12E7C14", VA = "0x12E7C14")]
+		private static extern bool GameKitWrapper_AccessPoint_IsActive();
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x600002C")]
+		[Address(RVA = "0x12E7BF8", Offset = "0x12E7BF8", VA = "0x12E7BF8")]
+		public static bool IsActive()
+		{
+			return default;
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[PreserveSig]
+		[Token(Token = "0x600002D")]
+		[Address(RVA = "0x12E7C30", Offset = "0x12E7C30", VA = "0x12E7C30")]
+		private static extern bool GameKitWrapper_AccessPoint_IsPresentingGameCenter();
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x600002E")]
+		[Address(RVA = "0x12E7C4C", Offset = "0x12E7C4C", VA = "0x12E7C4C")]
+		public static bool IsPresentingGameCenter()
+		{
+			return default;
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[PreserveSig]
+		[Token(Token = "0x600002F")]
+		[Address(RVA = "0x12E7C68", Offset = "0x12E7C68", VA = "0x12E7C68")]
+		private static extern GKAccessPointFrameInScreenCoordinates GameKitWrapper_AccessPoint_GetFrameInScreenCoordinates();
 
-		5. Script Content Level 0
+		[Token(Token = "0x6000030")]
+		[Address(RVA = "0x12E7BC4", Offset = "0x12E7BC4", VA = "0x12E7BC4")]
+		public static Rect GetFrameInScreenCoordinates()
+		{
+			return default;
+		}
 
-			AssetRipper was set to not load any script information.
+		[PreserveSig]
+		[Token(Token = "0x6000031")]
+		[Address(RVA = "0x12E7C6C", Offset = "0x12E7C6C", VA = "0x12E7C6C")]
+		private static extern bool GameKitWrapper_AccessPoint_IsSupported();
 
-		6. Cpp2IL failed to decompile Il2Cpp data
-
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x6000032")]
+		[Address(RVA = "0x12E7BA8", Offset = "0x12E7BA8", VA = "0x12E7BA8")]
+		public static bool IsSupported()
+		{
+			return default;
+		}
 	}
 }

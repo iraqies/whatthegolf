@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: GOAL
   m_EditorClassIdentifier:
   Icons:
-  - {fileID: 21300000, guid: 068b838b2dcbbc042a8d4c0b0e66eb79, type: 2}
+  - {fileID: 21300000, guid: 3fce9dfb73756a945899e1e9d7fada8d, type: 2}

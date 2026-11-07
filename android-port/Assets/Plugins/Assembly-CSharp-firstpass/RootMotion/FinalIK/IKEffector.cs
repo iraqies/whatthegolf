@@ -1,66 +1,231 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace RootMotion.FinalIK
 {
-	public class IKEffector : MonoBehaviour
+	[Serializable]
+	[Token(Token = "0x2000165")]
+	public class IKEffector
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x40008D8")]
+		[FieldOffset(Offset = "0x10")]
+		public Transform bone;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40008D9")]
+		[FieldOffset(Offset = "0x18")]
+		public Transform target;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40008DA")]
+		[FieldOffset(Offset = "0x20")]
+		[AttributeAttribute(Name = "RangeAttribute", RVA = "0x35F68", Offset = "0x35F68")]
+		public float positionWeight;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40008DB")]
+		[FieldOffset(Offset = "0x24")]
+		[AttributeAttribute(Name = "RangeAttribute", RVA = "0x35F80", Offset = "0x35F80")]
+		public float rotationWeight;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40008DC")]
+		[FieldOffset(Offset = "0x28")]
+		public Vector3 position;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40008DD")]
+		[FieldOffset(Offset = "0x34")]
+		public Quaternion rotation;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x40008DE")]
+		[FieldOffset(Offset = "0x44")]
+		public Vector3 positionOffset;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x40008DF")]
+		[FieldOffset(Offset = "0x50")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x35F98", Offset = "0x35F98")]
+		private bool isEndEffector__BackingField;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x40008E0")]
+		[FieldOffset(Offset = "0x51")]
+		public bool effectChildNodes;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x40008E1")]
+		[FieldOffset(Offset = "0x54")]
+		[AttributeAttribute(Name = "RangeAttribute", RVA = "0x35FA8", Offset = "0x35FA8")]
+		public float maintainRelativePositionWeight;
 
-		5. Script Content Level 0
+		[Token(Token = "0x40008E2")]
+		[FieldOffset(Offset = "0x58")]
+		public Transform[] childBones;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x40008E3")]
+		[FieldOffset(Offset = "0x60")]
+		public Transform planeBone1;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x40008E4")]
+		[FieldOffset(Offset = "0x68")]
+		public Transform planeBone2;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x40008E5")]
+		[FieldOffset(Offset = "0x70")]
+		public Transform planeBone3;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x40008E6")]
+		[FieldOffset(Offset = "0x78")]
+		public Quaternion planeRotationOffset;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x40008E7")]
+		[FieldOffset(Offset = "0x88")]
+		private float posW;
 
-		*/
+		[Token(Token = "0x40008E8")]
+		[FieldOffset(Offset = "0x8C")]
+		private float rotW;
+
+		[Token(Token = "0x40008E9")]
+		[FieldOffset(Offset = "0x90")]
+		private Vector3[] localPositions;
+
+		[Token(Token = "0x40008EA")]
+		[FieldOffset(Offset = "0x98")]
+		private bool usePlaneNodes;
+
+		[Token(Token = "0x40008EB")]
+		[FieldOffset(Offset = "0x9C")]
+		private Quaternion animatedPlaneRotation;
+
+		[Token(Token = "0x40008EC")]
+		[FieldOffset(Offset = "0xAC")]
+		private Vector3 animatedPosition;
+
+		[Token(Token = "0x40008ED")]
+		[FieldOffset(Offset = "0xB8")]
+		private bool firstUpdate;
+
+		[Token(Token = "0x40008EE")]
+		[FieldOffset(Offset = "0xBC")]
+		private int chainIndex;
+
+		[Token(Token = "0x40008EF")]
+		[FieldOffset(Offset = "0xC0")]
+		private int nodeIndex;
+
+		[Token(Token = "0x40008F0")]
+		[FieldOffset(Offset = "0xC4")]
+		private int plane1ChainIndex;
+
+		[Token(Token = "0x40008F1")]
+		[FieldOffset(Offset = "0xC8")]
+		private int plane1NodeIndex;
+
+		[Token(Token = "0x40008F2")]
+		[FieldOffset(Offset = "0xCC")]
+		private int plane2ChainIndex;
+
+		[Token(Token = "0x40008F3")]
+		[FieldOffset(Offset = "0xD0")]
+		private int plane2NodeIndex;
+
+		[Token(Token = "0x40008F4")]
+		[FieldOffset(Offset = "0xD4")]
+		private int plane3ChainIndex;
+
+		[Token(Token = "0x40008F5")]
+		[FieldOffset(Offset = "0xD8")]
+		private int plane3NodeIndex;
+
+		[Token(Token = "0x40008F6")]
+		[FieldOffset(Offset = "0xE0")]
+		private int[] childChainIndexes;
+
+		[Token(Token = "0x40008F7")]
+		[FieldOffset(Offset = "0xE8")]
+		private int[] childNodeIndexes;
+
+		[Token(Token = "0x17000143")]
+		public bool isEndEffector
+		{
+			[Token(Token = "0x60009F5")]
+			[Address(RVA = "0x1386184", Offset = "0x1386184", VA = "0x1386184")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3A03C", Offset = "0x3A03C")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x60009F6")]
+			[Address(RVA = "0x138618C", Offset = "0x138618C", VA = "0x138618C")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3A04C", Offset = "0x3A04C")]
+			private set
+			{
+			}
+		}
+
+		[Token(Token = "0x60009F4")]
+		[Address(RVA = "0x138611C", Offset = "0x138611C", VA = "0x138611C")]
+		public IKSolver.Node GetNode(IKSolverFullBody solver)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x60009F7")]
+		[Address(RVA = "0x1386194", Offset = "0x1386194", VA = "0x1386194")]
+		public IKEffector()
+		{
+		}
+
+		[Token(Token = "0x60009F8")]
+		[Address(RVA = "0x13862B0", Offset = "0x13862B0", VA = "0x13862B0")]
+		public bool IsValid(IKSolver solver, ref string message)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60009F9")]
+		[Address(RVA = "0x13865F0", Offset = "0x13865F0", VA = "0x13865F0")]
+		public void Initiate(IKSolverFullBody solver)
+		{
+		}
+
+		[Token(Token = "0x60009FA")]
+		[Address(RVA = "0x1386890", Offset = "0x1386890", VA = "0x1386890")]
+		public void ResetOffset(IKSolverFullBody solver)
+		{
+		}
+
+		[Token(Token = "0x60009FB")]
+		[Address(RVA = "0x138695C", Offset = "0x138695C", VA = "0x138695C")]
+		public void SetToTarget()
+		{
+		}
+
+		[Token(Token = "0x60009FC")]
+		[Address(RVA = "0x1386A14", Offset = "0x1386A14", VA = "0x1386A14")]
+		public void OnPreSolve(IKSolverFullBody solver)
+		{
+		}
+
+		[Token(Token = "0x60009FD")]
+		[Address(RVA = "0x1386F3C", Offset = "0x1386F3C", VA = "0x1386F3C")]
+		public void OnPostWrite()
+		{
+		}
+
+		[Token(Token = "0x60009FE")]
+		[Address(RVA = "0x1386F68", Offset = "0x1386F68", VA = "0x1386F68")]
+		private Quaternion GetPlaneRotation(IKSolverFullBody solver)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60009FF")]
+		[Address(RVA = "0x13870C8", Offset = "0x13870C8", VA = "0x13870C8")]
+		public void Update(IKSolverFullBody solver)
+		{
+		}
+
+		[Token(Token = "0x6000A00")]
+		[Address(RVA = "0x1387350", Offset = "0x1387350", VA = "0x1387350")]
+		private Vector3 GetPosition(IKSolverFullBody solver, out Quaternion planeRotationOffset)
+		{
+			return default;
+		}
 	}
 }

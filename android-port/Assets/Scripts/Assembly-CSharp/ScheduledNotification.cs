@@ -1,63 +1,158 @@
-using UnityEngine;
+using System;
+using Il2CppDummyDll;
 
-public class ScheduledNotification : MonoBehaviour
+[Serializable]
+[Token(Token = "0x2000CB8")]
+public struct ScheduledNotification
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4004540")]
+	[FieldOffset(Offset = "0x0")]
+	private static DateTimeOffset DefaultDateTime;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4004541")]
+	[FieldOffset(Offset = "0x0")]
+	private string dateTime;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4004542")]
+	[FieldOffset(Offset = "0x8")]
+	private string id;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4004543")]
+	[FieldOffset(Offset = "0x10")]
+	private DateTimeOffset? parsedDateTime;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4004544")]
+	[FieldOffset(Offset = "0x28")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x512D4", Offset = "0x512D4")]
+	private bool IsValid__BackingField;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4004545")]
+	[FieldOffset(Offset = "0x10")]
+	public static readonly string[] Iso8601Formats;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x1700061A")]
+	public WTGNotification Notification
+	{
+		[Token(Token = "0x6003C0C")]
+		[Address(RVA = "0x167BCC0", Offset = "0x167BCC0", VA = "0x167BCC0")]
+		get
+		{
+			return default;
+		}
+	}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x1700061B")]
+	public bool IsValid
+	{
+		[Token(Token = "0x6003C0F")]
+		[Address(RVA = "0x167BFE0", Offset = "0x167BFE0", VA = "0x167BFE0")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x6B988", Offset = "0x6B988")]
+		get
+		{
+			return default;
+		}
+		[Token(Token = "0x6003C10")]
+		[Address(RVA = "0x167BFE8", Offset = "0x167BFE8", VA = "0x167BFE8")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x6B998", Offset = "0x6B998")]
+		private set
+		{
+		}
+	}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x1700061C")]
+	public DateTimeOffset DateTime
+	{
+		[Token(Token = "0x6003C11")]
+		[Address(RVA = "0x167BFF0", Offset = "0x167BFF0", VA = "0x167BFF0")]
+		get
+		{
+			return default;
+		}
+	}
 
-	4. This script is unnecessary.
+	[Token(Token = "0x1700061D")]
+	public string ID
+	{
+		[Token(Token = "0x6003C12")]
+		[Address(RVA = "0x167C0A8", Offset = "0x167C0A8", VA = "0x167C0A8")]
+		get
+		{
+			return null;
+		}
+	}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x1700061E")]
+	public string DateTimeText
+	{
+		[Token(Token = "0x6003C13")]
+		[Address(RVA = "0x167C0B0", Offset = "0x167C0B0", VA = "0x167C0B0")]
+		get
+		{
+			return null;
+		}
+	}
 
-	5. Script Content Level 0
+	[Token(Token = "0x1700061F")]
+	public string Identifier
+	{
+		[Token(Token = "0x6003C14")]
+		[Address(RVA = "0x167C0B8", Offset = "0x167C0B8", VA = "0x167C0B8")]
+		get
+		{
+			return null;
+		}
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x6003C0D")]
+	[Address(RVA = "0x167BCE4", Offset = "0x167BCE4", VA = "0x167BCE4")]
+	public ScheduledNotification(string id, string dateTime)
+	{
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x6003C0E")]
+	[Address(RVA = "0x167BEC4", Offset = "0x167BEC4", VA = "0x167BEC4")]
+	public ScheduledNotification(WTGNotification notification, DateTimeOffset dt)
+	{
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x6003C15")]
+	[Address(RVA = "0x167C208", Offset = "0x167C208", VA = "0x167C208", Slot = "3")]
+	public override string ToString()
+	{
+		return null;
+	}
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x6003C16")]
+	[Address(RVA = "0x167BCF8", Offset = "0x167BCF8", VA = "0x167BCF8")]
+	private void Initialize()
+	{
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x6003C17")]
+	[Address(RVA = "0x167C260", Offset = "0x167C260", VA = "0x167C260")]
+	public static bool TryParseNotification(string str, out ScheduledNotification notification)
+	{
+		return default;
+	}
 
-	*/
+	[Token(Token = "0x6003C18")]
+	[Address(RVA = "0x167C360", Offset = "0x167C360", VA = "0x167C360", Slot = "0")]
+	public override bool Equals(object other)
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6003C19")]
+	[Address(RVA = "0x167C414", Offset = "0x167C414", VA = "0x167C414")]
+	public bool Equals(ScheduledNotification p)
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6003C1A")]
+	[Address(RVA = "0x167C460", Offset = "0x167C460", VA = "0x167C460", Slot = "2")]
+	public override int GetHashCode()
+	{
+		return default;
+	}
 }

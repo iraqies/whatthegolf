@@ -1,66 +1,215 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace WhatTheGolf.LevelDesigner.GUI
 {
-	public class BaseGUI : MonoBehaviour
+	[Token(Token = "0x2001280")]
+	[AttributeAttribute(Name = "RequireComponent", RVA = "0x487CC", Offset = "0x487CC")]
+	public abstract class BaseGUI : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x2001281")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x48834", Offset = "0x48834")]
+		private sealed class _003CAnimate_003Ed__15 : IEnumerator<object>, IEnumerator, IDisposable
+		{
+			[Token(Token = "0x4006370")]
+			[Il2CppDummyDll.FieldOffset(Offset = "0x10")]
+			private int _003C_003E1__state;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x4006371")]
+			[Il2CppDummyDll.FieldOffset(Offset = "0x18")]
+			private object _003C_003E2__current;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x4006372")]
+			[Il2CppDummyDll.FieldOffset(Offset = "0x20")]
+			public float animDuration;
 
-		2. Incorrect dll files were provided to AssetRipper.
+			[Token(Token = "0x4006373")]
+			[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
+			public Func<float, float> easingMethod;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+			[Token(Token = "0x4006374")]
+			[Il2CppDummyDll.FieldOffset(Offset = "0x30")]
+			public BaseGUI _003C_003E4__this;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+			[Token(Token = "0x4006375")]
+			[Il2CppDummyDll.FieldOffset(Offset = "0x38")]
+			public RectTransform startTarget;
 
-		3. Assembly Reconstruction has not been implemented.
+			[Token(Token = "0x4006376")]
+			[Il2CppDummyDll.FieldOffset(Offset = "0x40")]
+			public RectTransform endTarget;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+			[Token(Token = "0x4006377")]
+			[Il2CppDummyDll.FieldOffset(Offset = "0x48")]
+			public Action onDone;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+			[Token(Token = "0x4006378")]
+			[Il2CppDummyDll.FieldOffset(Offset = "0x50")]
+			private float _003Ctime_003E5__2;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+			[Token(Token = "0x4006379")]
+			[Il2CppDummyDll.FieldOffset(Offset = "0x54")]
+			private float _003CendTime_003E5__3;
 
-		5. Script Content Level 0
+			[Token(Token = "0x400637A")]
+			[Il2CppDummyDll.FieldOffset(Offset = "0x58")]
+			private float _003CanimOffsetAbsolute_003E5__4;
 
-			AssetRipper was set to not load any script information.
+			[Token(Token = "0x170009C8")]
+			private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+			{
+				[Token(Token = "0x6005596")]
+				[Address(RVA = "0x1771708", Offset = "0x1771708", VA = "0x1771708", Slot = "4")]
+				[DebuggerHidden]
+				get
+				{
+					return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+				}
+			}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+			[Token(Token = "0x170009C9")]
+			private object System_002ECollections_002EIEnumerator_002ECurrent
+			{
+				[Token(Token = "0x6005598")]
+				[Address(RVA = "0x1771750", Offset = "0x1771750", VA = "0x1771750", Slot = "7")]
+				[DebuggerHidden]
+				get
+				{
+					return System_002ECollections_002EIEnumerator_002Eget_Current();
+				}
+			}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+			[Token(Token = "0x6005593")]
+			[Address(RVA = "0x1771518", Offset = "0x1771518", VA = "0x1771518")]
+			[DebuggerHidden]
+			public _003CAnimate_003Ed__15(int _003C_003E1__state)
+			{
+			}
 
-		7. An incorrect path was provided to AssetRipper.
+			[Token(Token = "0x6005594")]
+			[Address(RVA = "0x1771544", Offset = "0x1771544", VA = "0x1771544", Slot = "5")]
+			[DebuggerHidden]
+			private void System_002EIDisposable_002EDispose()
+			{
+			}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+			[Token(Token = "0x6005595")]
+			[Address(RVA = "0x1771548", Offset = "0x1771548", VA = "0x1771548", Slot = "6")]
+			private bool MoveNext()
+			{
+				return default;
+			}
 
-		*/
+			[Token(Token = "0x6005596")]
+			[Address(RVA = "0x1771708", Offset = "0x1771708", VA = "0x1771708", Slot = "4")]
+			[DebuggerHidden]
+			private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+			{
+				return null;
+			}
+
+			[Token(Token = "0x6005597")]
+			[Address(RVA = "0x1771710", Offset = "0x1771710", VA = "0x1771710", Slot = "8")]
+			[DebuggerHidden]
+			private void System_002ECollections_002EIEnumerator_002EReset()
+			{
+			}
+
+			[Token(Token = "0x6005598")]
+			[Address(RVA = "0x1771750", Offset = "0x1771750", VA = "0x1771750", Slot = "7")]
+			[DebuggerHidden]
+			private object System_002ECollections_002EIEnumerator_002Eget_Current()
+			{
+				return null;
+			}
+		}
+
+		[Token(Token = "0x400636A")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x18")]
+		[SerializeField]
+		private RectTransform inTarget;
+
+		[Token(Token = "0x400636B")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x20")]
+		[SerializeField]
+		private RectTransform outTarget;
+
+		[Token(Token = "0x400636C")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
+		[SerializeField]
+		private RectTransform container;
+
+		[Token(Token = "0x400636D")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x30")]
+		private Coroutine animCoroutine;
+
+		[Token(Token = "0x400636E")]
+		private const float animStartOffset = 0.3f;
+
+		[Token(Token = "0x400636F")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x38")]
+		private Canvas m_Canvas;
+
+		[Token(Token = "0x170009C5")]
+		public Canvas canvas
+		{
+			[Token(Token = "0x600558B")]
+			[Address(RVA = "0x1606E3C", Offset = "0x1606E3C", VA = "0x1606E3C")]
+			get
+			{
+				return null;
+			}
+		}
+
+		[Token(Token = "0x170009C6")]
+		public abstract bool isActiveOnOpen
+		{
+			[Token(Token = "0x600558C")]
+			get;
+		}
+
+		[Token(Token = "0x170009C7")]
+		public virtual bool hasFocus
+		{
+			[Token(Token = "0x600558D")]
+			[Address(RVA = "0x1606EE8", Offset = "0x1606EE8", VA = "0x1606EE8", Slot = "5")]
+			get
+			{
+				return default;
+			}
+		}
+
+		[Token(Token = "0x600558E")]
+		public abstract void Init();
+
+		[Token(Token = "0x600558F")]
+		[Address(RVA = "0x1606EF0", Offset = "0x1606EF0", VA = "0x1606EF0")]
+		protected void AnimateIn([Optional] Action onDone, float animDuration = 0.5f)
+		{
+		}
+
+		[Token(Token = "0x6005590")]
+		[Address(RVA = "0x16070D4", Offset = "0x16070D4", VA = "0x16070D4")]
+		protected void AnimateOut([Optional] Action onDone, float animDuration = 0.5f)
+		{
+		}
+
+		[Token(Token = "0x6005591")]
+		[Address(RVA = "0x1607028", Offset = "0x1607028", VA = "0x1607028")]
+		private IEnumerator Animate(RectTransform startTarget, RectTransform endTarget, float animDuration, Func<float, float> easingMethod, Action onDone)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6005592")]
+		[Address(RVA = "0x160720C", Offset = "0x160720C", VA = "0x160720C")]
+		protected BaseGUI()
+		{
+		}
 	}
 }

@@ -1,63 +1,208 @@
+using System.Collections.Generic;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
+[Token(Token = "0x20003E9")]
 public class IOSHapticsManager : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x20003EA")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x3F94C", Offset = "0x3F94C")]
+	private sealed class _003C_003Ec__DisplayClass8_0
+	{
+		[Token(Token = "0x4001567")]
+		[FieldOffset(Offset = "0x10")]
+		public IOSHapticsManager _003C_003E4__this;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4001568")]
+		[FieldOffset(Offset = "0x18")]
+		public OverworldBallManager ballManager;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x6001268")]
+		[Address(RVA = "0x17C175C", Offset = "0x17C175C", VA = "0x17C175C")]
+		public _003C_003Ec__DisplayClass8_0()
+		{
+		}
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x6001269")]
+		[Address(RVA = "0x17C1764", Offset = "0x17C1764", VA = "0x17C1764")]
+		internal void _003CAddEvents_003Eb__0(GolfBallController controller)
+		{
+		}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x600126A")]
+		[Address(RVA = "0x17C18BC", Offset = "0x17C18BC", VA = "0x17C18BC")]
+		internal void _003CAddEvents_003Eb__1(Transmogrif.BALLSHAPES b)
+		{
+		}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x600126B")]
+		[Address(RVA = "0x17C1A40", Offset = "0x17C1A40", VA = "0x17C1A40")]
+		internal void _003CAddEvents_003Eb__2(OverworldGoal g)
+		{
+		}
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x600126C")]
+		[Address(RVA = "0x17C1AF4", Offset = "0x17C1AF4", VA = "0x17C1AF4")]
+		internal void _003CAddEvents_003Eb__3(OverworldButton2D g)
+		{
+		}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x600126D")]
+		[Address(RVA = "0x17C1B94", Offset = "0x17C1B94", VA = "0x17C1B94")]
+		internal void _003CAddEvents_003Eb__4(Button g)
+		{
+		}
+	}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x20003EB")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x3F95C", Offset = "0x3F95C")]
+	private sealed class _003C_003Ec__DisplayClass9_0
+	{
+		[Token(Token = "0x4001569")]
+		[FieldOffset(Offset = "0x10")]
+		public IOSHapticsManager _003C_003E4__this;
 
-	4. This script is unnecessary.
+		[Token(Token = "0x400156A")]
+		[FieldOffset(Offset = "0x18")]
+		public OverworldBallManager ballManager;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x600126E")]
+		[Address(RVA = "0x17C1C34", Offset = "0x17C1C34", VA = "0x17C1C34")]
+		public _003C_003Ec__DisplayClass9_0()
+		{
+		}
 
-	5. Script Content Level 0
+		[Token(Token = "0x600126F")]
+		[Address(RVA = "0x17C1C3C", Offset = "0x17C1C3C", VA = "0x17C1C3C")]
+		internal void _003CRemoveEvents_003Eb__0(GolfBallController g)
+		{
+		}
 
-		AssetRipper was set to not load any script information.
+		[Token(Token = "0x6001270")]
+		[Address(RVA = "0x17C1D94", Offset = "0x17C1D94", VA = "0x17C1D94")]
+		internal void _003CRemoveEvents_003Eb__1(Transmogrif.BALLSHAPES b)
+		{
+		}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x6001271")]
+		[Address(RVA = "0x17C1F18", Offset = "0x17C1F18", VA = "0x17C1F18")]
+		internal void _003CRemoveEvents_003Eb__2(OverworldGoal g)
+		{
+		}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x6001272")]
+		[Address(RVA = "0x17C1FCC", Offset = "0x17C1FCC", VA = "0x17C1FCC")]
+		internal void _003CRemoveEvents_003Eb__3(OverworldButton2D g)
+		{
+		}
 
-	7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x6001273")]
+		[Address(RVA = "0x17C206C", Offset = "0x17C206C", VA = "0x17C206C")]
+		internal void _003CRemoveEvents_003Eb__4(Button g)
+		{
+		}
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x4001560")]
+	[FieldOffset(Offset = "0x18")]
+	private MobileVibrator mobileVibrator;
 
-	*/
+	[Token(Token = "0x4001561")]
+	[FieldOffset(Offset = "0x20")]
+	private List<GolfBallController> _golfBallControllers;
+
+	[Token(Token = "0x4001562")]
+	[FieldOffset(Offset = "0x28")]
+	private List<OverworldGoal> _overworldGoals;
+
+	[Token(Token = "0x4001563")]
+	[FieldOffset(Offset = "0x30")]
+	private List<OverworldButton2D> overworldButton2Ds;
+
+	[Token(Token = "0x4001564")]
+	[FieldOffset(Offset = "0x38")]
+	private List<Button> _buttons;
+
+	[Token(Token = "0x4001565")]
+	[FieldOffset(Offset = "0x40")]
+	private GolfGoal _golfGoal;
+
+	[Token(Token = "0x4001566")]
+	[FieldOffset(Offset = "0x48")]
+	private iOSHapticsContainer _container;
+
+	[Token(Token = "0x600125C")]
+	[Address(RVA = "0x14E15E4", Offset = "0x14E15E4", VA = "0x14E15E4")]
+	private void Start()
+	{
+	}
+
+	[Token(Token = "0x600125D")]
+	[Address(RVA = "0x14E1730", Offset = "0x14E1730", VA = "0x14E1730")]
+	private void AddEvents(Scene scene, LoadSceneMode mode)
+	{
+	}
+
+	[Token(Token = "0x600125E")]
+	[Address(RVA = "0x14E1F7C", Offset = "0x14E1F7C", VA = "0x14E1F7C")]
+	private void RemoveEvents()
+	{
+	}
+
+	[Token(Token = "0x600125F")]
+	[Address(RVA = "0x14E2468", Offset = "0x14E2468", VA = "0x14E2468")]
+	private void OnButtonClick()
+	{
+	}
+
+	[Token(Token = "0x6001260")]
+	[Address(RVA = "0x14E2488", Offset = "0x14E2488", VA = "0x14E2488")]
+	private void OnTransforgriffed(Transmogrif t)
+	{
+	}
+
+	[Token(Token = "0x6001261")]
+	[Address(RVA = "0x14E24A8", Offset = "0x14E24A8", VA = "0x14E24A8")]
+	private void OnOverworldGoalHit(OverworldGoal g, Vector3 v, OverworldBall2D ball)
+	{
+	}
+
+	[Token(Token = "0x6001262")]
+	[Address(RVA = "0x14E24C8", Offset = "0x14E24C8", VA = "0x14E24C8")]
+	private void OnGoalHit(string s)
+	{
+	}
+
+	[Token(Token = "0x6001263")]
+	[Address(RVA = "0x14E24E8", Offset = "0x14E24E8", VA = "0x14E24E8")]
+	private void OnAimStart()
+	{
+	}
+
+	[Token(Token = "0x6001264")]
+	[Address(RVA = "0x14E2508", Offset = "0x14E2508", VA = "0x14E2508")]
+	private void OnShootCanceled()
+	{
+	}
+
+	[Token(Token = "0x6001265")]
+	[Address(RVA = "0x14E2528", Offset = "0x14E2528", VA = "0x14E2528")]
+	private void OnShoot(Vector3 v)
+	{
+	}
+
+	[Token(Token = "0x6001266")]
+	[Address(RVA = "0x14E252C", Offset = "0x14E252C", VA = "0x14E252C")]
+	private void OnDoorOpen()
+	{
+	}
+
+	[Token(Token = "0x6001267")]
+	[Address(RVA = "0x14E254C", Offset = "0x14E254C", VA = "0x14E254C")]
+	public IOSHapticsManager()
+	{
+	}
 }

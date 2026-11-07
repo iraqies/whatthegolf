@@ -1,66 +1,170 @@
-using UnityEngine;
+using System;
+using System.Collections.Generic;
+using Il2CppDummyDll;
 
 namespace UnityEngine.ResourceManagement.ResourceLocations
 {
-	public class ResourceLocationBase : MonoBehaviour
+	[Token(Token = "0x2000065")]
+	public class ResourceLocationBase : IResourceLocation
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4000100")]
+		[FieldOffset(Offset = "0x10")]
+		private string m_Name;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000101")]
+		[FieldOffset(Offset = "0x18")]
+		private string m_Id;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000102")]
+		[FieldOffset(Offset = "0x20")]
+		private string m_ProviderId;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4000103")]
+		[FieldOffset(Offset = "0x28")]
+		private object m_Data;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4000104")]
+		[FieldOffset(Offset = "0x30")]
+		private int m_DependencyHashCode;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000105")]
+		[FieldOffset(Offset = "0x34")]
+		private int m_HashCode;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4000106")]
+		[FieldOffset(Offset = "0x38")]
+		private Type m_Type;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4000107")]
+		[FieldOffset(Offset = "0x40")]
+		private List<IResourceLocation> m_Dependencies;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4000108")]
+		[FieldOffset(Offset = "0x48")]
+		private string m_PrimaryKey;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x17000067")]
+		public string InternalId
+		{
+			[Token(Token = "0x600024D")]
+			[Address(RVA = "0x2A6B5F8", Offset = "0x2A6B5F8", VA = "0x2A6B5F8", Slot = "4")]
+			get
+			{
+				return null;
+			}
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x17000068")]
+		public string ProviderId
+		{
+			[Token(Token = "0x600024E")]
+			[Address(RVA = "0x2A6B600", Offset = "0x2A6B600", VA = "0x2A6B600", Slot = "5")]
+			get
+			{
+				return null;
+			}
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x17000069")]
+		public IList<IResourceLocation> Dependencies
+		{
+			[Token(Token = "0x600024F")]
+			[Address(RVA = "0x2A6B608", Offset = "0x2A6B608", VA = "0x2A6B608", Slot = "6")]
+			get
+			{
+				return null;
+			}
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x1700006A")]
+		public bool HasDependencies
+		{
+			[Token(Token = "0x6000250")]
+			[Address(RVA = "0x2A6B610", Offset = "0x2A6B610", VA = "0x2A6B610", Slot = "9")]
+			get
+			{
+				return default;
+			}
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x1700006B")]
+		public object Data
+		{
+			[Token(Token = "0x6000251")]
+			[Address(RVA = "0x2A6B668", Offset = "0x2A6B668", VA = "0x2A6B668", Slot = "10")]
+			get
+			{
+				return null;
+			}
+			[Token(Token = "0x6000252")]
+			[Address(RVA = "0x2A6B670", Offset = "0x2A6B670", VA = "0x2A6B670")]
+			set
+			{
+			}
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x1700006C")]
+		public string PrimaryKey
+		{
+			[Token(Token = "0x6000253")]
+			[Address(RVA = "0x2A6B678", Offset = "0x2A6B678", VA = "0x2A6B678", Slot = "11")]
+			get
+			{
+				return null;
+			}
+			[Token(Token = "0x6000254")]
+			[Address(RVA = "0x2A6B680", Offset = "0x2A6B680", VA = "0x2A6B680")]
+			set
+			{
+			}
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x1700006D")]
+		public int DependencyHashCode
+		{
+			[Token(Token = "0x6000255")]
+			[Address(RVA = "0x2A6B688", Offset = "0x2A6B688", VA = "0x2A6B688", Slot = "8")]
+			get
+			{
+				return default;
+			}
+		}
 
-		*/
+		[Token(Token = "0x1700006E")]
+		public Type ResourceType
+		{
+			[Token(Token = "0x6000256")]
+			[Address(RVA = "0x2A6B690", Offset = "0x2A6B690", VA = "0x2A6B690", Slot = "12")]
+			get
+			{
+				return null;
+			}
+		}
+
+		[Token(Token = "0x6000257")]
+		[Address(RVA = "0x2A6B698", Offset = "0x2A6B698", VA = "0x2A6B698", Slot = "7")]
+		public int Hash(Type t)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000258")]
+		[Address(RVA = "0x2A6B6E8", Offset = "0x2A6B6E8", VA = "0x2A6B6E8", Slot = "3")]
+		public override string ToString()
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6000259")]
+		[Address(RVA = "0x2A6B6F0", Offset = "0x2A6B6F0", VA = "0x2A6B6F0")]
+		public ResourceLocationBase(string name, string id, string providerId, Type t, params IResourceLocation[] dependencies)
+		{
+		}
+
+		[Token(Token = "0x600025A")]
+		[Address(RVA = "0x2A6B938", Offset = "0x2A6B938", VA = "0x2A6B938")]
+		public void ComputeDependencyHash()
+		{
+		}
 	}
 }

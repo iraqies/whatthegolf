@@ -1,66 +1,111 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Rewired.ComponentControls
 {
-	public class TouchController : MonoBehaviour
+	[Serializable]
+	[Token(Token = "0x20002DF")]
+	[DisallowMultipleComponent]
+	[AttributeAttribute(Name = "RequireComponent", RVA = "0x191B14", Offset = "0x191B14")]
+	public sealed class TouchController : CustomController
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4000F14")]
+		[FieldOffset(Offset = "0x58")]
+		[SerializeField]
+		private bool _disableMouseInputWhenEnabled;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000F15")]
+		[FieldOffset(Offset = "0x59")]
+		[SerializeField]
+		private bool _useCustomController;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[NonSerialized]
+		[Token(Token = "0x4000F16")]
+		[FieldOffset(Offset = "0x5A")]
+		private bool ZONfyvTwmuSbXEYCxPhYKNWDJIaE;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x170005CD")]
+		public bool disableMouseInputWhenEnabled
+		{
+			[Token(Token = "0x6001589")]
+			[Address(RVA = "0x2423824", Offset = "0x2423824", VA = "0x2423824")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x600158A")]
+			[Address(RVA = "0x242382C", Offset = "0x242382C", VA = "0x242382C")]
+			set
+			{
+			}
+		}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x170005CE")]
+		public bool useCustomController
+		{
+			[Token(Token = "0x600158B")]
+			[Address(RVA = "0x2423844", Offset = "0x2423844", VA = "0x2423844")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x600158C")]
+			[Address(RVA = "0x242384C", Offset = "0x242384C", VA = "0x242384C")]
+			set
+			{
+			}
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x600158D")]
+		[Address(RVA = "0x2423950", Offset = "0x2423950", VA = "0x2423950")]
+		private TouchController()
+		{
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x600158E")]
+		[Address(RVA = "0x2423960", Offset = "0x2423960", VA = "0x2423960", Slot = "9")]
+		internal override void OnDisable()
+		{
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x600158F")]
+		[Address(RVA = "0x2423B1C", Offset = "0x2423B1C", VA = "0x2423B1C", Slot = "12")]
+		internal override bool lpOPYPkfRAdylCMSLphTlIgUWIWy()
+		{
+			return default;
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x6001590")]
+		[Address(RVA = "0x2423C54", Offset = "0x2423C54", VA = "0x2423C54", Slot = "19")]
+		internal override bool GetUseCustomController()
+		{
+			return default;
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6001591")]
+		[Address(RVA = "0x2423C5C", Offset = "0x2423C5C", VA = "0x2423C5C", Slot = "20")]
+		internal override void SetUseCustomController(bool value)
+		{
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x6001592")]
+		[Address(RVA = "0x2423A40", Offset = "0x2423A40", VA = "0x2423A40")]
+		private void gbiGPNIAJVqgQnKFyeBCIIExwkrYA(bool P_0)
+		{
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x6001593")]
+		[Address(RVA = "0x2423840", Offset = "0x2423840", VA = "0x2423840")]
+		private void FyKKzlnIjsJaSimYwuqKSwNJHIHx()
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
-
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x6001594")]
+		[Address(RVA = "0x2423868", Offset = "0x2423868", VA = "0x2423868")]
+		private bool ajhXJbgnqLHNDTtpxLqCuAgGrnVb()
+		{
+			return default;
+		}
 	}
 }

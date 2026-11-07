@@ -1,63 +1,197 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Il2CppDummyDll;
 using UnityEngine;
 
-public class ScaleOnAim : MonoBehaviour
+[Token(Token = "0x2000EA4")]
+public class ScaleOnAim : BaseDailyPrizeInteractions
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x2000EA5")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x45198", Offset = "0x45198")]
+	private sealed class _003C_003Ec__DisplayClass12_0
+	{
+		[Token(Token = "0x4004F23")]
+		[FieldOffset(Offset = "0x10")]
+		public ScaleOnAim _003C_003E4__this;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4004F24")]
+		[FieldOffset(Offset = "0x18")]
+		public Vector3 currentScale;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x6004464")]
+		[Address(RVA = "0x183E3D0", Offset = "0x183E3D0", VA = "0x183E3D0")]
+		public _003C_003Ec__DisplayClass12_0()
+		{
+		}
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x6004465")]
+		[Address(RVA = "0x183E3D8", Offset = "0x183E3D8", VA = "0x183E3D8")]
+		internal void _003COnShoot_003Eb__0(float t)
+		{
+		}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x6004466")]
+		[Address(RVA = "0x183E494", Offset = "0x183E494", VA = "0x183E494")]
+		internal void _003COnShoot_003Eb__1(float t)
+		{
+		}
+	}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x2000EA6")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x451A8", Offset = "0x451A8")]
+	private sealed class _003COnShoot_003Ed__12 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x4004F25")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4004F26")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4004F27")]
+		[FieldOffset(Offset = "0x20")]
+		public ScaleOnAim _003C_003E4__this;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x4004F28")]
+		[FieldOffset(Offset = "0x28")]
+		private _003C_003Ec__DisplayClass12_0 _003C_003E8__1;
 
-	4. This script is unnecessary.
+		[Token(Token = "0x17000706")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x600446A")]
+			[Address(RVA = "0x183E80C", Offset = "0x183E80C", VA = "0x183E80C", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x17000707")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x600446C")]
+			[Address(RVA = "0x183E854", Offset = "0x183E854", VA = "0x183E854", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
 
-	5. Script Content Level 0
+		[Token(Token = "0x6004467")]
+		[Address(RVA = "0x183E54C", Offset = "0x183E54C", VA = "0x183E54C")]
+		[DebuggerHidden]
+		public _003COnShoot_003Ed__12(int _003C_003E1__state)
+		{
+		}
 
-		AssetRipper was set to not load any script information.
+		[Token(Token = "0x6004468")]
+		[Address(RVA = "0x183E578", Offset = "0x183E578", VA = "0x183E578", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x6004469")]
+		[Address(RVA = "0x183E57C", Offset = "0x183E57C", VA = "0x183E57C", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x600446A")]
+		[Address(RVA = "0x183E80C", Offset = "0x183E80C", VA = "0x183E80C", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
 
-	7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x600446B")]
+		[Address(RVA = "0x183E814", Offset = "0x183E814", VA = "0x183E814", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x600446C")]
+		[Address(RVA = "0x183E854", Offset = "0x183E854", VA = "0x183E854", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
 
-	*/
+	[Token(Token = "0x4004F1A")]
+	[FieldOffset(Offset = "0x28")]
+	public AnimationCurve OnAimCurve;
+
+	[Token(Token = "0x4004F1B")]
+	[FieldOffset(Offset = "0x30")]
+	public AnimationCurve OnShootCurve;
+
+	[Token(Token = "0x4004F1C")]
+	[FieldOffset(Offset = "0x38")]
+	public Vector3 TargetScaleOnAim;
+
+	[Token(Token = "0x4004F1D")]
+	[FieldOffset(Offset = "0x44")]
+	public Vector3 TargetScaleOnShoot;
+
+	[Token(Token = "0x4004F1E")]
+	[FieldOffset(Offset = "0x50")]
+	private Vector3 orginalScale;
+
+	[Token(Token = "0x4004F1F")]
+	[FieldOffset(Offset = "0x60")]
+	public GameObject Target;
+
+	[Token(Token = "0x4004F20")]
+	[FieldOffset(Offset = "0x68")]
+	public float shootTime;
+
+	[Token(Token = "0x4004F21")]
+	[FieldOffset(Offset = "0x6C")]
+	public float controllerCooldown;
+
+	[Token(Token = "0x4004F22")]
+	[FieldOffset(Offset = "0x70")]
+	private bool controllerCanShoot;
+
+	[Token(Token = "0x600445F")]
+	[Address(RVA = "0x167A568", Offset = "0x167A568", VA = "0x167A568")]
+	private void Start()
+	{
+	}
+
+	[Token(Token = "0x6004460")]
+	[Address(RVA = "0x167A5AC", Offset = "0x167A5AC", VA = "0x167A5AC", Slot = "8")]
+	public override void OnShootNotWrapped(Vector3 b)
+	{
+	}
+
+	[Token(Token = "0x6004461")]
+	[Address(RVA = "0x167A6FC", Offset = "0x167A6FC", VA = "0x167A6FC", Slot = "6")]
+	public override void OnAimNotWrapped(Vector3 b)
+	{
+	}
+
+	[Token(Token = "0x6004462")]
+	[Address(RVA = "0x167A688", Offset = "0x167A688", VA = "0x167A688")]
+	private IEnumerator OnShoot()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6004463")]
+	[Address(RVA = "0x167A86C", Offset = "0x167A86C", VA = "0x167A86C")]
+	public ScaleOnAim()
+	{
+	}
 }

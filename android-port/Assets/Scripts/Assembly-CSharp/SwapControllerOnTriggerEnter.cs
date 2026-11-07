@@ -1,63 +1,139 @@
+using System;
+using System.Collections.Generic;
+using Cinemachine;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x20002EC")]
 public class SwapControllerOnTriggerEnter : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Serializable]
+	[Token(Token = "0x20002ED")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3ED6C", Offset = "0x3ED6C")]
+	private sealed class _003C_003Ec
+	{
+		[Token(Token = "0x400102E")]
+		[FieldOffset(Offset = "0x0")]
+		public static readonly _003C_003Ec _003C_003E9;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x400102F")]
+		[FieldOffset(Offset = "0x8")]
+		public static Action<GameObject> _003C_003E9__13_0;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4001030")]
+		[FieldOffset(Offset = "0x10")]
+		public static Action<GameObject> _003C_003E9__14_0;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4001031")]
+		[FieldOffset(Offset = "0x18")]
+		public static Action<GameObject> _003C_003E9__14_1;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x6000D82")]
+		[Address(RVA = "0x185F23C", Offset = "0x185F23C", VA = "0x185F23C")]
+		public _003C_003Ec()
+		{
+		}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x6000D83")]
+		[Address(RVA = "0x185F244", Offset = "0x185F244", VA = "0x185F244")]
+		internal void _003CStart_003Eb__13_0(GameObject g)
+		{
+		}
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6000D84")]
+		[Address(RVA = "0x185F264", Offset = "0x185F264", VA = "0x185F264")]
+		internal void _003CEnableThisController_003Eb__14_0(GameObject g)
+		{
+		}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6000D85")]
+		[Address(RVA = "0x185F284", Offset = "0x185F284", VA = "0x185F284")]
+		internal void _003CEnableThisController_003Eb__14_1(GameObject g)
+		{
+		}
+	}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4001022")]
+	[FieldOffset(Offset = "0x18")]
+	[SerializeField]
+	private GameObject NewControllerGO;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4001023")]
+	[FieldOffset(Offset = "0x20")]
+	[SerializeField]
+	private GolfBallController NewController;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4001024")]
+	[FieldOffset(Offset = "0x28")]
+	[SerializeField]
+	private Transform NewCamFollow;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4001025")]
+	[FieldOffset(Offset = "0x30")]
+	[SerializeField]
+	private float NewDollySpeed;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4001026")]
+	[FieldOffset(Offset = "0x38")]
+	[SerializeField]
+	private ParticleSystem ParticleEffect;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4001027")]
+	[FieldOffset(Offset = "0x40")]
+	[SerializeField]
+	private DollyCartSpeedManager DollySpeedManager;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4001028")]
+	[FieldOffset(Offset = "0x48")]
+	[SerializeField]
+	private CinemachineVirtualCamera VCam;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4001029")]
+	[FieldOffset(Offset = "0x50")]
+	[SerializeField]
+	private CinemachineVirtualCamera NewVCam;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x400102A")]
+	[FieldOffset(Offset = "0x58")]
+	[SerializeField]
+	private bool DebugStartFromHere;
 
-	*/
+	[Token(Token = "0x400102B")]
+	[FieldOffset(Offset = "0x60")]
+	[SerializeField]
+	private List<GameObject> GameObjectsToActivate;
+
+	[Token(Token = "0x400102C")]
+	[FieldOffset(Offset = "0x68")]
+	[SerializeField]
+	private List<GameObject> GameObjectsToDeactivate;
+
+	[Token(Token = "0x400102D")]
+	[FieldOffset(Offset = "0x70")]
+	private bool HasSwapped;
+
+	[Token(Token = "0x6000D7D")]
+	[Address(RVA = "0x16EF584", Offset = "0x16EF584", VA = "0x16EF584")]
+	private void OnTriggerEnter(Collider other)
+	{
+	}
+
+	[Token(Token = "0x6000D7E")]
+	[Address(RVA = "0x16EF9D0", Offset = "0x16EF9D0", VA = "0x16EF9D0")]
+	private void Start()
+	{
+	}
+
+	[Token(Token = "0x6000D7F")]
+	[Address(RVA = "0x16EF6D4", Offset = "0x16EF6D4", VA = "0x16EF6D4")]
+	private void EnableThisController()
+	{
+	}
+
+	[Token(Token = "0x6000D80")]
+	[Address(RVA = "0x16EFC2C", Offset = "0x16EFC2C", VA = "0x16EFC2C")]
+	public SwapControllerOnTriggerEnter()
+	{
+	}
 }

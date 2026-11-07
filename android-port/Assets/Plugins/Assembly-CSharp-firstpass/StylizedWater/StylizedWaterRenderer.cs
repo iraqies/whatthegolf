@@ -1,66 +1,106 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace StylizedWater
 {
-	public class StylizedWaterRenderer : MonoBehaviour
+	[Token(Token = "0x20000CE")]
+	public class StylizedWaterRenderer : Object
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x20000CF")]
+		public class RendererSettings
+		{
+			[Token(Token = "0x4000457")]
+			[FieldOffset(Offset = "0x10")]
+			public LayerMask renderLayer;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x4000458")]
+			[FieldOffset(Offset = "0x14")]
+			public int renderTexureSize;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x6000548")]
+			[Address(RVA = "0x13563FC", Offset = "0x13563FC", VA = "0x13563FC")]
+			public RendererSettings()
+			{
+			}
+		}
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x400044E")]
+		[FieldOffset(Offset = "0x0")]
+		private static bool debug;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x400044F")]
+		[FieldOffset(Offset = "0x18")]
+		private RendererSettings settings;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000450")]
+		[FieldOffset(Offset = "0x20")]
+		private GameObject targetObject;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4000451")]
+		[FieldOffset(Offset = "0x28")]
+		private Vector3 targetSize;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4000452")]
+		[FieldOffset(Offset = "0x34")]
+		private Vector3 targetCenterPosition;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4000453")]
+		[FieldOffset(Offset = "0x40")]
+		private RenderTexture _rt;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4000454")]
+		private const int CLIP_PLANE_PADDING = 20;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4000455")]
+		[FieldOffset(Offset = "0x8")]
+		private static Material _intersectionMaskMat;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4000456")]
+		[FieldOffset(Offset = "0x10")]
+		private static Material _opacityMaskMat;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x170000CB")]
+		private RenderTexture rt
+		{
+			[Token(Token = "0x6000542")]
+			[Address(RVA = "0x1400F48", Offset = "0x1400F48", VA = "0x1400F48")]
+			get
+			{
+				return null;
+			}
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x6000543")]
+		[Address(RVA = "0x13FF404", Offset = "0x13FF404", VA = "0x13FF404")]
+		public void SetupMaskRenderer(RendererSettings settings, MeshRenderer r, out Camera renderCam, out Vector4 targetMeshInfo)
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x6000544")]
+		[Address(RVA = "0x140102C", Offset = "0x140102C", VA = "0x140102C")]
+		private Vector4 GetMeshInfo(MeshRenderer r)
+		{
+			return default;
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x6000545")]
+		[Address(RVA = "0x1401558", Offset = "0x1401558", VA = "0x1401558")]
+		private Camera SetupRenderCam()
+		{
+			return null;
+		}
 
-		*/
+		[Token(Token = "0x6000546")]
+		[Address(RVA = "0x14017D8", Offset = "0x14017D8", VA = "0x14017D8")]
+		private RenderTexture RenderCamToTexture(Camera renderCam)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6000547")]
+		[Address(RVA = "0x13FF388", Offset = "0x13FF388", VA = "0x13FF388")]
+		public StylizedWaterRenderer()
+		{
+		}
 	}
 }

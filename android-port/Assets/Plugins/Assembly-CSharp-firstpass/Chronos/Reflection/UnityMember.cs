@@ -1,66 +1,166 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Chronos.Reflection
 {
-	public class UnityMember : MonoBehaviour
+	[Serializable]
+	[Token(Token = "0x20002C3")]
+	public abstract class UnityMember
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x40011BE")]
+		[FieldOffset(Offset = "0x10")]
+		[SerializeField]
+		private UnityEngine.Object _target;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40011BF")]
+		[FieldOffset(Offset = "0x18")]
+		[SerializeField]
+		private string _component;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40011C0")]
+		[FieldOffset(Offset = "0x20")]
+		[SerializeField]
+		private string _name;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40011C1")]
+		[FieldOffset(Offset = "0x28")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x37580", Offset = "0x37580")]
+		private bool isTargeted__BackingField;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40011C2")]
+		[FieldOffset(Offset = "0x29")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x37590", Offset = "0x37590")]
+		private bool isReflected__BackingField;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40011C3")]
+		[FieldOffset(Offset = "0x30")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x375A0", Offset = "0x375A0")]
+		private UnityEngine.Object reflectionTarget__BackingField;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x17000270")]
+		public UnityEngine.Object target
+		{
+			[Token(Token = "0x600128D")]
+			[Address(RVA = "0x1325D38", Offset = "0x1325D38", VA = "0x1325D38")]
+			get
+			{
+				return null;
+			}
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x17000271")]
+		public string component
+		{
+			[Token(Token = "0x600128E")]
+			[Address(RVA = "0x1325D40", Offset = "0x1325D40", VA = "0x1325D40")]
+			get
+			{
+				return null;
+			}
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x17000272")]
+		public string name
+		{
+			[Token(Token = "0x600128F")]
+			[Address(RVA = "0x1325D48", Offset = "0x1325D48", VA = "0x1325D48")]
+			get
+			{
+				return null;
+			}
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x17000273")]
+		protected bool isTargeted
+		{
+			[Token(Token = "0x6001290")]
+			[Address(RVA = "0x1325D50", Offset = "0x1325D50", VA = "0x1325D50")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3BBBC", Offset = "0x3BBBC")]
+			get
+			{
+				return default;
+			}
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x17000274")]
+		public bool isReflected
+		{
+			[Token(Token = "0x6001291")]
+			[Address(RVA = "0x1325D58", Offset = "0x1325D58", VA = "0x1325D58")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3BBCC", Offset = "0x3BBCC")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6001292")]
+			[Address(RVA = "0x1325D60", Offset = "0x1325D60", VA = "0x1325D60")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3BBDC", Offset = "0x3BBDC")]
+			protected set
+			{
+			}
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x17000275")]
+		public bool isAssigned
+		{
+			[Token(Token = "0x6001293")]
+			[Address(RVA = "0x1325D68", Offset = "0x1325D68", VA = "0x1325D68")]
+			get
+			{
+				return default;
+			}
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x17000276")]
+		protected UnityEngine.Object reflectionTarget
+		{
+			[Token(Token = "0x6001294")]
+			[Address(RVA = "0x1325DFC", Offset = "0x1325DFC", VA = "0x1325DFC")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3BBEC", Offset = "0x3BBEC")]
+			get
+			{
+				return null;
+			}
+			[Token(Token = "0x6001295")]
+			[Address(RVA = "0x1325E04", Offset = "0x1325E04", VA = "0x1325E04")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3BBFC", Offset = "0x3BBFC")]
+			private set
+			{
+			}
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x6001296")]
+		[Address(RVA = "0x1325E0C", Offset = "0x1325E0C", VA = "0x1325E0C")]
+		public UnityMember()
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x6001297")]
+		[Address(RVA = "0x1325E14", Offset = "0x1325E14", VA = "0x1325E14")]
+		protected void Target()
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x6001298")]
+		public abstract void Reflect();
 
-		*/
+		[Token(Token = "0x6001299")]
+		[Address(RVA = "0x1326228", Offset = "0x1326228", VA = "0x1326228")]
+		public void EnsureReflected()
+		{
+		}
+
+		[Token(Token = "0x600129A")]
+		[Address(RVA = "0x1326240", Offset = "0x1326240", VA = "0x1326240")]
+		public void EnsureTargeted()
+		{
+		}
+
+		[Token(Token = "0x600129B")]
+		[Address(RVA = "0x1326250", Offset = "0x1326250", VA = "0x1326250")]
+		public void EnsureAssigned()
+		{
+		}
 	}
 }

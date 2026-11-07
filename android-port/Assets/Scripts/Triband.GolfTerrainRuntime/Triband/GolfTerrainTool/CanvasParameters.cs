@@ -1,66 +1,199 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Triband.GolfTerrainTool
 {
-	public class CanvasParameters : MonoBehaviour
+	[Serializable]
+	[Token(Token = "0x2000005")]
+	public sealed class CanvasParameters : ScriptableObject
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4000012")]
+		[FieldOffset(Offset = "0x18")]
+		[SerializeField]
+		private int m_Width;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000013")]
+		[FieldOffset(Offset = "0x1C")]
+		[SerializeField]
+		private int m_Height;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000014")]
+		[FieldOffset(Offset = "0x20")]
+		[SerializeField]
+		private int m_Density;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4000015")]
+		[FieldOffset(Offset = "0x24")]
+		[SerializeField]
+		private bool m_DensityChanged;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4000016")]
+		[FieldOffset(Offset = "0x28")]
+		[SerializeField]
+		private int m_TempDensity;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x1700000E")]
+		public int width
+		{
+			[Token(Token = "0x600002C")]
+			[Address(RVA = "0x29FA7A8", Offset = "0x29FA7A8", VA = "0x29FA7A8")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x600002D")]
+			[Address(RVA = "0x29FA7B0", Offset = "0x29FA7B0", VA = "0x29FA7B0")]
+			set
+			{
+			}
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x1700000F")]
+		public int height
+		{
+			[Token(Token = "0x600002E")]
+			[Address(RVA = "0x29FA7B8", Offset = "0x29FA7B8", VA = "0x29FA7B8")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x600002F")]
+			[Address(RVA = "0x29FA7C0", Offset = "0x29FA7C0", VA = "0x29FA7C0")]
+			set
+			{
+			}
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x17000010")]
+		public int density
+		{
+			[Token(Token = "0x6000030")]
+			[Address(RVA = "0x29FA7C8", Offset = "0x29FA7C8", VA = "0x29FA7C8")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000031")]
+			[Address(RVA = "0x29FA7D0", Offset = "0x29FA7D0", VA = "0x29FA7D0")]
+			set
+			{
+			}
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x17000011")]
+		public bool densityChanged
+		{
+			[Token(Token = "0x6000032")]
+			[Address(RVA = "0x29FA7D8", Offset = "0x29FA7D8", VA = "0x29FA7D8")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000033")]
+			[Address(RVA = "0x29FA7E0", Offset = "0x29FA7E0", VA = "0x29FA7E0")]
+			set
+			{
+			}
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x17000012")]
+		public int tempDensity
+		{
+			[Token(Token = "0x6000034")]
+			[Address(RVA = "0x29FA7E8", Offset = "0x29FA7E8", VA = "0x29FA7E8")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000035")]
+			[Address(RVA = "0x29FA7F0", Offset = "0x29FA7F0", VA = "0x29FA7F0")]
+			set
+			{
+			}
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x17000013")]
+		public float scaleX
+		{
+			[Token(Token = "0x6000036")]
+			[Address(RVA = "0x29FA7F8", Offset = "0x29FA7F8", VA = "0x29FA7F8")]
+			get
+			{
+				return default;
+			}
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x17000014")]
+		public float scaleY
+		{
+			[Token(Token = "0x6000037")]
+			[Address(RVA = "0x29FA818", Offset = "0x29FA818", VA = "0x29FA818")]
+			get
+			{
+				return default;
+			}
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x17000015")]
+		public float invScaleX
+		{
+			[Token(Token = "0x6000038")]
+			[Address(RVA = "0x29FA834", Offset = "0x29FA834", VA = "0x29FA834")]
+			get
+			{
+				return default;
+			}
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x17000016")]
+		public float invScaleY
+		{
+			[Token(Token = "0x6000039")]
+			[Address(RVA = "0x29FA85C", Offset = "0x29FA85C", VA = "0x29FA85C")]
+			get
+			{
+				return default;
+			}
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x17000017")]
+		public int pointCount
+		{
+			[Token(Token = "0x600003A")]
+			[Address(RVA = "0x29FA880", Offset = "0x29FA880", VA = "0x29FA880")]
+			get
+			{
+				return default;
+			}
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x17000018")]
+		public Matrix4x4 fieldToLocalMatrix
+		{
+			[Token(Token = "0x600003B")]
+			[Address(RVA = "0x29FA88C", Offset = "0x29FA88C", VA = "0x29FA88C")]
+			get
+			{
+				return default;
+			}
+		}
 
-		*/
+		[Token(Token = "0x17000019")]
+		public Matrix4x4 localToFieldMatrix
+		{
+			[Token(Token = "0x600003C")]
+			[Address(RVA = "0x29FA958", Offset = "0x29FA958", VA = "0x29FA958")]
+			get
+			{
+				return default;
+			}
+		}
+
+		[Token(Token = "0x600002B")]
+		[Address(RVA = "0x29FA770", Offset = "0x29FA770", VA = "0x29FA770")]
+		public CanvasParameters()
+		{
+		}
 	}
 }

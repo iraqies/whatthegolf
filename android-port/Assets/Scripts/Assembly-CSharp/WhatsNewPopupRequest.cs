@@ -1,63 +1,131 @@
-using UnityEngine;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using Il2CppDummyDll;
 
-public class WhatsNewPopupRequest : MonoBehaviour
+[Token(Token = "0x2000489")]
+public class WhatsNewPopupRequest : ConsentPopupRequest
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x200048A")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x3FC2C", Offset = "0x3FC2C")]
+	private sealed class _003C_003Ec__DisplayClass8_0
+	{
+		[Token(Token = "0x4001821")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x10")]
+		public DailyChallengeLevelDataContainer special;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x6001515")]
+		[Address(RVA = "0x1877D2C", Offset = "0x1877D2C", VA = "0x1877D2C")]
+		public _003C_003Ec__DisplayClass8_0()
+		{
+		}
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x6001516")]
+		[Address(RVA = "0x1877D34", Offset = "0x1877D34", VA = "0x1877D34")]
+		internal bool _003CIsRequestValid_003Eb__0(WTGNotification n)
+		{
+			return default;
+		}
+	}
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[StructLayout((LayoutKind)3)]
+	[Token(Token = "0x200048B")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x3FC3C", Offset = "0x3FC3C")]
+	private struct _003CShowAndAwaitPopupInternal_003Ed__9 : IAsyncStateMachine
+	{
+		[Token(Token = "0x4001822")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x0")]
+		public int _003C_003E1__state;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4001823")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x8")]
+		public AsyncTaskMethodBuilder<bool> _003C_003Et__builder;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4001824")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x20")]
+		public WhatsNewPopupRequest _003C_003E4__this;
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4001825")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
+		private TaskAwaiter<bool> _003C_003Eu__1;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6001517")]
+		[Address(RVA = "0x1877D70", Offset = "0x1877D70", VA = "0x1877D70", Slot = "4")]
+		private void MoveNext()
+		{
+		}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x6001518")]
+		[Address(RVA = "0x1878080", Offset = "0x1878080", VA = "0x1878080", Slot = "5")]
+		[DebuggerHidden]
+		private void SetStateMachine(IAsyncStateMachine stateMachine)
+		{
+		}
+	}
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4001820")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x20")]
+	private WTGNotification? _notifForNewContent;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x17000253")]
+	protected override bool CanBeSnoozed
+	{
+		[Token(Token = "0x600150D")]
+		[Address(RVA = "0x1753220", Offset = "0x1753220", VA = "0x1753220", Slot = "4")]
+		get
+		{
+			return default;
+		}
+	}
 
-	5. Script Content Level 0
+	[Token(Token = "0x17000254")]
+	protected override ConsentRequestTypes RequestType
+	{
+		[Token(Token = "0x600150E")]
+		[Address(RVA = "0x1753228", Offset = "0x1753228", VA = "0x1753228", Slot = "5")]
+		get
+		{
+			return default;
+		}
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x600150F")]
+	[Address(RVA = "0x1753230", Offset = "0x1753230", VA = "0x1753230", Slot = "6")]
+	protected override void AddListeners()
+	{
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x6001510")]
+	[Address(RVA = "0x1753314", Offset = "0x1753314", VA = "0x1753314", Slot = "7")]
+	protected override void RemoveListeners()
+	{
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x6001511")]
+	[Address(RVA = "0x17533F8", Offset = "0x17533F8", VA = "0x17533F8", Slot = "8")]
+	protected override bool IsFeatureEnabled()
+	{
+		return default;
+	}
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x6001512")]
+	[Address(RVA = "0x1753400", Offset = "0x1753400", VA = "0x1753400", Slot = "9")]
+	protected override bool IsRequestValid()
+	{
+		return default;
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x6001513")]
+	[Address(RVA = "0x1753728", Offset = "0x1753728", VA = "0x1753728", Slot = "10")]
+	protected override Task<bool> ShowAndAwaitPopupInternal()
+	{
+		return null;
+	}
 
-	*/
+	[Token(Token = "0x6001514")]
+	[Address(RVA = "0x1753834", Offset = "0x1753834", VA = "0x1753834")]
+	public WhatsNewPopupRequest()
+	{
+	}
 }

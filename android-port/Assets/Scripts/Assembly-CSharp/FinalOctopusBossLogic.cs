@@ -1,63 +1,168 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.Events;
 
+[Token(Token = "0x2000E14")]
 public class FinalOctopusBossLogic : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Serializable]
+	[Token(Token = "0x2000E15")]
+	public class DestructiblePart
+	{
+		[Token(Token = "0x4004C88")]
+		[FieldOffset(Offset = "0x10")]
+		public GameObject tail;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4004C89")]
+		[FieldOffset(Offset = "0x18")]
+		public GameObject catMesh;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x6004229")]
+		[Address(RVA = "0x17A6750", Offset = "0x17A6750", VA = "0x17A6750")]
+		public DestructiblePart()
+		{
+		}
+	}
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x2000E16")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x44E58", Offset = "0x44E58")]
+	private sealed class _003CHurtEffect_003Ed__9 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x4004C8A")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4004C8B")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4004C8C")]
+		[FieldOffset(Offset = "0x20")]
+		public FinalOctopusBossLogic _003C_003E4__this;
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x170006CA")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x600422D")]
+			[Address(RVA = "0x17A6700", Offset = "0x17A6700", VA = "0x17A6700", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x170006CB")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x600422F")]
+			[Address(RVA = "0x17A6748", Offset = "0x17A6748", VA = "0x17A6748", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x600422A")]
+		[Address(RVA = "0x17A65B4", Offset = "0x17A65B4", VA = "0x17A65B4")]
+		[DebuggerHidden]
+		public _003CHurtEffect_003Ed__9(int _003C_003E1__state)
+		{
+		}
 
-	4. This script is unnecessary.
+		[Token(Token = "0x600422B")]
+		[Address(RVA = "0x17A65E0", Offset = "0x17A65E0", VA = "0x17A65E0", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x600422C")]
+		[Address(RVA = "0x17A65E4", Offset = "0x17A65E4", VA = "0x17A65E4", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
 
-	5. Script Content Level 0
+		[Token(Token = "0x600422D")]
+		[Address(RVA = "0x17A6700", Offset = "0x17A6700", VA = "0x17A6700", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
 
-		AssetRipper was set to not load any script information.
+		[Token(Token = "0x600422E")]
+		[Address(RVA = "0x17A6708", Offset = "0x17A6708", VA = "0x17A6708", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x600422F")]
+		[Address(RVA = "0x17A6748", Offset = "0x17A6748", VA = "0x17A6748", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4004C81")]
+	[FieldOffset(Offset = "0x18")]
+	public UnityEvent OnLastLegDestroyed;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4004C82")]
+	[FieldOffset(Offset = "0x20")]
+	public List<DestructiblePart> legsToDestroy;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x4004C83")]
+	[FieldOffset(Offset = "0x28")]
+	public MeshRenderer squidRenderer;
 
-	*/
+	[Token(Token = "0x4004C84")]
+	[FieldOffset(Offset = "0x30")]
+	public List<SkinnedMeshRenderer> skinnedMeshRendererList;
+
+	[Token(Token = "0x4004C85")]
+	[FieldOffset(Offset = "0x38")]
+	public List<Material> squidMaterials;
+
+	[Token(Token = "0x4004C86")]
+	[FieldOffset(Offset = "0x40")]
+	private int m_hitsCount;
+
+	[Token(Token = "0x4004C87")]
+	[FieldOffset(Offset = "0x48")]
+	private Coroutine hurtRoutine;
+
+	[Token(Token = "0x6004225")]
+	[Address(RVA = "0x14654A0", Offset = "0x14654A0", VA = "0x14654A0")]
+	public void DestroyLeg()
+	{
+	}
+
+	[Token(Token = "0x6004226")]
+	[Address(RVA = "0x14655EC", Offset = "0x14655EC", VA = "0x14655EC")]
+	private IEnumerator HurtEffect()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6004227")]
+	[Address(RVA = "0x1465660", Offset = "0x1465660", VA = "0x1465660")]
+	private void ChangeMaterialLoop(Material newMat)
+	{
+	}
+
+	[Token(Token = "0x6004228")]
+	[Address(RVA = "0x14657D0", Offset = "0x14657D0", VA = "0x14657D0")]
+	public FinalOctopusBossLogic()
+	{
+	}
 }

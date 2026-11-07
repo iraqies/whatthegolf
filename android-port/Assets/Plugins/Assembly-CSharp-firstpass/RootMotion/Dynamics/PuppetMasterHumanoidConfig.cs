@@ -1,66 +1,138 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace RootMotion.Dynamics
 {
-	public class PuppetMasterHumanoidConfig : MonoBehaviour
+	[Token(Token = "0x2000129")]
+	public class PuppetMasterHumanoidConfig : ScriptableObject
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Serializable]
+		[Token(Token = "0x200012A")]
+		public class HumanoidMuscle
+		{
+			[Token(Token = "0x4000725")]
+			[FieldOffset(Offset = "0x10")]
+			[SerializeField]
+			public string name;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x4000726")]
+			[FieldOffset(Offset = "0x18")]
+			public HumanBodyBones bone;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x4000727")]
+			[FieldOffset(Offset = "0x20")]
+			public Muscle.Props props;
 
-		2. Incorrect dll files were provided to AssetRipper.
+			[Token(Token = "0x6000833")]
+			[Address(RVA = "0x1353BEC", Offset = "0x1353BEC", VA = "0x1353BEC")]
+			public HumanoidMuscle()
+			{
+			}
+		}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4000711")]
+		[FieldOffset(Offset = "0x18")]
+		public PuppetMaster.State state;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000712")]
+		[FieldOffset(Offset = "0x1C")]
+		public PuppetMaster.StateSettings stateSettings;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4000713")]
+		[FieldOffset(Offset = "0x30")]
+		public PuppetMaster.Mode mode;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4000714")]
+		[FieldOffset(Offset = "0x34")]
+		public float blendTime;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4000715")]
+		[FieldOffset(Offset = "0x38")]
+		public bool fixTargetTransforms;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4000716")]
+		[FieldOffset(Offset = "0x3C")]
+		public int solverIterationCount;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4000717")]
+		[FieldOffset(Offset = "0x40")]
+		public bool visualizeTargetPose;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4000718")]
+		[FieldOffset(Offset = "0x44")]
+		[AttributeAttribute(Name = "RangeAttribute", RVA = "0x35980", Offset = "0x35980")]
+		public float mappingWeight;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4000719")]
+		[FieldOffset(Offset = "0x48")]
+		[AttributeAttribute(Name = "RangeAttribute", RVA = "0x35998", Offset = "0x35998")]
+		public float pinWeight;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x400071A")]
+		[FieldOffset(Offset = "0x4C")]
+		[AttributeAttribute(Name = "RangeAttribute", RVA = "0x359B0", Offset = "0x359B0")]
+		public float muscleWeight;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x400071B")]
+		[FieldOffset(Offset = "0x50")]
+		public float muscleSpring;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x400071C")]
+		[FieldOffset(Offset = "0x54")]
+		public float muscleDamper;
 
-		*/
+		[Token(Token = "0x400071D")]
+		[FieldOffset(Offset = "0x58")]
+		[AttributeAttribute(Name = "RangeAttribute", RVA = "0x359C8", Offset = "0x359C8")]
+		public float pinPow;
+
+		[Token(Token = "0x400071E")]
+		[FieldOffset(Offset = "0x5C")]
+		[AttributeAttribute(Name = "RangeAttribute", RVA = "0x359E0", Offset = "0x359E0")]
+		public float pinDistanceFalloff;
+
+		[Token(Token = "0x400071F")]
+		[FieldOffset(Offset = "0x60")]
+		public bool angularPinning;
+
+		[Token(Token = "0x4000720")]
+		[FieldOffset(Offset = "0x61")]
+		public bool updateJointAnchors;
+
+		[Token(Token = "0x4000721")]
+		[FieldOffset(Offset = "0x62")]
+		public bool supportTranslationAnimation;
+
+		[Token(Token = "0x4000722")]
+		[FieldOffset(Offset = "0x63")]
+		public bool angularLimits;
+
+		[Token(Token = "0x4000723")]
+		[FieldOffset(Offset = "0x64")]
+		public bool internalCollisions;
+
+		[Token(Token = "0x4000724")]
+		[FieldOffset(Offset = "0x68")]
+		public HumanoidMuscle[] muscles;
+
+		[Token(Token = "0x6000830")]
+		[Address(RVA = "0x13D3A88", Offset = "0x13D3A88", VA = "0x13D3A88")]
+		public void ApplyTo(PuppetMaster p)
+		{
+		}
+
+		[Token(Token = "0x6000831")]
+		[Address(RVA = "0x13D3DC8", Offset = "0x13D3DC8", VA = "0x13D3DC8")]
+		private Muscle GetMuscle(HumanBodyBones boneId, Animator animator, PuppetMaster puppetMaster)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6000832")]
+		[Address(RVA = "0x13D3F00", Offset = "0x13D3F00", VA = "0x13D3F00")]
+		public PuppetMasterHumanoidConfig()
+		{
+		}
 	}
 }

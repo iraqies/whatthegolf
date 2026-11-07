@@ -1,63 +1,126 @@
+using System;
+using System.Collections.Generic;
+using Il2CppDummyDll;
+using TMPro;
 using UnityEngine;
 
+[Token(Token = "0x2000EF2")]
 public class DailyCountdown : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Serializable]
+	[Token(Token = "0x2000EF3")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x45590", Offset = "0x45590")]
+	private sealed class _003C_003Ec
+	{
+		[Token(Token = "0x40050C6")]
+		[FieldOffset(Offset = "0x0")]
+		public static readonly _003C_003Ec _003C_003E9;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40050C7")]
+		[FieldOffset(Offset = "0x8")]
+		public static Action<TextMeshPro> _003C_003E9__16_0;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x60045DB")]
+		[Address(RVA = "0x17985E0", Offset = "0x17985E0", VA = "0x17985E0")]
+		public _003C_003Ec()
+		{
+		}
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x60045DC")]
+		[Address(RVA = "0x17985E8", Offset = "0x17985E8", VA = "0x17985E8")]
+		internal void _003CUpdateTimer_003Eb__16_0(TextMeshPro tx)
+		{
+		}
+	}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x40050B7")]
+	[FieldOffset(Offset = "0x18")]
+	private TextMeshPro text;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x40050B8")]
+	[FieldOffset(Offset = "0x20")]
+	private TextMeshProUGUI textGUI;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x40050B9")]
+	[FieldOffset(Offset = "0x28")]
+	private DateTime EOD;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x40050BA")]
+	[FieldOffset(Offset = "0x30")]
+	private float time;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x40050BB")]
+	[FieldOffset(Offset = "0x34")]
+	private bool usingUGUI;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x40050BC")]
+	[FieldOffset(Offset = "0x35")]
+	public bool debug;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x40050BD")]
+	[FieldOffset(Offset = "0x38")]
+	[SerializeField]
+	private string appendString;
 
-	5. Script Content Level 0
+	[Token(Token = "0x40050BE")]
+	[FieldOffset(Offset = "0x40")]
+	[SerializeField]
+	private bool showHours;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x40050BF")]
+	[FieldOffset(Offset = "0x41")]
+	[SerializeField]
+	private bool showMinutes;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x40050C0")]
+	[FieldOffset(Offset = "0x42")]
+	[SerializeField]
+	private bool showSeconds;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x40050C1")]
+	[FieldOffset(Offset = "0x48")]
+	[SerializeField]
+	private string stringOnReachZero;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x40050C2")]
+	[FieldOffset(Offset = "0x50")]
+	public Action OnCountdownZero;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x40050C3")]
+	[FieldOffset(Offset = "0x58")]
+	[SerializeField]
+	private TextMeshPro ToEnable;
 
-	*/
+	[Token(Token = "0x40050C4")]
+	[FieldOffset(Offset = "0x60")]
+	[SerializeField]
+	private List<TextMeshPro> ToDisable;
+
+	[Token(Token = "0x40050C5")]
+	[FieldOffset(Offset = "0x68")]
+	private bool end;
+
+	[Token(Token = "0x60045D6")]
+	[Address(RVA = "0x18D11A8", Offset = "0x18D11A8", VA = "0x18D11A8")]
+	private void Start()
+	{
+	}
+
+	[Token(Token = "0x60045D7")]
+	[Address(RVA = "0x18D1314", Offset = "0x18D1314", VA = "0x18D1314")]
+	private void UpdateTimer()
+	{
+	}
+
+	[Token(Token = "0x60045D8")]
+	[Address(RVA = "0x18D18C8", Offset = "0x18D18C8", VA = "0x18D18C8")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x60045D9")]
+	[Address(RVA = "0x18D1924", Offset = "0x18D1924", VA = "0x18D1924")]
+	public DailyCountdown()
+	{
+	}
 }

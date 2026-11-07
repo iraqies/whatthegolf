@@ -1,63 +1,165 @@
+using System.Collections.Generic;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.Events;
 
+[Token(Token = "0x200042E")]
 public class QuestState : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x200042F")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x3FA2C", Offset = "0x3FA2C")]
+	private sealed class _003C_003Ec__DisplayClass16_0
+	{
+		[Token(Token = "0x40016E7")]
+		[FieldOffset(Offset = "0x10")]
+		public QuestState _003C_003E4__this;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40016E8")]
+		[FieldOffset(Offset = "0x18")]
+		public GolfBallController controller;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x60013AD")]
+		[Address(RVA = "0x182F71C", Offset = "0x182F71C", VA = "0x182F71C")]
+		public _003C_003Ec__DisplayClass16_0()
+		{
+		}
+	}
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x2000430")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x3FA3C", Offset = "0x3FA3C")]
+	private sealed class _003C_003Ec__DisplayClass16_1
+	{
+		[Token(Token = "0x40016E9")]
+		[FieldOffset(Offset = "0x10")]
+		public ChallengeTriggerBase trigger;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40016EA")]
+		[FieldOffset(Offset = "0x18")]
+		public ParticleSystem ps;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40016EB")]
+		[FieldOffset(Offset = "0x20")]
+		public _003C_003Ec__DisplayClass16_0 CS_0024_003C_003E8__locals1;
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x60013AE")]
+		[Address(RVA = "0x182F724", Offset = "0x182F724", VA = "0x182F724")]
+		public _003C_003Ec__DisplayClass16_1()
+		{
+		}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x60013AF")]
+		[Address(RVA = "0x182F72C", Offset = "0x182F72C", VA = "0x182F72C")]
+		internal void _003CInit_003Eb__0(ChallengeTriggerBase t)
+		{
+		}
+	}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x40016DF")]
+	[FieldOffset(Offset = "0x18")]
+	public string DescriptionLocalizationID;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x40016E0")]
+	[FieldOffset(Offset = "0x20")]
+	public bool triggerAll;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x40016E1")]
+	[FieldOffset(Offset = "0x24")]
+	public int customTriggerCount;
 
-	5. Script Content Level 0
+	[Token(Token = "0x40016E2")]
+	[FieldOffset(Offset = "0x28")]
+	public float particleSizeFactor;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x40016E3")]
+	[FieldOffset(Offset = "0x30")]
+	public UnityEvent OnCompleteEvent;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x40016E4")]
+	[FieldOffset(Offset = "0x38")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x4D64C", Offset = "0x4D64C")]
+	private int triggerCount__BackingField;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x40016E5")]
+	[FieldOffset(Offset = "0x40")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x4D65C", Offset = "0x4D65C")]
+	private ChallengeTriggerBase[] triggers__BackingField;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x40016E6")]
+	[FieldOffset(Offset = "0x48")]
+	public Dictionary<ChallengeTriggerBase, ParticleSystem> TriggerParticles;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x17000230")]
+	public int triggerCount
+	{
+		[Token(Token = "0x60013A3")]
+		[Address(RVA = "0x1632CE4", Offset = "0x1632CE4", VA = "0x1632CE4")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x61F0C", Offset = "0x61F0C")]
+		get
+		{
+			return default;
+		}
+		[Token(Token = "0x60013A4")]
+		[Address(RVA = "0x1632CEC", Offset = "0x1632CEC", VA = "0x1632CEC")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x61F1C", Offset = "0x61F1C")]
+		set
+		{
+		}
+	}
 
-	*/
+	[Token(Token = "0x17000231")]
+	public ChallengeTriggerBase[] triggers
+	{
+		[Token(Token = "0x60013A5")]
+		[Address(RVA = "0x1632CF4", Offset = "0x1632CF4", VA = "0x1632CF4")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x61F2C", Offset = "0x61F2C")]
+		get
+		{
+			return null;
+		}
+		[Token(Token = "0x60013A6")]
+		[Address(RVA = "0x1632CFC", Offset = "0x1632CFC", VA = "0x1632CFC")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x61F3C", Offset = "0x61F3C")]
+		set
+		{
+		}
+	}
+
+	[Token(Token = "0x60013A7")]
+	[Address(RVA = "0x1632D04", Offset = "0x1632D04", VA = "0x1632D04")]
+	public int GetMaxTriggerCount()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x60013A8")]
+	[Address(RVA = "0x1632D30", Offset = "0x1632D30", VA = "0x1632D30")]
+	public bool HasCompletedState()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x60013A9")]
+	[Address(RVA = "0x1632D68", Offset = "0x1632D68", VA = "0x1632D68")]
+	public void Init(GolfBallController controller, ParticleSystem HintParticleSystem)
+	{
+	}
+
+	[Token(Token = "0x60013AA")]
+	[Address(RVA = "0x16330C8", Offset = "0x16330C8", VA = "0x16330C8")]
+	public void OnStart()
+	{
+	}
+
+	[Token(Token = "0x60013AB")]
+	[Address(RVA = "0x163319C", Offset = "0x163319C", VA = "0x163319C")]
+	public void OnComplete()
+	{
+	}
+
+	[Token(Token = "0x60013AC")]
+	[Address(RVA = "0x163336C", Offset = "0x163336C", VA = "0x163336C")]
+	public QuestState()
+	{
+	}
 }

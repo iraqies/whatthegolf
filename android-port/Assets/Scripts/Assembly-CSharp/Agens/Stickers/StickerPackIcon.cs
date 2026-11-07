@@ -1,66 +1,118 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Agens.Stickers
 {
-	public class StickerPackIcon : MonoBehaviour
+	[Serializable]
+	[Token(Token = "0x200101B")]
+	public class StickerPackIcon
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Serializable]
+		[Token(Token = "0x200101C")]
+		public class IconExportSettings
+		{
+			[Token(Token = "0x40054EF")]
+			[FieldOffset(Offset = "0x10")]
+			public Color BackgroundColor;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x40054F0")]
+			[FieldOffset(Offset = "0x20")]
+			[AttributeAttribute(Name = "RangeAttribute", RVA = "0x552E4", Offset = "0x552E4")]
+			public int FillPercentage;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x40054F1")]
+			[FieldOffset(Offset = "0x24")]
+			public FilterMode FilterMode;
 
-		2. Incorrect dll files were provided to AssetRipper.
+			[Token(Token = "0x40054F2")]
+			[FieldOffset(Offset = "0x28")]
+			public ScaleMode ScaleMode;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+			[Token(Token = "0x6004802")]
+			[Address(RVA = "0x185B3F4", Offset = "0x185B3F4", VA = "0x185B3F4")]
+			public IconExportSettings()
+			{
+			}
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40054E0")]
+		[FieldOffset(Offset = "0x10")]
+		[SerializeField]
+		private Texture2D appStore;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x40054E1")]
+		[FieldOffset(Offset = "0x18")]
+		[SerializeField]
+		private Texture2D messagesAppStore;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x40054E2")]
+		[FieldOffset(Offset = "0x20")]
+		public IconExportSettings Settings;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x40054E3")]
+		[FieldOffset(Offset = "0x28")]
+		public bool Override;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x40054E4")]
+		[FieldOffset(Offset = "0x30")]
+		[SerializeField]
+		private Texture2D messagesiPadPro2;
 
-		5. Script Content Level 0
+		[Token(Token = "0x40054E5")]
+		[FieldOffset(Offset = "0x38")]
+		[SerializeField]
+		private Texture2D messagesiPad2;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x40054E6")]
+		[FieldOffset(Offset = "0x40")]
+		[SerializeField]
+		private Texture2D messagesiPhone2;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x40054E7")]
+		[FieldOffset(Offset = "0x48")]
+		[SerializeField]
+		private Texture2D messagesiPhone3;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x40054E8")]
+		[FieldOffset(Offset = "0x50")]
+		[SerializeField]
+		private Texture2D messagesSmall2;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x40054E9")]
+		[FieldOffset(Offset = "0x58")]
+		[SerializeField]
+		private Texture2D messagesSmall3;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x40054EA")]
+		[FieldOffset(Offset = "0x60")]
+		[SerializeField]
+		private Texture2D messages2;
 
-		*/
+		[Token(Token = "0x40054EB")]
+		[FieldOffset(Offset = "0x68")]
+		[SerializeField]
+		private Texture2D messages3;
+
+		[Token(Token = "0x40054EC")]
+		[FieldOffset(Offset = "0x70")]
+		[SerializeField]
+		private Texture2D iPhoneSettings2;
+
+		[Token(Token = "0x40054ED")]
+		[FieldOffset(Offset = "0x78")]
+		[SerializeField]
+		private Texture2D iPhoneSettings3;
+
+		[Token(Token = "0x40054EE")]
+		[FieldOffset(Offset = "0x80")]
+		[SerializeField]
+		private Texture2D iPadSettings2;
+
+		[Token(Token = "0x6004801")]
+		[Address(RVA = "0x16DF568", Offset = "0x16DF568", VA = "0x16DF568")]
+		public StickerPackIcon()
+		{
+		}
 	}
 }

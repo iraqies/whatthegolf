@@ -1,63 +1,98 @@
+using Core;
+using GolfCourse;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x20005FA")]
 public class BottleFlipWinCondition : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4001E8A")]
+	[FieldOffset(Offset = "0x18")]
+	public GolfBallController Bottle;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4001E8B")]
+	[FieldOffset(Offset = "0x20")]
+	public GolfCoursePinGoal GolfGoal;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4001E8C")]
+	[FieldOffset(Offset = "0x28")]
+	public AudioClip winClip;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4001E8D")]
+	[FieldOffset(Offset = "0x30")]
+	public float SleepThreshold;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4001E8E")]
+	[FieldOffset(Offset = "0x34")]
+	public float DotThreshold;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4001E8F")]
+	[FieldOffset(Offset = "0x38")]
+	public float CheckTimer;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4001E90")]
+	[FieldOffset(Offset = "0x3C")]
+	public bool disableControllerOnWin;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4001E91")]
+	[FieldOffset(Offset = "0x40")]
+	public Vector3 AxisToCheck;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4001E92")]
+	[FieldOffset(Offset = "0x4C")]
+	public bool ResetPositionOnFaultyShot;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4001E93")]
+	[FieldOffset(Offset = "0x4D")]
+	public bool BlockShooting;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4001E94")]
+	[FieldOffset(Offset = "0x4E")]
+	private bool hasBeenShot;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4001E95")]
+	[FieldOffset(Offset = "0x50")]
+	private Rigidbody bottleRigid;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4001E96")]
+	[FieldOffset(Offset = "0x58")]
+	public BottleFlipWinCondition otherDie;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4001E97")]
+	[FieldOffset(Offset = "0x60")]
+	private bool winPosition;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4001E98")]
+	[FieldOffset(Offset = "0x64")]
+	private float timer;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x6001B2C")]
+	[Address(RVA = "0x17013A4", Offset = "0x17013A4", VA = "0x17013A4")]
+	private void Start()
+	{
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x6001B2D")]
+	[Address(RVA = "0x17014E4", Offset = "0x17014E4", VA = "0x17014E4")]
+	private void BottleOnOnReset()
+	{
+	}
 
-	*/
+	[Token(Token = "0x6001B2E")]
+	[Address(RVA = "0x1701510", Offset = "0x1701510", VA = "0x1701510")]
+	private void Bottle_OnShoot(Vector3 obj)
+	{
+	}
+
+	[Token(Token = "0x6001B2F")]
+	[Address(RVA = "0x1701548", Offset = "0x1701548", VA = "0x1701548")]
+	private void FixedUpdate()
+	{
+	}
+
+	[Token(Token = "0x6001B30")]
+	[Address(RVA = "0x1701820", Offset = "0x1701820", VA = "0x1701820")]
+	public BottleFlipWinCondition()
+	{
+	}
 }

@@ -1,66 +1,204 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Audio;
+using Il2CppDummyDll;
 using UnityEngine;
+using Utility;
 
 namespace Arena
 {
+	[Token(Token = "0x200121D")]
 	public class AvoidStoneGameManager : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x200121E")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x48524", Offset = "0x48524")]
+		private sealed class _003CSpawnCoroutine_003Ed__17 : IEnumerator<object>, IEnumerator, IDisposable
+		{
+			[Token(Token = "0x40061EC")]
+			[FieldOffset(Offset = "0x10")]
+			private int _003C_003E1__state;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x40061ED")]
+			[FieldOffset(Offset = "0x18")]
+			private object _003C_003E2__current;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x40061EE")]
+			[FieldOffset(Offset = "0x20")]
+			public AvoidStoneGameManager _003C_003E4__this;
 
-		2. Incorrect dll files were provided to AssetRipper.
+			[Token(Token = "0x40061EF")]
+			[FieldOffset(Offset = "0x28")]
+			private int _003Ci_003E5__2;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+			[Token(Token = "0x17000934")]
+			private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+			{
+				[Token(Token = "0x6005379")]
+				[Address(RVA = "0x1770B90", Offset = "0x1770B90", VA = "0x1770B90", Slot = "4")]
+				[DebuggerHidden]
+				get
+				{
+					return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+				}
+			}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+			[Token(Token = "0x17000935")]
+			private object System_002ECollections_002EIEnumerator_002ECurrent
+			{
+				[Token(Token = "0x600537B")]
+				[Address(RVA = "0x1770BD8", Offset = "0x1770BD8", VA = "0x1770BD8", Slot = "7")]
+				[DebuggerHidden]
+				get
+				{
+					return System_002ECollections_002EIEnumerator_002Eget_Current();
+				}
+			}
 
-		3. Assembly Reconstruction has not been implemented.
+			[Token(Token = "0x6005376")]
+			[Address(RVA = "0x177089C", Offset = "0x177089C", VA = "0x177089C")]
+			[DebuggerHidden]
+			public _003CSpawnCoroutine_003Ed__17(int _003C_003E1__state)
+			{
+			}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+			[Token(Token = "0x6005377")]
+			[Address(RVA = "0x17708C8", Offset = "0x17708C8", VA = "0x17708C8", Slot = "5")]
+			[DebuggerHidden]
+			private void System_002EIDisposable_002EDispose()
+			{
+			}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+			[Token(Token = "0x6005378")]
+			[Address(RVA = "0x17708CC", Offset = "0x17708CC", VA = "0x17708CC", Slot = "6")]
+			private bool MoveNext()
+			{
+				return default;
+			}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+			[Token(Token = "0x6005379")]
+			[Address(RVA = "0x1770B90", Offset = "0x1770B90", VA = "0x1770B90", Slot = "4")]
+			[DebuggerHidden]
+			private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+			{
+				return null;
+			}
 
-		5. Script Content Level 0
+			[Token(Token = "0x600537A")]
+			[Address(RVA = "0x1770B98", Offset = "0x1770B98", VA = "0x1770B98", Slot = "8")]
+			[DebuggerHidden]
+			private void System_002ECollections_002EIEnumerator_002EReset()
+			{
+			}
 
-			AssetRipper was set to not load any script information.
+			[Token(Token = "0x600537B")]
+			[Address(RVA = "0x1770BD8", Offset = "0x1770BD8", VA = "0x1770BD8", Slot = "7")]
+			[DebuggerHidden]
+			private object System_002ECollections_002EIEnumerator_002Eget_Current()
+			{
+				return null;
+			}
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x40061E0")]
+		[FieldOffset(Offset = "0x18")]
+		public FreezeTimescale timeScaleFreeze;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x40061E1")]
+		[FieldOffset(Offset = "0x20")]
+		public FinalLevel finalLevelManager;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x40061E2")]
+		[FieldOffset(Offset = "0x28")]
+		public bool canSpawn;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x40061E3")]
+		[FieldOffset(Offset = "0x2C")]
+		public float initialStartDelay;
 
-		*/
+		[Token(Token = "0x40061E4")]
+		[FieldOffset(Offset = "0x30")]
+		public AudioClipSettings transitionSFX;
+
+		[Token(Token = "0x40061E5")]
+		[FieldOffset(Offset = "0x38")]
+		public ArenaCrab[] playerCrabs;
+
+		[Token(Token = "0x40061E6")]
+		[FieldOffset(Offset = "0x40")]
+		public RockSpawnerPhase[] phases;
+
+		[Token(Token = "0x40061E7")]
+		[FieldOffset(Offset = "0x48")]
+		public ArenaDroppableRock rockPrefab;
+
+		[Token(Token = "0x40061E8")]
+		[FieldOffset(Offset = "0x50")]
+		private RockSpawnerPhase currentPhase;
+
+		[Token(Token = "0x40061E9")]
+		[FieldOffset(Offset = "0x58")]
+		private bool allPlayersAtLastPoint;
+
+		[Token(Token = "0x40061EA")]
+		[FieldOffset(Offset = "0x59")]
+		private bool someoneLost;
+
+		[Token(Token = "0x40061EB")]
+		[FieldOffset(Offset = "0x60")]
+		private ObjectPool<ArenaDroppableRock> rockPool;
+
+		[Token(Token = "0x600536E")]
+		[Address(RVA = "0x1515EAC", Offset = "0x1515EAC", VA = "0x1515EAC")]
+		private void Start()
+		{
+		}
+
+		[Token(Token = "0x600536F")]
+		[Address(RVA = "0x15161B4", Offset = "0x15161B4", VA = "0x15161B4")]
+		private void OnCrabHit(ArenaDroppable dropped, ArenaCrab hitCrab)
+		{
+		}
+
+		[Token(Token = "0x6005370")]
+		[Address(RVA = "0x1516288", Offset = "0x1516288", VA = "0x1516288")]
+		private void OnPlayerHealthChanged(MultiplayerConfiguration.PlayerInfo player, int health)
+		{
+		}
+
+		[Token(Token = "0x6005371")]
+		[Address(RVA = "0x151643C", Offset = "0x151643C", VA = "0x151643C")]
+		private void MovePlayerOnHit(MultiplayerConfiguration.PlayerInfo player)
+		{
+		}
+
+		[Token(Token = "0x6005372")]
+		[Address(RVA = "0x15165F4", Offset = "0x15165F4", VA = "0x15165F4")]
+		private bool CheckTransition(RockSpawnerPhase.TransitionCondition condition)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6005373")]
+		[Address(RVA = "0x1516140", Offset = "0x1516140", VA = "0x1516140")]
+		private IEnumerator SpawnCoroutine()
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6005374")]
+		[Address(RVA = "0x1516620", Offset = "0x1516620", VA = "0x1516620")]
+		public AvoidStoneGameManager()
+		{
+		}
+
+		[Token(Token = "0x6005375")]
+		[Address(RVA = "0x1516628", Offset = "0x1516628", VA = "0x1516628")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x70F58", Offset = "0x70F58")]
+		private bool _003CSpawnCoroutine_003Eb__17_0()
+		{
+			return default;
+		}
 	}
 }

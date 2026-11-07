@@ -1,66 +1,82 @@
+using System;
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace TMPro
 {
-	public class TMP_FontFeatureTable : MonoBehaviour
+	[Serializable]
+	[Token(Token = "0x2000029")]
+	public class TMP_FontFeatureTable
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Serializable]
+		[Token(Token = "0x200002A")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x1B9134", Offset = "0x1B9134")]
+		private sealed class _003C_003Ec
+		{
+			[Token(Token = "0x4000101")]
+			[FieldOffset(Offset = "0x0")]
+			public static readonly _003C_003Ec _003C_003E9;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x4000102")]
+			[FieldOffset(Offset = "0x8")]
+			public static Func<TMP_GlyphPairAdjustmentRecord, uint> _003C_003E9__6_0;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x4000103")]
+			[FieldOffset(Offset = "0x10")]
+			public static Func<TMP_GlyphPairAdjustmentRecord, uint> _003C_003E9__6_1;
 
-		2. Incorrect dll files were provided to AssetRipper.
+			[Token(Token = "0x600011C")]
+			[Address(RVA = "0x2ADEC4C", Offset = "0x2ADEC4C", VA = "0x2ADEC4C")]
+			public _003C_003Ec()
+			{
+			}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+			[Token(Token = "0x600011D")]
+			[Address(RVA = "0x2ADEC54", Offset = "0x2ADEC54", VA = "0x2ADEC54")]
+			internal uint _003CSortGlyphPairAdjustmentRecords_003Eb__6_0(TMP_GlyphPairAdjustmentRecord s)
+			{
+				return default;
+			}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+			[Token(Token = "0x600011E")]
+			[Address(RVA = "0x2ADEC6C", Offset = "0x2ADEC6C", VA = "0x2ADEC6C")]
+			internal uint _003CSortGlyphPairAdjustmentRecords_003Eb__6_1(TMP_GlyphPairAdjustmentRecord s)
+			{
+				return default;
+			}
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x40000FF")]
+		[FieldOffset(Offset = "0x10")]
+		[SerializeField]
+		internal List<TMP_GlyphPairAdjustmentRecord> m_GlyphPairAdjustmentRecords;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4000100")]
+		[FieldOffset(Offset = "0x18")]
+		internal Dictionary<uint, TMP_GlyphPairAdjustmentRecord> m_GlyphPairAdjustmentRecordLookupDictionary;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x17000040")]
+		public List<TMP_GlyphPairAdjustmentRecord> glyphPairAdjustmentRecords
+		{
+			[Token(Token = "0x6000118")]
+			[Address(RVA = "0x2A89EC0", Offset = "0x2A89EC0", VA = "0x2A89EC0")]
+			get
+			{
+				return null;
+			}
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6000119")]
+		[Address(RVA = "0x2A87EB0", Offset = "0x2A87EB0", VA = "0x2A87EB0")]
+		public TMP_FontFeatureTable()
+		{
+		}
 
-		5. Script Content Level 0
-
-			AssetRipper was set to not load any script information.
-
-		6. Cpp2IL failed to decompile Il2Cpp data
-
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x600011A")]
+		[Address(RVA = "0x2A837A0", Offset = "0x2A837A0", VA = "0x2A837A0")]
+		public void SortGlyphPairAdjustmentRecords()
+		{
+		}
 	}
 }

@@ -1,66 +1,93 @@
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Audio
 {
-	public class BaseAudioModifierMultiple : MonoBehaviour
+	[Token(Token = "0x2001387")]
+	public abstract class BaseAudioModifierMultiple : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x40068D4")]
+		[FieldOffset(Offset = "0x18")]
+		public List<AudioValueMapper> modifiers;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40068D5")]
+		[FieldOffset(Offset = "0x20")]
+		public bool smooth;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40068D6")]
+		[FieldOffset(Offset = "0x24")]
+		public float smoothTime;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40068D7")]
+		[FieldOffset(Offset = "0x28")]
+		private float chainOutput;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40068D8")]
+		[FieldOffset(Offset = "0x2C")]
+		private float smooth_velocity;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40068D9")]
+		[FieldOffset(Offset = "0x30")]
+		public float output;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x40068DA")]
+		[FieldOffset(Offset = "0x34")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x5A5B0", Offset = "0x5A5B0")]
+		private float Gain__BackingField;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x17000A4E")]
+		public float Gain
+		{
+			[Token(Token = "0x6005B31")]
+			[Address(RVA = "0x151B2D0", Offset = "0x151B2D0", VA = "0x151B2D0")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x725A8", Offset = "0x725A8")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6005B32")]
+			[Address(RVA = "0x151B2D8", Offset = "0x151B2D8", VA = "0x151B2D8")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x725B8", Offset = "0x725B8")]
+			set
+			{
+			}
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x6005B33")]
+		[Address(RVA = "0x151B2E0", Offset = "0x151B2E0", VA = "0x151B2E0")]
+		private void Awake()
+		{
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6005B34")]
+		[Address(RVA = "0x151B578", Offset = "0x151B578", VA = "0x151B578", Slot = "4")]
+		public virtual void Initialize()
+		{
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x6005B35")]
+		[Address(RVA = "0x151B44C", Offset = "0x151B44C", VA = "0x151B44C")]
+		public void SetOutput()
+		{
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x6005B36")]
+		[Address(RVA = "0x151B57C", Offset = "0x151B57C", VA = "0x151B57C")]
+		private void Update()
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x6005B37")]
+		[Address(RVA = "0x151B5D4", Offset = "0x151B5D4", VA = "0x151B5D4", Slot = "5")]
+		protected virtual void UpdateModifier()
+		{
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x6005B38")]
+		[Address(RVA = "0x151B5D8", Offset = "0x151B5D8", VA = "0x151B5D8")]
+		protected BaseAudioModifierMultiple()
+		{
+		}
 	}
 }

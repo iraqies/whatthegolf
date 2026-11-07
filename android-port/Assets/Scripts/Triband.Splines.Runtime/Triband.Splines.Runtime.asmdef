@@ -1,5 +1,7 @@
 {
   "name": "Triband.Splines.Runtime",
-  "references": [],
+  "references": [
+    "Il2CppDummyDll"
+  ],
   "allowUnsafeCode": true
 }

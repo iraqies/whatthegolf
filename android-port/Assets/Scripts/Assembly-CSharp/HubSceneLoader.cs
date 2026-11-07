@@ -1,63 +1,131 @@
-using UnityEngine;
+using System;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using Core;
+using Il2CppDummyDll;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceProviders;
+using UnityEngine.SceneManagement;
 
-public class HubSceneLoader : MonoBehaviour
+[Token(Token = "0x2000094")]
+public class HubSceneLoader : AddressableSingleton<HubSceneLoader>
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[StructLayout((LayoutKind)3)]
+	[Token(Token = "0x2000095")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3D6A8", Offset = "0x3D6A8")]
+	private struct _003CLoadSceneAsync_003Ed__9 : IAsyncStateMachine
+	{
+		[Token(Token = "0x400023B")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x0")]
+		public int _003C_003E1__state;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x400023C")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x8")]
+		public AsyncTaskMethodBuilder _003C_003Et__builder;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x400023D")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x20")]
+		public HubSceneLoader _003C_003E4__this;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x400023E")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
+		public bool forceReload;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x400023F")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x2C")]
+		public LoadSceneMode loadSceneMode;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000240")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x30")]
+		public SceneInstance? sceneToUnload;
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4000241")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x48")]
+		private bool _003CwasHubLoaded_003E5__2;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4000242")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x50")]
+		private AsyncOperationHandle<SceneInstance> _003Chandle_003E5__3;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x4000243")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x70")]
+		private object _003C_003Eu__1;
 
-	4. This script is unnecessary.
+		[Token(Token = "0x4000244")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x78")]
+		private TaskAwaiter _003C_003Eu__2;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6000282")]
+		[Address(RVA = "0x17C0C44", Offset = "0x17C0C44", VA = "0x17C0C44", Slot = "4")]
+		private void MoveNext()
+		{
+		}
 
-	5. Script Content Level 0
+		[Token(Token = "0x6000283")]
+		[Address(RVA = "0x17C16DC", Offset = "0x17C16DC", VA = "0x17C16DC", Slot = "5")]
+		[DebuggerHidden]
+		private void SetStateMachine(IAsyncStateMachine stateMachine)
+		{
+		}
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4000238")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x18")]
+	public Action BaseSceneLoaded;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4000239")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x20")]
+	private int _loadCount;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x400023A")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x24")]
+	private bool _busyLoading;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x17000068")]
+	public bool HasBeenLoadedBefore
+	{
+		[Token(Token = "0x600027D")]
+		[Address(RVA = "0x14DE514", Offset = "0x14DE514", VA = "0x14DE514")]
+		get
+		{
+			return default;
+		}
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x17000069")]
+	public bool IsHubBusyLoading
+	{
+		[Token(Token = "0x600027E")]
+		[Address(RVA = "0x14DE524", Offset = "0x14DE524", VA = "0x14DE524")]
+		get
+		{
+			return default;
+		}
+	}
 
-	*/
+	[Token(Token = "0x1700006A")]
+	public bool IsHubLoaded
+	{
+		[Token(Token = "0x600027F")]
+		[Address(RVA = "0x14DE52C", Offset = "0x14DE52C", VA = "0x14DE52C")]
+		get
+		{
+			return default;
+		}
+	}
+
+	[Token(Token = "0x6000280")]
+	[Address(RVA = "0x14DE5C0", Offset = "0x14DE5C0", VA = "0x14DE5C0")]
+	public Task LoadSceneAsync([Optional][DefaultParameterValue(0)] LoadSceneMode loadSceneMode, [Optional] SceneInstance? sceneToUnload, bool forceReload = false)
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6000281")]
+	[Address(RVA = "0x14DE6D0", Offset = "0x14DE6D0", VA = "0x14DE6D0")]
+	public HubSceneLoader()
+	{
+	}
 }

@@ -1,66 +1,150 @@
-using UnityEngine;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using Il2CppDummyDll;
 
 namespace UnityEngine.ProBuilder
 {
-	public class SharedVertex : MonoBehaviour
+	[Serializable]
+	[Token(Token = "0x2000020")]
+	[AttributeAttribute(Name = "DefaultMemberAttribute", RVA = "0x1B5B00", Offset = "0x1B5B00")]
+	public sealed class SharedVertex : ICollection<int>, IEnumerable<int>, IEnumerable
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x400009F")]
+		[FieldOffset(Offset = "0x10")]
+		[SerializeField]
+		[AttributeAttribute(Name = "FormerlySerializedAsAttribute", RVA = "0x1B6544", Offset = "0x1B6544")]
+		[AttributeAttribute(Name = "FormerlySerializedAsAttribute", RVA = "0x1B6544", Offset = "0x1B6544")]
+		private int[] m_Vertices;
 
-		1. No dll files were provided to AssetRipper.
+		// C# has no syntax for parameterized property 'Item'.
+		// Its 'property:' attributes below are ignored by the compiler (CS0657).
+		[property: Token(Token = "0x1700004D")]
+		[Token(Token = "0x6000111")]
+		[Address(RVA = "0x2A4D88C", Offset = "0x2A4D88C", VA = "0x2A4D88C")]
+		public int get_Item(int i)
+		{
+			return default;
+		}
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x1700004E")]
+		public int Count
+		{
+			[Token(Token = "0x600011A")]
+			[Address(RVA = "0x2A4D8C8", Offset = "0x2A4D8C8", VA = "0x2A4D8C8", Slot = "4")]
+			get
+			{
+				return default;
+			}
+		}
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x1700004F")]
+		public bool IsReadOnly
+		{
+			[Token(Token = "0x600011B")]
+			[Address(RVA = "0x2A59E34", Offset = "0x2A59E34", VA = "0x2A59E34", Slot = "5")]
+			get
+			{
+				return default;
+			}
+		}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x600010F")]
+		[Address(RVA = "0x2A59AE4", Offset = "0x2A59AE4", VA = "0x2A59AE4")]
+		public SharedVertex(IEnumerable<int> indexes)
+		{
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x6000110")]
+		[Address(RVA = "0x2A4E70C", Offset = "0x2A4E70C", VA = "0x2A4E70C")]
+		public SharedVertex(SharedVertex sharedVertex)
+		{
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6000112")]
+		[Address(RVA = "0x2A58164", Offset = "0x2A58164", VA = "0x2A58164", Slot = "11")]
+		public IEnumerator<int> GetEnumerator()
+		{
+			return null;
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6000113")]
+		[Address(RVA = "0x2A59B9C", Offset = "0x2A59B9C", VA = "0x2A59B9C", Slot = "3")]
+		public override string ToString()
+		{
+			return null;
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x6000114")]
+		[Address(RVA = "0x2A59C08", Offset = "0x2A59C08", VA = "0x2A59C08", Slot = "12")]
+		private IEnumerator System_002ECollections_002EIEnumerable_002EGetEnumerator()
+		{
+			return null;
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6000115")]
+		[Address(RVA = "0x2A57AAC", Offset = "0x2A57AAC", VA = "0x2A57AAC", Slot = "6")]
+		public void Add(int item)
+		{
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x6000116")]
+		[Address(RVA = "0x2A59CBC", Offset = "0x2A59CBC", VA = "0x2A59CBC", Slot = "7")]
+		public void Clear()
+		{
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x6000117")]
+		[Address(RVA = "0x2A59D18", Offset = "0x2A59D18", VA = "0x2A59D18", Slot = "8")]
+		public bool Contains(int item)
+		{
+			return default;
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x6000118")]
+		[Address(RVA = "0x2A59D80", Offset = "0x2A59D80", VA = "0x2A59D80", Slot = "9")]
+		public void CopyTo(int[] array, int arrayIndex)
+		{
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x6000119")]
+		[Address(RVA = "0x2A59D9C", Offset = "0x2A59D9C", VA = "0x2A59D9C", Slot = "10")]
+		public bool Remove(int item)
+		{
+			return default;
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x600011C")]
+		[Address(RVA = "0x2A4E880", Offset = "0x2A4E880", VA = "0x2A4E880")]
+		public static void GetSharedVertexLookup(IList<SharedVertex> sharedVertices, Dictionary<int, int> lookup)
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x600011D")]
+		[Address(RVA = "0x2A4EDB0", Offset = "0x2A4EDB0", VA = "0x2A4EDB0")]
+		internal static SharedVertex[] ToSharedVertices(IEnumerable<KeyValuePair<int, int>> lookup)
+		{
+			return null;
+		}
 
-		*/
+		[Token(Token = "0x600011E")]
+		[Address(RVA = "0x2A59E50", Offset = "0x2A59E50", VA = "0x2A59E50")]
+		private static SharedVertex[] ToSharedVertices(List<List<int>> list)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x600011F")]
+		[Address(RVA = "0x2A52BD0", Offset = "0x2A52BD0", VA = "0x2A52BD0")]
+		public static SharedVertex[] GetSharedVerticesWithPositions(IList<Vector3> positions)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6000120")]
+		[Address(RVA = "0x2A5760C", Offset = "0x2A5760C", VA = "0x2A5760C")]
+		internal static void SetCoincident(ref Dictionary<int, int> lookup, IEnumerable<int> vertices)
+		{
+		}
 	}
 }

@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: CatsKnockOver
   m_EditorClassIdentifier:
   Icons:
-  - {fileID: 21300000, guid: 15b46e1abfe692841a851e5b719fc935, type: 2}
+  - {fileID: 21300000, guid: c018ebdc698b4b948b584c800ab249ed, type: 2}

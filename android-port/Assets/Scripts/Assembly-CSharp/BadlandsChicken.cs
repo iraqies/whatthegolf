@@ -1,63 +1,80 @@
+using System;
+using Audio;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x20006DA")]
 public class BadlandsChicken : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x40023E0")]
+	[FieldOffset(Offset = "0x18")]
+	public ParticleSystem DeathParticles;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x40023E1")]
+	[FieldOffset(Offset = "0x20")]
+	public float OutOfScreenDeathThreshold;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x40023E2")]
+	[FieldOffset(Offset = "0x28")]
+	public Action<BadlandsChicken> OnDeath;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x40023E3")]
+	[FieldOffset(Offset = "0x30")]
+	public RandomAudioClips deathClips;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x40023E4")]
+	[FieldOffset(Offset = "0x38")]
+	private Camera mainCam;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x40023E5")]
+	[FieldOffset(Offset = "0x40")]
+	private bool dead;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x40023E6")]
+	[FieldOffset(Offset = "0x48")]
+	private Rigidbody rigid;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x6001FA1")]
+	[Address(RVA = "0x1516C78", Offset = "0x1516C78", VA = "0x1516C78")]
+	private void Awake()
+	{
+	}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x6001FA2")]
+	[Address(RVA = "0x1516CE0", Offset = "0x1516CE0", VA = "0x1516CE0")]
+	private void Update()
+	{
+	}
 
-	4. This script is unnecessary.
+	[Token(Token = "0x6001FA3")]
+	[Address(RVA = "0x1516DFC", Offset = "0x1516DFC", VA = "0x1516DFC")]
+	public void Die()
+	{
+	}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x6001FA4")]
+	[Address(RVA = "0x1516D20", Offset = "0x1516D20", VA = "0x1516D20")]
+	public float GetScreenPosX()
+	{
+		return default;
+	}
 
-	5. Script Content Level 0
+	[Token(Token = "0x6001FA5")]
+	[Address(RVA = "0x1516EE0", Offset = "0x1516EE0", VA = "0x1516EE0")]
+	public Vector3 GetCurrentSpeed()
+	{
+		return default;
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x6001FA6")]
+	[Address(RVA = "0x1516EFC", Offset = "0x1516EFC", VA = "0x1516EFC")]
+	private void OnCollisionEnter(Collision other)
+	{
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
-
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x6001FA7")]
+	[Address(RVA = "0x1516FE4", Offset = "0x1516FE4", VA = "0x1516FE4")]
+	public BadlandsChicken()
+	{
+	}
 }

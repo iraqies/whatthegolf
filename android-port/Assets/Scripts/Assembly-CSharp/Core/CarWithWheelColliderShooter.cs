@@ -1,66 +1,194 @@
+using System;
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Core
 {
-	public class CarWithWheelColliderShooter : MonoBehaviour
+	[Token(Token = "0x2001448")]
+	public class CarWithWheelColliderShooter : GolfBallShooterBase
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Serializable]
+		[Token(Token = "0x2001449")]
+		public class AxleInfo
+		{
+			[Token(Token = "0x4006E3D")]
+			[FieldOffset(Offset = "0x10")]
+			public WheelCollider leftWheel;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x4006E3E")]
+			[FieldOffset(Offset = "0x18")]
+			public WheelCollider rightWheel;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x4006E3F")]
+			[FieldOffset(Offset = "0x20")]
+			public bool motor;
 
-		2. Incorrect dll files were provided to AssetRipper.
+			[Token(Token = "0x4006E40")]
+			[FieldOffset(Offset = "0x21")]
+			public bool steering;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+			[Token(Token = "0x4006E41")]
+			[FieldOffset(Offset = "0x22")]
+			public bool rewerseSteering;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+			[Token(Token = "0x4006E42")]
+			[FieldOffset(Offset = "0x28")]
+			public Transform leftWheelTransform;
 
-		3. Assembly Reconstruction has not been implemented.
+			[Token(Token = "0x4006E43")]
+			[FieldOffset(Offset = "0x30")]
+			public Transform rightWheelTransform;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+			[Token(Token = "0x6005EF3")]
+			[Address(RVA = "0x1781C1C", Offset = "0x1781C1C", VA = "0x1781C1C")]
+			public AxleInfo()
+			{
+			}
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4006E25")]
+		[FieldOffset(Offset = "0x60")]
+		[SerializeField]
+		public float fullShootVelocity;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4006E26")]
+		[FieldOffset(Offset = "0x64")]
+		[SerializeField]
+		public float minShootVelocity;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4006E27")]
+		[FieldOffset(Offset = "0x68")]
+		[SerializeField]
+		private float raycastDist;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4006E28")]
+		[FieldOffset(Offset = "0x70")]
+		[SerializeField]
+		private AnimationCurve shotDampenDurve;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4006E29")]
+		[FieldOffset(Offset = "0x78")]
+		[SerializeField]
+		private AnimationCurve BreakCurve;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x4006E2A")]
+		[FieldOffset(Offset = "0x80")]
+		[SerializeField]
+		private float shotDampenTime;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x4006E2B")]
+		[FieldOffset(Offset = "0x84")]
+		[SerializeField]
+		private float shotBoostThreshold;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x4006E2C")]
+		[FieldOffset(Offset = "0x88")]
+		[SerializeField]
+		private float shotBoostMultiplierIncrement;
 
-		*/
+		[Token(Token = "0x4006E2D")]
+		[FieldOffset(Offset = "0x8C")]
+		[SerializeField]
+		private int shotBoostMaxMultiplierIncrements;
+
+		[Token(Token = "0x4006E2E")]
+		[FieldOffset(Offset = "0x90")]
+		public List<AxleInfo> axleInfos;
+
+		[Token(Token = "0x4006E2F")]
+		[FieldOffset(Offset = "0x98")]
+		public float maxMotorTorque;
+
+		[Token(Token = "0x4006E30")]
+		[FieldOffset(Offset = "0x9C")]
+		public float maxSteeringAngle;
+
+		[Token(Token = "0x4006E31")]
+		[FieldOffset(Offset = "0xA0")]
+		public float MaxSpeed;
+
+		[Token(Token = "0x4006E32")]
+		[FieldOffset(Offset = "0xA4")]
+		public float BreakSpeed;
+
+		[Token(Token = "0x4006E33")]
+		[FieldOffset(Offset = "0xA8")]
+		[SerializeField]
+		private float dragInAir;
+
+		[Token(Token = "0x4006E34")]
+		[FieldOffset(Offset = "0xB0")]
+		[SerializeField]
+		private Transform leftFlameTransform;
+
+		[Token(Token = "0x4006E35")]
+		[FieldOffset(Offset = "0xB8")]
+		[SerializeField]
+		private Transform rightFlameTransform;
+
+		[Token(Token = "0x4006E36")]
+		[FieldOffset(Offset = "0xC0")]
+		private Vector3 lastShootVelocity;
+
+		[Token(Token = "0x4006E37")]
+		[FieldOffset(Offset = "0xCC")]
+		private float baseDrag;
+
+		[Token(Token = "0x4006E38")]
+		[FieldOffset(Offset = "0xD0")]
+		private float shotDampen;
+
+		[Token(Token = "0x4006E39")]
+		[FieldOffset(Offset = "0xD4")]
+		private float shotDampenTimer;
+
+		[Token(Token = "0x4006E3A")]
+		[FieldOffset(Offset = "0xD8")]
+		private float resetTimer;
+
+		[Token(Token = "0x4006E3B")]
+		[FieldOffset(Offset = "0xDC")]
+		private float shotDampenMult;
+
+		[Token(Token = "0x4006E3C")]
+		[FieldOffset(Offset = "0xE0")]
+		private int boostIncrements;
+
+		[Token(Token = "0x6005EED")]
+		[Address(RVA = "0x188A63C", Offset = "0x188A63C", VA = "0x188A63C")]
+		private void Start()
+		{
+		}
+
+		[Token(Token = "0x6005EEE")]
+		[Address(RVA = "0x188A80C", Offset = "0x188A80C", VA = "0x188A80C", Slot = "6")]
+		public override void OnAimUpdate(Vector3 boost, bool onlyAimArrow)
+		{
+		}
+
+		[Token(Token = "0x6005EEF")]
+		[Address(RVA = "0x188A850", Offset = "0x188A850", VA = "0x188A850", Slot = "7")]
+		public override void OnShoot(Vector3 boost)
+		{
+		}
+
+		[Token(Token = "0x6005EF0")]
+		[Address(RVA = "0x188A8E8", Offset = "0x188A8E8", VA = "0x188A8E8")]
+		private void Update()
+		{
+		}
+
+		[Token(Token = "0x6005EF1")]
+		[Address(RVA = "0x188AA3C", Offset = "0x188AA3C", VA = "0x188AA3C", Slot = "12")]
+		protected override void FixedUpdate()
+		{
+		}
+
+		[Token(Token = "0x6005EF2")]
+		[Address(RVA = "0x188B480", Offset = "0x188B480", VA = "0x188B480")]
+		public CarWithWheelColliderShooter()
+		{
+		}
 	}
 }

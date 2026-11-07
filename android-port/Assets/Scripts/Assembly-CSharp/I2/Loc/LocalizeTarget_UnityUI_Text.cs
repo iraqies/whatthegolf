@@ -1,66 +1,98 @@
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace I2.Loc
 {
-	public class LocalizeTarget_UnityUI_Text : MonoBehaviour
+	[Token(Token = "0x200131B")]
+	public class LocalizeTarget_UnityUI_Text : LocalizeTarget<Text>
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x400667E")]
+		[FieldOffset(Offset = "0x20")]
+		private TextAnchor mAlignment_RTL;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x400667F")]
+		[FieldOffset(Offset = "0x24")]
+		private TextAnchor mAlignment_LTR;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4006680")]
+		[FieldOffset(Offset = "0x28")]
+		private bool mAlignmentWasRTL;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4006681")]
+		[FieldOffset(Offset = "0x29")]
+		private bool mInitializeAlignment;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x6005935")]
+		[Address(RVA = "0x154ACA4", Offset = "0x154ACA4", VA = "0x154ACA4")]
+		static LocalizeTarget_UnityUI_Text()
+		{
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x6005936")]
+		[Address(RVA = "0x154ACA8", Offset = "0x154ACA8", VA = "0x154ACA8")]
+		[Attribute(Name = "RuntimeInitializeOnLoadMethodAttribute", RVA = "0x72074", Offset = "0x72074")]
+		private static void AutoRegister()
+		{
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6005937")]
+		[Address(RVA = "0x154AD78", Offset = "0x154AD78", VA = "0x154AD78", Slot = "10")]
+		public override eTermType GetPrimaryTermType(Localize cmp)
+		{
+			return default;
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6005938")]
+		[Address(RVA = "0x154AD80", Offset = "0x154AD80", VA = "0x154AD80", Slot = "11")]
+		public override eTermType GetSecondaryTermType(Localize cmp)
+		{
+			return default;
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x6005939")]
+		[Address(RVA = "0x154AD88", Offset = "0x154AD88", VA = "0x154AD88", Slot = "7")]
+		public override bool CanUseSecondaryTerm()
+		{
+			return default;
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x600593A")]
+		[Address(RVA = "0x154AD90", Offset = "0x154AD90", VA = "0x154AD90", Slot = "8")]
+		public override bool AllowMainTermToBeRTL()
+		{
+			return default;
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x600593B")]
+		[Address(RVA = "0x154AD98", Offset = "0x154AD98", VA = "0x154AD98", Slot = "9")]
+		public override bool AllowSecondTermToBeRTL()
+		{
+			return default;
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x600593C")]
+		[Address(RVA = "0x154ADA0", Offset = "0x154ADA0", VA = "0x154ADA0", Slot = "5")]
+		public override void GetFinalTerms(Localize cmp, string Main, string Secondary, out string primaryTerm, out string secondaryTerm)
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x600593D")]
+		[Address(RVA = "0x154AEE0", Offset = "0x154AEE0", VA = "0x154AEE0", Slot = "6")]
+		public override void DoLocalize(Localize cmp, string mainTranslation, string secondaryTranslation)
+		{
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x600593E")]
+		[Address(RVA = "0x154B1D4", Offset = "0x154B1D4", VA = "0x154B1D4")]
+		private void InitAlignment(bool isRTL, TextAnchor alignment, out TextAnchor alignLTR, out TextAnchor alignRTL)
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x600593F")]
+		[Address(RVA = "0x154B304", Offset = "0x154B304", VA = "0x154B304")]
+		public LocalizeTarget_UnityUI_Text()
+		{
+		}
 	}
 }

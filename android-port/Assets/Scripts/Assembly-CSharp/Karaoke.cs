@@ -1,63 +1,227 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x20007B4")]
 public class Karaoke : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x20007B5")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x41590", Offset = "0x41590")]
+	private sealed class _003C_003Ec__DisplayClass15_0
+	{
+		[Token(Token = "0x400289F")]
+		[FieldOffset(Offset = "0x10")]
+		public Karaoke _003C_003E4__this;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40028A0")]
+		[FieldOffset(Offset = "0x18")]
+		public bool didBeginMovment;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x6002342")]
+		[Address(RVA = "0x17CC1D8", Offset = "0x17CC1D8", VA = "0x17CC1D8")]
+		public _003C_003Ec__DisplayClass15_0()
+		{
+		}
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x6002343")]
+		[Address(RVA = "0x17CC1E0", Offset = "0x17CC1E0", VA = "0x17CC1E0")]
+		internal void _003CStart_003Eb__0(Vector3 v)
+		{
+		}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x6002344")]
+		[Address(RVA = "0x17CC200", Offset = "0x17CC200", VA = "0x17CC200")]
+		internal void _003CStart_003Eb__1()
+		{
+		}
+	}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x20007B6")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x415A0", Offset = "0x415A0")]
+	private sealed class _003CStart_003Ed__15 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x40028A1")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x40028A2")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x40028A3")]
+		[FieldOffset(Offset = "0x20")]
+		public Karaoke _003C_003E4__this;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x40028A4")]
+		[FieldOffset(Offset = "0x28")]
+		private _003C_003Ec__DisplayClass15_0 _003C_003E8__1;
 
-	4. This script is unnecessary.
+		[Token(Token = "0x170003D9")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x6002348")]
+			[Address(RVA = "0x17CC438", Offset = "0x17CC438", VA = "0x17CC438", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x170003DA")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x600234A")]
+			[Address(RVA = "0x17CC480", Offset = "0x17CC480", VA = "0x17CC480", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
 
-	5. Script Content Level 0
+		[Token(Token = "0x6002345")]
+		[Address(RVA = "0x17CC20C", Offset = "0x17CC20C", VA = "0x17CC20C")]
+		[DebuggerHidden]
+		public _003CStart_003Ed__15(int _003C_003E1__state)
+		{
+		}
 
-		AssetRipper was set to not load any script information.
+		[Token(Token = "0x6002346")]
+		[Address(RVA = "0x17CC238", Offset = "0x17CC238", VA = "0x17CC238", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x6002347")]
+		[Address(RVA = "0x17CC23C", Offset = "0x17CC23C", VA = "0x17CC23C", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x6002348")]
+		[Address(RVA = "0x17CC438", Offset = "0x17CC438", VA = "0x17CC438", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
 
-	7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x6002349")]
+		[Address(RVA = "0x17CC440", Offset = "0x17CC440", VA = "0x17CC440", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x600234A")]
+		[Address(RVA = "0x17CC480", Offset = "0x17CC480", VA = "0x17CC480", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
 
-	*/
+	[Token(Token = "0x4002891")]
+	[FieldOffset(Offset = "0x18")]
+	[SerializeField]
+	private uint startState;
+
+	[Token(Token = "0x4002892")]
+	[FieldOffset(Offset = "0x1C")]
+	[SerializeField]
+	private float endX;
+
+	[Token(Token = "0x4002893")]
+	[FieldOffset(Offset = "0x20")]
+	[SerializeField]
+	private float boundsY;
+
+	[Token(Token = "0x4002894")]
+	[FieldOffset(Offset = "0x28")]
+	[SerializeField]
+	private KaraokeWord[] words;
+
+	[Token(Token = "0x4002895")]
+	[FieldOffset(Offset = "0x30")]
+	[SerializeField]
+	private GolfGoal golfGoal;
+
+	[Token(Token = "0x4002896")]
+	[FieldOffset(Offset = "0x38")]
+	[SerializeField]
+	private AudioSource loopAudioSource;
+
+	[Token(Token = "0x4002897")]
+	[FieldOffset(Offset = "0x40")]
+	[SerializeField]
+	private GolfBallController golfBallController;
+
+	[Token(Token = "0x4002898")]
+	[FieldOffset(Offset = "0x48")]
+	[SerializeField]
+	private Karaoke2DShooter ball;
+
+	[Token(Token = "0x4002899")]
+	[FieldOffset(Offset = "0x50")]
+	private Transform ballTransform;
+
+	[Token(Token = "0x400289A")]
+	[FieldOffset(Offset = "0x58")]
+	private Level level;
+
+	[Token(Token = "0x400289B")]
+	[FieldOffset(Offset = "0x60")]
+	private bool wasGrounded;
+
+	[Token(Token = "0x400289C")]
+	[FieldOffset(Offset = "0x61")]
+	private bool hasShot;
+
+	[Token(Token = "0x400289D")]
+	[FieldOffset(Offset = "0x68")]
+	private KaraokeWord activeWord;
+
+	[Token(Token = "0x400289E")]
+	[FieldOffset(Offset = "0x70")]
+	private MusicManager music;
+
+	[Token(Token = "0x600233D")]
+	[Address(RVA = "0x14F946C", Offset = "0x14F946C", VA = "0x14F946C")]
+	private void Awake()
+	{
+	}
+
+	[Token(Token = "0x600233E")]
+	[Address(RVA = "0x14F94C0", Offset = "0x14F94C0", VA = "0x14F94C0")]
+	private IEnumerator Start()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x600233F")]
+	[Address(RVA = "0x14F9534", Offset = "0x14F9534", VA = "0x14F9534")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x6002340")]
+	[Address(RVA = "0x14F979C", Offset = "0x14F979C", VA = "0x14F979C")]
+	private KaraokeWord FindWord(float x)
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6002341")]
+	[Address(RVA = "0x14F9934", Offset = "0x14F9934", VA = "0x14F9934")]
+	public Karaoke()
+	{
+	}
 }

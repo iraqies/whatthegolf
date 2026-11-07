@@ -1,63 +1,182 @@
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000052")]
 public class MenuSettingsCrossPromotionAppleArcade : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[StructLayout((LayoutKind)3)]
+	[Token(Token = "0x2000053")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x3D470", Offset = "0x3D470")]
+	private struct _003CHandleOpeningURL_003Ed__13 : IAsyncStateMachine
+	{
+		[Token(Token = "0x4000164")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x0")]
+		public int _003C_003E1__state;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000165")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x8")]
+		public AsyncVoidMethodBuilder _003C_003Et__builder;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000166")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
+		public MenuSettingsCrossPromotionAppleArcade _003C_003E4__this;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4000167")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x30")]
+		public string url;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4000168")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x38")]
+		public string textLocKey;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000169")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x40")]
+		private TaskAwaiter _003C_003Eu__1;
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6000160")]
+		[Address(RVA = "0x17F6EEC", Offset = "0x17F6EEC", VA = "0x17F6EEC", Slot = "4")]
+		private void MoveNext()
+		{
+		}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6000161")]
+		[Address(RVA = "0x17F7294", Offset = "0x17F7294", VA = "0x17F7294", Slot = "5")]
+		[DebuggerHidden]
+		private void SetStateMachine(IAsyncStateMachine stateMachine)
+		{
+		}
+	}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4000160")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x18")]
+	private Texture2D generatedQRCodeTexture;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4000161")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x20")]
+	private Sprite generatedQRCodeSprite;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4000162")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
+	[SerializeField]
+	private SettingsMenuCommon clashCrossPromotion;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4000163")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x30")]
+	[SerializeField]
+	private SettingsMenuCommon carCrossPromotion;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x1700003B")]
+	private bool ShouldShowCrossPromotionSection
+	{
+		[Token(Token = "0x6000150")]
+		[Address(RVA = "0x1566598", Offset = "0x1566598", VA = "0x1566598")]
+		get
+		{
+			return default;
+		}
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x1700003C")]
+	private bool ShouldShowClash
+	{
+		[Token(Token = "0x6000151")]
+		[Address(RVA = "0x15665C4", Offset = "0x15665C4", VA = "0x15665C4")]
+		get
+		{
+			return default;
+		}
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x1700003D")]
+	private bool DoesPlatformRequireQRCode
+	{
+		[Token(Token = "0x6000153")]
+		[Address(RVA = "0x15667A4", Offset = "0x15667A4", VA = "0x15667A4")]
+		get
+		{
+			return default;
+		}
+	}
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x6000152")]
+	[Address(RVA = "0x15666BC", Offset = "0x15666BC", VA = "0x15666BC")]
+	public void Init(SettingsMenu settingsMenu)
+	{
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x6000154")]
+	[Address(RVA = "0x15667AC", Offset = "0x15667AC", VA = "0x15667AC")]
+	public void UGUI_HandleWhatTheCarClicked()
+	{
+	}
 
-	*/
+	[Token(Token = "0x6000155")]
+	[Address(RVA = "0x156698C", Offset = "0x156698C", VA = "0x156698C")]
+	public void UGUI_HandleWhatTheClashClicked()
+	{
+	}
+
+	[Token(Token = "0x6000156")]
+	[Address(RVA = "0x15668E0", Offset = "0x15668E0", VA = "0x15668E0")]
+	private void HandleOpeningURL(string url, string textLocKey)
+	{
+	}
+
+	[Token(Token = "0x6000157")]
+	[Address(RVA = "0x1566AC0", Offset = "0x1566AC0", VA = "0x1566AC0")]
+	private void Agree(string url)
+	{
+	}
+
+	[Token(Token = "0x6000158")]
+	[Address(RVA = "0x1566B94", Offset = "0x1566B94", VA = "0x1566B94")]
+	private void Disagree()
+	{
+	}
+
+	[Token(Token = "0x6000159")]
+	[Address(RVA = "0x1566B30", Offset = "0x1566B30", VA = "0x1566B30")]
+	private void EnableOverworldInteraction()
+	{
+	}
+
+	[Token(Token = "0x600015A")]
+	[Address(RVA = "0x1566BF8", Offset = "0x1566BF8", VA = "0x1566BF8")]
+	private void DisableOverworldInteraction()
+	{
+	}
+
+	[Token(Token = "0x600015B")]
+	[Address(RVA = "0x1566C60", Offset = "0x1566C60", VA = "0x1566C60")]
+	private void CleanupGeneratedQRCodeAssets()
+	{
+	}
+
+	[Token(Token = "0x600015C")]
+	[Address(RVA = "0x1566D7C", Offset = "0x1566D7C", VA = "0x1566D7C")]
+	private Sprite GenerateQRCodeSprite(string url)
+	{
+		return null;
+	}
+
+	[Token(Token = "0x600015D")]
+	[Address(RVA = "0x1566E80", Offset = "0x1566E80", VA = "0x1566E80")]
+	private void OnDestroy()
+	{
+	}
+
+	[Token(Token = "0x600015E")]
+	[Address(RVA = "0x1566E84", Offset = "0x1566E84", VA = "0x1566E84")]
+	public void RefreshDate()
+	{
+	}
+
+	[Token(Token = "0x600015F")]
+	[Address(RVA = "0x1566F18", Offset = "0x1566F18", VA = "0x1566F18")]
+	public MenuSettingsCrossPromotionAppleArcade()
+	{
+	}
 }

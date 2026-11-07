@@ -1,66 +1,129 @@
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Utility
 {
+	[Token(Token = "0x2001025")]
 	public class UfoTractorBeam : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x2001026")]
+		public enum UFOStates
+		{
+			[Token(Token = "0x4005533")]
+			Tracking = 0,
+			[Token(Token = "0x4005534")]
+			Aiming = 1,
+			[Token(Token = "0x4005535")]
+			Beaming = 2
+		}
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4005523")]
+		[FieldOffset(Offset = "0x18")]
+		public LayerMask AffectedObjectLayers;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4005524")]
+		[FieldOffset(Offset = "0x1C")]
+		public bool DestroyBeamedObjects;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4005525")]
+		[FieldOffset(Offset = "0x20")]
+		public BeamPoint beamPoint;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4005526")]
+		[FieldOffset(Offset = "0x28")]
+		public GameObject rayGfx;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4005527")]
+		[FieldOffset(Offset = "0x30")]
+		private List<BeamableObject> _objectsInBeam;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4005528")]
+		[FieldOffset(Offset = "0x38")]
+		public ParticleSystem beamParticles;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4005529")]
+		[FieldOffset(Offset = "0x40")]
+		private Vector3 _initParticlePosition;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x400552A")]
+		[FieldOffset(Offset = "0x4C")]
+		public UFOStates currentUFOState;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x400552B")]
+		[FieldOffset(Offset = "0x50")]
+		public Color normalColor;
 
-		5. Script Content Level 0
+		[Token(Token = "0x400552C")]
+		[FieldOffset(Offset = "0x60")]
+		public Color trackingColor;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x400552D")]
+		[FieldOffset(Offset = "0x70")]
+		public Color shootColor;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x400552E")]
+		[FieldOffset(Offset = "0x80")]
+		private Color _currentColor;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x400552F")]
+		[FieldOffset(Offset = "0x90")]
+		private Material _coneMaterial;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x4005530")]
+		[FieldOffset(Offset = "0x98")]
+		public Renderer coneRenderer;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x4005531")]
+		[FieldOffset(Offset = "0xA0")]
+		private float _stateTime;
 
-		*/
+		[Token(Token = "0x600482F")]
+		[Address(RVA = "0x1739384", Offset = "0x1739384", VA = "0x1739384")]
+		private void Awake()
+		{
+		}
+
+		[Token(Token = "0x6004830")]
+		[Address(RVA = "0x173952C", Offset = "0x173952C", VA = "0x173952C")]
+		private void OnEnterBeamPoint(BeamableObject obj)
+		{
+		}
+
+		[Token(Token = "0x6004831")]
+		[Address(RVA = "0x173962C", Offset = "0x173962C", VA = "0x173962C")]
+		private void OnTriggerEnter(Collider other)
+		{
+		}
+
+		[Token(Token = "0x6004832")]
+		[Address(RVA = "0x1739800", Offset = "0x1739800", VA = "0x1739800")]
+		private void OnTriggerExit(Collider other)
+		{
+		}
+
+		[Token(Token = "0x6004833")]
+		[Address(RVA = "0x1739634", Offset = "0x1739634", VA = "0x1739634")]
+		private void CheckObject(Collider other, bool add)
+		{
+		}
+
+		[Token(Token = "0x6004834")]
+		[Address(RVA = "0x1739808", Offset = "0x1739808", VA = "0x1739808")]
+		private void SwitchState(UFOStates newState)
+		{
+		}
+
+		[Token(Token = "0x6004835")]
+		[Address(RVA = "0x1739994", Offset = "0x1739994", VA = "0x1739994")]
+		private void FixedUpdate()
+		{
+		}
+
+		[Token(Token = "0x6004836")]
+		[Address(RVA = "0x1739E14", Offset = "0x1739E14", VA = "0x1739E14")]
+		public UfoTractorBeam()
+		{
+		}
 	}
 }

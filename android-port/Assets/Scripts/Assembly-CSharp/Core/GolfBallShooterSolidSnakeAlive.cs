@@ -1,66 +1,219 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Core
 {
-	public class GolfBallShooterSolidSnakeAlive : MonoBehaviour
+	[Token(Token = "0x200146A")]
+	public class GolfBallShooterSolidSnakeAlive : GolfBallShooterBase, IExplodable
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Serializable]
+		[Token(Token = "0x200146B")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x4915C", Offset = "0x4915C")]
+		private sealed class _003C_003Ec
+		{
+			[Token(Token = "0x4006FE8")]
+			[FieldOffset(Offset = "0x0")]
+			public static readonly _003C_003Ec _003C_003E9;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x4006FE9")]
+			[FieldOffset(Offset = "0x8")]
+			public static Action<float> _003C_003E9__33_0;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x600600E")]
+			[Address(RVA = "0x17B55A4", Offset = "0x17B55A4", VA = "0x17B55A4")]
+			public _003C_003Ec()
+			{
+			}
 
-		2. Incorrect dll files were provided to AssetRipper.
+			[Token(Token = "0x600600F")]
+			[Address(RVA = "0x17B55AC", Offset = "0x17B55AC", VA = "0x17B55AC")]
+			internal void _003COnExplode_003Eb__33_0(float v)
+			{
+			}
+		}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4006FD0")]
+		[FieldOffset(Offset = "0x60")]
+		[SerializeField]
+		public float minShootVelocity;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4006FD1")]
+		[FieldOffset(Offset = "0x64")]
+		[SerializeField]
+		public float fullShootVelocity;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4006FD2")]
+		[FieldOffset(Offset = "0x68")]
+		[SerializeField]
+		public float pitch;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4006FD3")]
+		[FieldOffset(Offset = "0x70")]
+		[SerializeField]
+		public AnimationCurve powerToPitchWeightCurve;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4006FD4")]
+		[FieldOffset(Offset = "0x78")]
+		[SerializeField]
+		public float spin;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4006FD5")]
+		[FieldOffset(Offset = "0x80")]
+		[SerializeField]
+		public Transform box;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4006FD6")]
+		[FieldOffset(Offset = "0x88")]
+		[SerializeField]
+		public Animation boxAnimation;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4006FD7")]
+		[FieldOffset(Offset = "0x90")]
+		[SerializeField]
+		protected bool lookInShotDirection;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4006FD8")]
+		[FieldOffset(Offset = "0x91")]
+		[SerializeField]
+		protected bool lookInAimDirection;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x4006FD9")]
+		[FieldOffset(Offset = "0x92")]
+		[SerializeField]
+		protected bool useLocalUp;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x4006FDA")]
+		[FieldOffset(Offset = "0x93")]
+		[SerializeField]
+		public bool zeroPitchIfNotGrouneded;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x4006FDB")]
+		[FieldOffset(Offset = "0x94")]
+		[SerializeField]
+		public float blockTimeOnExplode;
 
-		*/
+		[Token(Token = "0x4006FDC")]
+		[FieldOffset(Offset = "0x98")]
+		private BlockShotIfNotGrounded blocker;
+
+		[Token(Token = "0x4006FDD")]
+		[FieldOffset(Offset = "0xA0")]
+		private Vector3 lastBoost;
+
+		[Token(Token = "0x4006FDE")]
+		[FieldOffset(Offset = "0xAC")]
+		private Vector3 baseBoxPosition;
+
+		[Token(Token = "0x4006FDF")]
+		[FieldOffset(Offset = "0xB8")]
+		private float up;
+
+		[Token(Token = "0x4006FE0")]
+		[FieldOffset(Offset = "0xBC")]
+		public float animationSpeed;
+
+		[Token(Token = "0x4006FE1")]
+		[FieldOffset(Offset = "0xC0")]
+		public AnimationClip still;
+
+		[Token(Token = "0x4006FE2")]
+		[FieldOffset(Offset = "0xC8")]
+		public AnimationClip walking;
+
+		[Token(Token = "0x4006FE3")]
+		[FieldOffset(Offset = "0xD0")]
+		public bool isWalking;
+
+		[Token(Token = "0x4006FE4")]
+		[FieldOffset(Offset = "0xD1")]
+		[SerializeField]
+		private bool countStrokesOnAimUpdate;
+
+		[Token(Token = "0x4006FE5")]
+		[FieldOffset(Offset = "0xD2")]
+		private bool isAiming;
+
+		[Token(Token = "0x4006FE6")]
+		[FieldOffset(Offset = "0xD8")]
+		public UnityEvent OnWalking;
+
+		[Token(Token = "0x4006FE7")]
+		[FieldOffset(Offset = "0xE0")]
+		public UnityEvent OnStopped;
+
+		[Token(Token = "0x6006001")]
+		[Address(RVA = "0x14990C8", Offset = "0x14990C8", VA = "0x14990C8", Slot = "11")]
+		protected override void Awake()
+		{
+		}
+
+		[Token(Token = "0x6006002")]
+		[Address(RVA = "0x1499154", Offset = "0x1499154", VA = "0x1499154")]
+		private void Start()
+		{
+		}
+
+		[Token(Token = "0x6006003")]
+		[Address(RVA = "0x149917C", Offset = "0x149917C", VA = "0x149917C", Slot = "4")]
+		public override void OnActivate()
+		{
+		}
+
+		[Token(Token = "0x6006004")]
+		[Address(RVA = "0x14991C4", Offset = "0x14991C4", VA = "0x14991C4", Slot = "6")]
+		public override void OnAimUpdate(Vector3 boost, bool onlyAimArrow)
+		{
+		}
+
+		[Token(Token = "0x6006005")]
+		[Address(RVA = "0x149934C", Offset = "0x149934C", VA = "0x149934C", Slot = "8")]
+		public override void OnCancel()
+		{
+		}
+
+		[Token(Token = "0x6006006")]
+		[Address(RVA = "0x1499374", Offset = "0x1499374", VA = "0x1499374", Slot = "9")]
+		public override void OnReset()
+		{
+		}
+
+		[Token(Token = "0x6006007")]
+		[Address(RVA = "0x149939C", Offset = "0x149939C", VA = "0x149939C", Slot = "12")]
+		protected override void FixedUpdate()
+		{
+		}
+
+		[Token(Token = "0x6006008")]
+		[Address(RVA = "0x1499598", Offset = "0x1499598", VA = "0x1499598")]
+		private void Update()
+		{
+		}
+
+		[Token(Token = "0x6006009")]
+		[Address(RVA = "0x1499698", Offset = "0x1499698", VA = "0x1499698", Slot = "7")]
+		public override void OnShoot(Vector3 boost)
+		{
+		}
+
+		[Token(Token = "0x600600A")]
+		[Address(RVA = "0x149990C", Offset = "0x149990C", VA = "0x149990C", Slot = "15")]
+		public void OnExplode()
+		{
+		}
+
+		[Token(Token = "0x600600B")]
+		[Address(RVA = "0x1499B50", Offset = "0x1499B50", VA = "0x1499B50")]
+		public GolfBallShooterSolidSnakeAlive()
+		{
+		}
+
+		[Token(Token = "0x600600C")]
+		[Address(RVA = "0x1499BA4", Offset = "0x1499BA4", VA = "0x1499BA4")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x72F04", Offset = "0x72F04")]
+		private void _003COnExplode_003Eb__33_1()
+		{
+		}
 	}
 }

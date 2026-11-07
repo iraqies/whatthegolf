@@ -1,63 +1,78 @@
+using System.Collections.Generic;
+using Audio;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x200072A")]
 public class WeightLiftingWinCheck : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x40025D3")]
+	[FieldOffset(Offset = "0x18")]
+	public float SleepMagnitude;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x40025D4")]
+	[FieldOffset(Offset = "0x20")]
+	public BoxCollider2D WinZone;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x40025D5")]
+	[FieldOffset(Offset = "0x28")]
+	public Collider2D BarCol;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x40025D6")]
+	[FieldOffset(Offset = "0x30")]
+	public List<Collider2D> ResetColliders;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x40025D7")]
+	[FieldOffset(Offset = "0x38")]
+	public List<Transform> WinPoints;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x40025D8")]
+	[FieldOffset(Offset = "0x40")]
+	public ClipSettingsCollection sfxOnWin;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x40025D9")]
+	[FieldOffset(Offset = "0x48")]
+	private Rigidbody2D rigid;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x40025DA")]
+	[FieldOffset(Offset = "0x50")]
+	private Vector3 startPos;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x40025DB")]
+	[FieldOffset(Offset = "0x5C")]
+	private Quaternion startRot;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x40025DC")]
+	[FieldOffset(Offset = "0x6C")]
+	private float nextGruntSfxTime;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x6002115")]
+	[Address(RVA = "0x1751488", Offset = "0x1751488", VA = "0x1751488")]
+	private void Awake()
+	{
+	}
 
-	5. Script Content Level 0
+	[Token(Token = "0x6002116")]
+	[Address(RVA = "0x1751528", Offset = "0x1751528", VA = "0x1751528")]
+	private void OnTriggerStay2D(Collider2D other)
+	{
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x6002117")]
+	[Address(RVA = "0x17518A0", Offset = "0x17518A0", VA = "0x17518A0")]
+	private void OnTriggerEnter2D(Collider2D other)
+	{
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x6002118")]
+	[Address(RVA = "0x1751920", Offset = "0x1751920", VA = "0x1751920")]
+	private void Reset()
+	{
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x6002119")]
+	[Address(RVA = "0x1751978", Offset = "0x1751978", VA = "0x1751978")]
+	public WeightLiftingWinCheck()
+	{
+	}
 }

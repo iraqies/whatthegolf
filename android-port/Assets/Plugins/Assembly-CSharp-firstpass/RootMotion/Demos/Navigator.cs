@@ -1,66 +1,167 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace RootMotion.Demos
 {
-	public class Navigator : MonoBehaviour
+	[Serializable]
+	[Token(Token = "0x200025B")]
+	public class Navigator
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x200025C")]
+		public enum State
+		{
+			[Token(Token = "0x4000F8C")]
+			Idle = 0,
+			[Token(Token = "0x4000F8D")]
+			Seeking = 1,
+			[Token(Token = "0x4000F8E")]
+			OnPath = 2
+		}
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000F7D")]
+		[FieldOffset(Offset = "0x10")]
+		public bool activeTargetSeeking;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000F7E")]
+		[FieldOffset(Offset = "0x14")]
+		public float cornerRadius;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4000F7F")]
+		[FieldOffset(Offset = "0x18")]
+		public float recalculateOnPathDistance;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4000F80")]
+		[FieldOffset(Offset = "0x1C")]
+		public float maxSampleDistance;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000F81")]
+		[FieldOffset(Offset = "0x20")]
+		public float nextPathInterval;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4000F82")]
+		[FieldOffset(Offset = "0x24")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x36EE8", Offset = "0x36EE8")]
+		private Vector3 normalizedDeltaPosition__BackingField;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4000F83")]
+		[FieldOffset(Offset = "0x30")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x36EF8", Offset = "0x36EF8")]
+		private State state__BackingField;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4000F84")]
+		[FieldOffset(Offset = "0x38")]
+		private Transform transform;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4000F85")]
+		[FieldOffset(Offset = "0x40")]
+		private int cornerIndex;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4000F86")]
+		[FieldOffset(Offset = "0x48")]
+		private Vector3[] corners;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4000F87")]
+		[FieldOffset(Offset = "0x50")]
+		private NavMeshPath path;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4000F88")]
+		[FieldOffset(Offset = "0x58")]
+		private Vector3 lastTargetPosition;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x4000F89")]
+		[FieldOffset(Offset = "0x64")]
+		private bool initiated;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x4000F8A")]
+		[FieldOffset(Offset = "0x68")]
+		private float nextPathTime;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x170001E6")]
+		public Vector3 normalizedDeltaPosition
+		{
+			[Token(Token = "0x6000F7F")]
+			[Address(RVA = "0x13BA26C", Offset = "0x13BA26C", VA = "0x13BA26C")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3B3EC", Offset = "0x3B3EC")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000F80")]
+			[Address(RVA = "0x13BA278", Offset = "0x13BA278", VA = "0x13BA278")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3B3FC", Offset = "0x3B3FC")]
+			private set
+			{
+			}
+		}
 
-		*/
+		[Token(Token = "0x170001E7")]
+		public State state
+		{
+			[Token(Token = "0x6000F81")]
+			[Address(RVA = "0x13BA284", Offset = "0x13BA284", VA = "0x13BA284")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3B40C", Offset = "0x3B40C")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000F82")]
+			[Address(RVA = "0x13BA28C", Offset = "0x13BA28C", VA = "0x13BA28C")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3B41C", Offset = "0x3B41C")]
+			private set
+			{
+			}
+		}
+
+		[Token(Token = "0x6000F83")]
+		[Address(RVA = "0x13BA294", Offset = "0x13BA294", VA = "0x13BA294")]
+		public void Initiate(Transform transform)
+		{
+		}
+
+		[Token(Token = "0x6000F84")]
+		[Address(RVA = "0x13BA34C", Offset = "0x13BA34C", VA = "0x13BA34C")]
+		public void Update(Vector3 targetPosition)
+		{
+		}
+
+		[Token(Token = "0x6000F85")]
+		[Address(RVA = "0x13BA78C", Offset = "0x13BA78C", VA = "0x13BA78C")]
+		private void CalculatePath(Vector3 targetPosition)
+		{
+		}
+
+		[Token(Token = "0x6000F86")]
+		[Address(RVA = "0x13BA808", Offset = "0x13BA808", VA = "0x13BA808")]
+		private bool Find(Vector3 targetPosition)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000F87")]
+		[Address(RVA = "0x13BA748", Offset = "0x13BA748", VA = "0x13BA748")]
+		private void Stop()
+		{
+		}
+
+		[Token(Token = "0x6000F88")]
+		[Address(RVA = "0x13BA778", Offset = "0x13BA778", VA = "0x13BA778")]
+		private float HorDistance(Vector3 p1, Vector3 p2)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000F89")]
+		[Address(RVA = "0x13BA950", Offset = "0x13BA950", VA = "0x13BA950")]
+		public void Visualize()
+		{
+		}
+
+		[Token(Token = "0x6000F8A")]
+		[Address(RVA = "0x13BAAF8", Offset = "0x13BAAF8", VA = "0x13BAAF8")]
+		public Navigator()
+		{
+		}
 	}
 }

@@ -1,63 +1,97 @@
+using System;
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x20008E9")]
+[AttributeAttribute(Name = "RequireComponent", RVA = "0x41E30", Offset = "0x41E30")]
 public class PlatformDependentCanvasScaling : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Serializable]
+	[Token(Token = "0x20008EA")]
+	private struct CanvasSettings
+	{
+		[Token(Token = "0x40030C6")]
+		[FieldOffset(Offset = "0x0")]
+		public EPlatformType platform;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40030C7")]
+		[FieldOffset(Offset = "0x4")]
+		public int canvasWidth;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40030C8")]
+		[FieldOffset(Offset = "0x8")]
+		public int canvasHeigt;
+	}
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x20008EB")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x41E98", Offset = "0x41E98")]
+	private sealed class _003C_003Ec__DisplayClass3_0
+	{
+		[Token(Token = "0x40030C9")]
+		[FieldOffset(Offset = "0x10")]
+		public EPlatformType platform;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x600293C")]
+		[Address(RVA = "0x1827574", Offset = "0x1827574", VA = "0x1827574")]
+		public _003C_003Ec__DisplayClass3_0()
+		{
+		}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x600293D")]
+		[Address(RVA = "0x182757C", Offset = "0x182757C", VA = "0x182757C")]
+		internal bool _003CAwake_003Eb__1(CanvasSettings s)
+		{
+			return default;
+		}
+	}
 
-	3. Assembly Reconstruction has not been implemented.
+	[Serializable]
+	[Token(Token = "0x20008EC")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x41EA8", Offset = "0x41EA8")]
+	private sealed class _003C_003Ec
+	{
+		[Token(Token = "0x40030CA")]
+		[FieldOffset(Offset = "0x0")]
+		public static readonly _003C_003Ec _003C_003E9;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x40030CB")]
+		[FieldOffset(Offset = "0x8")]
+		public static Func<CanvasSettings, EPlatformType> _003C_003E9__3_0;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x600293F")]
+		[Address(RVA = "0x1827564", Offset = "0x1827564", VA = "0x1827564")]
+		public _003C_003Ec()
+		{
+		}
 
-	4. This script is unnecessary.
+		[Token(Token = "0x6002940")]
+		[Address(RVA = "0x182756C", Offset = "0x182756C", VA = "0x182756C")]
+		internal EPlatformType _003CAwake_003Eb__3_0(CanvasSettings s)
+		{
+			return default;
+		}
+	}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x40030C4")]
+	[FieldOffset(Offset = "0x18")]
+	[SerializeField]
+	private List<CanvasSettings> settings;
 
-	5. Script Content Level 0
+	[Token(Token = "0x40030C5")]
+	[FieldOffset(Offset = "0x20")]
+	[SerializeField]
+	private RectTransform childRectTransform;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x600293A")]
+	[Address(RVA = "0x15E6D20", Offset = "0x15E6D20", VA = "0x15E6D20")]
+	private void Awake()
+	{
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
-
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x600293B")]
+	[Address(RVA = "0x15E721C", Offset = "0x15E721C", VA = "0x15E721C")]
+	public PlatformDependentCanvasScaling()
+	{
+	}
 }

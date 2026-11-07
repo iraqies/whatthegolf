@@ -1,63 +1,132 @@
+using System;
+using System.Collections.Generic;
+using Il2CppDummyDll;
+using Malee;
 using UnityEngine;
 
-public class SpeechbubbleList : MonoBehaviour
+[Serializable]
+[Token(Token = "0x2000A5F")]
+public class SpeechbubbleList : ScriptableObject
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Serializable]
+	[Token(Token = "0x2000A60")]
+	public class SpeechbubbleTextInfo
+	{
+		[Token(Token = "0x4003999")]
+		[FieldOffset(Offset = "0x10")]
+		public string ID;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x400399A")]
+		[FieldOffset(Offset = "0x18")]
+		public int SpeakerIndex;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x400399B")]
+		[FieldOffset(Offset = "0x1C")]
+		public bool isLocalized;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x400399C")]
+		[FieldOffset(Offset = "0x1D")]
+		public bool DontPlayTalkAnimation;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x6003192")]
+		[Address(RVA = "0x18594A0", Offset = "0x18594A0", VA = "0x18594A0")]
+		public SpeechbubbleTextInfo()
+		{
+		}
+	}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Serializable]
+	[Token(Token = "0x2000A61")]
+	public class TextIdReorderableList : ReorderableArray<SpeechbubbleTextInfo>
+	{
+		[Token(Token = "0x6003193")]
+		[Address(RVA = "0x18594A8", Offset = "0x18594A8", VA = "0x18594A8")]
+		public TextIdReorderableList()
+		{
+		}
+	}
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x2000A62")]
+	private class Conversation : IConversation
+	{
+		[Token(Token = "0x400399D")]
+		[FieldOffset(Offset = "0x10")]
+		private int nextTextIndex;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x400399E")]
+		[FieldOffset(Offset = "0x18")]
+		private List<SpeechbubbleTextInfo> textsLeft;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x400399F")]
+		[FieldOffset(Offset = "0x20")]
+		private bool initialized;
 
-	4. This script is unnecessary.
+		[Token(Token = "0x40039A0")]
+		[FieldOffset(Offset = "0x28")]
+		private SpeechbubbleList list;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6003194")]
+		[Address(RVA = "0x1859200", Offset = "0x1859200", VA = "0x1859200")]
+		public Conversation(SpeechbubbleList list)
+		{
+		}
 
-	5. Script Content Level 0
+		[Token(Token = "0x6003195")]
+		[Address(RVA = "0x18592D4", Offset = "0x18592D4", VA = "0x18592D4", Slot = "4")]
+		public SpeechbubbleTextInfo GetText()
+		{
+			return null;
+		}
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4003994")]
+	[FieldOffset(Offset = "0x18")]
+	public TextIdReorderableList textIds;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4003995")]
+	[FieldOffset(Offset = "0x20")]
+	[SerializeField]
+	private bool randomSelection;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4003996")]
+	[FieldOffset(Offset = "0x21")]
+	[SerializeField]
+	private bool discardSelectedIds;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4003997")]
+	[FieldOffset(Offset = "0x22")]
+	[SerializeField]
+	private bool loopList;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x4003998")]
+	[FieldOffset(Offset = "0x28")]
+	[SerializeField]
+	public string translation;
 
-	*/
+	[Token(Token = "0x600318E")]
+	[Address(RVA = "0x16D06BC", Offset = "0x16D06BC", VA = "0x16D06BC")]
+	public bool HasRandomSelection()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x600318F")]
+	[Address(RVA = "0x16D06C4", Offset = "0x16D06C4", VA = "0x16D06C4")]
+	public bool IsLooping()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6003190")]
+	[Address(RVA = "0x16D06CC", Offset = "0x16D06CC", VA = "0x16D06CC")]
+	public IConversation NewConversation()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6003191")]
+	[Address(RVA = "0x16D0734", Offset = "0x16D0734", VA = "0x16D0734")]
+	public SpeechbubbleList()
+	{
+	}
 }

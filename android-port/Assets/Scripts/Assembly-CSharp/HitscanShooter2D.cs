@@ -1,63 +1,69 @@
+using System.Collections.Generic;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
+using Utility;
 
-public class HitscanShooter2D : MonoBehaviour
+[Token(Token = "0x20008A3")]
+public class HitscanShooter2D : GolfBall2DShooterBase
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4002F6D")]
+	[FieldOffset(Offset = "0x48")]
+	public Transform ShootOrigin;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4002F6E")]
+	[FieldOffset(Offset = "0x50")]
+	public GameObject ProjectilePrefab;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4002F6F")]
+	[FieldOffset(Offset = "0x58")]
+	public Transform Torso;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4002F70")]
+	[FieldOffset(Offset = "0x60")]
+	public List<BottleTarget> bottleTargets;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4002F71")]
+	[FieldOffset(Offset = "0x68")]
+	public bool winOnAllTargetsHit;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4002F72")]
+	[FieldOffset(Offset = "0x70")]
+	private ObjectPool<GameObject> projectiles;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x60027E8")]
+	[Address(RVA = "0x14CE1D4", Offset = "0x14CE1D4", VA = "0x14CE1D4")]
+	private void Start()
+	{
+	}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x60027E9")]
+	[Address(RVA = "0x14CE25C", Offset = "0x14CE25C", VA = "0x14CE25C", Slot = "6")]
+	public override void OnAimUpdate(Vector3 boost, bool onlyAimArrow)
+	{
+	}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x60027EA")]
+	[Address(RVA = "0x14CE310", Offset = "0x14CE310", VA = "0x14CE310", Slot = "5")]
+	public override void OnAimStart()
+	{
+	}
 
-	4. This script is unnecessary.
+	[Token(Token = "0x60027EB")]
+	[Address(RVA = "0x14CE550", Offset = "0x14CE550", VA = "0x14CE550", Slot = "7")]
+	public override void OnShoot(Vector3 boost)
+	{
+	}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x60027EC")]
+	[Address(RVA = "0x14CE698", Offset = "0x14CE698", VA = "0x14CE698")]
+	private void OnTargetHit(IHitscanTarget obj)
+	{
+	}
 
-	5. Script Content Level 0
-
-		AssetRipper was set to not load any script information.
-
-	6. Cpp2IL failed to decompile Il2Cpp data
-
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x60027ED")]
+	[Address(RVA = "0x14CE804", Offset = "0x14CE804", VA = "0x14CE804")]
+	public HitscanShooter2D()
+	{
+	}
 }

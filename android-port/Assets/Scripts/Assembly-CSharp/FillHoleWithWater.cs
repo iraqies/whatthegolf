@@ -1,63 +1,93 @@
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x20002F6")]
 public class FillHoleWithWater : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x400105B")]
+	[FieldOffset(Offset = "0x18")]
+	public Transform endposition;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x400105C")]
+	[FieldOffset(Offset = "0x20")]
+	private Vector3 startPos;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x400105D")]
+	[FieldOffset(Offset = "0x2C")]
+	public float waterSpeed;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x400105E")]
+	[FieldOffset(Offset = "0x30")]
+	private float waterCount;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x400105F")]
+	[FieldOffset(Offset = "0x38")]
+	public GameObject boat;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4001060")]
+	[FieldOffset(Offset = "0x40")]
+	public GameObject cannon;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4001061")]
+	[FieldOffset(Offset = "0x48")]
+	private GolfBallController boatController;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4001062")]
+	[FieldOffset(Offset = "0x50")]
+	private GolfBallController cannonController;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4001063")]
+	[FieldOffset(Offset = "0x58")]
+	public Collider ColliderToDisable;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4001064")]
+	[FieldOffset(Offset = "0x60")]
+	public GameObject flagToEnable;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4001065")]
+	[FieldOffset(Offset = "0x68")]
+	public ParticleSystem waterParticles;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4001066")]
+	[FieldOffset(Offset = "0x70")]
+	public ParticleSystem controllerSwitchParticle;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4001067")]
+	[FieldOffset(Offset = "0x78")]
+	public AudioSource controllerSwitchAudio;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4001068")]
+	[FieldOffset(Offset = "0x80")]
+	private bool hasSwapped;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x6000DA9")]
+	[Address(RVA = "0x1463DD8", Offset = "0x1463DD8", VA = "0x1463DD8")]
+	private void Start()
+	{
+	}
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x6000DAA")]
+	[Address(RVA = "0x1463E68", Offset = "0x1463E68", VA = "0x1463E68")]
+	public void OnParticleCollided()
+	{
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x6000DAB")]
+	[Address(RVA = "0x1463FAC", Offset = "0x1463FAC", VA = "0x1463FAC")]
+	private void Update()
+	{
+	}
 
-	*/
+	[Token(Token = "0x6000DAC")]
+	[Address(RVA = "0x1463EA0", Offset = "0x1463EA0", VA = "0x1463EA0")]
+	private void SwitchControllers()
+	{
+	}
+
+	[Token(Token = "0x6000DAD")]
+	[Address(RVA = "0x1464050", Offset = "0x1464050", VA = "0x1464050")]
+	public FillHoleWithWater()
+	{
+	}
 }

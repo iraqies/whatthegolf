@@ -1,63 +1,130 @@
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000AFE")]
 public class EnvironmentCollision : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x2000AFF")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x43440", Offset = "0x43440")]
+	private sealed class _003C_003Ec__DisplayClass17_0
+	{
+		[Token(Token = "0x4003D41")]
+		[FieldOffset(Offset = "0x10")]
+		public EnvironmentCollision _003C_003E4__this;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4003D42")]
+		[FieldOffset(Offset = "0x18")]
+		public Vector3 shake;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x600346A")]
+		[Address(RVA = "0x179F00C", Offset = "0x179F00C", VA = "0x179F00C")]
+		public _003C_003Ec__DisplayClass17_0()
+		{
+		}
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x600346B")]
+		[Address(RVA = "0x179F014", Offset = "0x179F014", VA = "0x179F014")]
+		internal void _003CShake_003Eb__0(float t)
+		{
+		}
+	}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4003D33")]
+	[FieldOffset(Offset = "0x18")]
+	public bool CanBreak;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4003D34")]
+	[FieldOffset(Offset = "0x1C")]
+	public float ForceRequiredToBreak;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4003D35")]
+	[FieldOffset(Offset = "0x20")]
+	public float BreakForce;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4003D36")]
+	[FieldOffset(Offset = "0x28")]
+	public List<Collider> ThingsToUnparent;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4003D37")]
+	[FieldOffset(Offset = "0x30")]
+	public bool CanShake;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4003D38")]
+	[FieldOffset(Offset = "0x34")]
+	public float ShakeDuration;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4003D39")]
+	[FieldOffset(Offset = "0x38")]
+	public float ShakeForce;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4003D3A")]
+	[FieldOffset(Offset = "0x3C")]
+	public float Shakes;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4003D3B")]
+	[FieldOffset(Offset = "0x40")]
+	public List<ParticleSystem> ShakeParticles;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4003D3C")]
+	[FieldOffset(Offset = "0x48")]
+	public bool Reset;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4003D3D")]
+	[FieldOffset(Offset = "0x50")]
+	private Rigidbody rigidbody;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4003D3E")]
+	[FieldOffset(Offset = "0x58")]
+	private Collider col;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x4003D3F")]
+	[FieldOffset(Offset = "0x60")]
+	private Vector3 startPos;
 
-	*/
+	[Token(Token = "0x4003D40")]
+	[FieldOffset(Offset = "0x6C")]
+	private Quaternion startRot;
+
+	[Token(Token = "0x6003463")]
+	[Address(RVA = "0x1444C6C", Offset = "0x1444C6C", VA = "0x1444C6C")]
+	private void Start()
+	{
+	}
+
+	[Token(Token = "0x6003464")]
+	[Address(RVA = "0x1444E3C", Offset = "0x1444E3C", VA = "0x1444E3C")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x6003465")]
+	[Address(RVA = "0x1444EBC", Offset = "0x1444EBC", VA = "0x1444EBC")]
+	private void OnCollisionEnter(Collision c)
+	{
+	}
+
+	[Token(Token = "0x6003466")]
+	[Address(RVA = "0x14452A0", Offset = "0x14452A0", VA = "0x14452A0")]
+	private void Shake(Collision c)
+	{
+	}
+
+	[Token(Token = "0x6003467")]
+	[Address(RVA = "0x14450E0", Offset = "0x14450E0", VA = "0x14450E0")]
+	private void Break(Collision c)
+	{
+	}
+
+	[Token(Token = "0x6003468")]
+	[Address(RVA = "0x1444F8C", Offset = "0x1444F8C", VA = "0x1444F8C")]
+	private void PlayParticles()
+	{
+	}
+
+	[Token(Token = "0x6003469")]
+	[Address(RVA = "0x1445438", Offset = "0x1445438", VA = "0x1445438")]
+	public EnvironmentCollision()
+	{
+	}
 }

@@ -1,63 +1,206 @@
+using System;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000BBE")]
 public class BlockShotIfNotGrounded : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x2000BBF")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x43C68", Offset = "0x43C68")]
+	private sealed class _003C_003Ec__DisplayClass15_0
+	{
+		[Token(Token = "0x4004173")]
+		[FieldOffset(Offset = "0x10")]
+		public BlockShotIfNotGrounded _003C_003E4__this;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4004174")]
+		[FieldOffset(Offset = "0x18")]
+		public bool isGrounded;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x600389C")]
+		[Address(RVA = "0x1773494", Offset = "0x1773494", VA = "0x1773494")]
+		public _003C_003Ec__DisplayClass15_0()
+		{
+		}
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x600389D")]
+		[Address(RVA = "0x177349C", Offset = "0x177349C", VA = "0x177349C")]
+		internal void _003CIsBlocking_003Eb__0()
+		{
+		}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x600389E")]
+		[Address(RVA = "0x17734BC", Offset = "0x17734BC", VA = "0x17734BC")]
+		internal void _003CIsBlocking_003Eb__1()
+		{
+		}
+	}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x2000BC0")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x43C78", Offset = "0x43C78")]
+	private sealed class _003C_003Ec__DisplayClass20_0
+	{
+		[Token(Token = "0x4004175")]
+		[FieldOffset(Offset = "0x10")]
+		public BlockShotIfNotGrounded _003C_003E4__this;
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4004176")]
+		[FieldOffset(Offset = "0x18")]
+		public Vector3 d;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x600389F")]
+		[Address(RVA = "0x17734C8", Offset = "0x17734C8", VA = "0x17734C8")]
+		public _003C_003Ec__DisplayClass20_0()
+		{
+		}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x60038A0")]
+		[Address(RVA = "0x17734D0", Offset = "0x17734D0", VA = "0x17734D0")]
+		internal bool _003CCheckAdditionalTransforms_003Eb__0(Transform t)
+		{
+			return default;
+		}
+	}
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4004165")]
+	[FieldOffset(Offset = "0x18")]
+	[SerializeField]
+	private LayerMask groundMask;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4004166")]
+	[FieldOffset(Offset = "0x1C")]
+	[SerializeField]
+	private float groundDist;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4004167")]
+	[FieldOffset(Offset = "0x20")]
+	[SerializeField]
+	private Vector3 down;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4004168")]
+	[FieldOffset(Offset = "0x2C")]
+	[SerializeField]
+	private Vector3 checkOffset;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4004169")]
+	[FieldOffset(Offset = "0x38")]
+	[SerializeField]
+	private float AcceptedNormalUp;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x400416A")]
+	[FieldOffset(Offset = "0x3C")]
+	[SerializeField]
+	private int framesNeeded;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x400416B")]
+	[FieldOffset(Offset = "0x40")]
+	[SerializeField]
+	private bool addToControllerBlockingFunctions;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x400416C")]
+	[FieldOffset(Offset = "0x48")]
+	[SerializeField]
+	private Transform[] additionalTransformChecks;
 
-	*/
+	[Token(Token = "0x400416D")]
+	[FieldOffset(Offset = "0x50")]
+	[SerializeField]
+	private bool is2D;
+
+	[Token(Token = "0x400416E")]
+	[FieldOffset(Offset = "0x54")]
+	[SerializeField]
+	private float circleCastRadius;
+
+	[Token(Token = "0x400416F")]
+	[FieldOffset(Offset = "0x58")]
+	[SerializeField]
+	private bool useLocalDown;
+
+	[Token(Token = "0x4004170")]
+	[FieldOffset(Offset = "0x59")]
+	[SerializeField]
+	public bool isBlocked;
+
+	[Token(Token = "0x4004171")]
+	[FieldOffset(Offset = "0x60")]
+	private GolfBallController controller;
+
+	[Token(Token = "0x4004172")]
+	[FieldOffset(Offset = "0x68")]
+	private int frameCount;
+
+	[Token(Token = "0x6003891")]
+	[Address(RVA = "0x16132E4", Offset = "0x16132E4", VA = "0x16132E4")]
+	private void Start()
+	{
+	}
+
+	[Token(Token = "0x6003892")]
+	[Address(RVA = "0x1613414", Offset = "0x1613414", VA = "0x1613414")]
+	private bool IsBlocking()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6003893")]
+	[Address(RVA = "0x1613738", Offset = "0x1613738", VA = "0x1613738")]
+	private void FixedUpdate()
+	{
+	}
+
+	[Token(Token = "0x6003894")]
+	[Address(RVA = "0x1613660", Offset = "0x1613660", VA = "0x1613660")]
+	private bool CheckIsGrounded3D(Vector3 d, Action onDidNotHit, Action onDidHit)
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6003895")]
+	[Address(RVA = "0x161398C", Offset = "0x161398C", VA = "0x161398C")]
+	private bool HasHitGroundFromPosition(Vector3 position, Vector3 d)
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6003896")]
+	[Address(RVA = "0x1613B94", Offset = "0x1613B94", VA = "0x1613B94")]
+	private bool AccecptNormals(RaycastHit hit)
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6003897")]
+	[Address(RVA = "0x1613A80", Offset = "0x1613A80", VA = "0x1613A80")]
+	private bool CheckAdditionalTransforms(Vector3 d)
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6003898")]
+	[Address(RVA = "0x1613BF4", Offset = "0x1613BF4", VA = "0x1613BF4")]
+	private void OnDrawGizmos()
+	{
+	}
+
+	[Token(Token = "0x6003899")]
+	[Address(RVA = "0x1613D98", Offset = "0x1613D98", VA = "0x1613D98")]
+	public BlockShotIfNotGrounded()
+	{
+	}
+
+	[Token(Token = "0x600389A")]
+	[Address(RVA = "0x1613DC4", Offset = "0x1613DC4", VA = "0x1613DC4")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x6B120", Offset = "0x6B120")]
+	private void _003CFixedUpdate_003Eb__16_0()
+	{
+	}
+
+	[Token(Token = "0x600389B")]
+	[Address(RVA = "0x1613E04", Offset = "0x1613E04", VA = "0x1613E04")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x6B130", Offset = "0x6B130")]
+	private void _003CFixedUpdate_003Eb__16_1()
+	{
+	}
 }

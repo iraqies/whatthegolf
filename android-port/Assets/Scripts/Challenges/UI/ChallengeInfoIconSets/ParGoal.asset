@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: ParGoal
   m_EditorClassIdentifier:
   Icons:
-  - {fileID: 21300000, guid: 7ee1f3036063e6649a3c6180e3698a97, type: 2}
+  - {fileID: 21300000, guid: 08c6b6178806f4f418e301f7d4e35502, type: 2}

@@ -1,66 +1,140 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Core
 {
-	public class GolfBallShooterBase : MonoBehaviour
+	[Token(Token = "0x200144F")]
+	public abstract class GolfBallShooterBase : ShooterBase
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4006E71")]
+		[FieldOffset(Offset = "0x20")]
+		protected Rigidbody rigidbodyC;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4006E72")]
+		[FieldOffset(Offset = "0x28")]
+		[SerializeField]
+		protected float goalPullForce;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4006E73")]
+		[FieldOffset(Offset = "0x2C")]
+		[SerializeField]
+		protected float goalPullDistance;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4006E74")]
+		[FieldOffset(Offset = "0x30")]
+		[SerializeField]
+		protected float angleThreshold;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4006E75")]
+		[FieldOffset(Offset = "0x38")]
+		[SerializeField]
+		private GolfBallController golfBallControllerOverride;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4006E76")]
+		[FieldOffset(Offset = "0x40")]
+		[SerializeField]
+		private Rigidbody rigidbodyOverride;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4006E77")]
+		[FieldOffset(Offset = "0x48")]
+		[SerializeField]
+		public bool isblockedIfNotGrounded;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4006E78")]
+		[FieldOffset(Offset = "0x4C")]
+		public float sqrVelocityShootingThreshold;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4006E79")]
+		[FieldOffset(Offset = "0x50")]
+		public float shootThresholdMinimumTime;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4006E7A")]
+		[FieldOffset(Offset = "0x54")]
+		protected float lastUnderVelocityShootingThreshold;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4006E7B")]
+		[FieldOffset(Offset = "0x58")]
+		private float currentStillTime;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4006E7C")]
+		[FieldOffset(Offset = "0x5C")]
+		private float stillTimeThreshold;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x17000ACE")]
+		public Rigidbody RigidbodyOverride
+		{
+			[Token(Token = "0x6005F23")]
+			[Address(RVA = "0x1497ADC", Offset = "0x1497ADC", VA = "0x1497ADC")]
+			get
+			{
+				return null;
+			}
+			[Token(Token = "0x6005F22")]
+			[Address(RVA = "0x1497AD0", Offset = "0x1497AD0", VA = "0x1497AD0")]
+			set
+			{
+			}
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x6005F19")]
+		[Address(RVA = "0x148B1D4", Offset = "0x148B1D4", VA = "0x148B1D4", Slot = "11")]
+		protected virtual void Awake()
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x6005F1A")]
+		[Address(RVA = "0x1497258", Offset = "0x1497258", VA = "0x1497258")]
+		private void GolfBallController_OnShoot(Vector3 obj)
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x6005F1B")]
+		[Address(RVA = "0x1497290", Offset = "0x1497290", VA = "0x1497290")]
+		public void SetOwner(GolfBallController newOwner)
+		{
+		}
 
-		*/
+		[Token(Token = "0x6005F1C")]
+		[Address(RVA = "0x1497298", Offset = "0x1497298", VA = "0x1497298", Slot = "12")]
+		protected virtual void FixedUpdate()
+		{
+		}
+
+		[Token(Token = "0x6005F1D")]
+		[Address(RVA = "0x149766C", Offset = "0x149766C", VA = "0x149766C", Slot = "13")]
+		protected virtual bool IsBlocking()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6005F1E")]
+		[Address(RVA = "0x1497744", Offset = "0x1497744", VA = "0x1497744")]
+		protected void StandardShoot(Vector3 boost, float pitch, float fullShootVelocity, float spin)
+		{
+		}
+
+		[Token(Token = "0x6005F1F")]
+		[Address(RVA = "0x1497760", Offset = "0x1497760", VA = "0x1497760", Slot = "14")]
+		protected virtual void StandardShoot(Vector3 boost, float pitch, float minShootVelocity, float fullShootVelocity, float spin)
+		{
+		}
+
+		[Token(Token = "0x6005F20")]
+		[Address(RVA = "0x1497950", Offset = "0x1497950", VA = "0x1497950")]
+		public void StopAndSleep()
+		{
+		}
+
+		[Token(Token = "0x6005F21")]
+		[Address(RVA = "0x1497A2C", Offset = "0x1497A2C", VA = "0x1497A2C")]
+		public void StartAndWakeup()
+		{
+		}
+
+		[Token(Token = "0x6005F24")]
+		[Address(RVA = "0x14857AC", Offset = "0x14857AC", VA = "0x14857AC")]
+		protected GolfBallShooterBase()
+		{
+		}
 	}
 }

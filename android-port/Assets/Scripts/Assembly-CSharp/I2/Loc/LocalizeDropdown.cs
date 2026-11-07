@@ -1,66 +1,68 @@
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace I2.Loc
 {
+	[Token(Token = "0x20012FC")]
 	public class LocalizeDropdown : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x400664A")]
+		[FieldOffset(Offset = "0x18")]
+		public List<string> _Terms;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x600582E")]
+		[Address(RVA = "0x1545D74", Offset = "0x1545D74", VA = "0x1545D74")]
+		public void Start()
+		{
+		}
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x600582F")]
+		[Address(RVA = "0x1545F80", Offset = "0x1545F80", VA = "0x1545F80")]
+		public void OnDestroy()
+		{
+		}
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x6005830")]
+		[Address(RVA = "0x1546034", Offset = "0x1546034", VA = "0x1546034")]
+		private void OnEnable()
+		{
+		}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x6005831")]
+		[Address(RVA = "0x1545E30", Offset = "0x1545E30", VA = "0x1545E30")]
+		public void OnLocalize()
+		{
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x6005832")]
+		[Address(RVA = "0x1546090", Offset = "0x1546090", VA = "0x1546090")]
+		private void FillValues()
+		{
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6005833")]
+		[Address(RVA = "0x15462A0", Offset = "0x15462A0", VA = "0x15462A0")]
+		public void UpdateLocalization()
+		{
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6005834")]
+		[Address(RVA = "0x15467B8", Offset = "0x15467B8", VA = "0x15467B8")]
+		public void UpdateLocalizationTMPro()
+		{
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x6005835")]
+		[Address(RVA = "0x15465CC", Offset = "0x15465CC", VA = "0x15465CC")]
+		private void FillValuesTMPro()
+		{
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
-
-		5. Script Content Level 0
-
-			AssetRipper was set to not load any script information.
-
-		6. Cpp2IL failed to decompile Il2Cpp data
-
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x6005836")]
+		[Address(RVA = "0x1546AC0", Offset = "0x1546AC0", VA = "0x1546AC0")]
+		public LocalizeDropdown()
+		{
+		}
 	}
 }

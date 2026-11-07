@@ -1,63 +1,338 @@
+using System;
+using System.Collections.Generic;
+using Core;
+using Hub;
+using Il2CppDummyDll;
 using UnityEngine;
 
-public class DailyChallengeLevelDataContainer : MonoBehaviour
+[Serializable]
+[Token(Token = "0x2000ED6")]
+public class DailyChallengeLevelDataContainer : LevelDataContainer, IPackWithData
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Serializable]
+	[Token(Token = "0x2000ED7")]
+	public struct PunData
+	{
+		[Token(Token = "0x400502F")]
+		[FieldOffset(Offset = "0x0")]
+		public string LevelName;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4005030")]
+		[FieldOffset(Offset = "0x8")]
+		public string LocalizedCompletionID;
+	}
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Serializable]
+	[Token(Token = "0x2000ED8")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x45450", Offset = "0x45450")]
+	private sealed class _003C_003Ec
+	{
+		[Token(Token = "0x4005031")]
+		[FieldOffset(Offset = "0x0")]
+		public static readonly _003C_003Ec _003C_003E9;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4005032")]
+		[FieldOffset(Offset = "0x8")]
+		public static Func<PunData, string> _003C_003E9__39_0;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x600454B")]
+		[Address(RVA = "0x1794D18", Offset = "0x1794D18", VA = "0x1794D18")]
+		public _003C_003Ec()
+		{
+		}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x600454C")]
+		[Address(RVA = "0x1794D20", Offset = "0x1794D20", VA = "0x1794D20")]
+		internal string _003CSetPuns_003Eb__39_0(PunData p)
+		{
+			return null;
+		}
+	}
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x2000ED9")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x45460", Offset = "0x45460")]
+	private sealed class _003C_003Ec__DisplayClass42_0
+	{
+		[Token(Token = "0x4005033")]
+		[FieldOffset(Offset = "0x10")]
+		public string n;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x600454D")]
+		[Address(RVA = "0x1794D28", Offset = "0x1794D28", VA = "0x1794D28")]
+		public _003C_003Ec__DisplayClass42_0()
+		{
+		}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x600454E")]
+		[Address(RVA = "0x1794D30", Offset = "0x1794D30", VA = "0x1794D30")]
+		internal bool _003CPunCompletionID_003Eb__0(PunData p)
+		{
+			return default;
+		}
+	}
 
-	4. This script is unnecessary.
+	[Token(Token = "0x400501F")]
+	[FieldOffset(Offset = "0x30")]
+	public Sprite menuIcon;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4005020")]
+	[FieldOffset(Offset = "0x38")]
+	public DayOfWeek dayOfWeek;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4005021")]
+	[FieldOffset(Offset = "0x40")]
+	public TransitionColorDefinition transitionColors;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4005022")]
+	[FieldOffset(Offset = "0x48")]
+	public BaseTransitionEffect TransitionPrefab;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4005023")]
+	[FieldOffset(Offset = "0x50")]
+	public Sprite TransitionSilhouette;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4005024")]
+	[FieldOffset(Offset = "0x58")]
+	public bool UseSpecificDate;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4005025")]
+	[FieldOffset(Offset = "0x60")]
+	[SerializeField]
+	private string startDateString;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x4005026")]
+	[FieldOffset(Offset = "0x68")]
+	[SerializeField]
+	private string endDateString;
 
-	*/
+	[Token(Token = "0x4005027")]
+	[FieldOffset(Offset = "0x70")]
+	private DateTime? _startDate;
+
+	[Token(Token = "0x4005028")]
+	[FieldOffset(Offset = "0x80")]
+	private DateTime? _endDate;
+
+	[Token(Token = "0x4005029")]
+	[FieldOffset(Offset = "0x90")]
+	[SerializeField]
+	private bool isNewYears;
+
+	[Token(Token = "0x400502A")]
+	[FieldOffset(Offset = "0x98")]
+	[SerializeField]
+	private List<UserCriteria> criteria;
+
+	[Token(Token = "0x400502B")]
+	[FieldOffset(Offset = "0xA0")]
+	public DailyPrizeData.Prize mountain_prize_prefab;
+
+	[Token(Token = "0x400502C")]
+	[FieldOffset(Offset = "0xA8")]
+	public LevelMusicSettings music;
+
+	[Token(Token = "0x400502D")]
+	[FieldOffset(Offset = "0xB0")]
+	public List<PunData> puns;
+
+	[Token(Token = "0x400502E")]
+	[FieldOffset(Offset = "0xB8")]
+	public SpecialDayRoomConfig RoomConfig;
+
+	[Token(Token = "0x17000727")]
+	public DateTime StartDate
+	{
+		[Token(Token = "0x6004534")]
+		[Address(RVA = "0x18C9BD4", Offset = "0x18C9BD4", VA = "0x18C9BD4")]
+		get
+		{
+			return default;
+		}
+	}
+
+	[Token(Token = "0x17000728")]
+	public DateTime EndDate
+	{
+		[Token(Token = "0x6004535")]
+		[Address(RVA = "0x18C9EEC", Offset = "0x18C9EEC", VA = "0x18C9EEC")]
+		get
+		{
+			return default;
+		}
+	}
+
+	[Token(Token = "0x17000729")]
+	public Sprite MenuIcon
+	{
+		[Token(Token = "0x6004536")]
+		[Address(RVA = "0x18CA294", Offset = "0x18CA294", VA = "0x18CA294")]
+		get
+		{
+			return null;
+		}
+	}
+
+	[Token(Token = "0x1700072A")]
+	public string TitleID
+	{
+		[Token(Token = "0x6004537")]
+		[Address(RVA = "0x18CA230", Offset = "0x18CA230", VA = "0x18CA230", Slot = "6")]
+		get
+		{
+			return null;
+		}
+	}
+
+	[Token(Token = "0x1700072B")]
+	public string ContentID
+	{
+		[Token(Token = "0x6004538")]
+		[Address(RVA = "0x18CA300", Offset = "0x18CA300", VA = "0x18CA300", Slot = "7")]
+		get
+		{
+			return null;
+		}
+	}
+
+	[Token(Token = "0x1700072C")]
+	public string PackID
+	{
+		[Token(Token = "0x6004539")]
+		[Address(RVA = "0x18CA370", Offset = "0x18CA370", VA = "0x18CA370", Slot = "8")]
+		get
+		{
+			return null;
+		}
+	}
+
+	[Token(Token = "0x1700072D")]
+	public string PackName
+	{
+		[Token(Token = "0x600453A")]
+		[Address(RVA = "0x18CA3E0", Offset = "0x18CA3E0", VA = "0x18CA3E0", Slot = "9")]
+		get
+		{
+			return null;
+		}
+	}
+
+	[Token(Token = "0x1700072E")]
+	public string NotificationID
+	{
+		[Token(Token = "0x600453B")]
+		[Address(RVA = "0x18CA4E4", Offset = "0x18CA4E4", VA = "0x18CA4E4")]
+		get
+		{
+			return null;
+		}
+	}
+
+	[Token(Token = "0x1700072F")]
+	public bool IsSpecial
+	{
+		[Token(Token = "0x600453C")]
+		[Address(RVA = "0x18CA504", Offset = "0x18CA504", VA = "0x18CA504")]
+		get
+		{
+			return default;
+		}
+	}
+
+	[Token(Token = "0x17000730")]
+	public List<UserCriteria> Criteria
+	{
+		[Token(Token = "0x600453D")]
+		[Address(RVA = "0x18CA50C", Offset = "0x18CA50C", VA = "0x18CA50C")]
+		get
+		{
+			return null;
+		}
+	}
+
+	[Token(Token = "0x17000731")]
+	public bool HasCustomTransition
+	{
+		[Token(Token = "0x600453E")]
+		[Address(RVA = "0x18CA514", Offset = "0x18CA514", VA = "0x18CA514")]
+		get
+		{
+			return default;
+		}
+	}
+
+	[Token(Token = "0x600453F")]
+	[Address(RVA = "0x18CA5DC", Offset = "0x18CA5DC", VA = "0x18CA5DC")]
+	public List<PunData> SetPuns()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6004540")]
+	[Address(RVA = "0x18CAB6C", Offset = "0x18CAB6C", VA = "0x18CAB6C")]
+	public static DateTime FirstDateOfWeekISO8601(int year, int weekOfYear)
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6004541")]
+	[Address(RVA = "0x18CA8F4", Offset = "0x18CA8F4", VA = "0x18CA8F4")]
+	private string ToLevelName(LevelData l)
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6004542")]
+	[Address(RVA = "0x18CAC98", Offset = "0x18CAC98", VA = "0x18CAC98")]
+	public string PunCompletionID(LevelData level)
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6004543")]
+	[Address(RVA = "0x18CA970", Offset = "0x18CA970", VA = "0x18CA970")]
+	private string DefaultDailyIDLocalized(string id)
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6004544")]
+	[Address(RVA = "0x18CA468", Offset = "0x18CA468", VA = "0x18CA468")]
+	private string Formatted(string s)
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6004545")]
+	[Address(RVA = "0x18CA29C", Offset = "0x18CA29C", VA = "0x18CA29C")]
+	internal string GetMenuID()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6004546")]
+	[Address(RVA = "0x18CAE50", Offset = "0x18CAE50", VA = "0x18CAE50")]
+	public string GetStringID()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6004547")]
+	[Address(RVA = "0x18CAE54", Offset = "0x18CAE54", VA = "0x18CAE54")]
+	internal int GetID()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6004548")]
+	[Address(RVA = "0x18CAE78", Offset = "0x18CAE78", VA = "0x18CAE78")]
+	public bool IsActive(DateTime now)
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6004549")]
+	[Address(RVA = "0x18CAF40", Offset = "0x18CAF40", VA = "0x18CAF40")]
+	public DailyChallengeLevelDataContainer()
+	{
+	}
 }

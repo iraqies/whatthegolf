@@ -1,63 +1,202 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x20007F4")]
 public class PeggleBob : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x20007F5")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x416F0", Offset = "0x416F0")]
+	private sealed class _003C_003Ec__DisplayClass13_0
+	{
+		[Token(Token = "0x4002AA6")]
+		[FieldOffset(Offset = "0x10")]
+		public PeggleBob _003C_003E4__this;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4002AA7")]
+		[FieldOffset(Offset = "0x18")]
+		public Vector3 startScale;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x600248A")]
+		[Address(RVA = "0x1822EE4", Offset = "0x1822EE4", VA = "0x1822EE4")]
+		public _003C_003Ec__DisplayClass13_0()
+		{
+		}
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x600248B")]
+		[Address(RVA = "0x1822EEC", Offset = "0x1822EEC", VA = "0x1822EEC")]
+		internal void _003CRemoveRoutine_003Eb__0(float t)
+		{
+		}
+	}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x20007F6")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x41700", Offset = "0x41700")]
+	private sealed class _003CRemoveRoutine_003Ed__13 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x4002AA8")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4002AA9")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4002AAA")]
+		[FieldOffset(Offset = "0x20")]
+		public PeggleBob _003C_003E4__this;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x170003FC")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x600248F")]
+			[Address(RVA = "0x1823178", Offset = "0x1823178", VA = "0x1823178", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x170003FD")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x6002491")]
+			[Address(RVA = "0x18231C0", Offset = "0x18231C0", VA = "0x18231C0", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
 
-	4. This script is unnecessary.
+		[Token(Token = "0x600248C")]
+		[Address(RVA = "0x1822FAC", Offset = "0x1822FAC", VA = "0x1822FAC")]
+		[DebuggerHidden]
+		public _003CRemoveRoutine_003Ed__13(int _003C_003E1__state)
+		{
+		}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x600248D")]
+		[Address(RVA = "0x1822FD8", Offset = "0x1822FD8", VA = "0x1822FD8", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
 
-	5. Script Content Level 0
+		[Token(Token = "0x600248E")]
+		[Address(RVA = "0x1822FDC", Offset = "0x1822FDC", VA = "0x1822FDC", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
 
-		AssetRipper was set to not load any script information.
+		[Token(Token = "0x600248F")]
+		[Address(RVA = "0x1823178", Offset = "0x1823178", VA = "0x1823178", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x6002490")]
+		[Address(RVA = "0x1823180", Offset = "0x1823180", VA = "0x1823180", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x6002491")]
+		[Address(RVA = "0x18231C0", Offset = "0x18231C0", VA = "0x18231C0", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4002A9E")]
+	[FieldOffset(Offset = "0x18")]
+	public Color OffColor;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x4002A9F")]
+	[FieldOffset(Offset = "0x28")]
+	public float BounceForce;
 
-	*/
+	[Token(Token = "0x4002AA0")]
+	[FieldOffset(Offset = "0x30")]
+	public SpriteRenderer InnerSprite;
+
+	[Token(Token = "0x4002AA1")]
+	[FieldOffset(Offset = "0x38")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x4F02C", Offset = "0x4F02C")]
+	private bool HasBeenHit__BackingField;
+
+	[Token(Token = "0x4002AA2")]
+	[FieldOffset(Offset = "0x40")]
+	public AudioSource HitSource;
+
+	[Token(Token = "0x4002AA3")]
+	[FieldOffset(Offset = "0x48")]
+	public float PitchMod;
+
+	[Token(Token = "0x4002AA4")]
+	[FieldOffset(Offset = "0x50")]
+	public List<AudioClip> RemoveClips;
+
+	[Token(Token = "0x4002AA5")]
+	[FieldOffset(Offset = "0x58")]
+	public float hitTime;
+
+	[Token(Token = "0x170003FB")]
+	public bool HasBeenHit
+	{
+		[Token(Token = "0x6002483")]
+		[Address(RVA = "0x15DD98C", Offset = "0x15DD98C", VA = "0x15DD98C")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x665A0", Offset = "0x665A0")]
+		get
+		{
+			return default;
+		}
+		[Token(Token = "0x6002484")]
+		[Address(RVA = "0x15DD994", Offset = "0x15DD994", VA = "0x15DD994")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x665B0", Offset = "0x665B0")]
+		private set
+		{
+		}
+	}
+
+	[Token(Token = "0x6002485")]
+	[Address(RVA = "0x15DD99C", Offset = "0x15DD99C", VA = "0x15DD99C")]
+	private void OnCollisionEnter2D(Collision2D col)
+	{
+	}
+
+	[Token(Token = "0x6002486")]
+	[Address(RVA = "0x15DDAC0", Offset = "0x15DDAC0", VA = "0x15DDAC0")]
+	public void Remove()
+	{
+	}
+
+	[Token(Token = "0x6002487")]
+	[Address(RVA = "0x15DDB3C", Offset = "0x15DDB3C", VA = "0x15DDB3C")]
+	private IEnumerator RemoveRoutine()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6002488")]
+	[Address(RVA = "0x15DDBB0", Offset = "0x15DDBB0", VA = "0x15DDBB0")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x6002489")]
+	[Address(RVA = "0x15DDC60", Offset = "0x15DDC60", VA = "0x15DDC60")]
+	public PeggleBob()
+	{
+	}
 }

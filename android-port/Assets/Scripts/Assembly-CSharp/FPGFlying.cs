@@ -1,63 +1,191 @@
+using System;
+using System.Collections.Generic;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
-public class FPGFlying : MonoBehaviour
+[Token(Token = "0x20006ED")]
+public class FPGFlying : GolfBallShooterBase
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Serializable]
+	[Token(Token = "0x20006EE")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x411C0", Offset = "0x411C0")]
+	private sealed class _003C_003Ec
+	{
+		[Token(Token = "0x4002461")]
+		[FieldOffset(Offset = "0x0")]
+		public static readonly _003C_003Ec _003C_003E9;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4002462")]
+		[FieldOffset(Offset = "0x8")]
+		public static Action<AudioSource> _003C_003E9__31_0;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x6002000")]
+		[Address(RVA = "0x17A20B0", Offset = "0x17A20B0", VA = "0x17A20B0")]
+		public _003C_003Ec()
+		{
+		}
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x6002001")]
+		[Address(RVA = "0x17A20B8", Offset = "0x17A20B8", VA = "0x17A20B8")]
+		internal void _003COnAimStart_003Eb__31_0(AudioSource m)
+		{
+		}
+	}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4002443")]
+	[FieldOffset(Offset = "0x60")]
+	public Animator Animator;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4002444")]
+	[FieldOffset(Offset = "0x68")]
+	public float RotateSpeed;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4002445")]
+	[FieldOffset(Offset = "0x6C")]
+	public float ModelRotateSpeed;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4002446")]
+	[FieldOffset(Offset = "0x70")]
+	public float SoarThreshold;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4002447")]
+	[FieldOffset(Offset = "0x74")]
+	public float FlySpeed;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4002448")]
+	[FieldOffset(Offset = "0x78")]
+	public float WalkSpeed;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4002449")]
+	[FieldOffset(Offset = "0x7C")]
+	public float MaxSpeed;
 
-	5. Script Content Level 0
+	[Token(Token = "0x400244A")]
+	[FieldOffset(Offset = "0x80")]
+	public float MaxDiveSpeed;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x400244B")]
+	[FieldOffset(Offset = "0x84")]
+	public float GroundedDistance;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x400244C")]
+	[FieldOffset(Offset = "0x88")]
+	public float ModelRotateAngleMax;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x400244D")]
+	[FieldOffset(Offset = "0x8C")]
+	public LayerMask GroundedLayers;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x400244E")]
+	[FieldOffset(Offset = "0x90")]
+	public Transform Model;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x400244F")]
+	[FieldOffset(Offset = "0x98")]
+	public Vector2 HeadRanges;
 
-	*/
+	[Token(Token = "0x4002450")]
+	[FieldOffset(Offset = "0xA0")]
+	public float MaxHeight;
+
+	[Token(Token = "0x4002451")]
+	[FieldOffset(Offset = "0xA4")]
+	public float ExtraDownForceWhenNotFlying;
+
+	[Token(Token = "0x4002452")]
+	[FieldOffset(Offset = "0xA8")]
+	public float TakeOffDotThreshold;
+
+	[Token(Token = "0x4002453")]
+	[FieldOffset(Offset = "0xB0")]
+	public ParticleSystem DiveParticles;
+
+	[Token(Token = "0x4002454")]
+	[FieldOffset(Offset = "0xB8")]
+	public List<AudioClip> FlyStartClips;
+
+	[Token(Token = "0x4002455")]
+	[FieldOffset(Offset = "0xC0")]
+	public AudioSource DiveSource;
+
+	[Token(Token = "0x4002456")]
+	[FieldOffset(Offset = "0xC8")]
+	private bool isFlying;
+
+	[Token(Token = "0x4002457")]
+	[FieldOffset(Offset = "0xC9")]
+	private bool isSoaring;
+
+	[Token(Token = "0x4002458")]
+	[FieldOffset(Offset = "0xCA")]
+	private bool isGrounded;
+
+	[Token(Token = "0x4002459")]
+	[FieldOffset(Offset = "0xD0")]
+	private Rigidbody rigid;
+
+	[Token(Token = "0x400245A")]
+	[FieldOffset(Offset = "0xD8")]
+	private Vector3 flyDirection;
+
+	[Token(Token = "0x400245B")]
+	[FieldOffset(Offset = "0xE4")]
+	private Quaternion startModelRotation;
+
+	[Token(Token = "0x400245C")]
+	[FieldOffset(Offset = "0xF4")]
+	private float extraAnimationSpeed;
+
+	[Token(Token = "0x400245D")]
+	[FieldOffset(Offset = "0xF8")]
+	private BoxCollider collider;
+
+	[Token(Token = "0x400245E")]
+	[FieldOffset(Offset = "0x100")]
+	private float headPos;
+
+	[Token(Token = "0x400245F")]
+	[FieldOffset(Offset = "0x104")]
+	private Vector3 lastDir;
+
+	[Token(Token = "0x4002460")]
+	[FieldOffset(Offset = "0x110")]
+	private bool lastFrameGrounded;
+
+	[Token(Token = "0x6001FF9")]
+	[Address(RVA = "0x14569F0", Offset = "0x14569F0", VA = "0x14569F0")]
+	private void Start()
+	{
+	}
+
+	[Token(Token = "0x6001FFA")]
+	[Address(RVA = "0x1456AB4", Offset = "0x1456AB4", VA = "0x1456AB4", Slot = "5")]
+	public override void OnAimStart()
+	{
+	}
+
+	[Token(Token = "0x6001FFB")]
+	[Address(RVA = "0x1456C10", Offset = "0x1456C10", VA = "0x1456C10")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x6001FFC")]
+	[Address(RVA = "0x145743C", Offset = "0x145743C", VA = "0x145743C", Slot = "12")]
+	protected override void FixedUpdate()
+	{
+	}
+
+	[Token(Token = "0x6001FFD")]
+	[Address(RVA = "0x1457ACC", Offset = "0x1457ACC", VA = "0x1457ACC")]
+	private void OnCollisionEnter(Collision other)
+	{
+	}
+
+	[Token(Token = "0x6001FFE")]
+	[Address(RVA = "0x1457BEC", Offset = "0x1457BEC", VA = "0x1457BEC")]
+	public FPGFlying()
+	{
+	}
 }

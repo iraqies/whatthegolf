@@ -1,63 +1,292 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Audio;
+using Il2CppDummyDll;
 using UnityEngine;
 
-public class SnowballFightEvent : MonoBehaviour
+[Token(Token = "0x2000D19")]
+public class SnowballFightEvent : OverworldEvent
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x2000D1A")]
+	public enum Direction
+	{
+		[Token(Token = "0x400471F")]
+		LEFT = 0,
+		[Token(Token = "0x4004720")]
+		RIGHT = 1
+	}
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x2000D1B")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x446B8", Offset = "0x446B8")]
+	private sealed class _003CKidWaitingSequence_003Ed__17 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x4004721")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4004722")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4004723")]
+		[FieldOffset(Offset = "0x20")]
+		public SnowballFightEvent _003C_003E4__this;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x17000653")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x6003DD7")]
+			[Address(RVA = "0x1852888", Offset = "0x1852888", VA = "0x1852888", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x17000654")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x6003DD9")]
+			[Address(RVA = "0x18528D0", Offset = "0x18528D0", VA = "0x18528D0", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6003DD4")]
+		[Address(RVA = "0x18526E8", Offset = "0x18526E8", VA = "0x18526E8")]
+		[DebuggerHidden]
+		public _003CKidWaitingSequence_003Ed__17(int _003C_003E1__state)
+		{
+		}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6003DD5")]
+		[Address(RVA = "0x1852714", Offset = "0x1852714", VA = "0x1852714", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x6003DD6")]
+		[Address(RVA = "0x1852718", Offset = "0x1852718", VA = "0x1852718", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
 
-	4. This script is unnecessary.
+		[Token(Token = "0x6003DD7")]
+		[Address(RVA = "0x1852888", Offset = "0x1852888", VA = "0x1852888", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6003DD8")]
+		[Address(RVA = "0x1852890", Offset = "0x1852890", VA = "0x1852890", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
 
-	5. Script Content Level 0
+		[Token(Token = "0x6003DD9")]
+		[Address(RVA = "0x18528D0", Offset = "0x18528D0", VA = "0x18528D0", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x2000D1C")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x446C8", Offset = "0x446C8")]
+	private sealed class _003CSnowballSequence_003Ed__18 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x4004724")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4004725")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x4004726")]
+		[FieldOffset(Offset = "0x20")]
+		public SnowballFightEvent _003C_003E4__this;
 
-	7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x17000655")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x6003DDD")]
+			[Address(RVA = "0x1852B08", Offset = "0x1852B08", VA = "0x1852B08", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x17000656")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x6003DDF")]
+			[Address(RVA = "0x1852B50", Offset = "0x1852B50", VA = "0x1852B50", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
 
-	*/
+		[Token(Token = "0x6003DDA")]
+		[Address(RVA = "0x18528D8", Offset = "0x18528D8", VA = "0x18528D8")]
+		[DebuggerHidden]
+		public _003CSnowballSequence_003Ed__18(int _003C_003E1__state)
+		{
+		}
+
+		[Token(Token = "0x6003DDB")]
+		[Address(RVA = "0x1852904", Offset = "0x1852904", VA = "0x1852904", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
+
+		[Token(Token = "0x6003DDC")]
+		[Address(RVA = "0x1852908", Offset = "0x1852908", VA = "0x1852908", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6003DDD")]
+		[Address(RVA = "0x1852B08", Offset = "0x1852B08", VA = "0x1852B08", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6003DDE")]
+		[Address(RVA = "0x1852B10", Offset = "0x1852B10", VA = "0x1852B10", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
+
+		[Token(Token = "0x6003DDF")]
+		[Address(RVA = "0x1852B50", Offset = "0x1852B50", VA = "0x1852B50", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
+
+	[Token(Token = "0x4004713")]
+	[FieldOffset(Offset = "0x18")]
+	[SerializeField]
+	private ParticleSystem m_snowballParticle;
+
+	[Token(Token = "0x4004714")]
+	[FieldOffset(Offset = "0x20")]
+	[SerializeField]
+	private Animator m_snowballThrower;
+
+	[Token(Token = "0x4004715")]
+	[FieldOffset(Offset = "0x28")]
+	[SerializeField]
+	private Direction m_direction;
+
+	[Token(Token = "0x4004716")]
+	[FieldOffset(Offset = "0x2C")]
+	[SerializeField]
+	private float PickupDuration;
+
+	[Token(Token = "0x4004717")]
+	[FieldOffset(Offset = "0x30")]
+	[SerializeField]
+	private Animator animator;
+
+	[Token(Token = "0x4004718")]
+	[FieldOffset(Offset = "0x38")]
+	[SerializeField]
+	private AudioEventAsset sfxLaugh;
+
+	[Token(Token = "0x4004719")]
+	[FieldOffset(Offset = "0x40")]
+	[SerializeField]
+	private ClipSettingsCollection sfxOnShoot;
+
+	[Token(Token = "0x400471A")]
+	[FieldOffset(Offset = "0x48")]
+	private bool hasSnowball;
+
+	[Token(Token = "0x400471B")]
+	[FieldOffset(Offset = "0x4C")]
+	[SerializeField]
+	private float MaxTimeBeforeSnowballPickup;
+
+	[Token(Token = "0x400471C")]
+	[FieldOffset(Offset = "0x50")]
+	private Coroutine m_currentSnowballSequence;
+
+	[Token(Token = "0x400471D")]
+	[FieldOffset(Offset = "0x58")]
+	private List<ParticleSystem> m_particleSystemsToUpdate;
+
+	[Token(Token = "0x6003DCC")]
+	[Address(RVA = "0x16BC98C", Offset = "0x16BC98C", VA = "0x16BC98C")]
+	private void OnDisable()
+	{
+	}
+
+	[Token(Token = "0x6003DCD")]
+	[Address(RVA = "0x16BC994", Offset = "0x16BC994", VA = "0x16BC994")]
+	private void OnEnable()
+	{
+	}
+
+	[Token(Token = "0x6003DCE")]
+	[Address(RVA = "0x16BC998", Offset = "0x16BC998", VA = "0x16BC998")]
+	private void Start()
+	{
+	}
+
+	[Token(Token = "0x6003DCF")]
+	[Address(RVA = "0x16BCB8C", Offset = "0x16BCB8C", VA = "0x16BCB8C", Slot = "4")]
+	public override void TriggerEvent()
+	{
+	}
+
+	[Token(Token = "0x6003DD0")]
+	[Address(RVA = "0x16BCC40", Offset = "0x16BCC40", VA = "0x16BCC40")]
+	private void RandomizeSeeds()
+	{
+	}
+
+	[Token(Token = "0x6003DD1")]
+	[Address(RVA = "0x16BCB18", Offset = "0x16BCB18", VA = "0x16BCB18")]
+	private IEnumerator KidWaitingSequence()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6003DD2")]
+	[Address(RVA = "0x16BCCF4", Offset = "0x16BCCF4", VA = "0x16BCCF4")]
+	private IEnumerator SnowballSequence()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6003DD3")]
+	[Address(RVA = "0x16BCD68", Offset = "0x16BCD68", VA = "0x16BCD68")]
+	public SnowballFightEvent()
+	{
+	}
 }

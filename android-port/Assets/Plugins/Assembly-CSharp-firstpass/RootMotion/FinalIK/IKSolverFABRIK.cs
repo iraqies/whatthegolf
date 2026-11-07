@@ -1,66 +1,183 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace RootMotion.FinalIK
 {
-	public class IKSolverFABRIK : MonoBehaviour
+	[Serializable]
+	[Token(Token = "0x2000175")]
+	public class IKSolverFABRIK : IKSolverHeuristic
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4000960")]
+		[FieldOffset(Offset = "0x88")]
+		public IterationDelegate OnPreIteration;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000961")]
+		[FieldOffset(Offset = "0x90")]
+		private bool[] limitedBones;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000962")]
+		[FieldOffset(Offset = "0x98")]
+		private Vector3[] solverLocalPositions;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x1700014D")]
+		protected override bool boneLengthCanBeZero
+		{
+			[Token(Token = "0x6000A7F")]
+			[Address(RVA = "0x138D678", Offset = "0x138D678", VA = "0x138D678", Slot = "13")]
+			get
+			{
+				return default;
+			}
+		}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x6000A7A")]
+		[Address(RVA = "0x138C5CC", Offset = "0x138C5CC", VA = "0x138C5CC")]
+		public void SolveForward(Vector3 position)
+		{
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x6000A7B")]
+		[Address(RVA = "0x138CC18", Offset = "0x138CC18", VA = "0x138CC18")]
+		public void SolveBackward(Vector3 position)
+		{
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6000A7C")]
+		[Address(RVA = "0x138CD94", Offset = "0x138CD94", VA = "0x138CD94", Slot = "5")]
+		public override Vector3 GetIKPosition()
+		{
+			return default;
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6000A7D")]
+		[Address(RVA = "0x138CE40", Offset = "0x138CE40", VA = "0x138CE40", Slot = "10")]
+		protected override void OnInitiate()
+		{
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x6000A7E")]
+		[Address(RVA = "0x138D348", Offset = "0x138D348", VA = "0x138D348", Slot = "11")]
+		protected override void OnUpdate()
+		{
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6000A80")]
+		[Address(RVA = "0x138D680", Offset = "0x138D680", VA = "0x138D680")]
+		private Vector3 SolveJoint(Vector3 pos1, Vector3 pos2, float length)
+		{
+			return default;
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x6000A81")]
+		[Address(RVA = "0x138C6A8", Offset = "0x138C6A8", VA = "0x138C6A8")]
+		private void OnPreSolve()
+		{
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x6000A82")]
+		[Address(RVA = "0x138CD40", Offset = "0x138CD40", VA = "0x138CD40")]
+		private void OnPostSolve()
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x6000A83")]
+		[Address(RVA = "0x138D604", Offset = "0x138D604", VA = "0x138D604")]
+		private void Solve(Vector3 targetPosition)
+		{
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x6000A84")]
+		[Address(RVA = "0x138CA20", Offset = "0x138CA20", VA = "0x138CA20")]
+		private void ForwardReach(Vector3 position)
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x6000A85")]
+		[Address(RVA = "0x138DD54", Offset = "0x138DD54", VA = "0x138DD54")]
+		private void SolverMove(int index, Vector3 offset)
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x6000A86")]
+		[Address(RVA = "0x138DDCC", Offset = "0x138DDCC", VA = "0x138DDCC")]
+		private void SolverRotate(int index, Quaternion rotation, bool recursive)
+		{
+		}
 
-		*/
+		[Token(Token = "0x6000A87")]
+		[Address(RVA = "0x138DE94", Offset = "0x138DE94", VA = "0x138DE94")]
+		private void SolverRotateChildren(int index, Quaternion rotation)
+		{
+		}
+
+		[Token(Token = "0x6000A88")]
+		[Address(RVA = "0x138DF44", Offset = "0x138DF44", VA = "0x138DF44")]
+		private void SolverMoveChildrenAroundPoint(int index, Quaternion rotation)
+		{
+		}
+
+		[Token(Token = "0x6000A89")]
+		[Address(RVA = "0x138D0C0", Offset = "0x138D0C0", VA = "0x138D0C0")]
+		private Quaternion GetParentSolverRotation(int index)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000A8A")]
+		[Address(RVA = "0x138D204", Offset = "0x138D204", VA = "0x138D204")]
+		private Vector3 GetParentSolverPosition(int index)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000A8B")]
+		[Address(RVA = "0x138E038", Offset = "0x138E038", VA = "0x138E038")]
+		private Quaternion GetLimitedRotation(int index, Quaternion q, out bool changed)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000A8C")]
+		[Address(RVA = "0x138D8E8", Offset = "0x138D8E8", VA = "0x138D8E8")]
+		private void LimitForward(int rotateBone, int limitBone)
+		{
+		}
+
+		[Token(Token = "0x6000A8D")]
+		[Address(RVA = "0x138CD2C", Offset = "0x138CD2C", VA = "0x138CD2C")]
+		private void BackwardReach(Vector3 position)
+		{
+		}
+
+		[Token(Token = "0x6000A8E")]
+		[Address(RVA = "0x138E614", Offset = "0x138E614", VA = "0x138E614")]
+		private void BackwardReachUnlimited(Vector3 position)
+		{
+		}
+
+		[Token(Token = "0x6000A8F")]
+		[Address(RVA = "0x138E180", Offset = "0x138E180", VA = "0x138E180")]
+		private void BackwardReachLimited(Vector3 position)
+		{
+		}
+
+		[Token(Token = "0x6000A90")]
+		[Address(RVA = "0x138D700", Offset = "0x138D700", VA = "0x138D700")]
+		private void MapToSolverPositions()
+		{
+		}
+
+		[Token(Token = "0x6000A91")]
+		[Address(RVA = "0x138D814", Offset = "0x138D814", VA = "0x138D814")]
+		private void MapToSolverPositionsLimited()
+		{
+		}
+
+		[Token(Token = "0x6000A92")]
+		[Address(RVA = "0x138E728", Offset = "0x138E728", VA = "0x138E728")]
+		public IKSolverFABRIK()
+		{
+		}
 	}
 }

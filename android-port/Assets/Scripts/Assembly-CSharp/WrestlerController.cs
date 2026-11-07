@@ -1,63 +1,181 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Core;
+using Il2CppDummyDll;
+using RootMotion.Demos;
+using RootMotion.Dynamics;
 using UnityEngine;
 
-public class WrestlerController : MonoBehaviour
+[Token(Token = "0x200027A")]
+public class WrestlerController : UserControlThirdPerson
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x200027B")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3E784", Offset = "0x3E784")]
+	private sealed class _003CRegainPinDelayed_003Ed__14 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x4000D12")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000D13")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000D14")]
+		[FieldOffset(Offset = "0x20")]
+		public WrestlerController _003C_003E4__this;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x17000158")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x6000B3A")]
+			[Address(RVA = "0x187A0FC", Offset = "0x187A0FC", VA = "0x187A0FC", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x17000159")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x6000B3C")]
+			[Address(RVA = "0x187A144", Offset = "0x187A144", VA = "0x187A144", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x6000B37")]
+		[Address(RVA = "0x1879FB8", Offset = "0x1879FB8", VA = "0x1879FB8")]
+		[DebuggerHidden]
+		public _003CRegainPinDelayed_003Ed__14(int _003C_003E1__state)
+		{
+		}
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6000B38")]
+		[Address(RVA = "0x1879FE4", Offset = "0x1879FE4", VA = "0x1879FE4", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6000B39")]
+		[Address(RVA = "0x1879FE8", Offset = "0x1879FE8", VA = "0x1879FE8", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x6000B3A")]
+		[Address(RVA = "0x187A0FC", Offset = "0x187A0FC", VA = "0x187A0FC", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
 
-	4. This script is unnecessary.
+		[Token(Token = "0x6000B3B")]
+		[Address(RVA = "0x187A104", Offset = "0x187A104", VA = "0x187A104", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6000B3C")]
+		[Address(RVA = "0x187A144", Offset = "0x187A144", VA = "0x187A144", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
 
-	5. Script Content Level 0
+	[Token(Token = "0x4000D08")]
+	[FieldOffset(Offset = "0x48")]
+	public GolfBallController Controller;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4000D09")]
+	[FieldOffset(Offset = "0x50")]
+	public float JumpTime;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4000D0A")]
+	[FieldOffset(Offset = "0x58")]
+	public CharacterPuppet Puppet;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4000D0B")]
+	[FieldOffset(Offset = "0x60")]
+	public PuppetMaster puppetMaster;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4000D0C")]
+	[FieldOffset(Offset = "0x68")]
+	public Transform[] arms;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x4000D0D")]
+	[FieldOffset(Offset = "0x70")]
+	public Muscle.Props inJumpArmProperties;
 
-	*/
+	[Token(Token = "0x4000D0E")]
+	[FieldOffset(Offset = "0x78")]
+	private Vector3 aimDir;
+
+	[Token(Token = "0x4000D0F")]
+	[FieldOffset(Offset = "0x84")]
+	private float jumpTimer;
+
+	[Token(Token = "0x4000D10")]
+	[FieldOffset(Offset = "0x88")]
+	private Rigidbody controllerRigidbody;
+
+	[Token(Token = "0x4000D11")]
+	[FieldOffset(Offset = "0x90")]
+	private Dictionary<Muscle, Muscle.Props> defaultPinInfo;
+
+	[Token(Token = "0x6000B30")]
+	[Address(RVA = "0x175B698", Offset = "0x175B698", VA = "0x175B698", Slot = "4")]
+	protected override void Start()
+	{
+	}
+
+	[Token(Token = "0x6000B31")]
+	[Address(RVA = "0x175B8FC", Offset = "0x175B8FC", VA = "0x175B8FC")]
+	public void OnShoot(Vector3 boost)
+	{
+	}
+
+	[Token(Token = "0x6000B32")]
+	[Address(RVA = "0x175B9C0", Offset = "0x175B9C0", VA = "0x175B9C0")]
+	private void SetWeights(bool setToDefault)
+	{
+	}
+
+	[Token(Token = "0x6000B33")]
+	[Address(RVA = "0x175BB50", Offset = "0x175BB50", VA = "0x175BB50")]
+	private IEnumerator RegainPinDelayed(float delay)
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6000B34")]
+	[Address(RVA = "0x175BBC4", Offset = "0x175BBC4", VA = "0x175BBC4")]
+	public void OnAimUpdate(Vector3 boost, bool onlyAimArrow)
+	{
+	}
+
+	[Token(Token = "0x6000B35")]
+	[Address(RVA = "0x175BC00", Offset = "0x175BC00", VA = "0x175BC00", Slot = "5")]
+	protected override void Update()
+	{
+	}
+
+	[Token(Token = "0x6000B36")]
+	[Address(RVA = "0x175BDE4", Offset = "0x175BDE4", VA = "0x175BDE4")]
+	public WrestlerController()
+	{
+	}
 }

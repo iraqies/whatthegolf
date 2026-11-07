@@ -1,66 +1,136 @@
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace TMPro
 {
-	public class TMP_MaterialManager : MonoBehaviour
+	[Token(Token = "0x2000043")]
+	public static class TMP_MaterialManager
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x2000044")]
+		private class FallbackMaterial
+		{
+			[Token(Token = "0x40001B5")]
+			[FieldOffset(Offset = "0x10")]
+			public long fallbackID;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x40001B6")]
+			[FieldOffset(Offset = "0x18")]
+			public Material sourceMaterial;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x40001B7")]
+			[FieldOffset(Offset = "0x20")]
+			internal int sourceMaterialCRC;
 
-		2. Incorrect dll files were provided to AssetRipper.
+			[Token(Token = "0x40001B8")]
+			[FieldOffset(Offset = "0x28")]
+			public Material fallbackMaterial;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+			[Token(Token = "0x40001B9")]
+			[FieldOffset(Offset = "0x30")]
+			public int count;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+			[Token(Token = "0x6000239")]
+			[Address(RVA = "0x2ADF82C", Offset = "0x2ADF82C", VA = "0x2ADF82C")]
+			public FallbackMaterial()
+			{
+			}
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x2000045")]
+		private class MaskingMaterial
+		{
+			[Token(Token = "0x40001BA")]
+			[FieldOffset(Offset = "0x10")]
+			public Material stencilMaterial;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+			[Token(Token = "0x40001BB")]
+			[FieldOffset(Offset = "0x18")]
+			public int count;
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x40001B0")]
+		[FieldOffset(Offset = "0x0")]
+		private static List<MaskingMaterial> m_materialList;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x40001B1")]
+		[FieldOffset(Offset = "0x8")]
+		private static Dictionary<long, FallbackMaterial> m_fallbackMaterials;
 
-		5. Script Content Level 0
+		[Token(Token = "0x40001B2")]
+		[FieldOffset(Offset = "0x10")]
+		private static Dictionary<int, long> m_fallbackMaterialLookup;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x40001B3")]
+		[FieldOffset(Offset = "0x18")]
+		private static List<FallbackMaterial> m_fallbackCleanupList;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x40001B4")]
+		[FieldOffset(Offset = "0x20")]
+		private static bool isFallbackListDirty;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x600022F")]
+		[Address(RVA = "0x2A988CC", Offset = "0x2A988CC", VA = "0x2A988CC")]
+		static TMP_MaterialManager()
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x6000230")]
+		[Address(RVA = "0x2A98A98", Offset = "0x2A98A98", VA = "0x2A98A98")]
+		private static void OnPreRender()
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x6000231")]
+		[Address(RVA = "0x2A98D7C", Offset = "0x2A98D7C", VA = "0x2A98D7C")]
+		public static void ReleaseStencilMaterial(Material stencilMaterial)
+		{
+		}
 
-		*/
+		[Token(Token = "0x6000232")]
+		[Address(RVA = "0x2A99014", Offset = "0x2A99014", VA = "0x2A99014")]
+		public static Material GetMaterialForRendering(MaskableGraphic graphic, Material baseMaterial)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6000233")]
+		[Address(RVA = "0x2A99240", Offset = "0x2A99240", VA = "0x2A99240")]
+		internal static Material GetFallbackMaterial(TMP_FontAsset fontAsset, Material sourceMaterial, int atlasIndex)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6000234")]
+		[Address(RVA = "0x2A997D0", Offset = "0x2A997D0", VA = "0x2A997D0")]
+		public static Material GetFallbackMaterial(Material sourceMaterial, Material targetMaterial)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6000235")]
+		[Address(RVA = "0x2A99C3C", Offset = "0x2A99C3C", VA = "0x2A99C3C")]
+		public static void AddFallbackMaterialReference(Material targetMaterial)
+		{
+		}
+
+		[Token(Token = "0x6000236")]
+		[Address(RVA = "0x2A98B28", Offset = "0x2A98B28", VA = "0x2A98B28")]
+		public static void CleanupFallbackMaterials()
+		{
+		}
+
+		[Token(Token = "0x6000237")]
+		[Address(RVA = "0x2A99DA0", Offset = "0x2A99DA0", VA = "0x2A99DA0")]
+		public static void ReleaseFallbackMaterial(Material fallbackMaterial)
+		{
+		}
+
+		[Token(Token = "0x6000238")]
+		[Address(RVA = "0x2A99548", Offset = "0x2A99548", VA = "0x2A99548")]
+		public static void CopyMaterialPresetProperties(Material source, Material destination)
+		{
+		}
 	}
 }

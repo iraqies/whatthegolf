@@ -1,66 +1,182 @@
+using System.Collections;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Kilt.EasyRopes2D
 {
+	[Token(Token = "0x20000A6")]
 	public class TimedTrailRenderer : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x20000A7")]
+		public class Point
+		{
+			[Token(Token = "0x400030A")]
+			[FieldOffset(Offset = "0x10")]
+			public float timeCreated;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x400030B")]
+			[FieldOffset(Offset = "0x14")]
+			public Vector3 position;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x400030C")]
+			[FieldOffset(Offset = "0x20")]
+			public bool lineBreak;
 
-		2. Incorrect dll files were provided to AssetRipper.
+			[Token(Token = "0x60003C9")]
+			[Address(RVA = "0x1356ED8", Offset = "0x1356ED8", VA = "0x1356ED8")]
+			public Point()
+			{
+			}
+		}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40002F4")]
+		[FieldOffset(Offset = "0x18")]
+		public bool emit;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40002F5")]
+		[FieldOffset(Offset = "0x1C")]
+		public float emitTime;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x40002F6")]
+		[FieldOffset(Offset = "0x20")]
+		public Material material;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x40002F7")]
+		[FieldOffset(Offset = "0x28")]
+		public float lifeTime;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x40002F8")]
+		[FieldOffset(Offset = "0x30")]
+		public Color[] colors;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x40002F9")]
+		[FieldOffset(Offset = "0x38")]
+		public float[] sizes;
 
-		5. Script Content Level 0
+		[Token(Token = "0x40002FA")]
+		[FieldOffset(Offset = "0x40")]
+		public float uvLengthScale;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x40002FB")]
+		[FieldOffset(Offset = "0x44")]
+		public bool higherQualityUVs;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x40002FC")]
+		[FieldOffset(Offset = "0x48")]
+		public int movePixelsForRebuild;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x40002FD")]
+		[FieldOffset(Offset = "0x4C")]
+		public float maxRebuildTime;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x40002FE")]
+		[FieldOffset(Offset = "0x50")]
+		public float minVertexDistance;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x40002FF")]
+		[FieldOffset(Offset = "0x54")]
+		public float maxVertexDistance;
 
-		*/
+		[Token(Token = "0x4000300")]
+		[FieldOffset(Offset = "0x58")]
+		public float maxAngle;
+
+		[Token(Token = "0x4000301")]
+		[FieldOffset(Offset = "0x5C")]
+		public bool ignoreTimeScale;
+
+		[Token(Token = "0x4000302")]
+		[FieldOffset(Offset = "0x5D")]
+		public bool autoDestruct;
+
+		[Token(Token = "0x4000303")]
+		[FieldOffset(Offset = "0x60")]
+		private ArrayList points;
+
+		[Token(Token = "0x4000304")]
+		[FieldOffset(Offset = "0x68")]
+		private GameObject o;
+
+		[Token(Token = "0x4000305")]
+		[FieldOffset(Offset = "0x70")]
+		private Vector3 lastPosition;
+
+		[Token(Token = "0x4000306")]
+		[FieldOffset(Offset = "0x7C")]
+		private Vector3 lastCameraPosition1;
+
+		[Token(Token = "0x4000307")]
+		[FieldOffset(Offset = "0x88")]
+		private Vector3 lastCameraPosition2;
+
+		[Token(Token = "0x4000308")]
+		[FieldOffset(Offset = "0x94")]
+		private float lastRebuildTime;
+
+		[Token(Token = "0x4000309")]
+		[FieldOffset(Offset = "0x98")]
+		private bool lastFrameEmit;
+
+		[Token(Token = "0x60003BF")]
+		[Address(RVA = "0x131B578", Offset = "0x131B578", VA = "0x131B578", Slot = "4")]
+		protected virtual void OnStart()
+		{
+		}
+
+		[Token(Token = "0x60003C0")]
+		[Address(RVA = "0x131B584", Offset = "0x131B584", VA = "0x131B584", Slot = "5")]
+		protected virtual void OnEnable()
+		{
+		}
+
+		[Token(Token = "0x60003C1")]
+		[Address(RVA = "0x131B590", Offset = "0x131B590", VA = "0x131B590", Slot = "6")]
+		protected virtual void OnDisable()
+		{
+		}
+
+		[Token(Token = "0x60003C2")]
+		[Address(RVA = "0x131B608", Offset = "0x131B608", VA = "0x131B608", Slot = "7")]
+		protected virtual void Update()
+		{
+		}
+
+		[Token(Token = "0x60003C3")]
+		[Address(RVA = "0x131D2FC", Offset = "0x131D2FC", VA = "0x131D2FC", Slot = "8")]
+		protected virtual void LateUpdate()
+		{
+		}
+
+		[Token(Token = "0x60003C4")]
+		[Address(RVA = "0x131D3BC", Offset = "0x131D3BC", VA = "0x131D3BC", Slot = "9")]
+		public virtual void ClearPoints()
+		{
+		}
+
+		[Token(Token = "0x60003C5")]
+		[Address(RVA = "0x131D3E0", Offset = "0x131D3E0", VA = "0x131D3E0", Slot = "10")]
+		public virtual void Init()
+		{
+		}
+
+		[Token(Token = "0x60003C6")]
+		[Address(RVA = "0x131D2E4", Offset = "0x131D2E4", VA = "0x131D2E4")]
+		public float GetTime()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60003C7")]
+		[Address(RVA = "0x131D2CC", Offset = "0x131D2CC", VA = "0x131D2CC")]
+		public float GetDeltaTime()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60003C8")]
+		[Address(RVA = "0x131D68C", Offset = "0x131D68C", VA = "0x131D68C")]
+		public TimedTrailRenderer()
+		{
+		}
 	}
 }

@@ -1,5 +1,7 @@
 {
   "name": "Triband.Core.Runtime",
-  "references": [],
+  "references": [
+    "Il2CppDummyDll"
+  ],
   "allowUnsafeCode": true
 }

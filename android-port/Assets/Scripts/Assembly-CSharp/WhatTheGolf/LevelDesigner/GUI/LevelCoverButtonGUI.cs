@@ -1,66 +1,113 @@
+using System;
+using System.Runtime.InteropServices;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace WhatTheGolf.LevelDesigner.GUI
 {
+	[Token(Token = "0x2001296")]
 	public class LevelCoverButtonGUI : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x400640B")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x18")]
+		private SerializableLevelData levelData;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x400640C")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x20")]
+		[SerializeField]
+		private MultiGraphicButton button;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x400640D")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
+		[SerializeField]
+		private RawImage thumbnailRenderer;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x400640E")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x30")]
+		[SerializeField]
+		private SVGImage actionIconRenderer;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x400640F")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x38")]
+		[SerializeField]
+		private GameObject ballIconRendererContainer;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4006410")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x40")]
+		[SerializeField]
+		private SVGImage ballIconRenderer;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4006411")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x48")]
+		[SerializeField]
+		private ButtonStateColors thumbnailHoverColors;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4006412")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x50")]
+		[SerializeField]
+		private GameObject publishedLabel;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4006413")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x58")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x5905C", Offset = "0x5905C")]
+		private Action<SerializableLevelData> m_OnSelected;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4006414")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x60")]
+		private bool subscribed;
 
-		5. Script Content Level 0
+		[Token(Token = "0x14000093")]
+		public event Action<SerializableLevelData> OnSelected
+		{
+			[Token(Token = "0x600560C")]
+			[Address(RVA = "0x15275CC", Offset = "0x15275CC", VA = "0x15275CC")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x71930", Offset = "0x71930")]
+			add
+			{
+			}
+			[Token(Token = "0x600560D")]
+			[Address(RVA = "0x1527670", Offset = "0x1527670", VA = "0x1527670")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x71940", Offset = "0x71940")]
+			remove
+			{
+			}
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x600560E")]
+		[Address(RVA = "0x1527714", Offset = "0x1527714", VA = "0x1527714")]
+		public void Init([Optional] Sprite actionIcon, [Optional] ButtonStateColors overrideHoverColors)
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x600560F")]
+		[Address(RVA = "0x1527964", Offset = "0x1527964", VA = "0x1527964")]
+		public void Init(SerializableLevelData levelData, [Optional] Sprite actionIcon, [Optional] ButtonStateColors overrideHoverColors, bool showPublishedStatus = false)
+		{
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x6005610")]
+		[Address(RVA = "0x15279CC", Offset = "0x15279CC", VA = "0x15279CC")]
+		public void Init(SerializableLevelData levelData, Sprite actionIcon, Texture levelThumbnail, [Optional] ButtonStateColors overrideHoverColors, bool showPublishedStatus = false)
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x6005611")]
+		[Address(RVA = "0x1527CB0", Offset = "0x1527CB0", VA = "0x1527CB0")]
+		public void SetButtonInteractable(bool interactable)
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x6005612")]
+		[Address(RVA = "0x1527CCC", Offset = "0x1527CCC", VA = "0x1527CCC")]
+		private void Button_OnSelected()
+		{
+		}
 
-		*/
+		[Token(Token = "0x6005613")]
+		[Address(RVA = "0x1527D2C", Offset = "0x1527D2C", VA = "0x1527D2C")]
+		public LevelCoverButtonGUI()
+		{
+		}
 	}
 }

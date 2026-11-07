@@ -1,66 +1,122 @@
-using UnityEngine;
+using System.Collections.Generic;
+using Il2CppDummyDll;
 
 namespace UnityEngine.U2D.IK
 {
+	[Token(Token = "0x2000003")]
+	[Attribute(Name = "DefaultExecutionOrder", RVA = "0x1B0B5C", Offset = "0x1B0B5C")]
+	[ExecuteInEditMode]
+	[Attribute(Name = "MovedFromAttribute", RVA = "0x1B0B5C", Offset = "0x1B0B5C")]
 	public class IKManager2D : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4000008")]
+		[FieldOffset(Offset = "0x18")]
+		[SerializeField]
+		private List<Solver2D> m_Solvers;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000009")]
+		[FieldOffset(Offset = "0x20")]
+		[Attribute(Name = "RangeAttribute", RVA = "0x1B0D84", Offset = "0x1B0D84")]
+		[SerializeField]
+		private float m_Weight;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x17000009")]
+		public float weight
+		{
+			[Token(Token = "0x6000011")]
+			[Address(RVA = "0x2A12898", Offset = "0x2A12898", VA = "0x2A12898")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000012")]
+			[Address(RVA = "0x2A128A0", Offset = "0x2A128A0", VA = "0x2A128A0")]
+			set
+			{
+			}
+		}
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x1700000A")]
+		public List<Solver2D> solvers
+		{
+			[Token(Token = "0x6000013")]
+			[Address(RVA = "0x2A128C8", Offset = "0x2A128C8", VA = "0x2A128C8")]
+			get
+			{
+				return null;
+			}
+		}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x6000014")]
+		[Address(RVA = "0x2A128D0", Offset = "0x2A128D0", VA = "0x2A128D0")]
+		private void OnValidate()
+		{
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x6000015")]
+		[Address(RVA = "0x2A12900", Offset = "0x2A12900", VA = "0x2A12900")]
+		private void OnEnable()
+		{
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6000016")]
+		[Address(RVA = "0x2A12904", Offset = "0x2A12904", VA = "0x2A12904")]
+		private void Reset()
+		{
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6000017")]
+		[Address(RVA = "0x2A12908", Offset = "0x2A12908", VA = "0x2A12908")]
+		private void FindChildSolvers()
+		{
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x6000018")]
+		[Address(RVA = "0x2A12B6C", Offset = "0x2A12B6C", VA = "0x2A12B6C")]
+		public void AddSolver(Solver2D solver)
+		{
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6000019")]
+		[Address(RVA = "0x2A12C10", Offset = "0x2A12C10", VA = "0x2A12C10")]
+		public void RemoveSolver(Solver2D solver)
+		{
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x600001A")]
+		[Address(RVA = "0x2A12C78", Offset = "0x2A12C78", VA = "0x2A12C78")]
+		public void UpdateManager()
+		{
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x600001B")]
+		[Address(RVA = "0x2A130BC", Offset = "0x2A130BC", VA = "0x2A130BC")]
+		private void LateUpdate()
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x600001C")]
+		[Address(RVA = "0x2A128FC", Offset = "0x2A128FC", VA = "0x2A128FC")]
+		private void OnEditorDataValidate()
+		{
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x600001D")]
+		[Address(RVA = "0x2A12C0C", Offset = "0x2A12C0C", VA = "0x2A12C0C")]
+		private void AddSolverEditorData()
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x600001E")]
+		[Address(RVA = "0x2A12C74", Offset = "0x2A12C74", VA = "0x2A12C74")]
+		private void RemoveSolverEditorData(Solver2D solver)
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x600001F")]
+		[Address(RVA = "0x2A130C0", Offset = "0x2A130C0", VA = "0x2A130C0")]
+		public IKManager2D()
+		{
+		}
 	}
 }

@@ -1,63 +1,100 @@
+using System;
+using Core;
+using Il2CppDummyDll;
+using Malee;
 using UnityEngine;
 
+[Token(Token = "0x2000431")]
 public class LevelChallenges : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x2000432")]
+	public enum gameVersion
+	{
+		[Token(Token = "0x40016F2")]
+		Base = 0,
+		[Token(Token = "0x40016F3")]
+		OL = 1
+	}
 
-	1. No dll files were provided to AssetRipper.
+	[Serializable]
+	[Token(Token = "0x2000433")]
+	public class ChallengeList : ReorderableArray<Challenge>
+	{
+		[Token(Token = "0x60013B9")]
+		[Address(RVA = "0x17D14D4", Offset = "0x17D14D4", VA = "0x17D14D4")]
+		public ChallengeList()
+		{
+		}
+	}
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x40016EC")]
+	[FieldOffset(Offset = "0x18")]
+	[SerializeField]
+	public ChallengeList Challenges;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x40016ED")]
+	[FieldOffset(Offset = "0x20")]
+	private bool hasFailedLevel;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x40016EE")]
+	[FieldOffset(Offset = "0x24")]
+	public gameVersion failMessages;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x40016EF")]
+	[FieldOffset(Offset = "0x28")]
+	private string[] olFailMessages;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x40016F0")]
+	[FieldOffset(Offset = "0x0")]
+	private static System.Random random;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x60013B0")]
+	[Address(RVA = "0x152545C", Offset = "0x152545C", VA = "0x152545C")]
+	private void Awake()
+	{
+	}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x60013B1")]
+	[Address(RVA = "0x152588C", Offset = "0x152588C", VA = "0x152588C")]
+	private void OnDisable()
+	{
+	}
 
-	4. This script is unnecessary.
+	[Token(Token = "0x60013B2")]
+	[Address(RVA = "0x1525AB4", Offset = "0x1525AB4", VA = "0x1525AB4")]
+	private void OnChallengeSelected(string id)
+	{
+	}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x60013B3")]
+	[Address(RVA = "0x1525D58", Offset = "0x1525D58", VA = "0x1525D58")]
+	private void Complete(Challenge challenge)
+	{
+	}
 
-	5. Script Content Level 0
+	[Token(Token = "0x60013B4")]
+	[Address(RVA = "0x1526128", Offset = "0x1526128", VA = "0x1526128")]
+	private void Fail(Challenge challenge)
+	{
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x60013B5")]
+	[Address(RVA = "0x152624C", Offset = "0x152624C", VA = "0x152624C")]
+	public string GenerateId(int length)
+	{
+		return null;
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x60013B6")]
+	[Address(RVA = "0x152637C", Offset = "0x152637C", VA = "0x152637C")]
+	public LevelChallenges()
+	{
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x60013B8")]
+	[Address(RVA = "0x152657C", Offset = "0x152657C", VA = "0x152657C")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x61F4C", Offset = "0x61F4C")]
+	private void _003COnChallengeSelected_003Eb__7_0(GolfBallController c, string s, Level.State s2)
+	{
+	}
 }

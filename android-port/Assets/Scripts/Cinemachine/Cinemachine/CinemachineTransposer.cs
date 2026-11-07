@@ -1,66 +1,226 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Cinemachine
 {
-	public class CinemachineTransposer : MonoBehaviour
+	[Token(Token = "0x2000052")]
+	public class CinemachineTransposer : CinemachineComponentBase
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x2000053")]
+		public enum BindingMode
+		{
+			[Token(Token = "0x40001E6")]
+			LockToTargetOnAssign = 0,
+			[Token(Token = "0x40001E7")]
+			LockToTargetWithWorldUp = 1,
+			[Token(Token = "0x40001E8")]
+			LockToTargetNoRoll = 2,
+			[Token(Token = "0x40001E9")]
+			LockToTarget = 3,
+			[Token(Token = "0x40001EA")]
+			WorldSpace = 4,
+			[Token(Token = "0x40001EB")]
+			SimpleFollowWithWorldUp = 5
+		}
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x2000054")]
+		public enum AngularDampingMode
+		{
+			[Token(Token = "0x40001ED")]
+			Euler = 0,
+			[Token(Token = "0x40001EE")]
+			Quaternion = 1
+		}
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40001D6")]
+		[FieldOffset(Offset = "0x50")]
+		public BindingMode m_BindingMode;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40001D7")]
+		[FieldOffset(Offset = "0x54")]
+		public Vector3 m_FollowOffset;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40001D8")]
+		[FieldOffset(Offset = "0x60")]
+		[Attribute(Name = "RangeAttribute", RVA = "0x78EA0", Offset = "0x78EA0")]
+		public float m_XDamping;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40001D9")]
+		[FieldOffset(Offset = "0x64")]
+		[Attribute(Name = "RangeAttribute", RVA = "0x78EB8", Offset = "0x78EB8")]
+		public float m_YDamping;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x40001DA")]
+		[FieldOffset(Offset = "0x68")]
+		[Attribute(Name = "RangeAttribute", RVA = "0x78ED0", Offset = "0x78ED0")]
+		public float m_ZDamping;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x40001DB")]
+		[FieldOffset(Offset = "0x6C")]
+		public AngularDampingMode m_AngularDampingMode;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x40001DC")]
+		[FieldOffset(Offset = "0x70")]
+		[Attribute(Name = "RangeAttribute", RVA = "0x78EE8", Offset = "0x78EE8")]
+		public float m_PitchDamping;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x40001DD")]
+		[FieldOffset(Offset = "0x74")]
+		[Attribute(Name = "RangeAttribute", RVA = "0x78F00", Offset = "0x78F00")]
+		public float m_YawDamping;
 
-		5. Script Content Level 0
+		[Token(Token = "0x40001DE")]
+		[FieldOffset(Offset = "0x78")]
+		[Attribute(Name = "RangeAttribute", RVA = "0x78F18", Offset = "0x78F18")]
+		public float m_RollDamping;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x40001DF")]
+		[FieldOffset(Offset = "0x7C")]
+		[Attribute(Name = "RangeAttribute", RVA = "0x78F30", Offset = "0x78F30")]
+		public float m_AngularDamping;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x40001E0")]
+		[FieldOffset(Offset = "0x80")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x78F48", Offset = "0x78F48")]
+		private bool HideOffsetInInspector__BackingField;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x40001E1")]
+		[FieldOffset(Offset = "0x84")]
+		private Vector3 m_PreviousTargetPosition;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x40001E2")]
+		[FieldOffset(Offset = "0x90")]
+		private Quaternion m_PreviousReferenceOrientation;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x40001E3")]
+		[FieldOffset(Offset = "0xA0")]
+		private Quaternion m_targetOrientationOnAssign;
 
-		*/
+		[Token(Token = "0x40001E4")]
+		[FieldOffset(Offset = "0xB0")]
+		private Transform m_previousTarget;
+
+		[Token(Token = "0x17000066")]
+		public bool HideOffsetInInspector
+		{
+			[Token(Token = "0x60001D6")]
+			[Address(RVA = "0x1904B20", Offset = "0x1904B20", VA = "0x1904B20")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x79738", Offset = "0x79738")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x60001D7")]
+			[Address(RVA = "0x1904B28", Offset = "0x1904B28", VA = "0x1904B28")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x79748", Offset = "0x79748")]
+			set
+			{
+			}
+		}
+
+		[Token(Token = "0x17000067")]
+		public Vector3 EffectiveOffset
+		{
+			[Token(Token = "0x60001D8")]
+			[Address(RVA = "0x1904AF8", Offset = "0x1904AF8", VA = "0x1904AF8")]
+			get
+			{
+				return default;
+			}
+		}
+
+		[Token(Token = "0x17000068")]
+		public override bool IsValid
+		{
+			[Token(Token = "0x60001D9")]
+			[Address(RVA = "0x1904B30", Offset = "0x1904B30", VA = "0x1904B30", Slot = "4")]
+			get
+			{
+				return default;
+			}
+		}
+
+		[Token(Token = "0x17000069")]
+		public override CinemachineCore.Stage Stage
+		{
+			[Token(Token = "0x60001DA")]
+			[Address(RVA = "0x1904BC8", Offset = "0x1904BC8", VA = "0x1904BC8", Slot = "6")]
+			get
+			{
+				return default;
+			}
+		}
+
+		[Token(Token = "0x1700006A")]
+		protected Vector3 Damping
+		{
+			[Token(Token = "0x60001DF")]
+			[Address(RVA = "0x190575C", Offset = "0x190575C", VA = "0x190575C")]
+			get
+			{
+				return default;
+			}
+		}
+
+		[Token(Token = "0x1700006B")]
+		protected Vector3 AngularDamping
+		{
+			[Token(Token = "0x60001E0")]
+			[Address(RVA = "0x190568C", Offset = "0x190568C", VA = "0x190568C")]
+			get
+			{
+				return default;
+			}
+		}
+
+		[Token(Token = "0x60001D5")]
+		[Address(RVA = "0x1904AC8", Offset = "0x1904AC8", VA = "0x1904AC8", Slot = "10")]
+		protected virtual void OnValidate()
+		{
+		}
+
+		[Token(Token = "0x60001DB")]
+		[Address(RVA = "0x1904BD0", Offset = "0x1904BD0", VA = "0x1904BD0", Slot = "7")]
+		public override void MutateCameraState(ref CameraState curState, float deltaTime)
+		{
+		}
+
+		[Token(Token = "0x60001DC")]
+		[Address(RVA = "0x1905314", Offset = "0x1905314", VA = "0x1905314", Slot = "9")]
+		public override void OnTargetObjectWarped(Transform target, Vector3 positionDelta)
+		{
+		}
+
+		[Token(Token = "0x60001DD")]
+		[Address(RVA = "0x1904D10", Offset = "0x1904D10", VA = "0x1904D10")]
+		protected void InitPrevFrameStateInfo(ref CameraState curState, float deltaTime)
+		{
+		}
+
+		[Token(Token = "0x60001DE")]
+		[Address(RVA = "0x1904E88", Offset = "0x1904E88", VA = "0x1904E88")]
+		protected void TrackTarget(float deltaTime, Vector3 up, Vector3 desiredCameraOffset, out Vector3 outTargetPosition, out Quaternion outTargetOrient)
+		{
+		}
+
+		[Token(Token = "0x60001E1")]
+		[Address(RVA = "0x1905778", Offset = "0x1905778", VA = "0x1905778", Slot = "11")]
+		public virtual Vector3 GetTargetCameraPosition(Vector3 worldUp)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60001E2")]
+		[Address(RVA = "0x19053F4", Offset = "0x19053F4", VA = "0x19053F4")]
+		public Quaternion GetReferenceOrientation(Vector3 worldUp)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60001E3")]
+		[Address(RVA = "0x1905878", Offset = "0x1905878", VA = "0x1905878")]
+		public CinemachineTransposer()
+		{
+		}
 	}
 }

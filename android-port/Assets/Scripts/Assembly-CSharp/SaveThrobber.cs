@@ -1,63 +1,172 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class SaveThrobber : MonoBehaviour
+[Token(Token = "0x2000B80")]
+public class SaveThrobber : SingletonBehaviour<SaveThrobber>
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x2000B81")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x43A58", Offset = "0x43A58")]
+	private sealed class _003C_003Ec__DisplayClass14_0
+	{
+		[Token(Token = "0x400401F")]
+		[FieldOffset(Offset = "0x10")]
+		public float duration;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x6003788")]
+		[Address(RVA = "0x183E364", Offset = "0x183E364", VA = "0x183E364")]
+		public _003C_003Ec__DisplayClass14_0()
+		{
+		}
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x6003789")]
+		[Address(RVA = "0x183E36C", Offset = "0x183E36C", VA = "0x183E36C")]
+		internal void _003CShowThrobber_003Eb__0()
+		{
+		}
+	}
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Serializable]
+	[Token(Token = "0x2000B82")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x43A68", Offset = "0x43A68")]
+	private sealed class _003C_003Ec
+	{
+		[Token(Token = "0x4004020")]
+		[FieldOffset(Offset = "0x0")]
+		public static readonly _003C_003Ec _003C_003E9;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4004021")]
+		[FieldOffset(Offset = "0x8")]
+		public static Action _003C_003E9__15_0;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x600378B")]
+		[Address(RVA = "0x183E308", Offset = "0x183E308", VA = "0x183E308")]
+		public _003C_003Ec()
+		{
+		}
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x600378C")]
+		[Address(RVA = "0x183E310", Offset = "0x183E310", VA = "0x183E310")]
+		internal void _003CHideThrobber_003Eb__15_0()
+		{
+		}
+	}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4004015")]
+	public const float Rotationspeed = 7f;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4004016")]
+	public const float DoorDuration = 0.5f;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4004017")]
+	[FieldOffset(Offset = "0x18")]
+	private Canvas _holderCanvas;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4004018")]
+	[FieldOffset(Offset = "0x20")]
+	private Animator _animator;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4004019")]
+	[FieldOffset(Offset = "0x28")]
+	private float _displayDuration;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x400401A")]
+	[FieldOffset(Offset = "0x2C")]
+	private float _timeLeft;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x400401B")]
+	[FieldOffset(Offset = "0x30")]
+	private bool _displaying;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x400401C")]
+	[FieldOffset(Offset = "0x0")]
+	private static bool _isLoading;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x400401D")]
+	[FieldOffset(Offset = "0x8")]
+	private static Action _callbacks;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x400401E")]
+	[FieldOffset(Offset = "0x10")]
+	private static Scene activeScene;
 
-	*/
+	[Token(Token = "0x600377B")]
+	[Address(RVA = "0x1678BA8", Offset = "0x1678BA8", VA = "0x1678BA8", Slot = "4")]
+	protected override void OnAwake()
+	{
+	}
+
+	[Token(Token = "0x600377C")]
+	[Address(RVA = "0x1678CA8", Offset = "0x1678CA8", VA = "0x1678CA8")]
+	private void Start()
+	{
+	}
+
+	[Token(Token = "0x600377D")]
+	[Address(RVA = "0x1678DD0", Offset = "0x1678DD0", VA = "0x1678DD0")]
+	private void OnDestroy()
+	{
+	}
+
+	[Token(Token = "0x600377E")]
+	[Address(RVA = "0x1678DE0", Offset = "0x1678DE0", VA = "0x1678DE0")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x600377F")]
+	[Address(RVA = "0x1678508", Offset = "0x1678508", VA = "0x1678508")]
+	public static void ShowThrobber(float duration = 1f)
+	{
+	}
+
+	[Token(Token = "0x6003780")]
+	[Address(RVA = "0x1679318", Offset = "0x1679318", VA = "0x1679318")]
+	public static void HideThrobber()
+	{
+	}
+
+	[Token(Token = "0x6003781")]
+	[Address(RVA = "0x167945C", Offset = "0x167945C", VA = "0x167945C")]
+	public static void PreLoad()
+	{
+	}
+
+	[Token(Token = "0x6003782")]
+	[Address(RVA = "0x16790EC", Offset = "0x16790EC", VA = "0x16790EC")]
+	private static void LoadAndInvoke(Action callback)
+	{
+	}
+
+	[Token(Token = "0x6003783")]
+	[Address(RVA = "0x1679460", Offset = "0x1679460", VA = "0x1679460")]
+	private void ShowIt(float duration = 1f)
+	{
+	}
+
+	[Token(Token = "0x6003784")]
+	[Address(RVA = "0x1679488", Offset = "0x1679488", VA = "0x1679488")]
+	private void Hide()
+	{
+	}
+
+	[Token(Token = "0x6003785")]
+	[Address(RVA = "0x1678E4C", Offset = "0x1678E4C", VA = "0x1678E4C")]
+	private void SetObjectsActive(bool state)
+	{
+	}
+
+	[Token(Token = "0x6003786")]
+	[Address(RVA = "0x16794CC", Offset = "0x16794CC", VA = "0x16794CC")]
+	[AttributeAttribute(Name = "ContextMenu", RVA = "0x6AC84", Offset = "0x6AC84")]
+	public void Show()
+	{
+	}
+
+	[Token(Token = "0x6003787")]
+	[Address(RVA = "0x16794D4", Offset = "0x16794D4", VA = "0x16794D4")]
+	public SaveThrobber()
+	{
+	}
 }

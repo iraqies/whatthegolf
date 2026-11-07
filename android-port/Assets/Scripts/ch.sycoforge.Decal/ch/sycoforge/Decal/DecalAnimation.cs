@@ -1,66 +1,124 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace ch.sycoforge.Decal
 {
+	[Token(Token = "0x2000005")]
 	public class DecalAnimation : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x400000A")]
+		[FieldOffset(Offset = "0x18")]
+		public int Columns;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x400000B")]
+		[FieldOffset(Offset = "0x1C")]
+		public int Rows;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x400000C")]
+		[FieldOffset(Offset = "0x20")]
+		public float FPS;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x400000D")]
+		[FieldOffset(Offset = "0x24")]
+		public bool CorrectTime;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x400000E")]
+		[FieldOffset(Offset = "0x28")]
+		public TweenType Type;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x400000F")]
+		[FieldOffset(Offset = "0x30")]
+		public string[] InputTextureNames;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4000010")]
+		[FieldOffset(Offset = "0x38")]
+		private int frames;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4000011")]
+		[FieldOffset(Offset = "0x3C")]
+		private int frameNumber;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4000012")]
+		[FieldOffset(Offset = "0x40")]
+		private int direction;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4000013")]
+		[FieldOffset(Offset = "0x44")]
+		private float duration;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4000014")]
+		[FieldOffset(Offset = "0x48")]
+		private float frameTime;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4000015")]
+		[FieldOffset(Offset = "0x4C")]
+		private float rowFrac;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4000016")]
+		[FieldOffset(Offset = "0x50")]
+		private float colFrac;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x4000017")]
+		[FieldOffset(Offset = "0x54")]
+		private Vector2 size;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x4000018")]
+		[FieldOffset(Offset = "0x60")]
+		private Renderer decalRenderer;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x600000C")]
+		[Address(RVA = "0x2C59B2C", Offset = "0x2C59B2C", VA = "0x2C59B2C", Slot = "4")]
+		public virtual void Start()
+		{
+		}
 
-		*/
+		[Token(Token = "0x600000D")]
+		[Address(RVA = "0x2C59B30", Offset = "0x2C59B30", VA = "0x2C59B30")]
+		private void Initialize()
+		{
+		}
+
+		[Token(Token = "0x600000E")]
+		[Address(RVA = "0x2C59D70", Offset = "0x2C59D70", VA = "0x2C59D70", Slot = "5")]
+		protected virtual void RenderFrame()
+		{
+		}
+
+		[Token(Token = "0x600000F")]
+		[Address(RVA = "0x2C59F74", Offset = "0x2C59F74", VA = "0x2C59F74")]
+		public bool IsFinished()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000010")]
+		[Address(RVA = "0x2C59F98", Offset = "0x2C59F98", VA = "0x2C59F98")]
+		public void Reset()
+		{
+		}
+
+		[Token(Token = "0x6000011")]
+		[Address(RVA = "0x2C59FA0", Offset = "0x2C59FA0", VA = "0x2C59FA0")]
+		protected void SwitchDirection()
+		{
+		}
+
+		[Token(Token = "0x6000012")]
+		[Address(RVA = "0x2C59CC0", Offset = "0x2C59CC0", VA = "0x2C59CC0")]
+		protected void SetTexturesScale(Vector2 size)
+		{
+		}
+
+		[Token(Token = "0x6000013")]
+		[Address(RVA = "0x2C59EC4", Offset = "0x2C59EC4", VA = "0x2C59EC4")]
+		protected void SetTexturesOffsets(Vector2 offset)
+		{
+		}
+
+		[Token(Token = "0x6000014")]
+		[Address(RVA = "0x2C59FB0", Offset = "0x2C59FB0", VA = "0x2C59FB0")]
+		public DecalAnimation()
+		{
+		}
 	}
 }

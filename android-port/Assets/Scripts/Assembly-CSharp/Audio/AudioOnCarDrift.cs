@@ -1,66 +1,156 @@
+using System.Collections.Generic;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Audio
 {
+	[Token(Token = "0x2001357")]
 	public class AudioOnCarDrift : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x2001358")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x48CBC", Offset = "0x48CBC")]
+		private sealed class _003C_003Ec__DisplayClass24_0
+		{
+			[Token(Token = "0x400678B")]
+			[FieldOffset(Offset = "0x10")]
+			public AudioOnCarDrift _003C_003E4__this;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x400678C")]
+			[FieldOffset(Offset = "0x18")]
+			public float volume;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x400678D")]
+			[FieldOffset(Offset = "0x1C")]
+			public float pitch;
 
-		2. Incorrect dll files were provided to AssetRipper.
+			[Token(Token = "0x6005A40")]
+			[Address(RVA = "0x176FD8C", Offset = "0x176FD8C", VA = "0x176FD8C")]
+			public _003C_003Ec__DisplayClass24_0()
+			{
+			}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+			[Token(Token = "0x6005A41")]
+			[Address(RVA = "0x176FD94", Offset = "0x176FD94", VA = "0x176FD94")]
+			internal void _003COnCreateSkidmark_003Eb__0(AudioSource s)
+			{
+			}
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4006777")]
+		[FieldOffset(Offset = "0x18")]
+		public float skidIntensity;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4006778")]
+		[FieldOffset(Offset = "0x20")]
+		public Skidmarks skid;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4006779")]
+		[FieldOffset(Offset = "0x28")]
+		public Rigidbody rigid;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x400677A")]
+		[FieldOffset(Offset = "0x30")]
+		public GolfCarShooter car;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x400677B")]
+		[FieldOffset(Offset = "0x38")]
+		public AnimationCurve amplitude;
 
-		5. Script Content Level 0
+		[Token(Token = "0x400677C")]
+		[FieldOffset(Offset = "0x40")]
+		public float maxLoopVolume;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x400677D")]
+		[FieldOffset(Offset = "0x44")]
+		public float minLoopPitch;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x400677E")]
+		[FieldOffset(Offset = "0x48")]
+		public float maxLoopPitch;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x400677F")]
+		[FieldOffset(Offset = "0x50")]
+		public List<AudioClip> oneshots;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x4006780")]
+		[FieldOffset(Offset = "0x58")]
+		public float minIntensity;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x4006781")]
+		[FieldOffset(Offset = "0x5C")]
+		public float maxIntensity;
 
-		*/
+		[Token(Token = "0x4006782")]
+		[FieldOffset(Offset = "0x60")]
+		public float minVolume;
+
+		[Token(Token = "0x4006783")]
+		[FieldOffset(Offset = "0x64")]
+		public float maxVolume;
+
+		[Token(Token = "0x4006784")]
+		[FieldOffset(Offset = "0x68")]
+		public float minPitch;
+
+		[Token(Token = "0x4006785")]
+		[FieldOffset(Offset = "0x6C")]
+		public float maxPitch;
+
+		[Token(Token = "0x4006786")]
+		[FieldOffset(Offset = "0x70")]
+		public float cooldown;
+
+		[Token(Token = "0x4006787")]
+		[FieldOffset(Offset = "0x78")]
+		private AudioSource source;
+
+		[Token(Token = "0x4006788")]
+		[FieldOffset(Offset = "0x80")]
+		private AudioPitchToTimeScale timeScalePitcher;
+
+		[Token(Token = "0x4006789")]
+		[FieldOffset(Offset = "0x88")]
+		private float nextOneshotTime;
+
+		[Token(Token = "0x400678A")]
+		[FieldOffset(Offset = "0x8C")]
+		private float targetIntensity;
+
+		[Token(Token = "0x6005A3A")]
+		[Address(RVA = "0x1509750", Offset = "0x1509750", VA = "0x1509750")]
+		private void Awake()
+		{
+		}
+
+		[Token(Token = "0x6005A3B")]
+		[Address(RVA = "0x15097D0", Offset = "0x15097D0", VA = "0x15097D0")]
+		private void OnEnable()
+		{
+		}
+
+		[Token(Token = "0x6005A3C")]
+		[Address(RVA = "0x15098F8", Offset = "0x15098F8", VA = "0x15098F8")]
+		private void OnDisable()
+		{
+		}
+
+		[Token(Token = "0x6005A3D")]
+		[Address(RVA = "0x1509A20", Offset = "0x1509A20", VA = "0x1509A20")]
+		private void Update()
+		{
+		}
+
+		[Token(Token = "0x6005A3E")]
+		[Address(RVA = "0x1509B58", Offset = "0x1509B58", VA = "0x1509B58")]
+		private void OnCreateSkidmark(float intensity)
+		{
+		}
+
+		[Token(Token = "0x6005A3F")]
+		[Address(RVA = "0x1509F78", Offset = "0x1509F78", VA = "0x1509F78")]
+		public AudioOnCarDrift()
+		{
+		}
 	}
 }

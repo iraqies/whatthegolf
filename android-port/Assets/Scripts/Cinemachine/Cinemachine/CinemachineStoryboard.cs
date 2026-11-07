@@ -1,66 +1,172 @@
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Cinemachine
 {
-	public class CinemachineStoryboard : MonoBehaviour
+	[Token(Token = "0x200002F")]
+	[ExecuteAlways]
+	public class CinemachineStoryboard : CinemachineExtension
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x2000030")]
+		public enum FillStrategy
+		{
+			[Token(Token = "0x4000100")]
+			BestFit = 0,
+			[Token(Token = "0x4000101")]
+			CropImageToFit = 1,
+			[Token(Token = "0x4000102")]
+			StretchToFit = 2
+		}
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x2000031")]
+		private class CanvasInfo
+		{
+			[Token(Token = "0x4000103")]
+			[FieldOffset(Offset = "0x10")]
+			public GameObject mCanvas;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x4000104")]
+			[FieldOffset(Offset = "0x18")]
+			public CinemachineBrain mCanvasParent;
 
-		2. Incorrect dll files were provided to AssetRipper.
+			[Token(Token = "0x4000105")]
+			[FieldOffset(Offset = "0x20")]
+			public RectTransform mViewport;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+			[Token(Token = "0x4000106")]
+			[FieldOffset(Offset = "0x28")]
+			public RawImage mRawImage;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+			[Token(Token = "0x6000127")]
+			[Address(RVA = "0x1911A64", Offset = "0x1911A64", VA = "0x1911A64")]
+			public CanvasInfo()
+			{
+			}
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x40000F3")]
+		[FieldOffset(Offset = "0x0")]
+		public static bool s_StoryboardGlobalMute;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x40000F4")]
+		[FieldOffset(Offset = "0x28")]
+		public bool m_ShowImage;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x40000F5")]
+		[FieldOffset(Offset = "0x30")]
+		public Texture m_Image;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x40000F6")]
+		[FieldOffset(Offset = "0x38")]
+		public FillStrategy m_Aspect;
 
-		5. Script Content Level 0
+		[Token(Token = "0x40000F7")]
+		[FieldOffset(Offset = "0x3C")]
+		[Attribute(Name = "RangeAttribute", RVA = "0x786E0", Offset = "0x786E0")]
+		public float m_Alpha;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x40000F8")]
+		[FieldOffset(Offset = "0x40")]
+		public Vector2 m_Center;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x40000F9")]
+		[FieldOffset(Offset = "0x48")]
+		public Vector3 m_Rotation;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x40000FA")]
+		[FieldOffset(Offset = "0x54")]
+		public Vector2 m_Scale;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x40000FB")]
+		[FieldOffset(Offset = "0x5C")]
+		public bool m_SyncScale;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x40000FC")]
+		[FieldOffset(Offset = "0x5D")]
+		public bool m_MuteCamera;
 
-		*/
+		[Token(Token = "0x40000FD")]
+		[FieldOffset(Offset = "0x60")]
+		[Attribute(Name = "RangeAttribute", RVA = "0x786F8", Offset = "0x786F8")]
+		public float m_SplitView;
+
+		[Token(Token = "0x40000FE")]
+		[FieldOffset(Offset = "0x68")]
+		private List<CanvasInfo> mCanvasInfo;
+
+		[Token(Token = "0x1700003E")]
+		private string CanvasName
+		{
+			[Token(Token = "0x600011E")]
+			[Address(RVA = "0x19010DC", Offset = "0x19010DC", VA = "0x19010DC")]
+			get
+			{
+				return null;
+			}
+		}
+
+		[Token(Token = "0x600011C")]
+		[Address(RVA = "0x1900C34", Offset = "0x1900C34", VA = "0x1900C34", Slot = "7")]
+		protected override void PostPipelineStageCallback(CinemachineVirtualCameraBase vcam, CinemachineCore.Stage stage, ref CameraState state, float wipeAmountTime)
+		{
+		}
+
+		[Token(Token = "0x600011D")]
+		[Address(RVA = "0x1900D30", Offset = "0x1900D30", VA = "0x1900D30", Slot = "6")]
+		protected override void ConnectToVcam(bool connect)
+		{
+		}
+
+		[Token(Token = "0x600011F")]
+		[Address(RVA = "0x190116C", Offset = "0x190116C", VA = "0x190116C")]
+		private void CameraUpdatedCallback(CinemachineBrain brain)
+		{
+		}
+
+		[Token(Token = "0x6000120")]
+		[Address(RVA = "0x1901370", Offset = "0x1901370", VA = "0x1901370")]
+		private CanvasInfo LocateMyCanvas(CinemachineBrain parent, bool createIfNotFound)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6000121")]
+		[Address(RVA = "0x1901738", Offset = "0x1901738", VA = "0x1901738")]
+		private void CreateCanvas(CanvasInfo ci)
+		{
+		}
+
+		[Token(Token = "0x6000122")]
+		[Address(RVA = "0x1900ECC", Offset = "0x1900ECC", VA = "0x1900ECC")]
+		private void DestroyCanvas()
+		{
+		}
+
+		[Token(Token = "0x6000123")]
+		[Address(RVA = "0x1901B20", Offset = "0x1901B20", VA = "0x1901B20")]
+		private void PlaceImage(CanvasInfo ci, float alpha)
+		{
+		}
+
+		[Token(Token = "0x6000124")]
+		[Address(RVA = "0x19020BC", Offset = "0x19020BC", VA = "0x19020BC")]
+		private static void StaticBlendingHandler(CinemachineBrain brain)
+		{
+		}
+
+		[Token(Token = "0x6000125")]
+		[Address(RVA = "0x1902300", Offset = "0x1902300", VA = "0x1902300")]
+		[Attribute(Name = "RuntimeInitializeOnLoadMethodAttribute", RVA = "0x795C8", Offset = "0x795C8")]
+		private static void InitializeModule()
+		{
+		}
+
+		[Token(Token = "0x6000126")]
+		[Address(RVA = "0x1902444", Offset = "0x1902444", VA = "0x1902444")]
+		public CinemachineStoryboard()
+		{
+		}
 	}
 }

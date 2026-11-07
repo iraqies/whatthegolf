@@ -1,63 +1,119 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x20003C9")]
 public class RigidbodyCollisionInfo : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x40014C8")]
+	[FieldOffset(Offset = "0x18")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x4D1B0", Offset = "0x4D1B0")]
+	private bool CanSendActualObjectHit__BackingField;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x40014C9")]
+	[FieldOffset(Offset = "0x20")]
+	private HitInfo hitInfo;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x40014CA")]
+	[FieldOffset(Offset = "0x58")]
+	private TriggerInfo triggerInfo;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x40014CB")]
+	[FieldOffset(Offset = "0x78")]
+	public Action<HitInfo> onCollision;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x40014CC")]
+	[FieldOffset(Offset = "0x80")]
+	public Action<TriggerInfo> onTrigger;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x40014CD")]
+	[FieldOffset(Offset = "0x88")]
+	public Action<Collider> OnTrigger3D;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x40014CE")]
+	[FieldOffset(Offset = "0x90")]
+	public Action<Collider2D> OnTrigger2D;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x40014CF")]
+	[FieldOffset(Offset = "0x98")]
+	public Action<Collision> CollisionEnter3D;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x40014D0")]
+	[FieldOffset(Offset = "0xA0")]
+	public Action<Collision2D> CollisionEnter2D;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x40014D1")]
+	[FieldOffset(Offset = "0xA8")]
+	public Action<Collision> CollisionExit3D;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x40014D2")]
+	[FieldOffset(Offset = "0xB0")]
+	public Action<Collision2D> CollisionExit2D;
 
-	5. Script Content Level 0
+	[Token(Token = "0x17000215")]
+	public bool CanSendActualObjectHit
+	{
+		[Token(Token = "0x60011D8")]
+		[Address(RVA = "0x16572F4", Offset = "0x16572F4", VA = "0x16572F4")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x61A6C", Offset = "0x61A6C")]
+		get
+		{
+			return default;
+		}
+		[Token(Token = "0x60011D9")]
+		[Address(RVA = "0x16572FC", Offset = "0x16572FC", VA = "0x16572FC")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x61A7C", Offset = "0x61A7C")]
+		set
+		{
+		}
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x60011DA")]
+	[Address(RVA = "0x1657304", Offset = "0x1657304", VA = "0x1657304")]
+	public static RigidbodyCollisionInfo GetOrAdd(GameObject go)
+	{
+		return null;
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x60011DB")]
+	[Address(RVA = "0x1657408", Offset = "0x1657408", VA = "0x1657408")]
+	private void OnCollisionEnter(Collision collision)
+	{
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x60011DC")]
+	[Address(RVA = "0x1657624", Offset = "0x1657624", VA = "0x1657624")]
+	private void OnCollisionExit(Collision collision)
+	{
+	}
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x60011DD")]
+	[Address(RVA = "0x1657694", Offset = "0x1657694", VA = "0x1657694")]
+	private void OnCollisionExit2D(Collision2D collision)
+	{
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x60011DE")]
+	[Address(RVA = "0x1657704", Offset = "0x1657704", VA = "0x1657704")]
+	private void OnTriggerEnter2D(Collider2D other)
+	{
+	}
 
-	*/
+	[Token(Token = "0x60011DF")]
+	[Address(RVA = "0x16577F0", Offset = "0x16577F0", VA = "0x16577F0")]
+	private void OnCollisionEnter2D(Collision2D collision)
+	{
+	}
+
+	[Token(Token = "0x60011E0")]
+	[Address(RVA = "0x1657A00", Offset = "0x1657A00", VA = "0x1657A00")]
+	private void OnTriggerEnter(Collider other)
+	{
+	}
+
+	[Token(Token = "0x60011E1")]
+	[Address(RVA = "0x1657AEC", Offset = "0x1657AEC", VA = "0x1657AEC")]
+	public RigidbodyCollisionInfo()
+	{
+	}
 }

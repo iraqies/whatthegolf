@@ -1,63 +1,134 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000226")]
 public class DelayedLayerChangeOnCollision : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x2000227")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3E5D4", Offset = "0x3E5D4")]
+	private sealed class _003CDelayedLayerChange_003Ed__6 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x4000AC9")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000ACA")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000ACB")]
+		[FieldOffset(Offset = "0x20")]
+		public DelayedLayerChangeOnCollision _003C_003E4__this;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x1700012B")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x600099C")]
+			[Address(RVA = "0x179AF5C", Offset = "0x179AF5C", VA = "0x179AF5C", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x1700012C")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x600099E")]
+			[Address(RVA = "0x179AFA4", Offset = "0x179AFA4", VA = "0x179AFA4", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x6000999")]
+		[Address(RVA = "0x179AE5C", Offset = "0x179AE5C", VA = "0x179AE5C")]
+		[DebuggerHidden]
+		public _003CDelayedLayerChange_003Ed__6(int _003C_003E1__state)
+		{
+		}
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x600099A")]
+		[Address(RVA = "0x179AE88", Offset = "0x179AE88", VA = "0x179AE88", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x600099B")]
+		[Address(RVA = "0x179AE8C", Offset = "0x179AE8C", VA = "0x179AE8C", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x600099C")]
+		[Address(RVA = "0x179AF5C", Offset = "0x179AF5C", VA = "0x179AF5C", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
 
-	4. This script is unnecessary.
+		[Token(Token = "0x600099D")]
+		[Address(RVA = "0x179AF64", Offset = "0x179AF64", VA = "0x179AF64", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x600099E")]
+		[Address(RVA = "0x179AFA4", Offset = "0x179AFA4", VA = "0x179AFA4", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
 
-	5. Script Content Level 0
+	[Token(Token = "0x4000AC4")]
+	[FieldOffset(Offset = "0x18")]
+	public LayerMask ValidLayers;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4000AC5")]
+	[FieldOffset(Offset = "0x1C")]
+	public int NewLayer;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4000AC6")]
+	[FieldOffset(Offset = "0x20")]
+	public float delayInSeconds;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4000AC7")]
+	[FieldOffset(Offset = "0x24")]
+	public Vector3 force;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4000AC8")]
+	[FieldOffset(Offset = "0x30")]
+	private bool collided;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x6000996")]
+	[Address(RVA = "0x18D93C0", Offset = "0x18D93C0", VA = "0x18D93C0")]
+	private void OnCollisionEnter(Collision other)
+	{
+	}
 
-	*/
+	[Token(Token = "0x6000997")]
+	[Address(RVA = "0x18D94F8", Offset = "0x18D94F8", VA = "0x18D94F8")]
+	private IEnumerator DelayedLayerChange()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6000998")]
+	[Address(RVA = "0x18D956C", Offset = "0x18D956C", VA = "0x18D956C")]
+	public DelayedLayerChangeOnCollision()
+	{
+	}
 }

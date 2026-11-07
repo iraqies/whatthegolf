@@ -1,66 +1,72 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace RootMotion
 {
-	public class QuaTools : MonoBehaviour
+	[Token(Token = "0x20000ED")]
+	public static class QuaTools
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x60005FE")]
+		[Address(RVA = "0x13D5C70", Offset = "0x13D5C70", VA = "0x13D5C70")]
+		public static Quaternion Lerp(Quaternion fromRotation, Quaternion toRotation, float weight)
+		{
+			return default;
+		}
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x60005FF")]
+		[Address(RVA = "0x13D5CC0", Offset = "0x13D5CC0", VA = "0x13D5CC0")]
+		public static Quaternion FromToAroundAxis(Vector3 fromDirection, Vector3 toDirection, Vector3 axis)
+		{
+			return default;
+		}
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x6000600")]
+		[Address(RVA = "0x13D5DA8", Offset = "0x13D5DA8", VA = "0x13D5DA8")]
+		public static Quaternion RotationToLocalSpace(Quaternion space, Quaternion rotation)
+		{
+			return default;
+		}
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x6000601")]
+		[Address(RVA = "0x13D5DFC", Offset = "0x13D5DFC", VA = "0x13D5DFC")]
+		public static Quaternion FromToRotation(Quaternion from, Quaternion to)
+		{
+			return default;
+		}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x6000602")]
+		[Address(RVA = "0x13D5ED0", Offset = "0x13D5ED0", VA = "0x13D5ED0")]
+		public static Vector3 GetAxis(Vector3 v)
+		{
+			return default;
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x6000603")]
+		[Address(RVA = "0x13D5FDC", Offset = "0x13D5FDC", VA = "0x13D5FDC")]
+		public static Quaternion ClampRotation(Quaternion rotation, float clampWeight, int clampSmoothing)
+		{
+			return default;
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6000604")]
+		[Address(RVA = "0x13D6164", Offset = "0x13D6164", VA = "0x13D6164")]
+		public static Quaternion MatchRotation(Quaternion targetRotation, Vector3 targetforwardAxis, Vector3 targetUpAxis, Vector3 forwardAxis, Vector3 upAxis)
+		{
+			return default;
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6000605")]
+		[Address(RVA = "0x13D6260", Offset = "0x13D6260", VA = "0x13D6260")]
+		public static Vector3 ToBiPolar(Vector3 euler)
+		{
+			return default;
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
-
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
-
-		5. Script Content Level 0
-
-			AssetRipper was set to not load any script information.
-
-		6. Cpp2IL failed to decompile Il2Cpp data
-
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x6000606")]
+		[Address(RVA = "0x13D6364", Offset = "0x13D6364", VA = "0x13D6364")]
+		public static float ToBiPolar(float angle)
+		{
+			return default;
+		}
 	}
 }

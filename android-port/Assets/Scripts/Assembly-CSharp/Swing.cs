@@ -1,63 +1,148 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000C51")]
 public class Swing : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x2000C52")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x440C8", Offset = "0x440C8")]
+	private sealed class _003C_003Ec__DisplayClass22_0
+	{
+		[Token(Token = "0x40043AD")]
+		[FieldOffset(Offset = "0x10")]
+		public Swing _003C_003E4__this;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40043AE")]
+		[FieldOffset(Offset = "0x18")]
+		public float randomVolume;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40043AF")]
+		[FieldOffset(Offset = "0x1C")]
+		public float randomPitch;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x6003A9C")]
+		[Address(RVA = "0x185FC4C", Offset = "0x185FC4C", VA = "0x185FC4C")]
+		public _003C_003Ec__DisplayClass22_0()
+		{
+		}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x6003A9D")]
+		[Address(RVA = "0x185FC54", Offset = "0x185FC54", VA = "0x185FC54")]
+		internal void _003CPlaySound_003Eb__0(AudioSource s)
+		{
+		}
+	}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x400439D")]
+	[FieldOffset(Offset = "0x18")]
+	public bool DoSwing;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x400439E")]
+	[FieldOffset(Offset = "0x19")]
+	public bool UsePhysics;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x400439F")]
+	[FieldOffset(Offset = "0x1C")]
+	public Vector3 Axis;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x40043A0")]
+	[FieldOffset(Offset = "0x28")]
+	public AnimationCurve AngleCurve;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x40043A1")]
+	[FieldOffset(Offset = "0x30")]
+	public float timeOffset;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x40043A2")]
+	[FieldOffset(Offset = "0x38")]
+	public AudioClip swooshClip;
 
-	5. Script Content Level 0
+	[Token(Token = "0x40043A3")]
+	[FieldOffset(Offset = "0x40")]
+	public float speedFactor;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x40043A4")]
+	[FieldOffset(Offset = "0x44")]
+	public bool useTimeTime;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x40043A5")]
+	[FieldOffset(Offset = "0x48")]
+	private float timeIn;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x40043A6")]
+	[FieldOffset(Offset = "0x4C")]
+	private float timeOut;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x40043A7")]
+	[FieldOffset(Offset = "0x50")]
+	private float soundCooldown;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x40043A8")]
+	[FieldOffset(Offset = "0x54")]
+	private float nextSoundAt;
 
-	*/
+	[Token(Token = "0x40043A9")]
+	[FieldOffset(Offset = "0x58")]
+	private Rigidbody rigidbody;
+
+	[Token(Token = "0x40043AA")]
+	[FieldOffset(Offset = "0x60")]
+	private float timeValueUsed;
+
+	[Token(Token = "0x40043AB")]
+	[FieldOffset(Offset = "0x64")]
+	private Quaternion initialRotation;
+
+	[Token(Token = "0x40043AC")]
+	[FieldOffset(Offset = "0x74")]
+	[SerializeField]
+	private bool useLocalRotation;
+
+	[Token(Token = "0x6003A94")]
+	[Address(RVA = "0x16F24F0", Offset = "0x16F24F0", VA = "0x16F24F0")]
+	private void Awake()
+	{
+	}
+
+	[Token(Token = "0x6003A95")]
+	[Address(RVA = "0x16F26C8", Offset = "0x16F26C8", VA = "0x16F26C8")]
+	public void ReturnToDefaultRotation()
+	{
+	}
+
+	[Token(Token = "0x6003A96")]
+	[Address(RVA = "0x16F2708", Offset = "0x16F2708", VA = "0x16F2708")]
+	public void StartSwinging()
+	{
+	}
+
+	[Token(Token = "0x6003A97")]
+	[Address(RVA = "0x16F2730", Offset = "0x16F2730", VA = "0x16F2730")]
+	public void StopSwinging(bool returnToDefaultRotation)
+	{
+	}
+
+	[Token(Token = "0x6003A98")]
+	[Address(RVA = "0x16F2790", Offset = "0x16F2790", VA = "0x16F2790")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x6003A99")]
+	[Address(RVA = "0x16F288C", Offset = "0x16F288C", VA = "0x16F288C")]
+	private void FixedUpdate()
+	{
+	}
+
+	[Token(Token = "0x6003A9A")]
+	[Address(RVA = "0x16F2B3C", Offset = "0x16F2B3C", VA = "0x16F2B3C")]
+	private void PlaySound()
+	{
+	}
+
+	[Token(Token = "0x6003A9B")]
+	[Address(RVA = "0x16F2CA4", Offset = "0x16F2CA4", VA = "0x16F2CA4")]
+	public Swing()
+	{
+	}
 }

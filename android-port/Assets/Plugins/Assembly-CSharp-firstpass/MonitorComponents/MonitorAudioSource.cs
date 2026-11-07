@@ -1,66 +1,134 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace MonitorComponents
 {
+	[Token(Token = "0x2000268")]
+	[ExecuteInEditMode]
 	public class MonitorAudioSource : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4000FB9")]
+		[FieldOffset(Offset = "0x18")]
+		public bool showVolume;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000FBA")]
+		[FieldOffset(Offset = "0x20")]
+		public Monitor monitor_volume;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000FBB")]
+		[FieldOffset(Offset = "0x28")]
+		private MonitorInput monitorInput_volume;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4000FBC")]
+		[FieldOffset(Offset = "0x30")]
+		public bool showPitch;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4000FBD")]
+		[FieldOffset(Offset = "0x34")]
+		public ValueAxisMode pitchMode;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000FBE")]
+		[FieldOffset(Offset = "0x38")]
+		public float pitchMin;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4000FBF")]
+		[FieldOffset(Offset = "0x3C")]
+		public float pitchMax;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4000FC0")]
+		[FieldOffset(Offset = "0x40")]
+		public Monitor monitor_pitch;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4000FC1")]
+		[FieldOffset(Offset = "0x48")]
+		private MonitorInput monitorInput_pitch;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4000FC2")]
+		[FieldOffset(Offset = "0x50")]
+		public bool showIsPlaying;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4000FC3")]
+		[FieldOffset(Offset = "0x58")]
+		public Monitor monitor_isPlaying;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4000FC4")]
+		[FieldOffset(Offset = "0x60")]
+		private MonitorInput monitorInput_isPlaying;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4000FC5")]
+		[FieldOffset(Offset = "0x68")]
+		private AudioSource audioSource;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x6000FEE")]
+		[Address(RVA = "0x13AEA80", Offset = "0x13AEA80", VA = "0x13AEA80")]
+		private void Awake()
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x6000FEF")]
+		[Address(RVA = "0x13AEB08", Offset = "0x13AEB08", VA = "0x13AEB08")]
+		private void Start()
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x6000FF0")]
+		[Address(RVA = "0x13AEC20", Offset = "0x13AEC20", VA = "0x13AEC20")]
+		public void UpdateMonitors()
+		{
+		}
 
-		*/
+		[Token(Token = "0x6000FF1")]
+		[Address(RVA = "0x13AEC90", Offset = "0x13AEC90", VA = "0x13AEC90")]
+		private void UpdateVolumeMonitor(bool componentIsActive)
+		{
+		}
+
+		[Token(Token = "0x6000FF2")]
+		[Address(RVA = "0x13AEEA8", Offset = "0x13AEEA8", VA = "0x13AEEA8")]
+		private void UpdatePitchMonitor(bool componentIsActive)
+		{
+		}
+
+		[Token(Token = "0x6000FF3")]
+		[Address(RVA = "0x13AF0B4", Offset = "0x13AF0B4", VA = "0x13AF0B4")]
+		private void UpdateIsPlayingMonitor(bool componentIsActive)
+		{
+		}
+
+		[Token(Token = "0x6000FF4")]
+		[Address(RVA = "0x13AF4DC", Offset = "0x13AF4DC", VA = "0x13AF4DC")]
+		public void Update()
+		{
+		}
+
+		[Token(Token = "0x6000FF5")]
+		[Address(RVA = "0x13AF6AC", Offset = "0x13AF6AC", VA = "0x13AF6AC")]
+		public void OnEnable()
+		{
+		}
+
+		[Token(Token = "0x6000FF6")]
+		[Address(RVA = "0x13AF6B0", Offset = "0x13AF6B0", VA = "0x13AF6B0")]
+		public void OnDisable()
+		{
+		}
+
+		[Token(Token = "0x6000FF7")]
+		[Address(RVA = "0x13AF6B4", Offset = "0x13AF6B4", VA = "0x13AF6B4")]
+		public void OnDestroy()
+		{
+		}
+
+		[Token(Token = "0x6000FF8")]
+		[Address(RVA = "0x13AF6B8", Offset = "0x13AF6B8", VA = "0x13AF6B8")]
+		public void RemoveMonitors()
+		{
+		}
+
+		[Token(Token = "0x6000FF9")]
+		[Address(RVA = "0x13AF7CC", Offset = "0x13AF7CC", VA = "0x13AF7CC")]
+		public MonitorAudioSource()
+		{
+		}
 	}
 }

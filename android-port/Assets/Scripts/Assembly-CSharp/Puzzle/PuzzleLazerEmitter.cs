@@ -1,66 +1,116 @@
+using Chronos;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Puzzle
 {
-	public class PuzzleLazerEmitter : MonoBehaviour
+	[Token(Token = "0x2001035")]
+	public class PuzzleLazerEmitter : PuzzleObjectBase, ITimedPuzzleObject
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x400556F")]
+		[FieldOffset(Offset = "0x38")]
+		[SerializeField]
+		private LazerJoint initialLazer;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4005570")]
+		[FieldOffset(Offset = "0x40")]
+		[SerializeField]
+		private AudioSource audioSource;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4005571")]
+		[FieldOffset(Offset = "0x48")]
+		private ParticleSystem emitterParticles;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4005572")]
+		[FieldOffset(Offset = "0x50")]
+		public int jointLimit;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4005573")]
+		[FieldOffset(Offset = "0x58")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x55560", Offset = "0x55560")]
+		private LocalClock BallClock__BackingField;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4005574")]
+		[FieldOffset(Offset = "0x60")]
+		private LazerJoint[] lazers;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x170007AD")]
+		public LocalClock BallClock
+		{
+			[Token(Token = "0x6004895")]
+			[Address(RVA = "0x162F5A4", Offset = "0x162F5A4", VA = "0x162F5A4", Slot = "10")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x6F044", Offset = "0x6F044")]
+			get
+			{
+				return null;
+			}
+			[Token(Token = "0x6004896")]
+			[Address(RVA = "0x162F5AC", Offset = "0x162F5AC", VA = "0x162F5AC")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x6F054", Offset = "0x6F054")]
+			private set
+			{
+			}
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6004897")]
+		[Address(RVA = "0x162F5B4", Offset = "0x162F5B4", VA = "0x162F5B4", Slot = "9")]
+		public void SetClock(LocalClock clock)
+		{
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x6004898")]
+		[Address(RVA = "0x162F5BC", Offset = "0x162F5BC", VA = "0x162F5BC", Slot = "11")]
+		public float GetDeltaTime()
+		{
+			return default;
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6004899")]
+		[Address(RVA = "0x162F664", Offset = "0x162F664", VA = "0x162F664", Slot = "4")]
+		public override void OnPrePlayOrPreCompile()
+		{
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x600489A")]
+		[Address(RVA = "0x162F6F0", Offset = "0x162F6F0", VA = "0x162F6F0")]
+		private void Awake()
+		{
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x600489B")]
+		[Address(RVA = "0x162F75C", Offset = "0x162F75C", VA = "0x162F75C")]
+		public void Init()
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x600489C")]
+		[Address(RVA = "0x162FA04", Offset = "0x162FA04", VA = "0x162FA04", Slot = "6")]
+		public override void OnBallEnter(OverworldBall2D ball)
+		{
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x600489D")]
+		[Address(RVA = "0x162FA20", Offset = "0x162FA20", VA = "0x162FA20", Slot = "7")]
+		public override void OnBallLeave()
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x600489E")]
+		[Address(RVA = "0x162F850", Offset = "0x162F850", VA = "0x162F850")]
+		public void SetEmission(bool emit)
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x600489F")]
+		[Address(RVA = "0x162FA34", Offset = "0x162FA34", VA = "0x162FA34")]
+		private void Update()
+		{
+		}
 
-		*/
+		[Token(Token = "0x60048A0")]
+		[Address(RVA = "0x162FE40", Offset = "0x162FE40", VA = "0x162FE40")]
+		public PuzzleLazerEmitter()
+		{
+		}
 	}
 }

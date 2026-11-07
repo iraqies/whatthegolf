@@ -1,66 +1,168 @@
+using Audio;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace BustAMoveGolf
 {
+	[Token(Token = "0x20010E2")]
 	public class SimplexGridManager : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x40058F1")]
+		[FieldOffset(Offset = "0x18")]
+		[SerializeField]
+		private GameObject ballPrefab;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40058F2")]
+		[FieldOffset(Offset = "0x20")]
+		[SerializeField]
+		private Material redMaterial;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40058F3")]
+		[FieldOffset(Offset = "0x28")]
+		[SerializeField]
+		private Material blueMaterial;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40058F4")]
+		[FieldOffset(Offset = "0x30")]
+		[SerializeField]
+		private Material greenMaterial;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40058F5")]
+		[FieldOffset(Offset = "0x38")]
+		[SerializeField]
+		private Material yellowMaterial;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40058F6")]
+		[FieldOffset(Offset = "0x40")]
+		public int CurrentRow;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x40058F7")]
+		[FieldOffset(Offset = "0x48")]
+		public Rigidbody Ceiling;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x40058F8")]
+		[FieldOffset(Offset = "0x50")]
+		public Rigidbody Flag;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x40058F9")]
+		[FieldOffset(Offset = "0x58")]
+		public int columns;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x40058FA")]
+		[FieldOffset(Offset = "0x5C")]
+		public int rows;
 
-		5. Script Content Level 0
+		[Token(Token = "0x40058FB")]
+		[FieldOffset(Offset = "0x60")]
+		public RandomAudioClips BallMatchOneshot;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x40058FC")]
+		[FieldOffset(Offset = "0x68")]
+		private BustAMoveBall[,] grid;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x40058FD")]
+		[FieldOffset(Offset = "0x70")]
+		public float radius;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x40058FE")]
+		[FieldOffset(Offset = "0x78")]
+		private Vector3[] ceilingPositions;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x40058FF")]
+		[FieldOffset(Offset = "0x80")]
+		public bool BallActive;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x170007FE")]
+		public float YSpacing
+		{
+			[Token(Token = "0x6004BA0")]
+			[Address(RVA = "0x16B0B98", Offset = "0x16B0B98", VA = "0x16B0B98")]
+			get
+			{
+				return default;
+			}
+		}
 
-		*/
+		[Token(Token = "0x6004B9A")]
+		[Address(RVA = "0x16B0758", Offset = "0x16B0758", VA = "0x16B0758")]
+		private void Awake()
+		{
+		}
+
+		[Token(Token = "0x6004B9B")]
+		[Address(RVA = "0x16B0F88", Offset = "0x16B0F88", VA = "0x16B0F88")]
+		private void OnComplete(Level.CompletedState completedState)
+		{
+		}
+
+		[Token(Token = "0x6004B9C")]
+		[Address(RVA = "0x16B1068", Offset = "0x16B1068", VA = "0x16B1068")]
+		private void MoveCeilingDown()
+		{
+		}
+
+		[Token(Token = "0x6004B9D")]
+		[Address(RVA = "0x16B0BB4", Offset = "0x16B0BB4", VA = "0x16B0BB4")]
+		private void AssignAllNeighbors()
+		{
+		}
+
+		[Token(Token = "0x6004B9E")]
+		[Address(RVA = "0x16B134C", Offset = "0x16B134C", VA = "0x16B134C")]
+		private void AssignNeighbors(BustAMoveBall ball)
+		{
+		}
+
+		[Token(Token = "0x6004B9F")]
+		[Address(RVA = "0x16B119C", Offset = "0x16B119C", VA = "0x16B119C")]
+		private BustAMoveBall[] FindNeighbors(BustAMoveBall ball)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6004BA1")]
+		[Address(RVA = "0x16B13D4", Offset = "0x16B13D4", VA = "0x16B13D4")]
+		private void OnDrawGizmos()
+		{
+		}
+
+		[Token(Token = "0x6004BA2")]
+		[Address(RVA = "0x16B1624", Offset = "0x16B1624", VA = "0x16B1624")]
+		public void SnapToCeiling(BustAMoveBall snapBall)
+		{
+		}
+
+		[Token(Token = "0x6004BA3")]
+		[Address(RVA = "0x16B1A64", Offset = "0x16B1A64", VA = "0x16B1A64")]
+		public void SnapToBallGrid(BustAMoveBall snapBall, BustAMoveBall colBall)
+		{
+		}
+
+		[Token(Token = "0x6004BA4")]
+		[Address(RVA = "0x16B19D8", Offset = "0x16B19D8", VA = "0x16B19D8")]
+		private void DestroyBall(BustAMoveBall ball)
+		{
+		}
+
+		[Token(Token = "0x6004BA5")]
+		[Address(RVA = "0x16B1E00", Offset = "0x16B1E00", VA = "0x16B1E00")]
+		private Vector3[] GetNeighborPositions(BustAMoveBall ball)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6004BA6")]
+		[Address(RVA = "0x16B2068", Offset = "0x16B2068", VA = "0x16B2068")]
+		public Material GetMaterialFromColor(BustAMoveColor color)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6004BA7")]
+		[Address(RVA = "0x16B2138", Offset = "0x16B2138", VA = "0x16B2138")]
+		public SimplexGridManager()
+		{
+		}
 	}
 }

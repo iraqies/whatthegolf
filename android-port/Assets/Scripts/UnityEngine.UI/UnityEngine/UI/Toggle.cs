@@ -1,66 +1,191 @@
-using UnityEngine;
+using System;
+using System.Runtime.CompilerServices;
+using Il2CppDummyDll;
+using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
 namespace UnityEngine.UI
 {
-	public class Toggle : MonoBehaviour
+	[Token(Token = "0x2000067")]
+	[AttributeAttribute(Name = "RequireComponent", RVA = "0x1F697C", Offset = "0x1F697C")]
+	public class Toggle : Selectable, IPointerClickHandler, IEventSystemHandler, ISubmitHandler, ICanvasElement
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x2000068")]
+		public enum ToggleTransition
+		{
+			[Token(Token = "0x4000226")]
+			None = 0,
+			[Token(Token = "0x4000227")]
+			Fade = 1
+		}
 
-		1. No dll files were provided to AssetRipper.
+		[Serializable]
+		[Token(Token = "0x2000069")]
+		public class ToggleEvent : UnityEvent<bool>
+		{
+			[Token(Token = "0x60004A9")]
+			[Address(RVA = "0x2C48C24", Offset = "0x2C48C24", VA = "0x2C48C24")]
+			public ToggleEvent()
+			{
+			}
+		}
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000220")]
+		[FieldOffset(Offset = "0xF8")]
+		public ToggleTransition toggleTransition;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4000221")]
+		[FieldOffset(Offset = "0x100")]
+		public Graphic graphic;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4000222")]
+		[FieldOffset(Offset = "0x108")]
+		[SerializeField]
+		private ToggleGroup m_Group;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000223")]
+		[FieldOffset(Offset = "0x110")]
+		public ToggleEvent onValueChanged;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4000224")]
+		[FieldOffset(Offset = "0x118")]
+		[SerializeField]
+		private bool m_IsOn;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x1700014A")]
+		public ToggleGroup group
+		{
+			[Token(Token = "0x6000494")]
+			[Address(RVA = "0x2C410E4", Offset = "0x2C410E4", VA = "0x2C410E4")]
+			get
+			{
+				return null;
+			}
+			[Token(Token = "0x6000495")]
+			[Address(RVA = "0x2C410EC", Offset = "0x2C410EC", VA = "0x2C410EC")]
+			set
+			{
+			}
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x1700014B")]
+		public bool isOn
+		{
+			[Token(Token = "0x600049F")]
+			[Address(RVA = "0x2C41EE4", Offset = "0x2C41EE4", VA = "0x2C41EE4")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x60004A0")]
+			[Address(RVA = "0x2C41EEC", Offset = "0x2C41EEC", VA = "0x2C41EEC")]
+			set
+			{
+			}
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6000496")]
+		[Address(RVA = "0x2C41364", Offset = "0x2C41364", VA = "0x2C41364")]
+		protected Toggle()
+		{
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x6000497")]
+		[Address(RVA = "0x2C41400", Offset = "0x2C41400", VA = "0x2C41400", Slot = "46")]
+		public virtual void Rebuild(CanvasUpdate executing)
+		{
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x6000498")]
+		[Address(RVA = "0x2C41404", Offset = "0x2C41404", VA = "0x2C41404", Slot = "47")]
+		public virtual void LayoutComplete()
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x6000499")]
+		[Address(RVA = "0x2C41408", Offset = "0x2C41408", VA = "0x2C41408", Slot = "48")]
+		public virtual void GraphicUpdateComplete()
+		{
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x600049A")]
+		[Address(RVA = "0x2C4140C", Offset = "0x2C4140C", VA = "0x2C4140C", Slot = "8")]
+		protected override void OnDestroy()
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x600049B")]
+		[Address(RVA = "0x2C4191C", Offset = "0x2C4191C", VA = "0x2C4191C", Slot = "5")]
+		protected override void OnEnable()
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x600049C")]
+		[Address(RVA = "0x2C41954", Offset = "0x2C41954", VA = "0x2C41954", Slot = "7")]
+		protected override void OnDisable()
+		{
+		}
 
-		*/
+		[Token(Token = "0x600049D")]
+		[Address(RVA = "0x2C41980", Offset = "0x2C41980", VA = "0x2C41980", Slot = "13")]
+		protected override void OnDidApplyAnimationProperties()
+		{
+		}
+
+		[Token(Token = "0x600049E")]
+		[Address(RVA = "0x2C41118", Offset = "0x2C41118", VA = "0x2C41118")]
+		private void SetToggleGroup(ToggleGroup newGroup, bool setMemberValue)
+		{
+		}
+
+		[Token(Token = "0x60004A1")]
+		[Address(RVA = "0x2C41EF4", Offset = "0x2C41EF4", VA = "0x2C41EF4")]
+		public void SetIsOnWithoutNotify(bool value)
+		{
+		}
+
+		[Token(Token = "0x60004A2")]
+		[Address(RVA = "0x2C41AB0", Offset = "0x2C41AB0", VA = "0x2C41AB0")]
+		private void Set(bool value, bool sendCallback = true)
+		{
+		}
+
+		[Token(Token = "0x60004A3")]
+		[Address(RVA = "0x2C41288", Offset = "0x2C41288", VA = "0x2C41288")]
+		private void PlayEffect(bool instant)
+		{
+		}
+
+		[Token(Token = "0x60004A4")]
+		[Address(RVA = "0x2C42074", Offset = "0x2C42074", VA = "0x2C42074", Slot = "6")]
+		protected override void Start()
+		{
+		}
+
+		[Token(Token = "0x60004A5")]
+		[Address(RVA = "0x2C4207C", Offset = "0x2C4207C", VA = "0x2C4207C")]
+		private void InternalToggle()
+		{
+		}
+
+		[Token(Token = "0x60004A6")]
+		[Address(RVA = "0x2C420E0", Offset = "0x2C420E0", VA = "0x2C420E0", Slot = "49")]
+		public virtual void OnPointerClick(PointerEventData eventData)
+		{
+		}
+
+		[Token(Token = "0x60004A7")]
+		[Address(RVA = "0x2C42154", Offset = "0x2C42154", VA = "0x2C42154", Slot = "50")]
+		public virtual void OnSubmit(BaseEventData eventData)
+		{
+		}
+
+		[SpecialName]
+		[Token(Token = "0x60004A8")]
+		[Address(RVA = "0x2C421B8", Offset = "0x2C421B8", VA = "0x2C421B8", Slot = "42")]
+		private Transform UnityEngine_002EUI_002EICanvasElement_002Eget_transform()
+		{
+			return null;
+		}
 	}
 }

@@ -1,63 +1,275 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000EB8")]
 public class TweenScaleTurkey : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x2000EB9")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x45290", Offset = "0x45290")]
+	private sealed class _003CStartScaling_003Ed__14 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x4004F9E")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4004F9F")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4004FA0")]
+		[FieldOffset(Offset = "0x20")]
+		public TweenScaleTurkey _003C_003E4__this;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4004FA1")]
+		[FieldOffset(Offset = "0x28")]
+		private float _003CmovementTime_003E5__2;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x17000713")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x60044BB")]
+			[Address(RVA = "0x1871150", Offset = "0x1871150", VA = "0x1871150", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x17000714")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x60044BD")]
+			[Address(RVA = "0x1871198", Offset = "0x1871198", VA = "0x1871198", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x60044B8")]
+		[Address(RVA = "0x1870FCC", Offset = "0x1870FCC", VA = "0x1870FCC")]
+		[DebuggerHidden]
+		public _003CStartScaling_003Ed__14(int _003C_003E1__state)
+		{
+		}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x60044B9")]
+		[Address(RVA = "0x1870FF8", Offset = "0x1870FF8", VA = "0x1870FF8", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x60044BA")]
+		[Address(RVA = "0x1870FFC", Offset = "0x1870FFC", VA = "0x1870FFC", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
 
-	4. This script is unnecessary.
+		[Token(Token = "0x60044BB")]
+		[Address(RVA = "0x1871150", Offset = "0x1871150", VA = "0x1871150", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x60044BC")]
+		[Address(RVA = "0x1871158", Offset = "0x1871158", VA = "0x1871158", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
 
-	5. Script Content Level 0
+		[Token(Token = "0x60044BD")]
+		[Address(RVA = "0x1871198", Offset = "0x1871198", VA = "0x1871198", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x2000EBA")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x452A0", Offset = "0x452A0")]
+	private sealed class _003CScaleAllDown_003Ed__15 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x4004FA2")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4004FA3")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x4004FA4")]
+		[FieldOffset(Offset = "0x20")]
+		public TweenScaleTurkey _003C_003E4__this;
 
-	7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x4004FA5")]
+		[FieldOffset(Offset = "0x28")]
+		private float _003CmovementTime_003E5__2;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x17000715")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x60044C1")]
+			[Address(RVA = "0x1870F7C", Offset = "0x1870F7C", VA = "0x1870F7C", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-	*/
+		[Token(Token = "0x17000716")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x60044C3")]
+			[Address(RVA = "0x1870FC4", Offset = "0x1870FC4", VA = "0x1870FC4", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
+
+		[Token(Token = "0x60044BE")]
+		[Address(RVA = "0x1870E34", Offset = "0x1870E34", VA = "0x1870E34")]
+		[DebuggerHidden]
+		public _003CScaleAllDown_003Ed__15(int _003C_003E1__state)
+		{
+		}
+
+		[Token(Token = "0x60044BF")]
+		[Address(RVA = "0x1870E60", Offset = "0x1870E60", VA = "0x1870E60", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
+
+		[Token(Token = "0x60044C0")]
+		[Address(RVA = "0x1870E64", Offset = "0x1870E64", VA = "0x1870E64", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60044C1")]
+		[Address(RVA = "0x1870F7C", Offset = "0x1870F7C", VA = "0x1870F7C", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
+
+		[Token(Token = "0x60044C2")]
+		[Address(RVA = "0x1870F84", Offset = "0x1870F84", VA = "0x1870F84", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
+
+		[Token(Token = "0x60044C3")]
+		[Address(RVA = "0x1870FC4", Offset = "0x1870FC4", VA = "0x1870FC4", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
+
+	[Token(Token = "0x4004F93")]
+	[FieldOffset(Offset = "0x18")]
+	[SerializeField]
+	private GameObject totween;
+
+	[Token(Token = "0x4004F94")]
+	[FieldOffset(Offset = "0x20")]
+	[SerializeField]
+	private Vector3 from;
+
+	[Token(Token = "0x4004F95")]
+	[FieldOffset(Offset = "0x30")]
+	[SerializeField]
+	private AnimationCurve animationCurve;
+
+	[Token(Token = "0x4004F96")]
+	[FieldOffset(Offset = "0x38")]
+	[SerializeField]
+	private float duration;
+
+	[Token(Token = "0x4004F97")]
+	[FieldOffset(Offset = "0x3C")]
+	[SerializeField]
+	private bool StartOnAwake;
+
+	[Token(Token = "0x4004F98")]
+	[FieldOffset(Offset = "0x40")]
+	public ParticleSystem leafPoofParticles;
+
+	[Token(Token = "0x4004F99")]
+	[FieldOffset(Offset = "0x48")]
+	public float scaleFactor;
+
+	[Token(Token = "0x4004F9A")]
+	[FieldOffset(Offset = "0x50")]
+	public GameObject leafAudio;
+
+	[Token(Token = "0x4004F9B")]
+	[FieldOffset(Offset = "0x58")]
+	public GameObject turkeyAudio;
+
+	[Token(Token = "0x4004F9C")]
+	[FieldOffset(Offset = "0x60")]
+	private SphereCollider leafStackCollider;
+
+	[Token(Token = "0x4004F9D")]
+	[FieldOffset(Offset = "0x68")]
+	private Vector3 to;
+
+	[Token(Token = "0x60044B2")]
+	[Address(RVA = "0x1735158", Offset = "0x1735158", VA = "0x1735158")]
+	private void Start()
+	{
+	}
+
+	[Token(Token = "0x60044B3")]
+	[Address(RVA = "0x17353FC", Offset = "0x17353FC", VA = "0x17353FC")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x60044B4")]
+	[Address(RVA = "0x1735284", Offset = "0x1735284", VA = "0x1735284")]
+	public void Scale()
+	{
+	}
+
+	[Token(Token = "0x60044B5")]
+	[Address(RVA = "0x17355C0", Offset = "0x17355C0", VA = "0x17355C0")]
+	private IEnumerator StartScaling()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x60044B6")]
+	[Address(RVA = "0x173554C", Offset = "0x173554C", VA = "0x173554C")]
+	private IEnumerator ScaleAllDown()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x60044B7")]
+	[Address(RVA = "0x1735634", Offset = "0x1735634", VA = "0x1735634")]
+	public TweenScaleTurkey()
+	{
+	}
 }

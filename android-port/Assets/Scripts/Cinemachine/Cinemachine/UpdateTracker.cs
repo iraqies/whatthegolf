@@ -1,66 +1,126 @@
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Cinemachine
 {
-	public class UpdateTracker : MonoBehaviour
+	[Token(Token = "0x2000079")]
+	internal class UpdateTracker
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x200007A")]
+		public enum UpdateClock
+		{
+			[Token(Token = "0x40002AF")]
+			Fixed = 0,
+			[Token(Token = "0x40002B0")]
+			Late = 1
+		}
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x200007B")]
+		private class UpdateStatus
+		{
+			[Token(Token = "0x40002B1")]
+			[FieldOffset(Offset = "0x10")]
+			private int windowStart;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x40002B2")]
+			[FieldOffset(Offset = "0x14")]
+			private int numWindowLateUpdateMoves;
 
-		2. Incorrect dll files were provided to AssetRipper.
+			[Token(Token = "0x40002B3")]
+			[FieldOffset(Offset = "0x18")]
+			private int numWindowFixedUpdateMoves;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+			[Token(Token = "0x40002B4")]
+			[FieldOffset(Offset = "0x1C")]
+			private int numWindows;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+			[Token(Token = "0x40002B5")]
+			[FieldOffset(Offset = "0x20")]
+			private int lastFrameUpdated;
 
-		3. Assembly Reconstruction has not been implemented.
+			[Token(Token = "0x40002B6")]
+			[FieldOffset(Offset = "0x24")]
+			private Matrix4x4 lastPos;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+			[Token(Token = "0x40002B7")]
+			[FieldOffset(Offset = "0x64")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x793C8", Offset = "0x793C8")]
+			private UpdateClock PreferredUpdate__BackingField;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+			[Token(Token = "0x170000CD")]
+			public UpdateClock PreferredUpdate
+			{
+				[Token(Token = "0x60002F8")]
+				[Address(RVA = "0x1911D34", Offset = "0x1911D34", VA = "0x1911D34")]
+				[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x79B38", Offset = "0x79B38")]
+				get
+				{
+					return default;
+				}
+				[Token(Token = "0x60002F9")]
+				[Address(RVA = "0x1911D3C", Offset = "0x1911D3C", VA = "0x1911D3C")]
+				[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x79B48", Offset = "0x79B48")]
+				private set
+				{
+				}
+			}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+			[Token(Token = "0x60002FA")]
+			[Address(RVA = "0x190E350", Offset = "0x190E350", VA = "0x190E350")]
+			public UpdateStatus(int currentFrame, Matrix4x4 pos)
+			{
+			}
 
-		5. Script Content Level 0
+			[Token(Token = "0x60002FB")]
+			[Address(RVA = "0x190E03C", Offset = "0x190E03C", VA = "0x190E03C")]
+			public void OnUpdate(int currentFrame, UpdateClock currentClock, Matrix4x4 pos)
+			{
+			}
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x40002AB")]
+		[FieldOffset(Offset = "0x0")]
+		private static Dictionary<Transform, UpdateStatus> mUpdateStatus;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x40002AC")]
+		[FieldOffset(Offset = "0x8")]
+		private static List<Transform> sToDelete;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x40002AD")]
+		[FieldOffset(Offset = "0x10")]
+		private static float mLastUpdateTime;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x60002F2")]
+		[Address(RVA = "0x190DBD0", Offset = "0x190DBD0", VA = "0x190DBD0")]
+		[Attribute(Name = "RuntimeInitializeOnLoadMethodAttribute", RVA = "0x79B28", Offset = "0x79B28")]
+		private static void InitializeModule()
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x60002F3")]
+		[Address(RVA = "0x190DC54", Offset = "0x190DC54", VA = "0x190DC54")]
+		private static void UpdateTargets(UpdateClock currentClock)
+		{
+		}
 
-		*/
+		[Token(Token = "0x60002F4")]
+		[Address(RVA = "0x190E174", Offset = "0x190E174", VA = "0x190E174")]
+		public static UpdateClock GetPreferredUpdate(Transform target)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60002F5")]
+		[Address(RVA = "0x190E3B4", Offset = "0x190E3B4", VA = "0x190E3B4")]
+		public static void OnUpdate(UpdateClock currentClock)
+		{
+		}
+
+		[Token(Token = "0x60002F6")]
+		[Address(RVA = "0x190E484", Offset = "0x190E484", VA = "0x190E484")]
+		public UpdateTracker()
+		{
+		}
 	}
 }

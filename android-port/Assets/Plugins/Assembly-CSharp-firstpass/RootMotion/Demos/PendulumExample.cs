@@ -1,66 +1,98 @@
+using Il2CppDummyDll;
+using RootMotion.FinalIK;
 using UnityEngine;
 
 namespace RootMotion.Demos
 {
+	[Token(Token = "0x200020A")]
+	[Attribute(Name = "RequireComponent", RVA = "0x33C64", Offset = "0x33C64")]
 	public class PendulumExample : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4000DAF")]
+		[FieldOffset(Offset = "0x18")]
+		[Attribute(Name = "RangeAttribute", RVA = "0x36D10", Offset = "0x36D10")]
+		public float weight;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000DB0")]
+		[FieldOffset(Offset = "0x1C")]
+		public float hangingDistanceMlp;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000DB1")]
+		[FieldOffset(Offset = "0x20")]
+		public Vector3 rootTargetPosition;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4000DB2")]
+		[FieldOffset(Offset = "0x2C")]
+		public Quaternion rootTargetRotation;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4000DB3")]
+		[FieldOffset(Offset = "0x40")]
+		public Transform target;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000DB4")]
+		[FieldOffset(Offset = "0x48")]
+		public Transform leftHandTarget;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4000DB5")]
+		[FieldOffset(Offset = "0x50")]
+		public Transform rightHandTarget;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4000DB6")]
+		[FieldOffset(Offset = "0x58")]
+		public Transform leftFootTarget;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4000DB7")]
+		[FieldOffset(Offset = "0x60")]
+		public Transform rightFootTarget;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4000DB8")]
+		[FieldOffset(Offset = "0x68")]
+		public Transform pelvisTarget;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4000DB9")]
+		[FieldOffset(Offset = "0x70")]
+		public Transform bodyTarget;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4000DBA")]
+		[FieldOffset(Offset = "0x78")]
+		public Transform headTarget;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4000DBB")]
+		[FieldOffset(Offset = "0x80")]
+		public Vector3 pelvisDownAxis;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x4000DBC")]
+		[FieldOffset(Offset = "0x90")]
+		private FullBodyBipedIK ik;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x4000DBD")]
+		[FieldOffset(Offset = "0x98")]
+		private Quaternion rootRelativeToPelvis;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x4000DBE")]
+		[FieldOffset(Offset = "0xA8")]
+		private Vector3 pelvisToRoot;
 
-		*/
+		[Token(Token = "0x4000DBF")]
+		[FieldOffset(Offset = "0xB4")]
+		private float lastWeight;
+
+		[Token(Token = "0x6000E2D")]
+		[Address(RVA = "0x13BDA88", Offset = "0x13BDA88", VA = "0x13BDA88")]
+		private void Start()
+		{
+		}
+
+		[Token(Token = "0x6000E2E")]
+		[Address(RVA = "0x13BDD44", Offset = "0x13BDD44", VA = "0x13BDD44")]
+		private void LateUpdate()
+		{
+		}
+
+		[Token(Token = "0x6000E2F")]
+		[Address(RVA = "0x13BE378", Offset = "0x13BE378", VA = "0x13BE378")]
+		public PendulumExample()
+		{
+		}
 	}
 }

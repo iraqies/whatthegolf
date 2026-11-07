@@ -1,63 +1,50 @@
+using System.Collections.Generic;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
-public class RagdollShooter2D : MonoBehaviour
+[Token(Token = "0x2000724")]
+public class RagdollShooter2D : GolfBall2DShooterBase
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x40025A7")]
+	[FieldOffset(Offset = "0x48")]
+	public float Force;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x40025A8")]
+	[FieldOffset(Offset = "0x4C")]
+	public Vector2 RandomRange;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x40025A9")]
+	[FieldOffset(Offset = "0x58")]
+	public Rigidbody2D[] rigidbodies;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x40025AA")]
+	[FieldOffset(Offset = "0x60")]
+	public List<Rigidbody2D> blacklistRigidbodies;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x60020F4")]
+	[Address(RVA = "0x163DA68", Offset = "0x163DA68", VA = "0x163DA68", Slot = "11")]
+	protected override void Awake()
+	{
+	}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x60020F5")]
+	[Address(RVA = "0x163DB7C", Offset = "0x163DB7C", VA = "0x163DB7C", Slot = "7")]
+	public override void OnShoot(Vector3 boost)
+	{
+	}
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x60020F6")]
+	[Address(RVA = "0x163DC60", Offset = "0x163DC60", VA = "0x163DC60")]
+	public RagdollShooter2D()
+	{
+	}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
-
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
-
-	4. This script is unnecessary.
-
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
-
-	5. Script Content Level 0
-
-		AssetRipper was set to not load any script information.
-
-	6. Cpp2IL failed to decompile Il2Cpp data
-
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x60020F7")]
+	[Address(RVA = "0x163DC7C", Offset = "0x163DC7C", VA = "0x163DC7C")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x65AD0", Offset = "0x65AD0")]
+	private bool _003CAwake_003Eb__4_0(Rigidbody2D r)
+	{
+		return default;
+	}
 }

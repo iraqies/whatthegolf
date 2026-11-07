@@ -1,63 +1,78 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000AFD")]
 public class DiscMovement : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4003D2A")]
+	[FieldOffset(Offset = "0x18")]
+	public Transform Pivot;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4003D2B")]
+	[FieldOffset(Offset = "0x20")]
+	public float ForceMod;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4003D2C")]
+	[FieldOffset(Offset = "0x24")]
+	public float MoveSpeed;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4003D2D")]
+	[FieldOffset(Offset = "0x28")]
+	public float DeadZoneSize;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4003D2E")]
+	[FieldOffset(Offset = "0x2C")]
+	public float MaxRotate;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4003D2F")]
+	[FieldOffset(Offset = "0x30")]
+	public Collider WinCollider;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4003D30")]
+	[FieldOffset(Offset = "0x38")]
+	private Rigidbody rigidbody;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4003D31")]
+	[FieldOffset(Offset = "0x40")]
+	private Vector3 currentDirection;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4003D32")]
+	[FieldOffset(Offset = "0x50")]
+	private ParticleSystem crashParticles;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x600345D")]
+	[Address(RVA = "0x18DD8B4", Offset = "0x18DD8B4", VA = "0x18DD8B4")]
+	private void Start()
+	{
+	}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x600345E")]
+	[Address(RVA = "0x18DD934", Offset = "0x18DD934", VA = "0x18DD934")]
+	private void OnCollisionStay(Collision other)
+	{
+	}
 
-	5. Script Content Level 0
+	[Token(Token = "0x600345F")]
+	[Address(RVA = "0x18DDA2C", Offset = "0x18DDA2C", VA = "0x18DDA2C")]
+	private void OnTriggerEnter(Collider other)
+	{
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x6003460")]
+	[Address(RVA = "0x18DDCD8", Offset = "0x18DDCD8", VA = "0x18DDCD8")]
+	private void FixedUpdate()
+	{
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x6003461")]
+	[Address(RVA = "0x18DE140", Offset = "0x18DE140", VA = "0x18DE140")]
+	private void OnDrawGizmosSelected()
+	{
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x6003462")]
+	[Address(RVA = "0x18DE178", Offset = "0x18DE178", VA = "0x18DE178")]
+	public DiscMovement()
+	{
+	}
 }

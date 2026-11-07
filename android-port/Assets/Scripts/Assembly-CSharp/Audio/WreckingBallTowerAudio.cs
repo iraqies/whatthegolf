@@ -1,66 +1,99 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Audio
 {
+	[Token(Token = "0x20013E5")]
 	public class WreckingBallTowerAudio : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4006B0A")]
+		[FieldOffset(Offset = "0x18")]
+		public IntroLoopOutro rotationAudio;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4006B0B")]
+		[FieldOffset(Offset = "0x20")]
+		public AudioValueRigidbody rotationValue;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4006B0C")]
+		[FieldOffset(Offset = "0x28")]
+		public float timeToStartLoop;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4006B0D")]
+		[FieldOffset(Offset = "0x2C")]
+		public float minValue;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4006B0E")]
+		[FieldOffset(Offset = "0x30")]
+		public float maxValue;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4006B0F")]
+		[FieldOffset(Offset = "0x34")]
+		public float timeToEndLoop;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4006B10")]
+		[FieldOffset(Offset = "0x38")]
+		public Transform Extendable;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4006B11")]
+		[FieldOffset(Offset = "0x40")]
+		public AudioSource extendableSource;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4006B12")]
+		[FieldOffset(Offset = "0x48")]
+		public float volume;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4006B13")]
+		[FieldOffset(Offset = "0x4C")]
+		private float rot_value;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4006B14")]
+		[FieldOffset(Offset = "0x50")]
+		private float offTimer;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4006B15")]
+		[FieldOffset(Offset = "0x54")]
+		private float onTimer;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4006B16")]
+		[FieldOffset(Offset = "0x58")]
+		private float ext_pos_Z;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x4006B17")]
+		[FieldOffset(Offset = "0x5C")]
+		private float ext_delta;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x4006B18")]
+		[FieldOffset(Offset = "0x60")]
+		private float ext_vol;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x6005CC9")]
+		[Address(RVA = "0x175B280", Offset = "0x175B280", VA = "0x175B280")]
+		private void OnEnable()
+		{
+		}
 
-		*/
+		[Token(Token = "0x6005CCA")]
+		[Address(RVA = "0x175B3A8", Offset = "0x175B3A8", VA = "0x175B3A8")]
+		private void OnDisable()
+		{
+		}
+
+		[Token(Token = "0x6005CCB")]
+		[Address(RVA = "0x175B4D0", Offset = "0x175B4D0", VA = "0x175B4D0")]
+		private void OnRotationValueChange(float v)
+		{
+		}
+
+		[Token(Token = "0x6005CCC")]
+		[Address(RVA = "0x175B4D8", Offset = "0x175B4D8", VA = "0x175B4D8")]
+		private void Update()
+		{
+		}
+
+		[Token(Token = "0x6005CCD")]
+		[Address(RVA = "0x175B66C", Offset = "0x175B66C", VA = "0x175B66C")]
+		public WreckingBallTowerAudio()
+		{
+		}
 	}
 }

@@ -1,63 +1,61 @@
+using Chronos;
+using Il2CppDummyDll;
+using Puzzle;
 using UnityEngine;
 
-public class AnimatorTimescale : MonoBehaviour
+[Token(Token = "0x2000A34")]
+[Attribute(Name = "RequireComponent", RVA = "0x42B18", Offset = "0x42B18")]
+public class AnimatorTimescale : MonoBehaviour, ITimedPuzzleObject
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4003858")]
+	[FieldOffset(Offset = "0x18")]
+	private Animator animator;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4003859")]
+	[FieldOffset(Offset = "0x20")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x503B4", Offset = "0x503B4")]
+	private LocalClock BallClock__BackingField;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x17000508")]
+	public LocalClock BallClock
+	{
+		[Token(Token = "0x6003094")]
+		[Address(RVA = "0x1418364", Offset = "0x1418364", VA = "0x1418364", Slot = "5")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x6951C", Offset = "0x6951C")]
+		get
+		{
+			return null;
+		}
+		[Token(Token = "0x6003095")]
+		[Address(RVA = "0x141836C", Offset = "0x141836C", VA = "0x141836C")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x6952C", Offset = "0x6952C")]
+		private set
+		{
+		}
+	}
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x6003096")]
+	[Address(RVA = "0x1418374", Offset = "0x1418374", VA = "0x1418374", Slot = "6")]
+	public float GetDeltaTime()
+	{
+		return default;
+	}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x6003097")]
+	[Address(RVA = "0x141841C", Offset = "0x141841C", VA = "0x141841C", Slot = "4")]
+	public void SetClock(LocalClock clock)
+	{
+	}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x6003098")]
+	[Address(RVA = "0x1418480", Offset = "0x1418480", VA = "0x1418480")]
+	private void Update()
+	{
+	}
 
-	3. Assembly Reconstruction has not been implemented.
-
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
-
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
-
-	4. This script is unnecessary.
-
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
-
-	5. Script Content Level 0
-
-		AssetRipper was set to not load any script information.
-
-	6. Cpp2IL failed to decompile Il2Cpp data
-
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x6003099")]
+	[Address(RVA = "0x1418568", Offset = "0x1418568", VA = "0x1418568")]
+	public AnimatorTimescale()
+	{
+	}
 }

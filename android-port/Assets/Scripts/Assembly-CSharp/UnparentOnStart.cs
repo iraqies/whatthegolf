@@ -1,63 +1,63 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000C6D")]
 public class UnparentOnStart : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x400440F")]
+	[FieldOffset(Offset = "0x18")]
+	private Quaternion originalRotation;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4004410")]
+	[FieldOffset(Offset = "0x28")]
+	private Vector3 originalPosition;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4004411")]
+	[FieldOffset(Offset = "0x38")]
+	private Transform originalParent;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4004412")]
+	[FieldOffset(Offset = "0x40")]
+	private Rigidbody thisRigidbody;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4004413")]
+	[FieldOffset(Offset = "0x48")]
+	[SerializeField]
+	private bool DontUnparentOnStart;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x6003AF6")]
+	[Address(RVA = "0x173D238", Offset = "0x173D238", VA = "0x173D238")]
+	private void Start()
+	{
+	}
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x6003AF7")]
+	[Address(RVA = "0x173D2B0", Offset = "0x173D2B0", VA = "0x173D2B0")]
+	public void Unparent()
+	{
+	}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x6003AF8")]
+	[Address(RVA = "0x173D340", Offset = "0x173D340", VA = "0x173D340")]
+	public void Reparent(bool alsoReturnToPosition)
+	{
+	}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x6003AF9")]
+	[Address(RVA = "0x173D390", Offset = "0x173D390", VA = "0x173D390")]
+	public void ResetPosition()
+	{
+	}
 
-	4. This script is unnecessary.
+	[Token(Token = "0x6003AFA")]
+	[Address(RVA = "0x173D408", Offset = "0x173D408", VA = "0x173D408")]
+	public void DestroyObject()
+	{
+	}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
-
-	5. Script Content Level 0
-
-		AssetRipper was set to not load any script information.
-
-	6. Cpp2IL failed to decompile Il2Cpp data
-
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x6003AFB")]
+	[Address(RVA = "0x173D48C", Offset = "0x173D48C", VA = "0x173D48C")]
+	public UnparentOnStart()
+	{
+	}
 }

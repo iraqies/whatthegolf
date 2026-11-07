@@ -1,66 +1,169 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Rewired.ComponentControls
 {
-	public class TouchControl : MonoBehaviour
+	[Serializable]
+	[Token(Token = "0x20002DE")]
+	[AttributeAttribute(Name = "RequireComponent", RVA = "0x191A9C", Offset = "0x191A9C")]
+	[DisallowMultipleComponent]
+	public abstract class TouchControl : CustomControllerControl
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4000F12")]
+		[FieldOffset(Offset = "0x28")]
+		private Canvas _canvas;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000F13")]
+		[FieldOffset(Offset = "0x30")]
+		private RectTransform __rectTransform;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x170005C8")]
+		internal TouchController gGeqnLRNKcjgzKaWVxWuqSNJvSze
+		{
+			[Token(Token = "0x600157B")]
+			[Address(RVA = "0x2423374", Offset = "0x2423374", VA = "0x2423374")]
+			get
+			{
+				return exWbShsVYmxobaFvbIwgBYspoFu();
+			}
+		}
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x170005C9")]
+		internal Canvas vQpmvzIqZzQRgZjNdTCOIzNihLiH
+		{
+			[Token(Token = "0x600157C")]
+			[Address(RVA = "0x24233D8", Offset = "0x24233D8", VA = "0x24233D8")]
+			get
+			{
+				return wVGySosqSehGBHyzChNRgcXcSScg();
+			}
+		}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x170005CA")]
+		internal RectTransform whnJFhhvlVIfvAzDjDUVAxyZymsH
+		{
+			[Token(Token = "0x600157D")]
+			[Address(RVA = "0x2420870", Offset = "0x2420870", VA = "0x2420870")]
+			get
+			{
+				return SUTSlDildRkGGducxAltMEcnwWAw();
+			}
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x170005CB")]
+		internal RectTransform dHBtGVwmKSUQYlNEBqhwMLJxhsUgA
+		{
+			[Token(Token = "0x600157E")]
+			[Address(RVA = "0x241DF14", Offset = "0x241DF14", VA = "0x241DF14")]
+			get
+			{
+				return UQQILlGuuskLnOkXMjNkJJUXcqqP();
+			}
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x170005CC")]
+		internal override bool osKcqUcyYlVGlGygpMaOnUYNqJDBA
+		{
+			[Token(Token = "0x6001583")]
+			[Address(RVA = "0x2423618", Offset = "0x2423618", VA = "0x2423618", Slot = "6")]
+			get
+			{
+				return zVMdwTfPKvDkNFioqslEyZNgriSF();
+			}
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x600157B")]
+		[Address(RVA = "0x2423374", Offset = "0x2423374", VA = "0x2423374")]
+		internal TouchController exWbShsVYmxobaFvbIwgBYspoFu()
+		{
+			return null;
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x600157C")]
+		[Address(RVA = "0x24233D8", Offset = "0x24233D8", VA = "0x24233D8")]
+		internal Canvas wVGySosqSehGBHyzChNRgcXcSScg()
+		{
+			return null;
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x600157D")]
+		[Address(RVA = "0x2420870", Offset = "0x2420870", VA = "0x2420870")]
+		internal RectTransform SUTSlDildRkGGducxAltMEcnwWAw()
+		{
+			return null;
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x600157E")]
+		[Address(RVA = "0x241DF14", Offset = "0x241DF14", VA = "0x241DF14")]
+		internal RectTransform UQQILlGuuskLnOkXMjNkJJUXcqqP()
+		{
+			return null;
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x600157F")]
+		[Address(RVA = "0x24233E0", Offset = "0x24233E0", VA = "0x24233E0")]
+		internal TouchControl()
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x6001580")]
+		[Address(RVA = "0x24233E8", Offset = "0x24233E8", VA = "0x24233E8", Slot = "11")]
+		internal override void OnValidate()
+		{
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x6001581")]
+		[Address(RVA = "0x2423588", Offset = "0x2423588", VA = "0x2423588", Slot = "12")]
+		internal override void OnCanvasGroupChanged()
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x6001582")]
+		[Address(RVA = "0x24235D0", Offset = "0x24235D0", VA = "0x24235D0", Slot = "13")]
+		internal override void OnTransformParentChanged()
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x6001583")]
+		[Address(RVA = "0x2423618", Offset = "0x2423618", VA = "0x2423618", Slot = "6")]
+		internal override bool zVMdwTfPKvDkNFioqslEyZNgriSF()
+		{
+			return default;
+		}
 
-		*/
+		[Token(Token = "0x6001584")]
+		[Address(RVA = "0x241EFE0", Offset = "0x241EFE0", VA = "0x241EFE0", Slot = "17")]
+		internal override bool lpOPYPkfRAdylCMSLphTlIgUWIWy()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6001585")]
+		[Address(RVA = "0x24236BC", Offset = "0x24236BC", VA = "0x24236BC", Slot = "21")]
+		internal override void FyKKzlnIjsJaSimYwuqKSwNJHIHx()
+		{
+		}
+
+		[Token(Token = "0x6001586")]
+		[Address(RVA = "0x2423704", Offset = "0x2423704", VA = "0x2423704", Slot = "24")]
+		internal override IComponentController FindController()
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6001587")]
+		[Address(RVA = "0x242379C", Offset = "0x242379C", VA = "0x242379C", Slot = "25")]
+		internal override Type GetRequiredControllerType()
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6001588")]
+		[Address(RVA = "0x2423430", Offset = "0x2423430", VA = "0x2423430")]
+		private bool nGHzehsIbiveZqWLVMehuidueiKkA(bool P_0, bool P_1)
+		{
+			return default;
+		}
 	}
 }

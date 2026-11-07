@@ -1,63 +1,169 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x20003D2")]
 public class Metronome : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x40014F5")]
+	[FieldOffset(Offset = "0x18")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x4D1D0", Offset = "0x4D1D0")]
+	private Action<double> m_Ticked;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x40014F6")]
+	[FieldOffset(Offset = "0x20")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x4D1E0", Offset = "0x4D1E0")]
+	private Action m_onStart;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x40014F7")]
+	[FieldOffset(Offset = "0x28")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x4D1F0", Offset = "0x4D1F0")]
+	private Action m_onStop;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x40014F8")]
+	[FieldOffset(Offset = "0x30")]
+	[AttributeAttribute(Name = "RangeAttribute", RVA = "0x4D200", Offset = "0x4D200")]
+	[SerializeField]
+	private double _tempo;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x40014F9")]
+	[FieldOffset(Offset = "0x38")]
+	[SerializeField]
+	[AttributeAttribute(Name = "RangeAttribute", RVA = "0x4D244", Offset = "0x4D244")]
+	private int _subdivisions;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x40014FA")]
+	[FieldOffset(Offset = "0x40")]
+	private double _tickLength;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x40014FB")]
+	[FieldOffset(Offset = "0x48")]
+	private double _nextTickTime;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x40014FC")]
+	[FieldOffset(Offset = "0x50")]
+	private bool running;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x17000218")]
+	public bool Running
+	{
+		[Token(Token = "0x60011FD")]
+		[Address(RVA = "0x15673C0", Offset = "0x15673C0", VA = "0x15673C0")]
+		get
+		{
+			return default;
+		}
+	}
 
-	4. This script is unnecessary.
+	[Token(Token = "0x14000015")]
+	public event Action<double> Ticked
+	{
+		[Token(Token = "0x60011F7")]
+		[Address(RVA = "0x1566FE8", Offset = "0x1566FE8", VA = "0x1566FE8")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x61ADC", Offset = "0x61ADC")]
+		add
+		{
+		}
+		[Token(Token = "0x60011F8")]
+		[Address(RVA = "0x156708C", Offset = "0x156708C", VA = "0x156708C")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x61AEC", Offset = "0x61AEC")]
+		remove
+		{
+		}
+	}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x14000016")]
+	public event Action onStart
+	{
+		[Token(Token = "0x60011F9")]
+		[Address(RVA = "0x1567130", Offset = "0x1567130", VA = "0x1567130")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x61AFC", Offset = "0x61AFC")]
+		add
+		{
+		}
+		[Token(Token = "0x60011FA")]
+		[Address(RVA = "0x15671D4", Offset = "0x15671D4", VA = "0x15671D4")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x61B0C", Offset = "0x61B0C")]
+		remove
+		{
+		}
+	}
 
-	5. Script Content Level 0
+	[Token(Token = "0x14000017")]
+	public event Action onStop
+	{
+		[Token(Token = "0x60011FB")]
+		[Address(RVA = "0x1567278", Offset = "0x1567278", VA = "0x1567278")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x61B1C", Offset = "0x61B1C")]
+		add
+		{
+		}
+		[Token(Token = "0x60011FC")]
+		[Address(RVA = "0x156731C", Offset = "0x156731C", VA = "0x156731C")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x61B2C", Offset = "0x61B2C")]
+		remove
+		{
+		}
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x60011FE")]
+	[Address(RVA = "0x15673C8", Offset = "0x15673C8", VA = "0x15673C8")]
+	public double GetTempo()
+	{
+		return default;
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x60011FF")]
+	[Address(RVA = "0x15673D0", Offset = "0x15673D0", VA = "0x15673D0")]
+	public void SetTempo(double tempo)
+	{
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x6001200")]
+	[Address(RVA = "0x1567430", Offset = "0x1567430", VA = "0x1567430")]
+	public void SetSubdivisions(int sub)
+	{
+	}
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x6001201")]
+	[Address(RVA = "0x156745C", Offset = "0x156745C", VA = "0x156745C")]
+	private void Reset()
+	{
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x6001202")]
+	[Address(RVA = "0x15674B8", Offset = "0x15674B8", VA = "0x15674B8")]
+	public void StartMetronome()
+	{
+	}
 
-	*/
+	[Token(Token = "0x6001203")]
+	[Address(RVA = "0x156752C", Offset = "0x156752C", VA = "0x156752C")]
+	public void StopMetronome()
+	{
+	}
+
+	[Token(Token = "0x6001204")]
+	[Address(RVA = "0x1567400", Offset = "0x1567400", VA = "0x1567400")]
+	private void Recalculate()
+	{
+	}
+
+	[Token(Token = "0x6001205")]
+	[Address(RVA = "0x1567544", Offset = "0x1567544", VA = "0x1567544")]
+	private void OnValidate()
+	{
+	}
+
+	[Token(Token = "0x6001206")]
+	[Address(RVA = "0x1567598", Offset = "0x1567598", VA = "0x1567598")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x6001207")]
+	[Address(RVA = "0x1567644", Offset = "0x1567644", VA = "0x1567644")]
+	public Metronome()
+	{
+	}
 }

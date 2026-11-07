@@ -1,66 +1,200 @@
+using System;
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Buoyancy
 {
-	public class BuoyancyTrigger : MonoBehaviour
+	[Token(Token = "0x20011E9")]
+	public class BuoyancyTrigger : MonoBehaviour, IBuoyantWater
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4006051")]
+		[FieldOffset(Offset = "0x18")]
+		[SerializeField]
+		private float forceMultiplier;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4006052")]
+		[FieldOffset(Offset = "0x1C")]
+		[SerializeField]
+		private float viscosity;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4006053")]
+		[FieldOffset(Offset = "0x20")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x57AAC", Offset = "0x57AAC")]
+		private List<IBuoyant> buoyantsInTrigger__BackingField;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4006054")]
+		[FieldOffset(Offset = "0x28")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x57ABC", Offset = "0x57ABC")]
+		private float SurfacePositionY__BackingField;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4006055")]
+		[FieldOffset(Offset = "0x2C")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x57ACC", Offset = "0x57ACC")]
+		private float AccumulatedMass__BackingField;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4006056")]
+		[FieldOffset(Offset = "0x30")]
+		private Transform _transform;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4006057")]
+		[FieldOffset(Offset = "0x38")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x57ADC", Offset = "0x57ADC")]
+		private Action<IBuoyant> m_OnEnterWater;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4006058")]
+		[FieldOffset(Offset = "0x40")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x57AEC", Offset = "0x57AEC")]
+		private Action<IBuoyant> m_OnExitWater;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4006059")]
+		[FieldOffset(Offset = "0x48")]
+		private List<IBuoyant> remove;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x170008F1")]
+		public List<IBuoyant> buoyantsInTrigger
+		{
+			[Token(Token = "0x600521C")]
+			[Address(RVA = "0x17D35A4", Offset = "0x17D35A4", VA = "0x17D35A4")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x70838", Offset = "0x70838")]
+			get
+			{
+				return null;
+			}
+			[Token(Token = "0x600521D")]
+			[Address(RVA = "0x17D35AC", Offset = "0x17D35AC", VA = "0x17D35AC")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x70848", Offset = "0x70848")]
+			private set
+			{
+			}
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x170008F2")]
+		public float SurfacePositionY
+		{
+			[Token(Token = "0x600521E")]
+			[Address(RVA = "0x17D35B4", Offset = "0x17D35B4", VA = "0x17D35B4", Slot = "6")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x70858", Offset = "0x70858")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x600521F")]
+			[Address(RVA = "0x17D35BC", Offset = "0x17D35BC", VA = "0x17D35BC")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x70868", Offset = "0x70868")]
+			set
+			{
+			}
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x170008F3")]
+		public float Viscosity
+		{
+			[Token(Token = "0x6005220")]
+			[Address(RVA = "0x17D35C4", Offset = "0x17D35C4", VA = "0x17D35C4", Slot = "4")]
+			get
+			{
+				return default;
+			}
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x170008F4")]
+		public float WaterForceUp
+		{
+			[Token(Token = "0x6005221")]
+			[Address(RVA = "0x17D35CC", Offset = "0x17D35CC", VA = "0x17D35CC", Slot = "5")]
+			get
+			{
+				return default;
+			}
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x170008F5")]
+		public float AccumulatedMass
+		{
+			[Token(Token = "0x6005222")]
+			[Address(RVA = "0x17D35F8", Offset = "0x17D35F8", VA = "0x17D35F8")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x70878", Offset = "0x70878")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6005223")]
+			[Address(RVA = "0x17D3600", Offset = "0x17D3600", VA = "0x17D3600")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x70888", Offset = "0x70888")]
+			private set
+			{
+			}
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x1400008D")]
+		public event Action<IBuoyant> OnEnterWater
+		{
+			[Token(Token = "0x6005224")]
+			[Address(RVA = "0x17D3608", Offset = "0x17D3608", VA = "0x17D3608")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x70898", Offset = "0x70898")]
+			add
+			{
+			}
+			[Token(Token = "0x6005225")]
+			[Address(RVA = "0x17D36AC", Offset = "0x17D36AC", VA = "0x17D36AC")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x708A8", Offset = "0x708A8")]
+			remove
+			{
+			}
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x1400008E")]
+		public event Action<IBuoyant> OnExitWater
+		{
+			[Token(Token = "0x6005226")]
+			[Address(RVA = "0x17D3750", Offset = "0x17D3750", VA = "0x17D3750")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x708B8", Offset = "0x708B8")]
+			add
+			{
+			}
+			[Token(Token = "0x6005227")]
+			[Address(RVA = "0x17D37F4", Offset = "0x17D37F4", VA = "0x17D37F4")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x708C8", Offset = "0x708C8")]
+			remove
+			{
+			}
+		}
 
-		*/
+		[Token(Token = "0x6005228")]
+		[Address(RVA = "0x17D3898", Offset = "0x17D3898", VA = "0x17D3898")]
+		private void Awake()
+		{
+		}
+
+		[Token(Token = "0x6005229")]
+		[Address(RVA = "0x17D3994", Offset = "0x17D3994", VA = "0x17D3994")]
+		private void FixedUpdate()
+		{
+		}
+
+		[Token(Token = "0x600522A")]
+		[Address(RVA = "0x17D3C44", Offset = "0x17D3C44", VA = "0x17D3C44")]
+		private void LateUpdate()
+		{
+		}
+
+		[Token(Token = "0x600522B")]
+		[Address(RVA = "0x17D3DC4", Offset = "0x17D3DC4", VA = "0x17D3DC4")]
+		private void OnTriggerEnter(Collider other)
+		{
+		}
+
+		[Token(Token = "0x600522C")]
+		[Address(RVA = "0x17D4000", Offset = "0x17D4000", VA = "0x17D4000")]
+		private void OnTriggerExit(Collider other)
+		{
+		}
+
+		[Token(Token = "0x600522D")]
+		[Address(RVA = "0x17D423C", Offset = "0x17D423C", VA = "0x17D423C")]
+		public BuoyancyTrigger()
+		{
+		}
 	}
 }

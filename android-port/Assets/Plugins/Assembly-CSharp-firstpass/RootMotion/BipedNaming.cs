@@ -1,66 +1,247 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace RootMotion
 {
-	public class BipedNaming : MonoBehaviour
+	[Token(Token = "0x20000E2")]
+	public static class BipedNaming
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Serializable]
+		[Token(Token = "0x20000E3")]
+		public enum BoneType
+		{
+			[Token(Token = "0x40004F0")]
+			Unassigned = 0,
+			[Token(Token = "0x40004F1")]
+			Spine = 1,
+			[Token(Token = "0x40004F2")]
+			Head = 2,
+			[Token(Token = "0x40004F3")]
+			Arm = 3,
+			[Token(Token = "0x40004F4")]
+			Leg = 4,
+			[Token(Token = "0x40004F5")]
+			Tail = 5,
+			[Token(Token = "0x40004F6")]
+			Eye = 6
+		}
 
-		1. No dll files were provided to AssetRipper.
+		[Serializable]
+		[Token(Token = "0x20000E4")]
+		public enum BoneSide
+		{
+			[Token(Token = "0x40004F8")]
+			Center = 0,
+			[Token(Token = "0x40004F9")]
+			Left = 1,
+			[Token(Token = "0x40004FA")]
+			Right = 2
+		}
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40004DD")]
+		[FieldOffset(Offset = "0x0")]
+		public static string[] typeLeft;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40004DE")]
+		[FieldOffset(Offset = "0x8")]
+		public static string[] typeRight;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40004DF")]
+		[FieldOffset(Offset = "0x10")]
+		public static string[] typeSpine;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40004E0")]
+		[FieldOffset(Offset = "0x18")]
+		public static string[] typeHead;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x40004E1")]
+		[FieldOffset(Offset = "0x20")]
+		public static string[] typeArm;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x40004E2")]
+		[FieldOffset(Offset = "0x28")]
+		public static string[] typeLeg;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x40004E3")]
+		[FieldOffset(Offset = "0x30")]
+		public static string[] typeTail;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x40004E4")]
+		[FieldOffset(Offset = "0x38")]
+		public static string[] typeEye;
 
-		5. Script Content Level 0
+		[Token(Token = "0x40004E5")]
+		[FieldOffset(Offset = "0x40")]
+		public static string[] typeExclude;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x40004E6")]
+		[FieldOffset(Offset = "0x48")]
+		public static string[] typeExcludeSpine;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x40004E7")]
+		[FieldOffset(Offset = "0x50")]
+		public static string[] typeExcludeHead;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x40004E8")]
+		[FieldOffset(Offset = "0x58")]
+		public static string[] typeExcludeArm;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x40004E9")]
+		[FieldOffset(Offset = "0x60")]
+		public static string[] typeExcludeLeg;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x40004EA")]
+		[FieldOffset(Offset = "0x68")]
+		public static string[] typeExcludeTail;
 
-		*/
+		[Token(Token = "0x40004EB")]
+		[FieldOffset(Offset = "0x70")]
+		public static string[] typeExcludeEye;
+
+		[Token(Token = "0x40004EC")]
+		[FieldOffset(Offset = "0x78")]
+		public static string[] pelvis;
+
+		[Token(Token = "0x40004ED")]
+		[FieldOffset(Offset = "0x80")]
+		public static string[] hand;
+
+		[Token(Token = "0x40004EE")]
+		[FieldOffset(Offset = "0x88")]
+		public static string[] foot;
+
+		[Token(Token = "0x60005AE")]
+		[Address(RVA = "0x13026A8", Offset = "0x13026A8", VA = "0x13026A8")]
+		public static Transform[] GetBonesOfType(BoneType boneType, Transform[] bones)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x60005AF")]
+		[Address(RVA = "0x13029D4", Offset = "0x13029D4", VA = "0x13029D4")]
+		public static Transform[] GetBonesOfSide(BoneSide boneSide, Transform[] bones)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x60005B0")]
+		[Address(RVA = "0x1302C50", Offset = "0x1302C50", VA = "0x1302C50")]
+		public static Transform[] GetBonesOfTypeAndSide(BoneType boneType, BoneSide boneSide, Transform[] bones)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x60005B1")]
+		[Address(RVA = "0x1302CE8", Offset = "0x1302CE8", VA = "0x1302CE8")]
+		public static Transform GetNamingMatch(Transform[] transforms, params string[][] namings)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x60005B2")]
+		[Address(RVA = "0x1302880", Offset = "0x1302880", VA = "0x1302880")]
+		public static BoneType GetBoneType(string boneName)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60005B3")]
+		[Address(RVA = "0x1302BAC", Offset = "0x1302BAC", VA = "0x1302BAC")]
+		public static BoneSide GetBoneSide(string boneName)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60005B4")]
+		[Address(RVA = "0x1303894", Offset = "0x1303894", VA = "0x1303894")]
+		public static Transform GetBone(Transform[] transforms, BoneType boneType, BoneSide boneSide = BoneSide.Center, params string[][] namings)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x60005B5")]
+		[Address(RVA = "0x1303574", Offset = "0x1303574", VA = "0x1303574")]
+		private static bool isLeft(string boneName)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60005B6")]
+		[Address(RVA = "0x1303704", Offset = "0x1303704", VA = "0x1303704")]
+		private static bool isRight(string boneName)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60005B7")]
+		[Address(RVA = "0x1302F44", Offset = "0x1302F44", VA = "0x1302F44")]
+		private static bool isSpine(string boneName)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60005B8")]
+		[Address(RVA = "0x130304C", Offset = "0x130304C", VA = "0x130304C")]
+		private static bool isHead(string boneName)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60005B9")]
+		[Address(RVA = "0x1303154", Offset = "0x1303154", VA = "0x1303154")]
+		private static bool isArm(string boneName)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60005BA")]
+		[Address(RVA = "0x130325C", Offset = "0x130325C", VA = "0x130325C")]
+		private static bool isLeg(string boneName)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60005BB")]
+		[Address(RVA = "0x1303364", Offset = "0x1303364", VA = "0x1303364")]
+		private static bool isTail(string boneName)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60005BC")]
+		[Address(RVA = "0x130346C", Offset = "0x130346C", VA = "0x130346C")]
+		private static bool isEye(string boneName)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60005BD")]
+		[Address(RVA = "0x1302E18", Offset = "0x1302E18", VA = "0x1302E18")]
+		private static bool matchesNaming(string boneName, string[] namingConvention)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60005BE")]
+		[Address(RVA = "0x1303A54", Offset = "0x1303A54", VA = "0x1303A54")]
+		private static bool excludesNaming(string boneName, string[] namingConvention)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60005BF")]
+		[Address(RVA = "0x13039D8", Offset = "0x13039D8", VA = "0x13039D8")]
+		private static string firstLetter(string boneName)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x60005C0")]
+		[Address(RVA = "0x1303960", Offset = "0x1303960", VA = "0x1303960")]
+		private static string lastLetter(string boneName)
+		{
+			return null;
+		}
 	}
 }

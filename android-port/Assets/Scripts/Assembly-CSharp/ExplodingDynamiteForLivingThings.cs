@@ -1,63 +1,314 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Audio;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class ExplodingDynamiteForLivingThings : MonoBehaviour
+[Token(Token = "0x2000D73")]
+public class ExplodingDynamiteForLivingThings : MonoBehaviour, IAudioEvent
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x2000D74")]
+	private enum State
+	{
+		[Token(Token = "0x4004937")]
+		Appear = 0,
+		[Token(Token = "0x4004938")]
+		Warning = 1,
+		[Token(Token = "0x4004939")]
+		Explode = 2,
+		[Token(Token = "0x400493A")]
+		Done = 3
+	}
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x2000D75")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x449D0", Offset = "0x449D0")]
+	private sealed class _003CAduio_003Ed__31 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x400493B")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x400493C")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x400493D")]
+		[FieldOffset(Offset = "0x20")]
+		public ExplodingDynamiteForLivingThings _003C_003E4__this;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x17000671")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x6003F4E")]
+			[Address(RVA = "0x17A1794", Offset = "0x17A1794", VA = "0x17A1794", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x17000672")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x6003F50")]
+			[Address(RVA = "0x17A17DC", Offset = "0x17A17DC", VA = "0x17A17DC", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6003F4B")]
+		[Address(RVA = "0x17A1678", Offset = "0x17A1678", VA = "0x17A1678")]
+		[DebuggerHidden]
+		public _003CAduio_003Ed__31(int _003C_003E1__state)
+		{
+		}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6003F4C")]
+		[Address(RVA = "0x17A16A4", Offset = "0x17A16A4", VA = "0x17A16A4", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x6003F4D")]
+		[Address(RVA = "0x17A16A8", Offset = "0x17A16A8", VA = "0x17A16A8", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
 
-	4. This script is unnecessary.
+		[Token(Token = "0x6003F4E")]
+		[Address(RVA = "0x17A1794", Offset = "0x17A1794", VA = "0x17A1794", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6003F4F")]
+		[Address(RVA = "0x17A179C", Offset = "0x17A179C", VA = "0x17A179C", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
 
-	5. Script Content Level 0
+		[Token(Token = "0x6003F50")]
+		[Address(RVA = "0x17A17DC", Offset = "0x17A17DC", VA = "0x17A17DC", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x400491D")]
+	[FieldOffset(Offset = "0x18")]
+	private double _time;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x400491E")]
+	[FieldOffset(Offset = "0x20")]
+	[SerializeField]
+	private float _warningTime;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x400491F")]
+	[FieldOffset(Offset = "0x24")]
+	[SerializeField]
+	private float _appearTime;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4004920")]
+	[FieldOffset(Offset = "0x28")]
+	[SerializeField]
+	private AnimationCurve _appearCurve;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x4004921")]
+	[FieldOffset(Offset = "0x30")]
+	[SerializeField]
+	private AnimationCurve _blinkCurve;
 
-	*/
+	[Token(Token = "0x4004922")]
+	[FieldOffset(Offset = "0x38")]
+	[SerializeField]
+	private float _warningSpeed;
+
+	[Token(Token = "0x4004923")]
+	[FieldOffset(Offset = "0x3C")]
+	[SerializeField]
+	private float _warningSizeIncrease;
+
+	[Token(Token = "0x4004924")]
+	[FieldOffset(Offset = "0x40")]
+	[SerializeField]
+	private bool _startWarningOnPickup;
+
+	[Token(Token = "0x4004925")]
+	[FieldOffset(Offset = "0x48")]
+	[SerializeField]
+	private GameObject _rings;
+
+	[Token(Token = "0x4004926")]
+	[FieldOffset(Offset = "0x50")]
+	[SerializeField]
+	private GameObject _explosionshadow;
+
+	[Token(Token = "0x4004927")]
+	[FieldOffset(Offset = "0x58")]
+	[SerializeField]
+	private GameObject _blinkRenderer;
+
+	[Token(Token = "0x4004928")]
+	[FieldOffset(Offset = "0x60")]
+	[SerializeField]
+	private GameObject _normalRenderer;
+
+	[Token(Token = "0x4004929")]
+	[FieldOffset(Offset = "0x68")]
+	[SerializeField]
+	private ParticleSystem _splash;
+
+	[Token(Token = "0x400492A")]
+	[FieldOffset(Offset = "0x70")]
+	[SerializeField]
+	private LayerMask _mask;
+
+	[Token(Token = "0x400492B")]
+	[FieldOffset(Offset = "0x74")]
+	private State _state;
+
+	[Token(Token = "0x400492C")]
+	[FieldOffset(Offset = "0x78")]
+	private Vector3 _startPos;
+
+	[Token(Token = "0x400492D")]
+	[FieldOffset(Offset = "0x88")]
+	public UnityEvent OnExplodeEvent;
+
+	[Token(Token = "0x400492E")]
+	[FieldOffset(Offset = "0x90")]
+	[SerializeField]
+	private float _blinkSomething;
+
+	[Token(Token = "0x400492F")]
+	[FieldOffset(Offset = "0x98")]
+	[SerializeField]
+	private GameObject _audio;
+
+	[Token(Token = "0x4004930")]
+	[FieldOffset(Offset = "0xA0")]
+	[SerializeField]
+	private float _radius;
+
+	[Token(Token = "0x4004931")]
+	[FieldOffset(Offset = "0xA4")]
+	[SerializeField]
+	private float _explosionForce;
+
+	[Token(Token = "0x4004932")]
+	[FieldOffset(Offset = "0xA8")]
+	[SerializeField]
+	private ParticleSystem _explosionParticles;
+
+	[Token(Token = "0x4004933")]
+	[FieldOffset(Offset = "0xB0")]
+	private bool _exploded;
+
+	[Token(Token = "0x4004934")]
+	[FieldOffset(Offset = "0xB8")]
+	private Collider _ballCollider;
+
+	[Token(Token = "0x4004935")]
+	[FieldOffset(Offset = "0xC0")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x51D14", Offset = "0x51D14")]
+	private Action<Vector3> OnAudioEvent__BackingField;
+
+	[Token(Token = "0x17000670")]
+	public Action<Vector3> OnAudioEvent
+	{
+		[Token(Token = "0x6003F48")]
+		[Address(RVA = "0x1450F14", Offset = "0x1450F14", VA = "0x1450F14", Slot = "4")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x6C79C", Offset = "0x6C79C")]
+		get
+		{
+			return null;
+		}
+		[Token(Token = "0x6003F49")]
+		[Address(RVA = "0x1450F1C", Offset = "0x1450F1C", VA = "0x1450F1C", Slot = "5")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x6C7AC", Offset = "0x6C7AC")]
+		set
+		{
+		}
+	}
+
+	[Token(Token = "0x6003F3E")]
+	[Address(RVA = "0x14505A8", Offset = "0x14505A8", VA = "0x14505A8")]
+	private void Start()
+	{
+	}
+
+	[Token(Token = "0x6003F3F")]
+	[Address(RVA = "0x14505E4", Offset = "0x14505E4", VA = "0x14505E4")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x6003F40")]
+	[Address(RVA = "0x1450664", Offset = "0x1450664", VA = "0x1450664")]
+	private void Appear()
+	{
+	}
+
+	[Token(Token = "0x6003F41")]
+	[Address(RVA = "0x1450D10", Offset = "0x1450D10", VA = "0x1450D10")]
+	private void SetWarning()
+	{
+	}
+
+	[Token(Token = "0x6003F42")]
+	[Address(RVA = "0x1450724", Offset = "0x1450724", VA = "0x1450724")]
+	private void Warning()
+	{
+	}
+
+	[Token(Token = "0x6003F43")]
+	[Address(RVA = "0x1450DA4", Offset = "0x1450DA4", VA = "0x1450DA4")]
+	private void OnDrawGizmos()
+	{
+	}
+
+	[Token(Token = "0x6003F44")]
+	[Address(RVA = "0x1450878", Offset = "0x1450878", VA = "0x1450878")]
+	private void Explode()
+	{
+	}
+
+	[Token(Token = "0x6003F45")]
+	[Address(RVA = "0x1450DF4", Offset = "0x1450DF4", VA = "0x1450DF4")]
+	private IEnumerator Aduio()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6003F46")]
+	[Address(RVA = "0x1450E68", Offset = "0x1450E68", VA = "0x1450E68")]
+	private void OnCollisionEnter(Collision collision)
+	{
+	}
+
+	[Token(Token = "0x6003F47")]
+	[Address(RVA = "0x1450EFC", Offset = "0x1450EFC", VA = "0x1450EFC")]
+	public void OnPickedUp(Collider ballCollider)
+	{
+	}
+
+	[Token(Token = "0x6003F4A")]
+	[Address(RVA = "0x1450F24", Offset = "0x1450F24", VA = "0x1450F24")]
+	public ExplodingDynamiteForLivingThings()
+	{
+	}
 }

@@ -1,66 +1,163 @@
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Audio
 {
-	public class AudioValueRigidbodyMany : MonoBehaviour
+	[Token(Token = "0x20013D5")]
+	public class AudioValueRigidbodyMany : BaseAudioValue
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4006A9D")]
+		[FieldOffset(Offset = "0x38")]
+		public List<Rigidbody> rigid;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4006A9E")]
+		[FieldOffset(Offset = "0x40")]
+		public List<Rigidbody2D> rigid2D;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4006A9F")]
+		[FieldOffset(Offset = "0x48")]
+		public AudioSource audioSource;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4006AA0")]
+		[FieldOffset(Offset = "0x50")]
+		public bool moveAudioSourceToMiddlePosition;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4006AA1")]
+		[FieldOffset(Offset = "0x54")]
+		public float PositionChangeSpeed;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4006AA2")]
+		[FieldOffset(Offset = "0x58")]
+		public float minVelocityThreshold;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4006AA3")]
+		[FieldOffset(Offset = "0x5C")]
+		public bool removeOnOutOfBounds;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4006AA4")]
+		[FieldOffset(Offset = "0x60")]
+		public float groundCheckFrequency;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4006AA5")]
+		[FieldOffset(Offset = "0x64")]
+		public float groundCheckDistance;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4006AA6")]
+		[FieldOffset(Offset = "0x68")]
+		public LayerMask groundIs;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4006AA7")]
+		[FieldOffset(Offset = "0x6C")]
+		public float averageVelocity;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4006AA8")]
+		[FieldOffset(Offset = "0x70")]
+		private List<Rigidbody> currentRigids;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4006AA9")]
+		[FieldOffset(Offset = "0x78")]
+		private List<Rigidbody2D> currentRigids2D;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x4006AAA")]
+		[FieldOffset(Offset = "0x80")]
+		private Vector3 middlePosition;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x4006AAB")]
+		[FieldOffset(Offset = "0x8C")]
+		private Vector3 lastPosition;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x4006AAC")]
+		[FieldOffset(Offset = "0x98")]
+		private float groundCheckTimer;
 
-		*/
+		[Token(Token = "0x17000A76")]
+		private float groundCheckCooldown
+		{
+			[Token(Token = "0x6005C7F")]
+			[Address(RVA = "0x1510FB4", Offset = "0x1510FB4", VA = "0x1510FB4")]
+			get
+			{
+				return default;
+			}
+		}
+
+		[Token(Token = "0x17000A77")]
+		protected override bool Use2D
+		{
+			[Token(Token = "0x6005C80")]
+			[Address(RVA = "0x1510FC4", Offset = "0x1510FC4", VA = "0x1510FC4", Slot = "6")]
+			get
+			{
+				return default;
+			}
+		}
+
+		[Token(Token = "0x6005C81")]
+		[Address(RVA = "0x151101C", Offset = "0x151101C", VA = "0x151101C")]
+		private void Start()
+		{
+		}
+
+		[Token(Token = "0x6005C82")]
+		[Address(RVA = "0x15112C0", Offset = "0x15112C0", VA = "0x15112C0")]
+		private void Update()
+		{
+		}
+
+		[Token(Token = "0x6005C83")]
+		[Address(RVA = "0x151142C", Offset = "0x151142C", VA = "0x151142C")]
+		private void FixedUpdate()
+		{
+		}
+
+		[Token(Token = "0x6005C84")]
+		[Address(RVA = "0x1511960", Offset = "0x1511960", VA = "0x1511960", Slot = "7")]
+		protected override void SetValue()
+		{
+		}
+
+		[Token(Token = "0x6005C85")]
+		[Address(RVA = "0x151199C", Offset = "0x151199C", VA = "0x151199C")]
+		private void SetValuesFrom3D()
+		{
+		}
+
+		[Token(Token = "0x6005C86")]
+		[Address(RVA = "0x1511998", Offset = "0x1511998", VA = "0x1511998")]
+		private void SetValuesFrom2D()
+		{
+		}
+
+		[Token(Token = "0x6005C87")]
+		[Address(RVA = "0x15116B8", Offset = "0x15116B8", VA = "0x15116B8")]
+		private void GroundCheck3D()
+		{
+		}
+
+		[Token(Token = "0x6005C88")]
+		[Address(RVA = "0x15114A8", Offset = "0x15114A8", VA = "0x15114A8")]
+		private void GroundCheck2D()
+		{
+		}
+
+		[Token(Token = "0x6005C89")]
+		[Address(RVA = "0x1511B10", Offset = "0x1511B10", VA = "0x1511B10")]
+		private void OnAnyOutOfBounds(TriggerInfo info)
+		{
+		}
+
+		[Token(Token = "0x6005C8A")]
+		[Address(RVA = "0x1511CEC", Offset = "0x1511CEC", VA = "0x1511CEC")]
+		private bool OutOfBounds(GameObject otherHit)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6005C8B")]
+		[Address(RVA = "0x1511E0C", Offset = "0x1511E0C", VA = "0x1511E0C")]
+		public AudioValueRigidbodyMany()
+		{
+		}
 	}
 }

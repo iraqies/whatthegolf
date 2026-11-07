@@ -1,66 +1,131 @@
+using System.Collections.Generic;
+using CameraStack;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Puzzle
 {
-	public class PuzzleRoomStarter : MonoBehaviour
+	[Token(Token = "0x200103C")]
+	[Attribute(Name = "RequireComponent", RVA = "0x4766C", Offset = "0x4766C")]
+	public class PuzzleRoomStarter : GolfBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4005597")]
+		[FieldOffset(Offset = "0x20")]
+		private Collider2D col;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4005598")]
+		[FieldOffset(Offset = "0x28")]
+		private List<ITimedPuzzleObject> timedObjectsInArea;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4005599")]
+		[FieldOffset(Offset = "0x30")]
+		private List<PuzzleObjectBase> allPuzzleObjects;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x400559A")]
+		[FieldOffset(Offset = "0x38")]
+		private OverworldCamera cam;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x400559B")]
+		[FieldOffset(Offset = "0x40")]
+		private OverworldBall2D overworldBall;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x400559C")]
+		[FieldOffset(Offset = "0x48")]
+		[SerializeField]
+		private CBOverworldRoomStatic camBehavior;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x400559D")]
+		[FieldOffset(Offset = "0x50")]
+		private Vector2 lastPointOfEntry;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x400559E")]
+		[FieldOffset(Offset = "0x58")]
+		public Transform startPoint;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x400559F")]
+		[FieldOffset(Offset = "0x60")]
+		public PhysicsMaterial2D originalMaterial;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x40055A0")]
+		[FieldOffset(Offset = "0x68")]
+		public PhysicsMaterial2D ballMaterialInPuzzle;
 
-		5. Script Content Level 0
+		[Token(Token = "0x40055A1")]
+		[FieldOffset(Offset = "0x70")]
+		public bool useStaticCamera;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x40055A2")]
+		[FieldOffset(Offset = "0x71")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x55590", Offset = "0x55590")]
+		private bool HasInitialized__BackingField;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x40055A3")]
+		[FieldOffset(Offset = "0x72")]
+		public bool isActive;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x170007AF")]
+		public Vector2 GetStartPoint
+		{
+			[Token(Token = "0x60048C5")]
+			[Address(RVA = "0x16306B8", Offset = "0x16306B8", VA = "0x16306B8")]
+			get
+			{
+				return default;
+			}
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x170007B0")]
+		public bool HasInitialized
+		{
+			[Token(Token = "0x60048C6")]
+			[Address(RVA = "0x1630758", Offset = "0x1630758", VA = "0x1630758")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x6F084", Offset = "0x6F084")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x60048C7")]
+			[Address(RVA = "0x1630760", Offset = "0x1630760", VA = "0x1630760")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x6F094", Offset = "0x6F094")]
+			private set
+			{
+			}
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x60048C8")]
+		[Address(RVA = "0x1630768", Offset = "0x1630768", VA = "0x1630768", Slot = "4")]
+		public override void OnPrePlayOrPreCompile()
+		{
+		}
 
-		*/
+		[Token(Token = "0x60048C9")]
+		[Address(RVA = "0x16307D0", Offset = "0x16307D0", VA = "0x16307D0")]
+		private void Awake()
+		{
+		}
+
+		[Token(Token = "0x60048CA")]
+		[Address(RVA = "0x1630AAC", Offset = "0x1630AAC", VA = "0x1630AAC")]
+		private void Update()
+		{
+		}
+
+		[Token(Token = "0x60048CB")]
+		[Address(RVA = "0x1630BC8", Offset = "0x1630BC8", VA = "0x1630BC8")]
+		private void OnTriggerEnter2D(Collider2D collision)
+		{
+		}
+
+		[Token(Token = "0x60048CC")]
+		[Address(RVA = "0x1630F5C", Offset = "0x1630F5C", VA = "0x1630F5C")]
+		private void OnTriggerExit2D(Collider2D collision)
+		{
+		}
+
+		[Token(Token = "0x60048CD")]
+		[Address(RVA = "0x16310C8", Offset = "0x16310C8", VA = "0x16310C8")]
+		public PuzzleRoomStarter()
+		{
+		}
 	}
 }

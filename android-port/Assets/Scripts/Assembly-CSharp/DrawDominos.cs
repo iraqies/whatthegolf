@@ -1,63 +1,118 @@
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x20006D4")]
 public class DrawDominos : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x40023BA")]
+	[FieldOffset(Offset = "0x18")]
+	private Transform start;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x40023BB")]
+	[FieldOffset(Offset = "0x20")]
+	private Transform end;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x40023BC")]
+	[FieldOffset(Offset = "0x28")]
+	private Transform control;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x40023BD")]
+	[FieldOffset(Offset = "0x30")]
+	public Transform[] drawingPoints;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x40023BE")]
+	[FieldOffset(Offset = "0x38")]
+	public GameObject brush;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x40023BF")]
+	[FieldOffset(Offset = "0x40")]
+	private float totalLength;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x40023C0")]
+	[FieldOffset(Offset = "0x44")]
+	private float currentLength;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x40023C1")]
+	[FieldOffset(Offset = "0x48")]
+	[Attribute(Name = "RangeAttribute", RVA = "0x4E52C", Offset = "0x4E52C")]
+	public float stepDetail;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x40023C2")]
+	[FieldOffset(Offset = "0x4C")]
+	private float t;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x40023C3")]
+	[FieldOffset(Offset = "0x50")]
+	public List<GameObject> dominos;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x40023C4")]
+	[FieldOffset(Offset = "0x58")]
+	private int[] controlIndex;
 
-	5. Script Content Level 0
+	[Token(Token = "0x40023C5")]
+	[FieldOffset(Offset = "0x60")]
+	private int[] endIndex;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x40023C6")]
+	[FieldOffset(Offset = "0x68")]
+	public AnimationCurve dominoScale;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x40023C7")]
+	[FieldOffset(Offset = "0x70")]
+	public bool resetOnOutOfBounds;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x40023C8")]
+	[FieldOffset(Offset = "0x78")]
+	public Transform endTransform;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x40023C9")]
+	[FieldOffset(Offset = "0x80")]
+	private float detail;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x40023CA")]
+	[FieldOffset(Offset = "0x0")]
+	public static float boxY;
 
-	*/
+	[Token(Token = "0x40023CB")]
+	[FieldOffset(Offset = "0x84")]
+	public bool followDomino;
+
+	[Token(Token = "0x6001F86")]
+	[Address(RVA = "0x1434D10", Offset = "0x1434D10", VA = "0x1434D10")]
+	[Attribute(Name = "RuntimeInitializeOnLoadMethodAttribute", RVA = "0x65630", Offset = "0x65630")]
+	private static void Init()
+	{
+	}
+
+	[Token(Token = "0x6001F87")]
+	[Address(RVA = "0x1434D5C", Offset = "0x1434D5C", VA = "0x1434D5C")]
+	private void Start()
+	{
+	}
+
+	[Token(Token = "0x6001F88")]
+	[Address(RVA = "0x1435690", Offset = "0x1435690", VA = "0x1435690")]
+	private float DetermineLength()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6001F89")]
+	[Address(RVA = "0x1435824", Offset = "0x1435824", VA = "0x1435824")]
+	private void OnDrawGizmos()
+	{
+	}
+
+	[Token(Token = "0x6001F8A")]
+	[Address(RVA = "0x1435588", Offset = "0x1435588", VA = "0x1435588")]
+	private void UpdateIndexes()
+	{
+	}
+
+	[Token(Token = "0x6001F8B")]
+	[Address(RVA = "0x1435E24", Offset = "0x1435E24", VA = "0x1435E24")]
+	public DrawDominos()
+	{
+	}
 }

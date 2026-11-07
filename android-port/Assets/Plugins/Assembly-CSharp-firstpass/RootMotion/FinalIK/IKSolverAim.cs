@@ -1,66 +1,154 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace RootMotion.FinalIK
 {
-	public class IKSolverAim : MonoBehaviour
+	[Serializable]
+	[Token(Token = "0x2000172")]
+	public class IKSolverAim : IKSolverHeuristic
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4000947")]
+		[FieldOffset(Offset = "0x88")]
+		public Transform transform;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000948")]
+		[FieldOffset(Offset = "0x90")]
+		public Vector3 axis;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000949")]
+		[FieldOffset(Offset = "0x9C")]
+		public Vector3 poleAxis;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x400094A")]
+		[FieldOffset(Offset = "0xA8")]
+		public Vector3 polePosition;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x400094B")]
+		[FieldOffset(Offset = "0xB4")]
+		[AttributeAttribute(Name = "RangeAttribute", RVA = "0x36088", Offset = "0x36088")]
+		public float poleWeight;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x400094C")]
+		[FieldOffset(Offset = "0xB8")]
+		public Transform poleTarget;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x400094D")]
+		[FieldOffset(Offset = "0xC0")]
+		[AttributeAttribute(Name = "RangeAttribute", RVA = "0x360A0", Offset = "0x360A0")]
+		public float clampWeight;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x400094E")]
+		[FieldOffset(Offset = "0xC4")]
+		[AttributeAttribute(Name = "RangeAttribute", RVA = "0x360B8", Offset = "0x360B8")]
+		public int clampSmoothing;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x400094F")]
+		[FieldOffset(Offset = "0xC8")]
+		public IterationDelegate OnPreIteration;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4000950")]
+		[FieldOffset(Offset = "0xD0")]
+		private float step;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4000951")]
+		[FieldOffset(Offset = "0xD4")]
+		private Vector3 clampedIKPosition;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4000952")]
+		[FieldOffset(Offset = "0xE0")]
+		private RotationLimit transformLimit;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4000953")]
+		[FieldOffset(Offset = "0xE8")]
+		private Transform lastTransform;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x17000149")]
+		public Vector3 transformAxis
+		{
+			[Token(Token = "0x6000A61")]
+			[Address(RVA = "0x1389D58", Offset = "0x1389D58", VA = "0x1389D58")]
+			get
+			{
+				return default;
+			}
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x1700014A")]
+		public Vector3 transformPoleAxis
+		{
+			[Token(Token = "0x6000A62")]
+			[Address(RVA = "0x1389D94", Offset = "0x1389D94", VA = "0x1389D94")]
+			get
+			{
+				return default;
+			}
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x1700014B")]
+		protected override int minBones
+		{
+			[Token(Token = "0x6000A65")]
+			[Address(RVA = "0x138A8FC", Offset = "0x138A8FC", VA = "0x138A8FC", Slot = "12")]
+			get
+			{
+				return default;
+			}
+		}
 
-		*/
+		[Token(Token = "0x1700014C")]
+		protected override Vector3 localDirection
+		{
+			[Token(Token = "0x6000A69")]
+			[Address(RVA = "0x138AD4C", Offset = "0x138AD4C", VA = "0x138AD4C", Slot = "15")]
+			get
+			{
+				return default;
+			}
+		}
+
+		[Token(Token = "0x6000A60")]
+		[Address(RVA = "0x1389CC0", Offset = "0x1389CC0", VA = "0x1389CC0")]
+		public float GetAngle()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000A63")]
+		[Address(RVA = "0x1389DD0", Offset = "0x1389DD0", VA = "0x1389DD0", Slot = "10")]
+		protected override void OnInitiate()
+		{
+		}
+
+		[Token(Token = "0x6000A64")]
+		[Address(RVA = "0x138A030", Offset = "0x138A030", VA = "0x138A030", Slot = "11")]
+		protected override void OnUpdate()
+		{
+		}
+
+		[Token(Token = "0x6000A66")]
+		[Address(RVA = "0x138A848", Offset = "0x138A848", VA = "0x138A848")]
+		private void Solve()
+		{
+		}
+
+		[Token(Token = "0x6000A67")]
+		[Address(RVA = "0x138A598", Offset = "0x138A598", VA = "0x138A598")]
+		private Vector3 GetClampedIKPosition()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000A68")]
+		[Address(RVA = "0x138A904", Offset = "0x138A904", VA = "0x138A904")]
+		private void RotateToTarget(Vector3 targetPosition, Bone bone, float weight)
+		{
+		}
+
+		[Token(Token = "0x6000A6A")]
+		[Address(RVA = "0x138ADC0", Offset = "0x138ADC0", VA = "0x138ADC0")]
+		public IKSolverAim()
+		{
+		}
 	}
 }

@@ -1,63 +1,127 @@
+using System.Collections.Generic;
+using Audio.Rumble;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x200039D")]
 public class HookAudio : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x200039E")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x3F6DC", Offset = "0x3F6DC")]
+	private sealed class _003C_003Ec__DisplayClass16_0
+	{
+		[Token(Token = "0x40013F9")]
+		[FieldOffset(Offset = "0x10")]
+		public HookAudio _003C_003E4__this;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40013FA")]
+		[FieldOffset(Offset = "0x18")]
+		public float finalPitch;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x6001122")]
+		[Address(RVA = "0x17BF6B8", Offset = "0x17BF6B8", VA = "0x17BF6B8")]
+		public _003C_003Ec__DisplayClass16_0()
+		{
+		}
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x6001123")]
+		[Address(RVA = "0x17BF6C0", Offset = "0x17BF6C0", VA = "0x17BF6C0")]
+		internal void _003CPlayConnectionAudio_003Eb__0(AudioSource s)
+		{
+		}
+	}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x40013EE")]
+	[FieldOffset(Offset = "0x18")]
+	private GrapplingHook hook;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x40013EF")]
+	[FieldOffset(Offset = "0x20")]
+	private GrapplingHook2D hook2D;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x40013F0")]
+	[FieldOffset(Offset = "0x28")]
+	private float nextSound;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x40013F1")]
+	[FieldOffset(Offset = "0x2C")]
+	[SerializeField]
+	private float volume;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x40013F2")]
+	[FieldOffset(Offset = "0x30")]
+	[SerializeField]
+	private float pitch;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x40013F3")]
+	[FieldOffset(Offset = "0x34")]
+	[SerializeField]
+	private float pitchDeviance;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x40013F4")]
+	[FieldOffset(Offset = "0x38")]
+	[SerializeField]
+	private float cooldown;
 
-	5. Script Content Level 0
+	[Token(Token = "0x40013F5")]
+	[FieldOffset(Offset = "0x40")]
+	[SerializeField]
+	private List<AudioClip> onConnectAudioClips;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x40013F6")]
+	[FieldOffset(Offset = "0x48")]
+	[SerializeField]
+	private List<RumbleEventAsset> onConnectRumbles;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x40013F7")]
+	[FieldOffset(Offset = "0x50")]
+	[SerializeField]
+	private RumbleEventAsset rumbleOnConnect;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x40013F8")]
+	[FieldOffset(Offset = "0x58")]
+	private GolfBallController controller;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x600111B")]
+	[Address(RVA = "0x14D4094", Offset = "0x14D4094", VA = "0x14D4094")]
+	public void SetController(GolfBallController _controller)
+	{
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x600111C")]
+	[Address(RVA = "0x14D409C", Offset = "0x14D409C", VA = "0x14D409C")]
+	private void OnEnable()
+	{
+	}
 
-	*/
+	[Token(Token = "0x600111D")]
+	[Address(RVA = "0x14D434C", Offset = "0x14D434C", VA = "0x14D434C")]
+	private void OnDisable()
+	{
+	}
+
+	[Token(Token = "0x600111E")]
+	[Address(RVA = "0x14D4544", Offset = "0x14D4544", VA = "0x14D4544")]
+	private void OnCollision(Rigidbody rb)
+	{
+	}
+
+	[Token(Token = "0x600111F")]
+	[Address(RVA = "0x14D474C", Offset = "0x14D474C", VA = "0x14D474C")]
+	private void OnCollision2D(Rigidbody2D rb)
+	{
+	}
+
+	[Token(Token = "0x6001120")]
+	[Address(RVA = "0x14D4548", Offset = "0x14D4548", VA = "0x14D4548")]
+	private void PlayConnectionAudio()
+	{
+	}
+
+	[Token(Token = "0x6001121")]
+	[Address(RVA = "0x14D4750", Offset = "0x14D4750", VA = "0x14D4750")]
+	public HookAudio()
+	{
+	}
 }

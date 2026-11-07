@@ -1,63 +1,123 @@
+using Il2CppDummyDll;
+using RootMotion.Dynamics;
 using UnityEngine;
 
+[Token(Token = "0x200027D")]
 public class WrestlingGrabber : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4000D20")]
+	[FieldOffset(Offset = "0x18")]
+	public PuppetMaster puppetMaster;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4000D21")]
+	[FieldOffset(Offset = "0x20")]
+	public int grabLayer;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4000D22")]
+	[FieldOffset(Offset = "0x24")]
+	public float massScale;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4000D23")]
+	[FieldOffset(Offset = "0x28")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x4AF64", Offset = "0x4AF64")]
+	private bool Grabbed__BackingField;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4000D24")]
+	[FieldOffset(Offset = "0x30")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x4AF74", Offset = "0x4AF74")]
+	private BehaviourPuppet GrabbedPuppet__BackingField;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4000D25")]
+	[FieldOffset(Offset = "0x38")]
+	private ConfigurableJoint joint;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4000D26")]
+	[FieldOffset(Offset = "0x40")]
+	private Collider otherCollider;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4000D27")]
+	[FieldOffset(Offset = "0x48")]
+	private Rigidbody thisRigidbody;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4000D28")]
+	[FieldOffset(Offset = "0x50")]
+	private Collider thisCollider;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4000D29")]
+	private const float massMlp = 15f;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4000D2A")]
+	private const int solverIterationMlp = 20;
 
-	5. Script Content Level 0
+	[Token(Token = "0x1700015A")]
+	public bool Grabbed
+	{
+		[Token(Token = "0x6000B43")]
+		[Address(RVA = "0x175C298", Offset = "0x175C298", VA = "0x175C298")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x5FF7C", Offset = "0x5FF7C")]
+		get
+		{
+			return default;
+		}
+		[Token(Token = "0x6000B44")]
+		[Address(RVA = "0x175C2A0", Offset = "0x175C2A0", VA = "0x175C2A0")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x5FF8C", Offset = "0x5FF8C")]
+		private set
+		{
+		}
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x1700015B")]
+	public BehaviourPuppet GrabbedPuppet
+	{
+		[Token(Token = "0x6000B45")]
+		[Address(RVA = "0x175C2A8", Offset = "0x175C2A8", VA = "0x175C2A8")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x5FF9C", Offset = "0x5FF9C")]
+		get
+		{
+			return null;
+		}
+		[Token(Token = "0x6000B46")]
+		[Address(RVA = "0x175C2B0", Offset = "0x175C2B0", VA = "0x175C2B0")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x5FFAC", Offset = "0x5FFAC")]
+		private set
+		{
+		}
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x6000B47")]
+	[Address(RVA = "0x175C2B8", Offset = "0x175C2B8", VA = "0x175C2B8")]
+	private void Start()
+	{
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x6000B48")]
+	[Address(RVA = "0x175C338", Offset = "0x175C338", VA = "0x175C338")]
+	private void OnCollisionEnter(Collision collision)
+	{
+	}
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x6000B49")]
+	[Address(RVA = "0x175C494", Offset = "0x175C494", VA = "0x175C494")]
+	private void DoGrab(Collision collision, MuscleCollisionBroadcaster muscle)
+	{
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x6000B4A")]
+	[Address(RVA = "0x175C770", Offset = "0x175C770", VA = "0x175C770")]
+	private void Update()
+	{
+	}
 
-	*/
+	[Token(Token = "0x6000B4B")]
+	[Address(RVA = "0x175C7AC", Offset = "0x175C7AC", VA = "0x175C7AC")]
+	private void Release()
+	{
+	}
+
+	[Token(Token = "0x6000B4C")]
+	[Address(RVA = "0x175C8C4", Offset = "0x175C8C4", VA = "0x175C8C4")]
+	public WrestlingGrabber()
+	{
+	}
 }

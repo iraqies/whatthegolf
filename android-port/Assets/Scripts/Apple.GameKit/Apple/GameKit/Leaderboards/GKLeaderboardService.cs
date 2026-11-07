@@ -1,66 +1,125 @@
-using UnityEngine;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using Apple.Core.Runtime;
+using Il2CppDummyDll;
 
 namespace Apple.GameKit.Leaderboards
 {
-	public class GKLeaderboardService : MonoBehaviour
+	[Token(Token = "0x200000A")]
+	public static class GKLeaderboardService
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x400001E")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x0")]
+		private static TaskCompletionSource<bool> _submitScoreTCS;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x400001F")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x8")]
+		private static TaskCompletionSource<bool> _showLeaderboardTCS;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000020")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x10")]
+		private static TaskCompletionSource<IEnumerable<GKLeaderboard>> _loadLeaderboardsTCS;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4000021")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x18")]
+		private static TaskCompletionSource<GKLoadLeaderboardScoresResponse> _loadScoresTCS;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[PreserveSig]
+		[Token(Token = "0x600000E")]
+		[Address(RVA = "0x12E894C", Offset = "0x12E894C", VA = "0x12E894C")]
+		private static extern void GameKitWrapper_SubmitLeaderboardScore(string leaderboardId, long score, long context, SuccessCallback onSuccess, ErrorCallback onError);
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x600000F")]
+		[Address(RVA = "0x12E89BC", Offset = "0x12E89BC", VA = "0x12E89BC")]
+		public static Task SubmitScore(string leaderboardId, long score, long context)
+		{
+			return null;
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6000010")]
+		[Address(RVA = "0x12E83FC", Offset = "0x12E83FC", VA = "0x12E83FC")]
+		[Attribute(Name = "MonoPInvokeCallbackAttribute", RVA = "0x32B84", Offset = "0x32B84")]
+		private static void OnSubmitScoreSuccess()
+		{
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6000011")]
+		[Address(RVA = "0x12E8474", Offset = "0x12E8474", VA = "0x12E8474")]
+		[Attribute(Name = "MonoPInvokeCallbackAttribute", RVA = "0x32BEC", Offset = "0x32BEC")]
+		private static void OnSubmitScoreFailed(InteropError error)
+		{
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[PreserveSig]
+		[Token(Token = "0x6000012")]
+		[Address(RVA = "0x12E8BC8", Offset = "0x12E8BC8", VA = "0x12E8BC8")]
+		private static extern void GameKitWrapper_ShowLeaderboardDialog(string leaderboardId, GKLeaderboardTimeScope timeScope, SuccessCallback onClosedSuccess);
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6000013")]
+		[Address(RVA = "0x12E8C14", Offset = "0x12E8C14", VA = "0x12E8C14")]
+		public static Task ShowLeaderboardDialog(string leaderboardId, GKLeaderboardTimeScope timeScope = GKLeaderboardTimeScope.AllTime)
+		{
+			return null;
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x6000014")]
+		[Address(RVA = "0x12E8588", Offset = "0x12E8588", VA = "0x12E8588")]
+		[Attribute(Name = "MonoPInvokeCallbackAttribute", RVA = "0x32C54", Offset = "0x32C54")]
+		private static void OnShowLeaderboardDialogClosed()
+		{
+		}
 
-			AssetRipper was set to not load any script information.
+		[PreserveSig]
+		[Token(Token = "0x6000015")]
+		[Address(RVA = "0x12E8DBC", Offset = "0x12E8DBC", VA = "0x12E8DBC")]
+		private static extern void GameKitWrapper_LoadLeaderboards(SuccessCallback<GKLoadLeaderboardsResponse> onLoaded, ErrorCallback onError);
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x6000016")]
+		[Address(RVA = "0x12E8DF0", Offset = "0x12E8DF0", VA = "0x12E8DF0")]
+		public static Task<IEnumerable<GKLeaderboard>> LoadLeaderboards()
+		{
+			return null;
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x6000017")]
+		[Address(RVA = "0x12E8600", Offset = "0x12E8600", VA = "0x12E8600")]
+		[Attribute(Name = "MonoPInvokeCallbackAttribute", RVA = "0x32CBC", Offset = "0x32CBC")]
+		private static void OnLoadLeaderboardData(GKLoadLeaderboardsResponse response)
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x6000018")]
+		[Address(RVA = "0x12E8688", Offset = "0x12E8688", VA = "0x12E8688")]
+		[Attribute(Name = "MonoPInvokeCallbackAttribute", RVA = "0x32D24", Offset = "0x32D24")]
+		private static void OnLoadLeaderboardsFailed(InteropError error)
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[PreserveSig]
+		[Token(Token = "0x6000019")]
+		[Address(RVA = "0x12E919C", Offset = "0x12E919C", VA = "0x12E919C")]
+		private static extern void GameKitWrapper_LoadLeaderboardScores(string leaderboardIdentifier, GKLeaderboardPlayerScope playerScope, GKLeaderboardTimeScope timeScope, int rankMin, int rankMax, bool previousOccurrence, SuccessCallback<GKLoadLeaderboardScoresResponse> onLoaded, ErrorCallback onError);
 
-		*/
+		[Token(Token = "0x600001A")]
+		[Address(RVA = "0x12E922C", Offset = "0x12E922C", VA = "0x12E922C")]
+		public static Task<GKLoadLeaderboardScoresResponse> LoadScores(string leaderboardIdentifier, GKLeaderboardPlayerScope playerScope = GKLeaderboardPlayerScope.Global, GKLeaderboardTimeScope timeScope = GKLeaderboardTimeScope.AllTime, int rankMin = 1, int rankMax = 100, bool previousOccurrence = false)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x600001B")]
+		[Address(RVA = "0x12E879C", Offset = "0x12E879C", VA = "0x12E879C")]
+		[Attribute(Name = "MonoPInvokeCallbackAttribute", RVA = "0x32D8C", Offset = "0x32D8C")]
+		private static void OnLoadScoresData(GKLoadLeaderboardScoresResponse response)
+		{
+		}
+
+		[Token(Token = "0x600001C")]
+		[Address(RVA = "0x12E8838", Offset = "0x12E8838", VA = "0x12E8838")]
+		[Attribute(Name = "MonoPInvokeCallbackAttribute", RVA = "0x32DF4", Offset = "0x32DF4")]
+		private static void OnLoadScoresError(InteropError error)
+		{
+		}
 	}
 }

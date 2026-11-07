@@ -1,66 +1,156 @@
+using Il2CppDummyDll;
 using UnityEngine;
+using WhatTheGolf.LevelDesigner.Events;
+using WhatTheGolf.LevelDesigner.Managers;
+using WhatTheGolf.LevelDesigner.Selectables;
 
 namespace WhatTheGolf.LevelDesigner.Tools
 {
-	public class SelectTool : MonoBehaviour
+	[Token(Token = "0x200126E")]
+	public sealed class SelectTool : BaseTool, IRequireEvents<GUIEvent>, IRequireEvents
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4006319")]
+		[FieldOffset(Offset = "0x18")]
+		private SelectableManager m_SelectableManager;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x400631A")]
+		[FieldOffset(Offset = "0x20")]
+		private GizmoManager m_GizmoManager;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x400631B")]
+		[FieldOffset(Offset = "0x28")]
+		private Bounds m_SelectGizmoBounds;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x400631C")]
+		[FieldOffset(Offset = "0x40")]
+		private Bounds m_RotateGizmoBounds;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x400631D")]
+		[FieldOffset(Offset = "0x58")]
+		private Vector2 m_SelectionOffset;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x400631E")]
+		[FieldOffset(Offset = "0x60")]
+		private Vector2 m_RotateSelectionOffset;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x400631F")]
+		[FieldOffset(Offset = "0x68")]
+		private bool m_TranslationGizmoSelected;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4006320")]
+		[FieldOffset(Offset = "0x69")]
+		private bool m_RotationGizmoSelected;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4006321")]
+		[FieldOffset(Offset = "0x6A")]
+		private bool m_LastHoverRotateGizmoState;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4006322")]
+		[FieldOffset(Offset = "0x70")]
+		private Selectable m_LastSelectableHit;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4006323")]
+		[FieldOffset(Offset = "0x78")]
+		private Color32 m_SelectedColor;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4006324")]
+		[FieldOffset(Offset = "0x7C")]
+		private Color32 m_HighlightColor;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x170009A6")]
+		private SelectableManager selectableManager
+		{
+			[Token(Token = "0x6005522")]
+			[Address(RVA = "0x1682F2C", Offset = "0x1682F2C", VA = "0x1682F2C")]
+			get
+			{
+				return null;
+			}
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x170009A7")]
+		private GizmoManager gizmoManager
+		{
+			[Token(Token = "0x6005523")]
+			[Address(RVA = "0x1682FE0", Offset = "0x1682FE0", VA = "0x1682FE0")]
+			get
+			{
+				return null;
+			}
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x6005524")]
+		[Address(RVA = "0x1683094", Offset = "0x1683094", VA = "0x1683094", Slot = "4")]
+		public override void Init()
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x6005525")]
+		[Address(RVA = "0x168309C", Offset = "0x168309C", VA = "0x168309C", Slot = "5")]
+		public override void Update(bool guiHasFocus)
+		{
+		}
 
-		*/
+		[Token(Token = "0x6005526")]
+		[Address(RVA = "0x1683CD8", Offset = "0x1683CD8", VA = "0x1683CD8")]
+		private void DrawGizmos(Selectable selectable, bool hitTranslateGizmo, bool hitRotateGizmo)
+		{
+		}
+
+		[Token(Token = "0x6005527")]
+		[Address(RVA = "0x1684C1C", Offset = "0x1684C1C", VA = "0x1684C1C", Slot = "6")]
+		public override void Dispose()
+		{
+		}
+
+		[Token(Token = "0x6005528")]
+		[Address(RVA = "0x1684C24", Offset = "0x1684C24", VA = "0x1684C24", Slot = "7")]
+		public void OnEvent(GUIEvent evt)
+		{
+		}
+
+		[Token(Token = "0x6005529")]
+		[Address(RVA = "0x16839E4", Offset = "0x16839E4", VA = "0x16839E4")]
+		private bool TestSelection(out Selectable selectable)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x600552A")]
+		[Address(RVA = "0x1683C60", Offset = "0x1683C60", VA = "0x1683C60")]
+		private bool TestSelectRotate()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x600552B")]
+		[Address(RVA = "0x1684218", Offset = "0x1684218", VA = "0x1684218")]
+		private void RotateSelection()
+		{
+		}
+
+		[Token(Token = "0x600552C")]
+		[Address(RVA = "0x1684394", Offset = "0x1684394", VA = "0x1684394")]
+		private void MoveSelection()
+		{
+		}
+
+		[Token(Token = "0x600552D")]
+		[Address(RVA = "0x1684974", Offset = "0x1684974", VA = "0x1684974")]
+		private void QueueCircleGizmoForSelectable(Selectable selectable, Color32 color)
+		{
+		}
+
+		[Token(Token = "0x600552E")]
+		[Address(RVA = "0x1684A64", Offset = "0x1684A64", VA = "0x1684A64")]
+		private void QueueCrossGizmoForSelectable(Selectable selectable, Color32 color)
+		{
+		}
+
+		[Token(Token = "0x600552F")]
+		[Address(RVA = "0x1684B54", Offset = "0x1684B54", VA = "0x1684B54")]
+		private void QueueRotationGizmoForSelectable(Selectable selectable, Color32 color)
+		{
+		}
 	}
 }

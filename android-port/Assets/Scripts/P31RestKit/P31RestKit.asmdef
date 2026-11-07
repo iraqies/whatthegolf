@@ -1,5 +1,7 @@
 {
   "name": "P31RestKit",
-  "references": [],
+  "references": [
+    "Il2CppDummyDll"
+  ],
   "allowUnsafeCode": true
 }

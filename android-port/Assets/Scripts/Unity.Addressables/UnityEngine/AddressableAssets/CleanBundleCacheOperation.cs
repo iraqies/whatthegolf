@@ -1,66 +1,111 @@
-using UnityEngine;
+using System.Collections.Generic;
+using System.Threading;
+using Il2CppDummyDll;
+using UnityEngine.ResourceManagement;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace UnityEngine.AddressableAssets
 {
-	public class CleanBundleCacheOperation : MonoBehaviour
+	[Token(Token = "0x200003D")]
+	internal class CleanBundleCacheOperation : AsyncOperationBase<bool>, IUpdateReceiver
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x400009E")]
+		[FieldOffset(Offset = "0x98")]
+		private AddressablesImpl m_Addressables;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x400009F")]
+		[FieldOffset(Offset = "0xA0")]
+		private AsyncOperationHandle<IList<AsyncOperationHandle>> m_DepOp;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40000A0")]
+		[FieldOffset(Offset = "0xC0")]
+		private List<string> m_CacheDirsForRemoval;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40000A1")]
+		[FieldOffset(Offset = "0xC8")]
+		private Thread m_EnumerationThread;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40000A2")]
+		[FieldOffset(Offset = "0xD0")]
+		private string m_BaseCachePath;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40000A3")]
+		[FieldOffset(Offset = "0xD8")]
+		private bool m_UseMultiThreading;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x60001C5")]
+		[Address(RVA = "0x2A26B28", Offset = "0x2A26B28", VA = "0x2A26B28")]
+		public CleanBundleCacheOperation(AddressablesImpl aa, bool forceSingleThreading)
+		{
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x60001C6")]
+		[Address(RVA = "0x2A26BC8", Offset = "0x2A26BC8", VA = "0x2A26BC8")]
+		public AsyncOperationHandle<bool> Start(AsyncOperationHandle<IList<AsyncOperationHandle>> depOp)
+		{
+			return default;
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x60001C7")]
+		[Address(RVA = "0x2A29C10", Offset = "0x2A29C10", VA = "0x2A29C10")]
+		public void CompleteInternal(bool result, bool success, string errorMsg)
+		{
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x60001C8")]
+		[Address(RVA = "0x2A29CAC", Offset = "0x2A29CAC", VA = "0x2A29CAC", Slot = "33")]
+		protected override bool InvokeWaitForCompletion()
+		{
+			return default;
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x60001C9")]
+		[Address(RVA = "0x2A29F6C", Offset = "0x2A29F6C", VA = "0x2A29F6C", Slot = "29")]
+		protected override void Destroy()
+		{
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x60001CA")]
+		[Address(RVA = "0x2A29FF4", Offset = "0x2A29FF4", VA = "0x2A29FF4", Slot = "32")]
+		public override void GetDependencies(List<AsyncOperationHandle> dependencies)
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x60001CB")]
+		[Address(RVA = "0x2A2A0A0", Offset = "0x2A2A0A0", VA = "0x2A2A0A0", Slot = "28")]
+		protected override void Execute()
+		{
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x60001CC")]
+		[Address(RVA = "0x2A2B078", Offset = "0x2A2B078", VA = "0x2A2B078", Slot = "36")]
+		private void UnityEngine_002EResourceManagement_002EIUpdateReceiver_002EUpdate(float unscaledDeltaTime)
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x60001CD")]
+		[Address(RVA = "0x2A29D84", Offset = "0x2A29D84", VA = "0x2A29D84")]
+		private void RemoveCacheEntries()
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x60001CE")]
+		[Address(RVA = "0x2A2B0CC", Offset = "0x2A2B0CC", VA = "0x2A2B0CC")]
+		private void DetermineCacheDirsNotInUse(object data)
+		{
+		}
 
-		*/
+		[Token(Token = "0x60001CF")]
+		[Address(RVA = "0x2A2AC98", Offset = "0x2A2AC98", VA = "0x2A2AC98")]
+		private void DetermineCacheDirsNotInUse(HashSet<string> cacheDirsInUse)
+		{
+		}
+
+		[Token(Token = "0x60001D0")]
+		[Address(RVA = "0x2A2A320", Offset = "0x2A2A320", VA = "0x2A2A320")]
+		private HashSet<string> GetCacheDirsInUse(IList<AsyncOperationHandle> catalogOps)
+		{
+			return null;
+		}
 	}
 }

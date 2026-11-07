@@ -1,63 +1,117 @@
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000147")]
 public class SetMaterialColorToPlayerColor : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x2000148")]
+	public enum ModifyMethods
+	{
+		[Token(Token = "0x40005C1")]
+		Materials = 0,
+		[Token(Token = "0x40005C2")]
+		SpriteColors = 1,
+		[Token(Token = "0x40005C3")]
+		ParticleSystem = 2
+	}
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x2000149")]
+	public enum ColorType
+	{
+		[Token(Token = "0x40005C5")]
+		BaseColor = 0,
+		[Token(Token = "0x40005C6")]
+		ArrowColor = 1,
+		[Token(Token = "0x40005C7")]
+		ArrowColorMin = 2,
+		[Token(Token = "0x40005C8")]
+		StrokeCounterColor = 3,
+		[Token(Token = "0x40005C9")]
+		IntroBackgroundColor = 4,
+		[Token(Token = "0x40005CA")]
+		Custom = 5
+	}
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x40005BA")]
+	[FieldOffset(Offset = "0x18")]
+	[SerializeField]
+	private ParticleSystem particleSystem;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x40005BB")]
+	[FieldOffset(Offset = "0x20")]
+	[SerializeField]
+	private Renderer renderer;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x40005BC")]
+	[FieldOffset(Offset = "0x28")]
+	[SerializeField]
+	private ModifyMethods ModifyMethod;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x40005BD")]
+	[FieldOffset(Offset = "0x30")]
+	[SerializeField]
+	private List<int> materialsIndices;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x40005BE")]
+	[FieldOffset(Offset = "0x38")]
+	[SerializeField]
+	private ColorType colorType;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x40005BF")]
+	[FieldOffset(Offset = "0x3C")]
+	[SerializeField]
+	private Color customColor;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x6000580")]
+	[Address(RVA = "0x168E144", Offset = "0x168E144", VA = "0x168E144")]
+	public void UpdateMaterials(PlayerColors.AvatarData avatar)
+	{
+	}
 
-	4. This script is unnecessary.
+	[Token(Token = "0x6000581")]
+	[Address(RVA = "0x168E53C", Offset = "0x168E53C", VA = "0x168E53C")]
+	public ModifyMethods GetModifyMethod()
+	{
+		return default;
+	}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x6000582")]
+	[Address(RVA = "0x168E544", Offset = "0x168E544", VA = "0x168E544")]
+	public Renderer GetRenderer()
+	{
+		return null;
+	}
 
-	5. Script Content Level 0
+	[Token(Token = "0x6000583")]
+	[Address(RVA = "0x168E54C", Offset = "0x168E54C", VA = "0x168E54C")]
+	public ColorType GetColorType()
+	{
+		return default;
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x6000584")]
+	[Address(RVA = "0x168E554", Offset = "0x168E554", VA = "0x168E554")]
+	public void SetRenderer(Renderer r)
+	{
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x6000585")]
+	[Address(RVA = "0x168E55C", Offset = "0x168E55C", VA = "0x168E55C")]
+	public List<int> GetIndices()
+	{
+		return null;
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x6000586")]
+	[Address(RVA = "0x168E564", Offset = "0x168E564", VA = "0x168E564")]
+	public void CreateList()
+	{
+	}
 
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x6000587")]
+	[Address(RVA = "0x168E5DC", Offset = "0x168E5DC", VA = "0x168E5DC")]
+	public SetMaterialColorToPlayerColor()
+	{
+	}
 }

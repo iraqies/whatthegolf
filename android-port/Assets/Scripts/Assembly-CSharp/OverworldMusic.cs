@@ -1,63 +1,128 @@
+using System;
+using System.Collections.Generic;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x20003AF")]
 public class OverworldMusic : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Serializable]
+	[Token(Token = "0x20003B0")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3F794", Offset = "0x3F794")]
+	private sealed class _003C_003Ec
+	{
+		[Token(Token = "0x4001455")]
+		[FieldOffset(Offset = "0x0")]
+		public static readonly _003C_003Ec _003C_003E9;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4001456")]
+		[FieldOffset(Offset = "0x8")]
+		public static Func<OverworldGoal, bool> _003C_003E9__6_0;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4001457")]
+		[FieldOffset(Offset = "0x10")]
+		public static Func<OverworldGoal, bool> _003C_003E9__7_0;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x6001183")]
+		[Address(RVA = "0x181B890", Offset = "0x181B890", VA = "0x181B890")]
+		public _003C_003Ec()
+		{
+		}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x6001184")]
+		[Address(RVA = "0x181B898", Offset = "0x181B898", VA = "0x181B898")]
+		internal bool _003CZone_OnMusicTriggered_003Eb__6_0(OverworldGoal f)
+		{
+			return default;
+		}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x6001185")]
+		[Address(RVA = "0x181B93C", Offset = "0x181B93C", VA = "0x181B93C")]
+		internal bool _003CGetCurrentValue_003Eb__7_0(OverworldGoal f)
+		{
+			return default;
+		}
+	}
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4001450")]
+	[FieldOffset(Offset = "0x18")]
+	public OverworldMusicData current;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4001451")]
+	[FieldOffset(Offset = "0x20")]
+	private AudioManager audioManager;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4001452")]
+	[FieldOffset(Offset = "0x28")]
+	private List<OverworldGoal> currentFlags;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4001453")]
+	[FieldOffset(Offset = "0x30")]
+	private bool isUsingTransition;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4001454")]
+	[FieldOffset(Offset = "0x34")]
+	private float flagCount;
 
-	5. Script Content Level 0
+	[Token(Token = "0x6001178")]
+	[Address(RVA = "0x15C5A18", Offset = "0x15C5A18", VA = "0x15C5A18")]
+	public void Init()
+	{
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x6001179")]
+	[Address(RVA = "0x15C5CFC", Offset = "0x15C5CFC", VA = "0x15C5CFC")]
+	private void Zone_OnMusicTriggered(OverworldMusicData newMusic, List<OverworldGoal> flags)
+	{
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x600117A")]
+	[Address(RVA = "0x15C5FDC", Offset = "0x15C5FDC", VA = "0x15C5FDC")]
+	public float GetCurrentValue()
+	{
+		return default;
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x600117B")]
+	[Address(RVA = "0x15C5F68", Offset = "0x15C5F68", VA = "0x15C5F68")]
+	public void UpdatePercentageFromFlags()
+	{
+	}
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x600117C")]
+	[Address(RVA = "0x15C2500", Offset = "0x15C2500", VA = "0x15C2500")]
+	public void StartWithoutTransition()
+	{
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x600117D")]
+	[Address(RVA = "0x15C2C9C", Offset = "0x15C2C9C", VA = "0x15C2C9C")]
+	public void StartWithoutTransition(OverworldMusicData newCurrent)
+	{
+	}
 
-	*/
+	[Token(Token = "0x600117E")]
+	[Address(RVA = "0x15C5F24", Offset = "0x15C5F24", VA = "0x15C5F24")]
+	public void SwitchToWithTransition()
+	{
+	}
+
+	[Token(Token = "0x600117F")]
+	[Address(RVA = "0x15C6164", Offset = "0x15C6164", VA = "0x15C6164")]
+	public void SetPercentage(float pct, bool fromMenu = false)
+	{
+	}
+
+	[Token(Token = "0x6001180")]
+	[Address(RVA = "0x15C62B4", Offset = "0x15C62B4", VA = "0x15C62B4")]
+	public void SetValue(float value)
+	{
+	}
+
+	[Token(Token = "0x6001181")]
+	[Address(RVA = "0x15C6414", Offset = "0x15C6414", VA = "0x15C6414")]
+	public OverworldMusic()
+	{
+	}
 }

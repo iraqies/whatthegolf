@@ -1,66 +1,132 @@
-using UnityEngine;
+using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using Il2CppDummyDll;
 
 namespace PlayFab
 {
-	public class PlayFabSettings : MonoBehaviour
+	[Token(Token = "0x2001190")]
+	public static class PlayFabSettings
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Serializable]
+		[Token(Token = "0x2001191")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x4814C", Offset = "0x4814C")]
+		private sealed class _003C_003Ec
+		{
+			[Token(Token = "0x4005EF4")]
+			[Il2CppDummyDll.FieldOffset(Offset = "0x0")]
+			public static readonly _003C_003Ec _003C_003E9;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x6005042")]
+			[Address(RVA = "0x1828280", Offset = "0x1828280", VA = "0x1828280")]
+			public _003C_003Ec()
+			{
+			}
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x6005043")]
+			[Address(RVA = "0x1828288", Offset = "0x1828288", VA = "0x1828288")]
+			internal PlayFabSharedSettings _003C_002Ecctor_003Eb__0_0()
+			{
+				return null;
+			}
+		}
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4005EF1")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x0")]
+		private static PlayFabSharedSettings _playFabShared;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4005EF2")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x8")]
+		internal static readonly PlayFabApiSettings staticSettings;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4005EF3")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x10")]
+		internal static readonly PlayFabAuthenticationContext staticPlayer;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x170008A6")]
+		private static PlayFabSharedSettings PlayFabSharedPrivate
+		{
+			[Token(Token = "0x6005039")]
+			[Address(RVA = "0x15EFFF8", Offset = "0x15EFFF8", VA = "0x15EFFF8")]
+			get
+			{
+				return null;
+			}
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x170008A7")]
+		public static string DeviceUniqueIdentifier
+		{
+			[Token(Token = "0x600503B")]
+			[Address(RVA = "0x15F01F0", Offset = "0x15F01F0", VA = "0x15F01F0")]
+			get
+			{
+				return null;
+			}
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x170008A8")]
+		public static string TitleId
+		{
+			[Token(Token = "0x600503C")]
+			[Address(RVA = "0x15EC338", Offset = "0x15EC338", VA = "0x15EC338")]
+			get
+			{
+				return null;
+			}
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x170008A9")]
+		public static bool DisableFocusTimeCollection
+		{
+			[Token(Token = "0x600503D")]
+			[Address(RVA = "0x15ED0C8", Offset = "0x15ED0C8", VA = "0x15ED0C8")]
+			get
+			{
+				return default;
+			}
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x170008AA")]
+		public static string LoggerHost
+		{
+			[Token(Token = "0x600503E")]
+			[Address(RVA = "0x15EF0D8", Offset = "0x15EF0D8", VA = "0x15EF0D8")]
+			get
+			{
+				return null;
+			}
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x170008AB")]
+		public static bool EnableRealTimeLogging
+		{
+			[Token(Token = "0x600503F")]
+			[Address(RVA = "0x15EF5D4", Offset = "0x15EF5D4", VA = "0x15EF5D4")]
+			get
+			{
+				return default;
+			}
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x6005038")]
+		[Address(RVA = "0x15EFE6C", Offset = "0x15EFE6C", VA = "0x15EFE6C")]
+		static PlayFabSettings()
+		{
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x600503A")]
+		[Address(RVA = "0x15F00F0", Offset = "0x15F00F0", VA = "0x15F00F0")]
+		private static PlayFabSharedSettings GetSharedSettingsObjectPrivate()
+		{
+			return null;
+		}
 
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x6005040")]
+		[Address(RVA = "0x15F01F8", Offset = "0x15F01F8", VA = "0x15F01F8")]
+		public static string GetFullUrl(string apiCall, Dictionary<string, string> getParams, [Optional] PlayFabApiSettings apiSettings)
+		{
+			return null;
+		}
 	}
 }

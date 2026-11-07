@@ -1,66 +1,144 @@
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.UI;
+using WhatTheGolf.LevelDesigner.Events;
 
 namespace WhatTheGolf.LevelDesigner.GUI
 {
-	public class FileGUI : MonoBehaviour
+	[Token(Token = "0x2001295")]
+	public class FileGUI : BaseGUI, IRequireEvents<GUIEvent>, IRequireEvents
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x40063FE")]
+		[FieldOffset(Offset = "0x40")]
+		private SerializableLevelData[] levelDatas;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40063FF")]
+		[FieldOffset(Offset = "0x48")]
+		[SerializeField]
+		private LevelFileGUI levelFileGUIPrefab;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4006400")]
+		[FieldOffset(Offset = "0x50")]
+		[SerializeField]
+		private LayoutGroup contentLayoutGroup;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4006401")]
+		[FieldOffset(Offset = "0x58")]
+		[SerializeField]
+		private ScrollRect scroll;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4006402")]
+		[FieldOffset(Offset = "0x60")]
+		[SerializeField]
+		private Sprite newLevelActionIcon;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4006403")]
+		[FieldOffset(Offset = "0x68")]
+		[SerializeField]
+		private Sprite editLevelActionIcon;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4006404")]
+		[FieldOffset(Offset = "0x70")]
+		[SerializeField]
+		private Button closeButton;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4006405")]
+		[FieldOffset(Offset = "0x78")]
+		private List<LevelFileGUI> levelFileGUIButtons;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4006406")]
+		[FieldOffset(Offset = "0x80")]
+		[SerializeField]
+		private LevelFileGUI newLevelFileGUI;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4006407")]
+		[FieldOffset(Offset = "0x88")]
+		[SerializeField]
+		private ButtonStateColors currentLevelHoverColors;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4006408")]
+		[FieldOffset(Offset = "0x90")]
+		[SerializeField]
+		private ButtonStateColors defaultHoverColors;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4006409")]
+		[FieldOffset(Offset = "0x98")]
+		private bool m_IsVisible;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x400640A")]
+		[FieldOffset(Offset = "0xA0")]
+		private SerializableLevelData cachedLevel;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x170009D0")]
+		public override bool isActiveOnOpen
+		{
+			[Token(Token = "0x6005601")]
+			[Address(RVA = "0x1461510", Offset = "0x1461510", VA = "0x1461510", Slot = "4")]
+			get
+			{
+				return default;
+			}
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x6005602")]
+		[Address(RVA = "0x1461518", Offset = "0x1461518", VA = "0x1461518", Slot = "6")]
+		public override void Init()
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x6005603")]
+		[Address(RVA = "0x14616AC", Offset = "0x14616AC", VA = "0x14616AC")]
+		private void CloseButton_OnSelected()
+		{
+		}
 
-		*/
+		[Token(Token = "0x6005604")]
+		[Address(RVA = "0x1461780", Offset = "0x1461780", VA = "0x1461780")]
+		private void LevelFileGUI_OnViewSelected(SerializableLevelData levelData)
+		{
+		}
+
+		[Token(Token = "0x6005605")]
+		[Address(RVA = "0x14618A4", Offset = "0x14618A4", VA = "0x14618A4")]
+		private void LevelFileGUI_OnActionSelected(SerializableLevelData levelData)
+		{
+		}
+
+		[Token(Token = "0x6005606")]
+		[Address(RVA = "0x14619C0", Offset = "0x14619C0", VA = "0x14619C0")]
+		private void LoadCachedLevel()
+		{
+		}
+
+		[Token(Token = "0x6005607")]
+		[Address(RVA = "0x1461ADC", Offset = "0x1461ADC", VA = "0x1461ADC", Slot = "7")]
+		public void OnEvent(GUIEvent evt)
+		{
+		}
+
+		[Token(Token = "0x6005608")]
+		[Address(RVA = "0x1461B74", Offset = "0x1461B74", VA = "0x1461B74")]
+		private void Show()
+		{
+		}
+
+		[Token(Token = "0x6005609")]
+		[Address(RVA = "0x14616B0", Offset = "0x14616B0", VA = "0x14616B0")]
+		private void Hide()
+		{
+		}
+
+		[Token(Token = "0x600560A")]
+		[Address(RVA = "0x1461FEC", Offset = "0x1461FEC", VA = "0x1461FEC")]
+		private void ClearAndDisable()
+		{
+		}
+
+		[Token(Token = "0x600560B")]
+		[Address(RVA = "0x146228C", Offset = "0x146228C", VA = "0x146228C")]
+		public FileGUI()
+		{
+		}
 	}
 }

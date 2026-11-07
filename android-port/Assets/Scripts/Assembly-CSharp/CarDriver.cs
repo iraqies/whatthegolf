@@ -1,63 +1,101 @@
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.AI;
 
+[Token(Token = "0x20007EC")]
 public class CarDriver : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4002A70")]
+	[FieldOffset(Offset = "0x18")]
+	public NavMeshAgent navAgent;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4002A71")]
+	[FieldOffset(Offset = "0x20")]
+	public Transform[] targets;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4002A72")]
+	[FieldOffset(Offset = "0x28")]
+	public float checkpointDist;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4002A73")]
+	[FieldOffset(Offset = "0x2C")]
+	private int currentTarget;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4002A74")]
+	[FieldOffset(Offset = "0x30")]
+	public float stunForce;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4002A75")]
+	[FieldOffset(Offset = "0x34")]
+	public float stunDuration;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4002A76")]
+	[FieldOffset(Offset = "0x38")]
+	public float stunSpinVel;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4002A77")]
+	[FieldOffset(Offset = "0x3C")]
+	private bool stunned;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4002A78")]
+	[FieldOffset(Offset = "0x40")]
+	private float stunStart;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4002A79")]
+	[FieldOffset(Offset = "0x48")]
+	private Rigidbody rigid;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4002A7A")]
+	[FieldOffset(Offset = "0x50")]
+	public string[] stunTags;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4002A7B")]
+	[FieldOffset(Offset = "0x58")]
+	public GameObject[] disableWhenStunned;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4002A7C")]
+	[FieldOffset(Offset = "0x60")]
+	public bool wait;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4002A7D")]
+	[FieldOffset(Offset = "0x68")]
+	public RaceManager race;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4002A7E")]
+	[FieldOffset(Offset = "0x70")]
+	public Color gizmosColor;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4002A7F")]
+	[FieldOffset(Offset = "0x80")]
+	public float stunJumpVel;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x6002462")]
+	[Address(RVA = "0x1888E18", Offset = "0x1888E18", VA = "0x1888E18")]
+	private void Awake()
+	{
+	}
 
-	*/
+	[Token(Token = "0x6002463")]
+	[Address(RVA = "0x1888F18", Offset = "0x1888F18", VA = "0x1888F18")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x6002464")]
+	[Address(RVA = "0x18892F0", Offset = "0x18892F0", VA = "0x18892F0")]
+	private void OnCollisionEnter(Collision collision)
+	{
+	}
+
+	[Token(Token = "0x6002465")]
+	[Address(RVA = "0x1889540", Offset = "0x1889540", VA = "0x1889540")]
+	private void OnDrawGizmos()
+	{
+	}
+
+	[Token(Token = "0x6002466")]
+	[Address(RVA = "0x18896EC", Offset = "0x18896EC", VA = "0x18896EC")]
+	public CarDriver()
+	{
+	}
 }

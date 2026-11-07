@@ -1,66 +1,123 @@
-using UnityEngine;
+using System.Collections.Generic;
+using Il2CppDummyDll;
 
 namespace PlayFab
 {
-	public class PlayFabApiSettings : MonoBehaviour
+	[Token(Token = "0x200118A")]
+	public class PlayFabApiSettings
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4005EBB")]
+		[FieldOffset(Offset = "0x10")]
+		private string _ProductionEnvironmentUrl;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4005EBC")]
+		[FieldOffset(Offset = "0x18")]
+		public readonly Dictionary<string, string> _requestGetParams;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4005EBD")]
+		[FieldOffset(Offset = "0x20")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x5743C", Offset = "0x5743C")]
+		private string TitleId__BackingField;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4005EBE")]
+		[FieldOffset(Offset = "0x28")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x5744C", Offset = "0x5744C")]
+		private string VerticalName__BackingField;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4005EBF")]
+		[FieldOffset(Offset = "0x30")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x5745C", Offset = "0x5745C")]
+		private string AdvertisingIdType__BackingField;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4005EC0")]
+		[FieldOffset(Offset = "0x38")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x5746C", Offset = "0x5746C")]
+		private string AdvertisingIdValue__BackingField;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4005EC1")]
+		[FieldOffset(Offset = "0x40")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x5747C", Offset = "0x5747C")]
+		private bool DisableAdvertising__BackingField;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4005EC2")]
+		[FieldOffset(Offset = "0x41")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x5748C", Offset = "0x5748C")]
+		private bool DisableDeviceInfo__BackingField;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4005EC3")]
+		[FieldOffset(Offset = "0x42")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x5749C", Offset = "0x5749C")]
+		private bool DisableFocusTimeCollection__BackingField;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x1700089D")]
+		public virtual Dictionary<string, string> RequestGetParams
+		{
+			[Token(Token = "0x6005026")]
+			[Address(RVA = "0x15E9E68", Offset = "0x15E9E68", VA = "0x15E9E68", Slot = "4")]
+			get
+			{
+				return null;
+			}
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x1700089E")]
+		public virtual string ProductionEnvironmentUrl
+		{
+			[Token(Token = "0x6005027")]
+			[Address(RVA = "0x15E9E70", Offset = "0x15E9E70", VA = "0x15E9E70", Slot = "5")]
+			get
+			{
+				return null;
+			}
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x1700089F")]
+		public virtual string TitleId
+		{
+			[Token(Token = "0x6005028")]
+			[Address(RVA = "0x15E9E78", Offset = "0x15E9E78", VA = "0x15E9E78", Slot = "6")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x70178", Offset = "0x70178")]
+			get
+			{
+				return null;
+			}
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x170008A0")]
+		internal virtual string VerticalName
+		{
+			[Token(Token = "0x6005029")]
+			[Address(RVA = "0x15E9E80", Offset = "0x15E9E80", VA = "0x15E9E80", Slot = "7")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x70188", Offset = "0x70188")]
+			get
+			{
+				return null;
+			}
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x170008A1")]
+		public virtual bool DisableFocusTimeCollection
+		{
+			[Token(Token = "0x600502A")]
+			[Address(RVA = "0x15E9E88", Offset = "0x15E9E88", VA = "0x15E9E88", Slot = "8")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x70198", Offset = "0x70198")]
+			get
+			{
+				return default;
+			}
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x600502B")]
+		[Address(RVA = "0x15E9E90", Offset = "0x15E9E90", VA = "0x15E9E90", Slot = "9")]
+		public virtual string GetFullUrl(string apiCall, Dictionary<string, string> getParams)
+		{
+			return null;
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x600502C")]
+		[Address(RVA = "0x15E9F14", Offset = "0x15E9F14", VA = "0x15E9F14")]
+		public PlayFabApiSettings()
+		{
+		}
 	}
 }

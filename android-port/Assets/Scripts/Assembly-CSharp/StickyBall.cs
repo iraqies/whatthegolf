@@ -1,63 +1,152 @@
+using System;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x200086A")]
+[AttributeAttribute(Name = "RequireComponent", RVA = "0x41A48", Offset = "0x41A48")]
 public class StickyBall : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4002DEE")]
+	[FieldOffset(Offset = "0x18")]
+	[AttributeAttribute(Name = "RangeAttribute", RVA = "0x4F3A4", Offset = "0x4F3A4")]
+	public float Stickiness;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4002DEF")]
+	[FieldOffset(Offset = "0x1C")]
+	public bool UseFixedJoint;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4002DF0")]
+	[FieldOffset(Offset = "0x20")]
+	public ParticleSystem Particles;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4002DF1")]
+	[FieldOffset(Offset = "0x28")]
+	public int ParticlesToEmit;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4002DF2")]
+	[FieldOffset(Offset = "0x2C")]
+	public float StickDelay;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4002DF3")]
+	[FieldOffset(Offset = "0x30")]
+	public LayerMask BlacklistLayerMask;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4002DF4")]
+	[FieldOffset(Offset = "0x38")]
+	public Action<Vector3> OnStuck;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4002DF5")]
+	[FieldOffset(Offset = "0x40")]
+	public Action OnUnStuck;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4002DF6")]
+	[FieldOffset(Offset = "0x48")]
+	private GolfBallController ball;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4002DF7")]
+	[FieldOffset(Offset = "0x50")]
+	private Rigidbody2D rigid2D;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4002DF8")]
+	[FieldOffset(Offset = "0x58")]
+	private Rigidbody rigid;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4002DF9")]
+	[FieldOffset(Offset = "0x60")]
+	private bool isStuck;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4002DFA")]
+	[FieldOffset(Offset = "0x68")]
+	private ConstantForce force;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4002DFB")]
+	[FieldOffset(Offset = "0x70")]
+	private ConstantForce2D force2D;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4002DFC")]
+	[FieldOffset(Offset = "0x78")]
+	private Vector3 startForce;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4002DFD")]
+	[FieldOffset(Offset = "0x88")]
+	private FixedJoint currentJoint;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x4002DFE")]
+	[FieldOffset(Offset = "0x90")]
+	private FixedJoint2D currentJoint2D;
 
-	*/
+	[Token(Token = "0x4002DFF")]
+	[FieldOffset(Offset = "0x98")]
+	private float stickDelay;
+
+	[Token(Token = "0x4002E00")]
+	[FieldOffset(Offset = "0x9C")]
+	private bool attachedToRigidbody;
+
+	[Token(Token = "0x60026CD")]
+	[Address(RVA = "0x16DF570", Offset = "0x16DF570", VA = "0x16DF570")]
+	private void Awake()
+	{
+	}
+
+	[Token(Token = "0x60026CE")]
+	[Address(RVA = "0x16DF6FC", Offset = "0x16DF6FC", VA = "0x16DF6FC")]
+	private void Start()
+	{
+	}
+
+	[Token(Token = "0x60026CF")]
+	[Address(RVA = "0x16DF7D0", Offset = "0x16DF7D0", VA = "0x16DF7D0")]
+	private void Ball_OnPreShoot(Vector3 obj)
+	{
+	}
+
+	[Token(Token = "0x60026D0")]
+	[Address(RVA = "0x16DF900", Offset = "0x16DF900", VA = "0x16DF900")]
+	private void FixedUpdate()
+	{
+	}
+
+	[Token(Token = "0x60026D1")]
+	[Address(RVA = "0x16DF8E4", Offset = "0x16DF8E4", VA = "0x16DF8E4")]
+	private void Unstuck()
+	{
+	}
+
+	[Token(Token = "0x60026D2")]
+	[Address(RVA = "0x16DFC48", Offset = "0x16DFC48", VA = "0x16DFC48")]
+	private void Stuck(Vector3 normal)
+	{
+	}
+
+	[Token(Token = "0x60026D3")]
+	[Address(RVA = "0x16DFCDC", Offset = "0x16DFCDC", VA = "0x16DFCDC")]
+	private void OnCollisionEnter(Collision collision)
+	{
+	}
+
+	[Token(Token = "0x60026D4")]
+	[Address(RVA = "0x16E0018", Offset = "0x16E0018", VA = "0x16E0018")]
+	private void OnCollisionStay(Collision other)
+	{
+	}
+
+	[Token(Token = "0x60026D5")]
+	[Address(RVA = "0x16E0078", Offset = "0x16E0078", VA = "0x16E0078")]
+	private void OnCollisionEnter2D(Collision2D collision)
+	{
+	}
+
+	[Token(Token = "0x60026D6")]
+	[Address(RVA = "0x16E03E4", Offset = "0x16E03E4", VA = "0x16E03E4")]
+	private void OnCollisionStay2D(Collision2D other)
+	{
+	}
+
+	[Token(Token = "0x60026D7")]
+	[Address(RVA = "0x16E0444", Offset = "0x16E0444", VA = "0x16E0444")]
+	public StickyBall()
+	{
+	}
 }

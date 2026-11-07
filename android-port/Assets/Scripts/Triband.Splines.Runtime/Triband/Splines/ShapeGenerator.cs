@@ -1,66 +1,101 @@
-using UnityEngine;
+using System;
+using Il2CppDummyDll;
 
 namespace Triband.Splines
 {
-	public class ShapeGenerator : MonoBehaviour
+	[Serializable]
+	[Token(Token = "0x200000E")]
+	public abstract class ShapeGenerator
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4000033")]
+		[FieldOffset(Offset = "0x10")]
+		public IShapeGeneratorData rootData;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000034")]
+		[FieldOffset(Offset = "0x18")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x1B02AC", Offset = "0x1B02AC")]
+		private SplineMesh.UVSettings UVSettings__BackingField;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x17000024")]
+		public abstract Type DataType
+		{
+			[Token(Token = "0x6000073")]
+			get;
+		}
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x17000025")]
+		public abstract bool ClosedLoop
+		{
+			[Token(Token = "0x6000077")]
+			get;
+		}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x17000026")]
+		public abstract bool AutoGenerateNormals
+		{
+			[Token(Token = "0x6000078")]
+			get;
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x17000027")]
+		public SplineMesh.UVSettings UVSettings
+		{
+			[Token(Token = "0x6000079")]
+			[Address(RVA = "0x2A02750", Offset = "0x2A02750", VA = "0x2A02750")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x1B074C", Offset = "0x1B074C")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x600007A")]
+			[Address(RVA = "0x2A02758", Offset = "0x2A02758", VA = "0x2A02758")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x1B075C", Offset = "0x1B075C")]
+			set
+			{
+			}
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6000074")]
+		public abstract Shape2D Generate(float t, float length);
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6000075")]
+		public abstract Shape GenerateStartCap();
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x6000076")]
+		public abstract Shape GenerateEndCap();
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x600007B")]
+		[Address(RVA = "0x2A02760", Offset = "0x2A02760", VA = "0x2A02760")]
+		protected ShapeGenerator()
+		{
+		}
+	}
+	[Token(Token = "0x200000F")]
+	public abstract class ShapeGenerator<T> : ShapeGenerator where T : IShapeGeneratorData
+	{
+		[Token(Token = "0x17000028")]
+		public override Type DataType
+		{
+			[Token(Token = "0x600007C")]
+			get
+			{
+				return null;
+			}
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x17000029")]
+		protected T Data
+		{
+			[Token(Token = "0x600007D")]
+			get
+			{
+				return (T)null;
+			}
+		}
 
-			AssetRipper was set to not load any script information.
-
-		6. Cpp2IL failed to decompile Il2Cpp data
-
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x600007E")]
+		protected ShapeGenerator()
+		{
+		}
 	}
 }

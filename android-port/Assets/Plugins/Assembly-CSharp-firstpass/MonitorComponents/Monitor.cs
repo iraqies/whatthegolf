@@ -1,66 +1,171 @@
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace MonitorComponents
 {
-	public class Monitor : MonoBehaviour
+	[Token(Token = "0x2000266")]
+	public class Monitor
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x2000267")]
+		private class MonitorEventComparer : IComparer<MonitorEvent>
+		{
+			[Token(Token = "0x6000FEC")]
+			[Address(RVA = "0x134FA64", Offset = "0x134FA64", VA = "0x134FA64", Slot = "4")]
+			public int Compare(MonitorEvent a, MonitorEvent b)
+			{
+				return default;
+			}
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x6000FED")]
+			[Address(RVA = "0x134FA8C", Offset = "0x134FA8C", VA = "0x134FA8C")]
+			public MonitorEventComparer()
+			{
+			}
+		}
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000FAF")]
+		[FieldOffset(Offset = "0x10")]
+		private string name;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4000FB0")]
+		[FieldOffset(Offset = "0x18")]
+		private ValueAxisMode mode;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4000FB1")]
+		[FieldOffset(Offset = "0x1C")]
+		public float latestTime;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000FB2")]
+		[FieldOffset(Offset = "0x20")]
+		private float min;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4000FB3")]
+		[FieldOffset(Offset = "0x24")]
+		private float max;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4000FB4")]
+		[FieldOffset(Offset = "0x28")]
+		public List<MonitorInput> inputs;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4000FB5")]
+		[FieldOffset(Offset = "0x30")]
+		public List<MonitorEvent> events;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4000FB6")]
+		[FieldOffset(Offset = "0x38")]
+		private MonitorEventComparer monitorEventComparer;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4000FB7")]
+		[FieldOffset(Offset = "0x40")]
+		private GameObject gameObject;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4000FB8")]
+		[FieldOffset(Offset = "0x48")]
+		private MonitorEvent lookupEvent;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x170001EC")]
+		public float Min
+		{
+			[Token(Token = "0x6000FE5")]
+			[Address(RVA = "0x13AEA48", Offset = "0x13AEA48", VA = "0x13AEA48")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000FE6")]
+			[Address(RVA = "0x13AEA50", Offset = "0x13AEA50", VA = "0x13AEA50")]
+			set
+			{
+			}
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x170001ED")]
+		public float Max
+		{
+			[Token(Token = "0x6000FE7")]
+			[Address(RVA = "0x13AEA58", Offset = "0x13AEA58", VA = "0x13AEA58")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000FE8")]
+			[Address(RVA = "0x13AEA60", Offset = "0x13AEA60", VA = "0x13AEA60")]
+			set
+			{
+			}
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x170001EE")]
+		public string Name
+		{
+			[Token(Token = "0x6000FE9")]
+			[Address(RVA = "0x13AEA68", Offset = "0x13AEA68", VA = "0x13AEA68")]
+			set
+			{
+			}
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x170001EF")]
+		public ValueAxisMode Mode
+		{
+			[Token(Token = "0x6000FEA")]
+			[Address(RVA = "0x13AEA70", Offset = "0x13AEA70", VA = "0x13AEA70")]
+			set
+			{
+			}
+		}
 
-		*/
+		[Token(Token = "0x170001F0")]
+		public GameObject GameObject
+		{
+			[Token(Token = "0x6000FEB")]
+			[Address(RVA = "0x13AEA78", Offset = "0x13AEA78", VA = "0x13AEA78")]
+			set
+			{
+			}
+		}
+
+		[Token(Token = "0x6000FDE")]
+		[Address(RVA = "0x13AE4CC", Offset = "0x13AE4CC", VA = "0x13AE4CC")]
+		public Monitor(string name)
+		{
+		}
+
+		[Token(Token = "0x6000FDF")]
+		[Address(RVA = "0x13AE7B0", Offset = "0x13AE7B0", VA = "0x13AE7B0")]
+		public void Resize(float value, float time)
+		{
+		}
+
+		[Token(Token = "0x6000FE0")]
+		[Address(RVA = "0x13AE810", Offset = "0x13AE810", VA = "0x13AE810")]
+		public void Add(MonitorInput monitorInput)
+		{
+		}
+
+		[Token(Token = "0x6000FE1")]
+		[Address(RVA = "0x13AE874", Offset = "0x13AE874", VA = "0x13AE874")]
+		public void Add(MonitorEvent monitorEvent)
+		{
+		}
+
+		[Token(Token = "0x6000FE2")]
+		[Address(RVA = "0x13AE90C", Offset = "0x13AE90C", VA = "0x13AE90C")]
+		public void MoveForward(float time)
+		{
+		}
+
+		[Token(Token = "0x6000FE3")]
+		[Address(RVA = "0x13AE914", Offset = "0x13AE914", VA = "0x13AE914")]
+		public void Remove(MonitorInput monitorInput)
+		{
+		}
+
+		[Token(Token = "0x6000FE4")]
+		[Address(RVA = "0x13AE978", Offset = "0x13AE978", VA = "0x13AE978")]
+		public void Close()
+		{
+		}
 	}
 }

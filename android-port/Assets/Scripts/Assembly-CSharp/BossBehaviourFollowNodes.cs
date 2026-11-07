@@ -1,63 +1,108 @@
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
 
-public class BossBehaviourFollowNodes : MonoBehaviour
+[Token(Token = "0x2000617")]
+public class BossBehaviourFollowNodes : BossBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4001F64")]
+	[FieldOffset(Offset = "0x28")]
+	public BossIslands IslandsCreator;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4001F65")]
+	[FieldOffset(Offset = "0x30")]
+	public List<Transform> Nodes;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4001F66")]
+	[FieldOffset(Offset = "0x38")]
+	public float MoveSpeed;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4001F67")]
+	[FieldOffset(Offset = "0x3C")]
+	public float RotateSpeed;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4001F68")]
+	[FieldOffset(Offset = "0x40")]
+	public float UpAndDownBobSpeed;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4001F69")]
+	[FieldOffset(Offset = "0x44")]
+	public float UpAndDownBobAmount;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4001F6A")]
+	[FieldOffset(Offset = "0x48")]
+	public float BaseCarHeight;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4001F6B")]
+	[FieldOffset(Offset = "0x4C")]
+	public float MaxDistanceFromCar;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4001F6C")]
+	[FieldOffset(Offset = "0x50")]
+	public Transform Player;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4001F6D")]
+	[FieldOffset(Offset = "0x58")]
+	private int currentNodeIndex;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4001F6E")]
+	[FieldOffset(Offset = "0x5C")]
+	private float currentCarBaseHeight;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4001F6F")]
+	[FieldOffset(Offset = "0x60")]
+	private float upAndDownBobVal;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x17000307")]
+	public override Vector3 Position
+	{
+		[Token(Token = "0x6001BC7")]
+		[Address(RVA = "0x16FAF9C", Offset = "0x16FAF9C", VA = "0x16FAF9C", Slot = "5")]
+		get
+		{
+			return default;
+		}
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x17000308")]
+	public override Quaternion Rotation
+	{
+		[Token(Token = "0x6001BC8")]
+		[Address(RVA = "0x16FB218", Offset = "0x16FB218", VA = "0x16FB218", Slot = "6")]
+		get
+		{
+			return default;
+		}
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x6001BC4")]
+	[Address(RVA = "0x16FA8EC", Offset = "0x16FA8EC", VA = "0x16FA8EC", Slot = "7")]
+	protected override void Awake()
+	{
+	}
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x6001BC5")]
+	[Address(RVA = "0x16FAD60", Offset = "0x16FAD60", VA = "0x16FAD60")]
+	private void OnIslandDestroyed(BossIslandPart bossIslandPart)
+	{
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x6001BC6")]
+	[Address(RVA = "0x16FAF08", Offset = "0x16FAF08", VA = "0x16FAF08")]
+	private void NewIslandSpawned(BossIslandPart bossIslandPart)
+	{
+	}
 
-	*/
+	[Token(Token = "0x6001BC9")]
+	[Address(RVA = "0x16FB3E4", Offset = "0x16FB3E4", VA = "0x16FB3E4", Slot = "8")]
+	public override float GetSpeed()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6001BCA")]
+	[Address(RVA = "0x16FB3EC", Offset = "0x16FB3EC", VA = "0x16FB3EC")]
+	public BossBehaviourFollowNodes()
+	{
+	}
 }

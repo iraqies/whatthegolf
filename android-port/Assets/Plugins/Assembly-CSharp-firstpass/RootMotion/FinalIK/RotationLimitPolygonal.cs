@@ -1,66 +1,238 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace RootMotion.FinalIK
 {
-	public class RotationLimitPolygonal : MonoBehaviour
+	[Token(Token = "0x20001AE")]
+	public class RotationLimitPolygonal : RotationLimit
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Serializable]
+		[Token(Token = "0x20001AF")]
+		public class ReachCone
+		{
+			[Token(Token = "0x4000B8E")]
+			[FieldOffset(Offset = "0x10")]
+			public Vector3[] tetrahedron;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x4000B8F")]
+			[FieldOffset(Offset = "0x18")]
+			public float volume;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x4000B90")]
+			[FieldOffset(Offset = "0x1C")]
+			public Vector3 S;
 
-		2. Incorrect dll files were provided to AssetRipper.
+			[Token(Token = "0x4000B91")]
+			[FieldOffset(Offset = "0x28")]
+			public Vector3 B;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+			[Token(Token = "0x1700019B")]
+			public Vector3 a
+			{
+				[Token(Token = "0x6000CC4")]
+				[Address(RVA = "0x1355D14", Offset = "0x1355D14", VA = "0x1355D14")]
+				get
+				{
+					return default;
+				}
+			}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+			[Token(Token = "0x1700019C")]
+			public Vector3 b
+			{
+				[Token(Token = "0x6000CC5")]
+				[Address(RVA = "0x1355D50", Offset = "0x1355D50", VA = "0x1355D50")]
+				get
+				{
+					return default;
+				}
+			}
 
-		3. Assembly Reconstruction has not been implemented.
+			[Token(Token = "0x1700019D")]
+			public Vector3 c
+			{
+				[Token(Token = "0x6000CC6")]
+				[Address(RVA = "0x1355D8C", Offset = "0x1355D8C", VA = "0x1355D8C")]
+				get
+				{
+					return default;
+				}
+			}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+			[Token(Token = "0x1700019E")]
+			public bool isValid
+			{
+				[Token(Token = "0x6000CC8")]
+				[Address(RVA = "0x1355EE8", Offset = "0x1355EE8", VA = "0x1355EE8")]
+				get
+				{
+					return default;
+				}
+			}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+			[Token(Token = "0x6000CC7")]
+			[Address(RVA = "0x1355DC8", Offset = "0x1355DC8", VA = "0x1355DC8")]
+			public ReachCone(Vector3 _o, Vector3 _a, Vector3 _b, Vector3 _c)
+			{
+			}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+			[Token(Token = "0x6000CC9")]
+			[Address(RVA = "0x1355EF8", Offset = "0x1355EF8", VA = "0x1355EF8")]
+			public void Calculate()
+			{
+			}
+		}
 
-		5. Script Content Level 0
+		[Serializable]
+		[Token(Token = "0x20001B0")]
+		public class LimitPoint
+		{
+			[Token(Token = "0x4000B92")]
+			[FieldOffset(Offset = "0x10")]
+			public Vector3 point;
 
-			AssetRipper was set to not load any script information.
+			[Token(Token = "0x4000B93")]
+			[FieldOffset(Offset = "0x1C")]
+			public float tangentWeight;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+			[Token(Token = "0x6000CCA")]
+			[Address(RVA = "0x1355CD8", Offset = "0x1355CD8", VA = "0x1355CD8")]
+			public LimitPoint()
+			{
+			}
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x4000B89")]
+		[FieldOffset(Offset = "0x38")]
+		[AttributeAttribute(Name = "RangeAttribute", RVA = "0x368DC", Offset = "0x368DC")]
+		public float twistLimit;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x4000B8A")]
+		[FieldOffset(Offset = "0x3C")]
+		[AttributeAttribute(Name = "RangeAttribute", RVA = "0x368F8", Offset = "0x368F8")]
+		public int smoothIterations;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x4000B8B")]
+		[FieldOffset(Offset = "0x40")]
+		[SerializeField]
+		public LimitPoint[] points;
 
-		*/
+		[Token(Token = "0x4000B8C")]
+		[FieldOffset(Offset = "0x48")]
+		[SerializeField]
+		public Vector3[] P;
+
+		[Token(Token = "0x4000B8D")]
+		[FieldOffset(Offset = "0x50")]
+		[SerializeField]
+		public ReachCone[] reachCones;
+
+		[Token(Token = "0x6000CB4")]
+		[Address(RVA = "0x13F4348", Offset = "0x13F4348", VA = "0x13F4348")]
+		[AttributeAttribute(Name = "ContextMenu", RVA = "0x3ABAC", Offset = "0x3ABAC")]
+		private void OpenUserManual()
+		{
+		}
+
+		[Token(Token = "0x6000CB5")]
+		[Address(RVA = "0x13F4390", Offset = "0x13F4390", VA = "0x13F4390")]
+		[AttributeAttribute(Name = "ContextMenu", RVA = "0x3ABE4", Offset = "0x3ABE4")]
+		private void OpenScriptReference()
+		{
+		}
+
+		[Token(Token = "0x6000CB6")]
+		[Address(RVA = "0x13F43D8", Offset = "0x13F43D8", VA = "0x13F43D8")]
+		[AttributeAttribute(Name = "ContextMenu", RVA = "0x3AC1C", Offset = "0x3AC1C")]
+		private void SupportGroup()
+		{
+		}
+
+		[Token(Token = "0x6000CB7")]
+		[Address(RVA = "0x13F4420", Offset = "0x13F4420", VA = "0x13F4420")]
+		[AttributeAttribute(Name = "ContextMenu", RVA = "0x3AC54", Offset = "0x3AC54")]
+		private void ASThread()
+		{
+		}
+
+		[Token(Token = "0x6000CB8")]
+		[Address(RVA = "0x13F4468", Offset = "0x13F4468", VA = "0x13F4468")]
+		public void SetLimitPoints(LimitPoint[] points)
+		{
+		}
+
+		[Token(Token = "0x6000CB9")]
+		[Address(RVA = "0x13F48C8", Offset = "0x13F48C8", VA = "0x13F48C8", Slot = "4")]
+		protected override Quaternion LimitRotation(Quaternion rotation)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000CBA")]
+		[Address(RVA = "0x13F4958", Offset = "0x13F4958", VA = "0x13F4958")]
+		private void Start()
+		{
+		}
+
+		[Token(Token = "0x6000CBB")]
+		[Address(RVA = "0x13F4E88", Offset = "0x13F4E88", VA = "0x13F4E88")]
+		public void ResetToDefault()
+		{
+		}
+
+		[Token(Token = "0x6000CBC")]
+		[Address(RVA = "0x13F4504", Offset = "0x13F4504", VA = "0x13F4504")]
+		public void BuildReachCones()
+		{
+		}
+
+		[Token(Token = "0x6000CBD")]
+		[Address(RVA = "0x13F5208", Offset = "0x13F5208", VA = "0x13F5208")]
+		private Vector3[] SmoothPoints()
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6000CBE")]
+		[Address(RVA = "0x13F5638", Offset = "0x13F5638", VA = "0x13F5638")]
+		private float GetScalar(int k)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000CBF")]
+		[Address(RVA = "0x13F5674", Offset = "0x13F5674", VA = "0x13F5674")]
+		private Vector3 PointToTangentPlane(Vector3 p, float r)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000CC0")]
+		[Address(RVA = "0x13F56D4", Offset = "0x13F56D4", VA = "0x13F56D4")]
+		private Vector3 TangentPointToSphere(Vector3 q, float r)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000CC1")]
+		[Address(RVA = "0x13F4C18", Offset = "0x13F4C18", VA = "0x13F4C18")]
+		private Quaternion LimitSwing(Quaternion rotation)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000CC2")]
+		[Address(RVA = "0x13F5740", Offset = "0x13F5740", VA = "0x13F5740")]
+		private int GetReachCone(Vector3 L)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000CC3")]
+		[Address(RVA = "0x13F5830", Offset = "0x13F5830", VA = "0x13F5830")]
+		public RotationLimitPolygonal()
+		{
+		}
 	}
 }

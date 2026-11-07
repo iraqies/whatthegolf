@@ -1,63 +1,90 @@
+using System.Collections;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x20003F8")]
+[ExecuteInEditMode]
 public class MirrorReflection : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x40015A1")]
+	[FieldOffset(Offset = "0x18")]
+	public bool m_DisablePixelLights;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x40015A2")]
+	[FieldOffset(Offset = "0x1C")]
+	public int m_TextureSize;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x40015A3")]
+	[FieldOffset(Offset = "0x20")]
+	public float m_ClipPlaneOffset;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x40015A4")]
+	[FieldOffset(Offset = "0x24")]
+	public LayerMask m_ReflectLayers;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x40015A5")]
+	[FieldOffset(Offset = "0x28")]
+	private Hashtable m_ReflectionCameras;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x40015A6")]
+	[FieldOffset(Offset = "0x30")]
+	private RenderTexture m_ReflectionTexture;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x40015A7")]
+	[FieldOffset(Offset = "0x38")]
+	private int m_OldReflectionTextureSize;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x40015A8")]
+	[FieldOffset(Offset = "0x0")]
+	private static bool s_InsideRendering;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x600129B")]
+	[Address(RVA = "0x1567938", Offset = "0x1567938", VA = "0x1567938")]
+	public void OnWillRenderObject()
+	{
+	}
 
-	4. This script is unnecessary.
+	[Token(Token = "0x600129C")]
+	[Address(RVA = "0x1568A24", Offset = "0x1568A24", VA = "0x1568A24")]
+	private void OnDisable()
+	{
+	}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x600129D")]
+	[Address(RVA = "0x1568370", Offset = "0x1568370", VA = "0x1568370")]
+	private void UpdateCameraModes(Camera src, Camera dest)
+	{
+	}
 
-	5. Script Content Level 0
+	[Token(Token = "0x600129E")]
+	[Address(RVA = "0x1567E78", Offset = "0x1567E78", VA = "0x1567E78")]
+	private void CreateMirrorObjects(Camera currentCamera, out Camera reflectionCamera)
+	{
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x600129F")]
+	[Address(RVA = "0x1568DDC", Offset = "0x1568DDC", VA = "0x1568DDC")]
+	private static float sgn(float a)
+	{
+		return default;
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x60012A0")]
+	[Address(RVA = "0x1568908", Offset = "0x1568908", VA = "0x1568908")]
+	private Vector4 CameraSpacePlane(Camera cam, Vector3 pos, Vector3 normal, float sideSign)
+	{
+		return default;
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x60012A1")]
+	[Address(RVA = "0x1568664", Offset = "0x1568664", VA = "0x1568664")]
+	private static void CalculateReflectionMatrix(ref Matrix4x4 reflectionMat, Vector4 plane)
+	{
+	}
 
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x60012A2")]
+	[Address(RVA = "0x1568DF8", Offset = "0x1568DF8", VA = "0x1568DF8")]
+	public MirrorReflection()
+	{
+	}
 }

@@ -1,63 +1,111 @@
+using System;
+using System.Collections.Generic;
+using Core;
+using Il2CppDummyDll;
+using SpaceGolf;
 using UnityEngine;
 
+[Token(Token = "0x200085B")]
 public class PlantBall : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x200085C")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x419E8", Offset = "0x419E8")]
+	private sealed class _003C_003Ec__DisplayClass9_0
+	{
+		[Token(Token = "0x4002D6B")]
+		[FieldOffset(Offset = "0x10")]
+		public Rigidbody planetRigidbody;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4002D6C")]
+		[FieldOffset(Offset = "0x18")]
+		public PlantBall _003C_003E4__this;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x600268E")]
+		[Address(RVA = "0x18264DC", Offset = "0x18264DC", VA = "0x18264DC")]
+		public _003C_003Ec__DisplayClass9_0()
+		{
+		}
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x600268F")]
+		[Address(RVA = "0x18264E4", Offset = "0x18264E4", VA = "0x18264E4")]
+		internal void _003CFakeShoot_003Eb__1()
+		{
+		}
+	}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Serializable]
+	[Token(Token = "0x200085D")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x419F8", Offset = "0x419F8")]
+	private sealed class _003C_003Ec
+	{
+		[Token(Token = "0x4002D6D")]
+		[FieldOffset(Offset = "0x0")]
+		public static readonly _003C_003Ec _003C_003E9;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4002D6E")]
+		[FieldOffset(Offset = "0x8")]
+		public static Action<float> _003C_003E9__9_0;
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6002691")]
+		[Address(RVA = "0x18264D0", Offset = "0x18264D0", VA = "0x18264D0")]
+		public _003C_003Ec()
+		{
+		}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6002692")]
+		[Address(RVA = "0x18264D8", Offset = "0x18264D8", VA = "0x18264D8")]
+		internal void _003CFakeShoot_003Eb__9_0(float t)
+		{
+		}
+	}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4002D63")]
+	[FieldOffset(Offset = "0x18")]
+	public GolfBallController FakeController;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4002D64")]
+	[FieldOffset(Offset = "0x20")]
+	public GolfBallController PlanetController;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4002D65")]
+	[FieldOffset(Offset = "0x28")]
+	public float PlanetFallVelocityMod;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4002D66")]
+	[FieldOffset(Offset = "0x2C")]
+	public bool UseGravityOnFall;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4002D67")]
+	[FieldOffset(Offset = "0x2D")]
+	public bool DisableKinematicOnShot;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4002D68")]
+	[FieldOffset(Offset = "0x30")]
+	private Planet[] planets;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4002D69")]
+	[FieldOffset(Offset = "0x38")]
+	private RotatingPlanet[] rotatingPlanets;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4002D6A")]
+	[FieldOffset(Offset = "0x40")]
+	private List<Rigidbody> planetRigidbodies;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x600268B")]
+	[Address(RVA = "0x15E4560", Offset = "0x15E4560", VA = "0x15E4560")]
+	private void Start()
+	{
+	}
 
-	*/
+	[Token(Token = "0x600268C")]
+	[Address(RVA = "0x15E4798", Offset = "0x15E4798", VA = "0x15E4798")]
+	private void FakeShoot(Vector3 boost)
+	{
+	}
+
+	[Token(Token = "0x600268D")]
+	[Address(RVA = "0x15E4CD8", Offset = "0x15E4CD8", VA = "0x15E4CD8")]
+	public PlantBall()
+	{
+	}
 }

@@ -1,63 +1,50 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x20005AA")]
 public class GenericButton : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4001CE8")]
+	[FieldOffset(Offset = "0x18")]
+	private Animator anim;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4001CE9")]
+	[FieldOffset(Offset = "0x20")]
+	public bool isPressed;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x60019BF")]
+	[Address(RVA = "0x148448C", Offset = "0x148448C", VA = "0x148448C")]
+	private void Awake()
+	{
+	}
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x60019C0")]
+	[Address(RVA = "0x14844E8", Offset = "0x14844E8", VA = "0x14844E8", Slot = "4")]
+	protected virtual void OnPress()
+	{
+	}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x60019C1")]
+	[Address(RVA = "0x14844EC", Offset = "0x14844EC", VA = "0x14844EC", Slot = "5")]
+	protected virtual void OnToggle()
+	{
+	}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x60019C2")]
+	[Address(RVA = "0x14844F0", Offset = "0x14844F0", VA = "0x14844F0")]
+	private void OnTriggerStay(Collider other)
+	{
+	}
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x60019C3")]
+	[Address(RVA = "0x14845C4", Offset = "0x14845C4", VA = "0x14845C4")]
+	private void OnTriggerExit(Collider other)
+	{
+	}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
-
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
-
-	4. This script is unnecessary.
-
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
-
-	5. Script Content Level 0
-
-		AssetRipper was set to not load any script information.
-
-	6. Cpp2IL failed to decompile Il2Cpp data
-
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x60019C4")]
+	[Address(RVA = "0x1484684", Offset = "0x1484684", VA = "0x1484684")]
+	public GenericButton()
+	{
+	}
 }

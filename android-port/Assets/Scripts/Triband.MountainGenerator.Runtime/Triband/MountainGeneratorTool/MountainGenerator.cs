@@ -1,66 +1,231 @@
+using System;
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Triband.MountainGeneratorTool
 {
-	public class MountainGenerator : MonoBehaviour
+	[Token(Token = "0x2000002")]
+	[ExecuteAlways]
+	[AttributeAttribute(Name = "RequireComponent", RVA = "0x1AFD7C", Offset = "0x1AFD7C")]
+	[AttributeAttribute(Name = "RequireComponent", RVA = "0x1AFD7C", Offset = "0x1AFD7C")]
+	[AttributeAttribute(Name = "RequireComponent", RVA = "0x1AFD7C", Offset = "0x1AFD7C")]
+	public sealed class MountainGenerator : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Serializable]
+		[Token(Token = "0x2000003")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x1AFE64", Offset = "0x1AFE64")]
+		private sealed class _003C_003Ec
+		{
+			[Token(Token = "0x400000D")]
+			[FieldOffset(Offset = "0x0")]
+			public static readonly _003C_003Ec _003C_003E9;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x400000E")]
+			[FieldOffset(Offset = "0x8")]
+			public static Func<Vector3, Vector2> _003C_003E9__20_0;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x6000016")]
+			[Address(RVA = "0x2A01AC8", Offset = "0x2A01AC8", VA = "0x2A01AC8")]
+			public _003C_003Ec()
+			{
+			}
 
-		2. Incorrect dll files were provided to AssetRipper.
+			[Token(Token = "0x6000017")]
+			[Address(RVA = "0x2A01AD0", Offset = "0x2A01AD0", VA = "0x2A01AD0")]
+			internal Vector2 _003CBuildMountain_003Eb__20_0(Vector3 v)
+			{
+				return default;
+			}
+		}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4000001")]
+		[FieldOffset(Offset = "0x18")]
+		public MountainSettings Settings;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000002")]
+		[FieldOffset(Offset = "0x20")]
+		public bool LockHeight;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4000003")]
+		[FieldOffset(Offset = "0x28")]
+		public List<Vector3> Points;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4000004")]
+		[FieldOffset(Offset = "0x30")]
+		[SerializeField]
+		private List<Transform> pointTransforms;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4000005")]
+		[FieldOffset(Offset = "0x38")]
+		private Mesh mesh;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4000006")]
+		[FieldOffset(Offset = "0x40")]
+		private Material[] materials;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4000007")]
+		[FieldOffset(Offset = "0x48")]
+		private Material pointMaterial;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4000008")]
+		[FieldOffset(Offset = "0x50")]
+		private MeshFilter m_Filter;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4000009")]
+		[FieldOffset(Offset = "0x58")]
+		private MeshRenderer m_Renderer;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x400000A")]
+		[FieldOffset(Offset = "0x60")]
+		private MeshCollider m_Collider;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x400000B")]
+		private const string kPointName = "point";
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x400000C")]
+		private const string kPointShaderName = "PointShader";
 
-		*/
+		[Token(Token = "0x17000001")]
+		internal MeshFilter filter
+		{
+			[Token(Token = "0x6000001")]
+			[Address(RVA = "0x29FEE00", Offset = "0x29FEE00", VA = "0x29FEE00")]
+			get
+			{
+				return null;
+			}
+		}
+
+		[Token(Token = "0x17000002")]
+		internal MeshRenderer renderer
+		{
+			[Token(Token = "0x6000002")]
+			[Address(RVA = "0x29FEEAC", Offset = "0x29FEEAC", VA = "0x29FEEAC")]
+			get
+			{
+				return null;
+			}
+		}
+
+		[Token(Token = "0x17000003")]
+		internal MeshCollider collider
+		{
+			[Token(Token = "0x6000003")]
+			[Address(RVA = "0x29FEF58", Offset = "0x29FEF58", VA = "0x29FEF58")]
+			get
+			{
+				return null;
+			}
+		}
+
+		[Token(Token = "0x6000004")]
+		[Address(RVA = "0x29FF004", Offset = "0x29FF004", VA = "0x29FF004")]
+		private void Update()
+		{
+		}
+
+		[Token(Token = "0x6000005")]
+		[Address(RVA = "0x2A0007C", Offset = "0x2A0007C", VA = "0x2A0007C")]
+		private static Vector3 Bezier(Vector3 start, Vector3 control, Vector3 end, float t)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000006")]
+		[Address(RVA = "0x29FF614", Offset = "0x29FF614", VA = "0x29FF614")]
+		public void BuildMountain()
+		{
+		}
+
+		[Token(Token = "0x6000007")]
+		[Address(RVA = "0x2A000DC", Offset = "0x2A000DC", VA = "0x2A000DC")]
+		public void AddPoint(Vector3 pos, bool rebuild = true)
+		{
+		}
+
+		[Token(Token = "0x6000008")]
+		[Address(RVA = "0x2A00354", Offset = "0x2A00354", VA = "0x2A00354")]
+		public void InsertPoint(int index, Vector3 pos, bool rebuild = true)
+		{
+		}
+
+		[Token(Token = "0x6000009")]
+		[Address(RVA = "0x2A006EC", Offset = "0x2A006EC", VA = "0x2A006EC")]
+		public void RemovePoint(int index, bool rebuild = true)
+		{
+		}
+
+		[Token(Token = "0x600000A")]
+		[Address(RVA = "0x2A008A8", Offset = "0x2A008A8", VA = "0x2A008A8")]
+		public void MovePoint(int index, Vector3 pos)
+		{
+		}
+
+		[Token(Token = "0x600000B")]
+		[Address(RVA = "0x29FF378", Offset = "0x29FF378", VA = "0x29FF378")]
+		private void CheckTransformList()
+		{
+		}
+
+		[Token(Token = "0x600000C")]
+		[Address(RVA = "0x2A0045C", Offset = "0x2A0045C", VA = "0x2A0045C")]
+		private Transform CreatePointTransform(Vector3 pos)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x600000D")]
+		[Address(RVA = "0x2A00168", Offset = "0x2A00168", VA = "0x2A00168")]
+		private void AddBevels(List<Vector3> vertices, List<Vector3> normals, List<List<int>> triangles)
+		{
+		}
+
+		[Token(Token = "0x600000E")]
+		[Address(RVA = "0x2A009CC", Offset = "0x2A009CC", VA = "0x2A009CC")]
+		private static float CalculateSlope(float height, float size)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x600000F")]
+		[Address(RVA = "0x2A0150C", Offset = "0x2A0150C", VA = "0x2A0150C")]
+		private static void AddSide(IReadOnlyList<Vector3> top, IReadOnlyList<Vector3> bottom, List<Vector3> vertices, List<List<int>> triangles)
+		{
+		}
+
+		[Token(Token = "0x6000010")]
+		[Address(RVA = "0x2A0165C", Offset = "0x2A0165C", VA = "0x2A0165C")]
+		private static List<int> CreateTriangles(int startOffset, int pointCount)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6000011")]
+		[Address(RVA = "0x2A00A10", Offset = "0x2A00A10", VA = "0x2A00A10")]
+		private static List<Vector3> CalculateNormals(IReadOnlyList<Vector3> vertices, float slope)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6000012")]
+		[Address(RVA = "0x2A00F34", Offset = "0x2A00F34", VA = "0x2A00F34")]
+		private static List<Vector3> CreateSideVertices(IReadOnlyList<Vector3> fromPolygon, float height, float size)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6000013")]
+		[Address(RVA = "0x2A0178C", Offset = "0x2A0178C", VA = "0x2A0178C")]
+		private static bool ContainsPoint(IReadOnlyList<Vector2> polyPoints, Vector2 p)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000014")]
+		[Address(RVA = "0x2A01A30", Offset = "0x2A01A30", VA = "0x2A01A30")]
+		public MountainGenerator()
+		{
+		}
 	}
 }

@@ -1,63 +1,160 @@
+using System.Collections.Generic;
+using Audio;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000A3A")]
 public class OverworldFanButton : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4003873")]
+	[FieldOffset(Offset = "0x18")]
+	public List<OverworldFan> connectedFans;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4003874")]
+	[FieldOffset(Offset = "0x20")]
+	public bool onFanState;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4003875")]
+	[FieldOffset(Offset = "0x28")]
+	public SpriteRenderer RendererButtonUp;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4003876")]
+	[FieldOffset(Offset = "0x30")]
+	public Transform buttonTop;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4003877")]
+	[FieldOffset(Offset = "0x38")]
+	public List<SpriteRenderer> sprites;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4003878")]
+	[FieldOffset(Offset = "0x40")]
+	public InvisibleCullingObject culling;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4003879")]
+	[FieldOffset(Offset = "0x48")]
+	public float buttonTopUpPositionY;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x400387A")]
+	[FieldOffset(Offset = "0x4C")]
+	public float buttonTopDownPositionY;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x400387B")]
+	[FieldOffset(Offset = "0x50")]
+	public AudioClipSettings downClip;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x400387C")]
+	[FieldOffset(Offset = "0x58")]
+	public AudioClipSettings upClip;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x400387D")]
+	[FieldOffset(Offset = "0x60")]
+	private bool visible;
 
-	5. Script Content Level 0
+	[Token(Token = "0x400387E")]
+	[FieldOffset(Offset = "0x64")]
+	private int count;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x400387F")]
+	[FieldOffset(Offset = "0x68")]
+	private BoxCollider2D col;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4003880")]
+	[FieldOffset(Offset = "0x70")]
+	private List<OverworldFanButtonActivator> rigidsOnButton;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4003881")]
+	[FieldOffset(Offset = "0x78")]
+	public OverworldFanButtonActivator defaultObject;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x60030B0")]
+	[Address(RVA = "0x15B6680", Offset = "0x15B6680", VA = "0x15B6680")]
+	private void SetFans(bool state)
+	{
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x60030B1")]
+	[Address(RVA = "0x15B67D4", Offset = "0x15B67D4", VA = "0x15B67D4")]
+	private void Awake()
+	{
+	}
 
-	*/
+	[Token(Token = "0x60030B2")]
+	[Address(RVA = "0x15B69D8", Offset = "0x15B69D8", VA = "0x15B69D8")]
+	private void OnEnable()
+	{
+	}
+
+	[Token(Token = "0x60030B3")]
+	[Address(RVA = "0x15B6B8C", Offset = "0x15B6B8C", VA = "0x15B6B8C")]
+	private void PokeObjectsAndHopePhysicsSolvedIssues()
+	{
+	}
+
+	[Token(Token = "0x60030B4")]
+	[Address(RVA = "0x15B6FCC", Offset = "0x15B6FCC", VA = "0x15B6FCC")]
+	public void AddAObject()
+	{
+	}
+
+	[Token(Token = "0x60030B5")]
+	[Address(RVA = "0x15B6E84", Offset = "0x15B6E84", VA = "0x15B6E84")]
+	private void AddObject(OverworldFanButtonActivator buttonActivator)
+	{
+	}
+
+	[Token(Token = "0x60030B6")]
+	[Address(RVA = "0x15B7094", Offset = "0x15B7094", VA = "0x15B7094")]
+	private void RemoveObject(OverworldFanButtonActivator buttonActivator)
+	{
+	}
+
+	[Token(Token = "0x60030B7")]
+	[Address(RVA = "0x15B7160", Offset = "0x15B7160", VA = "0x15B7160")]
+	private void OnDrawGizmosSelected()
+	{
+	}
+
+	[Token(Token = "0x60030B8")]
+	[Address(RVA = "0x15B726C", Offset = "0x15B726C", VA = "0x15B726C")]
+	private void OnTriggerEnter2D(Collider2D collision)
+	{
+	}
+
+	[Token(Token = "0x60030B9")]
+	[Address(RVA = "0x15B703C", Offset = "0x15B703C", VA = "0x15B703C")]
+	private void SetButtonDown()
+	{
+	}
+
+	[Token(Token = "0x60030BA")]
+	[Address(RVA = "0x15B7338", Offset = "0x15B7338", VA = "0x15B7338")]
+	private void OnTriggerExit2D(Collider2D collision)
+	{
+	}
+
+	[Token(Token = "0x60030BB")]
+	[Address(RVA = "0x15B6A70", Offset = "0x15B6A70", VA = "0x15B6A70")]
+	private void SetButtonUp()
+	{
+	}
+
+	[Token(Token = "0x60030BC")]
+	[Address(RVA = "0x15B7404", Offset = "0x15B7404", VA = "0x15B7404")]
+	public OverworldFanButton()
+	{
+	}
+
+	[Token(Token = "0x60030BD")]
+	[Address(RVA = "0x15B740C", Offset = "0x15B740C", VA = "0x15B740C")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x6958C", Offset = "0x6958C")]
+	private void _003CAwake_003Eb__16_0()
+	{
+	}
+
+	[Token(Token = "0x60030BE")]
+	[Address(RVA = "0x15B7418", Offset = "0x15B7418", VA = "0x15B7418")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x6959C", Offset = "0x6959C")]
+	private void _003CAwake_003Eb__16_1()
+	{
+	}
 }

@@ -1,63 +1,239 @@
+using System;
+using Core;
+using GolfCourse;
+using Il2CppDummyDll;
 using UnityEngine;
 
-public class GiraffePainterController : MonoBehaviour
+[Token(Token = "0x20001F5")]
+public class GiraffePainterController : GolfBallShooterBase
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x20001F6")]
+	public enum PaintStateEnum
+	{
+		[Token(Token = "0x4000993")]
+		PlayerControlled = 0,
+		[Token(Token = "0x4000994")]
+		AutoPainting = 1,
+		[Token(Token = "0x4000995")]
+		NewPoseRoutine = 2
+	}
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4000971")]
+	[FieldOffset(Offset = "0x60")]
+	public Transform PlayerTarget;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4000972")]
+	[FieldOffset(Offset = "0x68")]
+	public Transform GiraffeLeg;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4000973")]
+	[FieldOffset(Offset = "0x70")]
+	public float ShootForce;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4000974")]
+	[FieldOffset(Offset = "0x74")]
+	public float MoveForce;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4000975")]
+	[FieldOffset(Offset = "0x78")]
+	public Vector2 CanvasBounds;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4000976")]
+	[FieldOffset(Offset = "0x80")]
+	public Animator GiraffeAnimator;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4000977")]
+	[FieldOffset(Offset = "0x88")]
+	public Transform CanvasUp;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4000978")]
+	[FieldOffset(Offset = "0x90")]
+	public Transform BrushPointOnCanvas;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4000979")]
+	[FieldOffset(Offset = "0x98")]
+	public Transform Brush;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x400097A")]
+	[FieldOffset(Offset = "0xA0")]
+	public Transform BlueprintContainer;
 
-	5. Script Content Level 0
+	[Token(Token = "0x400097B")]
+	[FieldOffset(Offset = "0xA8")]
+	public Animator AutoPaintAnimator;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x400097C")]
+	[FieldOffset(Offset = "0xB0")]
+	public float DistanceThreshold;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x400097D")]
+	[FieldOffset(Offset = "0xB8")]
+	public Material PaintingMat;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x400097E")]
+	[FieldOffset(Offset = "0xC0")]
+	public PoseMachine PoseMachine;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x400097F")]
+	[FieldOffset(Offset = "0xC8")]
+	public Camera PoseCamera;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x4000980")]
+	[FieldOffset(Offset = "0xD0")]
+	public GolfCoursePinGoal PinGoal;
 
-	*/
+	[Token(Token = "0x4000981")]
+	[FieldOffset(Offset = "0xD8")]
+	public bool continiousMove;
+
+	[Token(Token = "0x4000982")]
+	[FieldOffset(Offset = "0xDC")]
+	public float SizeMod;
+
+	[Token(Token = "0x4000983")]
+	[FieldOffset(Offset = "0xE0")]
+	public bool HavePainterFollowPlayerTarget;
+
+	[Token(Token = "0x4000984")]
+	[FieldOffset(Offset = "0xE1")]
+	public bool DoAutoPainting;
+
+	[Token(Token = "0x4000985")]
+	[FieldOffset(Offset = "0xE8")]
+	public Action<PaintStateEnum> OnChangeState;
+
+	[Token(Token = "0x4000986")]
+	[FieldOffset(Offset = "0xF0")]
+	public Action OnNewPose;
+
+	[Token(Token = "0x4000987")]
+	[FieldOffset(Offset = "0xF8")]
+	public Action OnRedoPose;
+
+	[Token(Token = "0x4000988")]
+	[FieldOffset(Offset = "0x100")]
+	public Action OnAnyComplete;
+
+	[Token(Token = "0x4000989")]
+	[FieldOffset(Offset = "0x108")]
+	private Vector3 currentTarget;
+
+	[Token(Token = "0x400098A")]
+	[FieldOffset(Offset = "0x114")]
+	private Vector3 curVel;
+
+	[Token(Token = "0x400098B")]
+	[FieldOffset(Offset = "0x120")]
+	private Vector3 startScale;
+
+	[Token(Token = "0x400098C")]
+	[FieldOffset(Offset = "0x12C")]
+	private int currentBlueprint;
+
+	[Token(Token = "0x400098D")]
+	[FieldOffset(Offset = "0x130")]
+	private PaintingBlueprint[] bluePrints;
+
+	[Token(Token = "0x400098E")]
+	[FieldOffset(Offset = "0x138")]
+	private PaintStateEnum PaintState;
+
+	[Token(Token = "0x400098F")]
+	[FieldOffset(Offset = "0x13C")]
+	private float autoPaintTimer;
+
+	[Token(Token = "0x4000990")]
+	[FieldOffset(Offset = "0x140")]
+	private MeshRenderer painter;
+
+	[Token(Token = "0x4000991")]
+	[FieldOffset(Offset = "0x148")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x4A534", Offset = "0x4A534")]
+	private Action m_OnClear;
+
+	[Token(Token = "0x14000004")]
+	public event Action OnClear
+	{
+		[Token(Token = "0x60008C4")]
+		[Address(RVA = "0x148AC90", Offset = "0x148AC90", VA = "0x148AC90")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x5F5EC", Offset = "0x5F5EC")]
+		add
+		{
+		}
+		[Token(Token = "0x60008C5")]
+		[Address(RVA = "0x148AD34", Offset = "0x148AD34", VA = "0x148AD34")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x5F5FC", Offset = "0x5F5FC")]
+		remove
+		{
+		}
+	}
+
+	[Token(Token = "0x60008C6")]
+	[Address(RVA = "0x148ADD8", Offset = "0x148ADD8", VA = "0x148ADD8", Slot = "11")]
+	protected override void Awake()
+	{
+	}
+
+	[Token(Token = "0x60008C7")]
+	[Address(RVA = "0x148B56C", Offset = "0x148B56C", VA = "0x148B56C", Slot = "7")]
+	public override void OnShoot(Vector3 boost)
+	{
+	}
+
+	[Token(Token = "0x60008C8")]
+	[Address(RVA = "0x148B5F0", Offset = "0x148B5F0", VA = "0x148B5F0", Slot = "6")]
+	public override void OnAimUpdate(Vector3 boost, bool onlyAimArrow)
+	{
+	}
+
+	[Token(Token = "0x60008C9")]
+	[Address(RVA = "0x148B504", Offset = "0x148B504", VA = "0x148B504")]
+	private void ChangeState(PaintStateEnum newState)
+	{
+	}
+
+	[Token(Token = "0x60008CA")]
+	[Address(RVA = "0x148B690", Offset = "0x148B690", VA = "0x148B690")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x60008CB")]
+	[Address(RVA = "0x148C3C8", Offset = "0x148C3C8", VA = "0x148C3C8")]
+	public void RedoPose()
+	{
+	}
+
+	[Token(Token = "0x60008CC")]
+	[Address(RVA = "0x148C13C", Offset = "0x148C13C", VA = "0x148C13C")]
+	private void NextPose()
+	{
+	}
+
+	[Token(Token = "0x60008CD")]
+	[Address(RVA = "0x148C4E4", Offset = "0x148C4E4", VA = "0x148C4E4")]
+	public GiraffePainterController()
+	{
+	}
+
+	[Token(Token = "0x60008CE")]
+	[Address(RVA = "0x148C534", Offset = "0x148C534", VA = "0x148C534")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x5F60C", Offset = "0x5F60C")]
+	private void _003CAwake_003Eb__36_0()
+	{
+	}
+
+	[Token(Token = "0x60008CF")]
+	[Address(RVA = "0x148C5A8", Offset = "0x148C5A8", VA = "0x148C5A8")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x5F61C", Offset = "0x5F61C")]
+	private void _003CRedoPose_003Eb__41_0()
+	{
+	}
+
+	[Token(Token = "0x60008D0")]
+	[Address(RVA = "0x148C758", Offset = "0x148C758", VA = "0x148C758")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x5F62C", Offset = "0x5F62C")]
+	private void _003CNextPose_003Eb__42_0()
+	{
+	}
 }

@@ -1,66 +1,135 @@
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Core.UI
 {
+	[Token(Token = "0x2001471")]
 	public class AimMarker : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4007032")]
+		[FieldOffset(Offset = "0x18")]
+		public Vector3 Up;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4007033")]
+		[FieldOffset(Offset = "0x28")]
+		public Image Arrow;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4007034")]
+		[FieldOffset(Offset = "0x30")]
+		public Image Circle;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4007035")]
+		[FieldOffset(Offset = "0x38")]
+		public OverworldManager2d manager;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4007036")]
+		[FieldOffset(Offset = "0x40")]
+		public OverworldBallManager ballManager;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4007037")]
+		[FieldOffset(Offset = "0x48")]
+		private float DistanceToBallThreshold;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4007038")]
+		[FieldOffset(Offset = "0x50")]
+		private Coroutine routine;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4007039")]
+		[FieldOffset(Offset = "0x58")]
+		private GolfBallController controller;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x6006058")]
+		[Address(RVA = "0x140BC30", Offset = "0x140BC30", VA = "0x140BC30")]
+		private void Start()
+		{
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6006059")]
+		[Address(RVA = "0x140C2E4", Offset = "0x140C2E4", VA = "0x140C2E4")]
+		private void OnLevelStarting(List<LevelData> levelDatas)
+		{
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x600605A")]
+		[Address(RVA = "0x140C334", Offset = "0x140C334", VA = "0x140C334")]
+		public void OnGameStart(LevelData level)
+		{
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x600605B")]
+		[Address(RVA = "0x140C428", Offset = "0x140C428", VA = "0x140C428")]
+		private void OnComplete(Level.CompletedState completedState)
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x600605C")]
+		[Address(RVA = "0x140C450", Offset = "0x140C450", VA = "0x140C450")]
+		public void OnGameStop()
+		{
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x600605D")]
+		[Address(RVA = "0x140BF8C", Offset = "0x140BF8C", VA = "0x140BF8C")]
+		public void SubscribeToController(GolfBallController newController)
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x600605E")]
+		[Address(RVA = "0x140C52C", Offset = "0x140C52C", VA = "0x140C52C")]
+		public void UnsubscribeToController()
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x600605F")]
+		[Address(RVA = "0x140C7D0", Offset = "0x140C7D0", VA = "0x140C7D0")]
+		private void OnAimUpdate(Vector3 boost, bool isCancelled)
+		{
+		}
 
-		*/
+		[Token(Token = "0x6006060")]
+		[Address(RVA = "0x140CAE4", Offset = "0x140CAE4", VA = "0x140CAE4")]
+		private void Show()
+		{
+		}
+
+		[Token(Token = "0x6006061")]
+		[Address(RVA = "0x140C30C", Offset = "0x140C30C", VA = "0x140C30C")]
+		public void Hide()
+		{
+		}
+
+		[Token(Token = "0x6006062")]
+		[Address(RVA = "0x140CC38", Offset = "0x140CC38", VA = "0x140CC38")]
+		private void Hide(Vector3 v)
+		{
+		}
+
+		[Token(Token = "0x6006063")]
+		[Address(RVA = "0x140CC60", Offset = "0x140CC60", VA = "0x140CC60")]
+		private void Hide(string s)
+		{
+		}
+
+		[Token(Token = "0x6006064")]
+		[Address(RVA = "0x140CC88", Offset = "0x140CC88", VA = "0x140CC88")]
+		public AimMarker()
+		{
+		}
+
+		[Token(Token = "0x6006065")]
+		[Address(RVA = "0x140CC9C", Offset = "0x140CC9C", VA = "0x140CC9C")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x72F64", Offset = "0x72F64")]
+		private void _003CStart_003Eb__8_0(Transmogrif.BALLSHAPES shape)
+		{
+		}
+
+		[Token(Token = "0x6006066")]
+		[Address(RVA = "0x140CD04", Offset = "0x140CD04", VA = "0x140CD04")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x72F74", Offset = "0x72F74")]
+		private void _003CShow_003Eb__16_0(float t)
+		{
+		}
 	}
 }

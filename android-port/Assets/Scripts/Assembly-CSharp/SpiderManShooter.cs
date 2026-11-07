@@ -1,63 +1,169 @@
+using System;
+using System.Collections.Generic;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
-public class SpiderManShooter : MonoBehaviour
+[Token(Token = "0x200086E")]
+public class SpiderManShooter : GolfBallShooterBase
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Serializable]
+	[Token(Token = "0x200086F")]
+	public class Spiderhook
+	{
+		[Token(Token = "0x4002E34")]
+		[FieldOffset(Offset = "0x10")]
+		public Rigidbody HookRigid;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4002E35")]
+		[FieldOffset(Offset = "0x18")]
+		public Transform HookAttach;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4002E36")]
+		[FieldOffset(Offset = "0x20")]
+		public bool HasHit;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4002E37")]
+		[FieldOffset(Offset = "0x21")]
+		public bool Enabled;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4002E38")]
+		[FieldOffset(Offset = "0x22")]
+		public bool OnlyThisActive;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x60026F1")]
+		[Address(RVA = "0x1859588", Offset = "0x1859588", VA = "0x1859588")]
+		public Spiderhook()
+		{
+		}
+	}
 
-	3. Assembly Reconstruction has not been implemented.
+	[Serializable]
+	[Token(Token = "0x2000870")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x41AB0", Offset = "0x41AB0")]
+	private sealed class _003C_003Ec
+	{
+		[Token(Token = "0x4002E39")]
+		[FieldOffset(Offset = "0x0")]
+		public static readonly _003C_003Ec _003C_003E9;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4002E3A")]
+		[FieldOffset(Offset = "0x8")]
+		public static Func<Spiderhook, bool> _003C_003E9__13_0;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x60026F3")]
+		[Address(RVA = "0x1859568", Offset = "0x1859568", VA = "0x1859568")]
+		public _003C_003Ec()
+		{
+		}
 
-	4. This script is unnecessary.
+		[Token(Token = "0x60026F4")]
+		[Address(RVA = "0x1859570", Offset = "0x1859570", VA = "0x1859570")]
+		internal bool _003CStart_003Eb__13_0(Spiderhook h)
+		{
+			return default;
+		}
+	}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4002E28")]
+	[FieldOffset(Offset = "0x60")]
+	public List<Spiderhook> SpiderHooks;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4002E29")]
+	[FieldOffset(Offset = "0x68")]
+	public float HookSpeed;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4002E2A")]
+	[FieldOffset(Offset = "0x6C")]
+	public float HookHeight;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4002E2B")]
+	[FieldOffset(Offset = "0x70")]
+	public float HookUpBoost;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4002E2C")]
+	[FieldOffset(Offset = "0x74")]
+	public float SpringTotalPullForce;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4002E2D")]
+	[FieldOffset(Offset = "0x78")]
+	public LayerMask KillLayers;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x4002E2E")]
+	[FieldOffset(Offset = "0x80")]
+	public List<AudioClip> ShootClip;
 
-	*/
+	[Token(Token = "0x4002E2F")]
+	[FieldOffset(Offset = "0x88")]
+	public List<AudioClip> ShootHitClip;
+
+	[Token(Token = "0x4002E30")]
+	[FieldOffset(Offset = "0x90")]
+	public List<AudioClip> SwingClip;
+
+	[Token(Token = "0x4002E31")]
+	[FieldOffset(Offset = "0x98")]
+	public List<AudioClip> DropClip;
+
+	[Token(Token = "0x4002E32")]
+	[FieldOffset(Offset = "0xA0")]
+	private int curHandIndex;
+
+	[Token(Token = "0x4002E33")]
+	[FieldOffset(Offset = "0xA8")]
+	private List<Spiderhook> allHooks;
+
+	[Token(Token = "0x60026E8")]
+	[Address(RVA = "0x16D4FF0", Offset = "0x16D4FF0", VA = "0x16D4FF0")]
+	private void Start()
+	{
+	}
+
+	[Token(Token = "0x60026E9")]
+	[Address(RVA = "0x16D5318", Offset = "0x16D5318", VA = "0x16D5318", Slot = "7")]
+	public override void OnShoot(Vector3 boost)
+	{
+	}
+
+	[Token(Token = "0x60026EA")]
+	[Address(RVA = "0x16D55CC", Offset = "0x16D55CC", VA = "0x16D55CC")]
+	public void ReenableAllHooks()
+	{
+	}
+
+	[Token(Token = "0x60026EB")]
+	[Address(RVA = "0x16D571C", Offset = "0x16D571C", VA = "0x16D571C")]
+	public void ShootTowardsPoint(Transform point)
+	{
+	}
+
+	[Token(Token = "0x60026EC")]
+	[Address(RVA = "0x16D5A04", Offset = "0x16D5A04", VA = "0x16D5A04", Slot = "12")]
+	protected override void FixedUpdate()
+	{
+	}
+
+	[Token(Token = "0x60026ED")]
+	[Address(RVA = "0x16D5D44", Offset = "0x16D5D44", VA = "0x16D5D44", Slot = "9")]
+	public override void OnReset()
+	{
+	}
+
+	[Token(Token = "0x60026EE")]
+	[Address(RVA = "0x16D5D6C", Offset = "0x16D5D6C", VA = "0x16D5D6C")]
+	private void Reset()
+	{
+	}
+
+	[Token(Token = "0x60026EF")]
+	[Address(RVA = "0x16D5F44", Offset = "0x16D5F44", VA = "0x16D5F44")]
+	private void OnCollisionEnter(Collision other)
+	{
+	}
+
+	[Token(Token = "0x60026F0")]
+	[Address(RVA = "0x16D6014", Offset = "0x16D6014", VA = "0x16D6014")]
+	public SpiderManShooter()
+	{
+	}
 }

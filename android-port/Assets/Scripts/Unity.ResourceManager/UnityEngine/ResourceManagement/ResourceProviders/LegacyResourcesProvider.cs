@@ -1,66 +1,72 @@
-using UnityEngine;
+using Il2CppDummyDll;
+using UnityEngine.ResourceManagement.ResourceLocations;
 
 namespace UnityEngine.ResourceManagement.ResourceProviders
 {
-	public class LegacyResourcesProvider : MonoBehaviour
+	[Token(Token = "0x2000058")]
+	[Attribute(Name = "DisplayNameAttribute", RVA = "0x1B7BD8", Offset = "0x1B7BD8")]
+	public class LegacyResourcesProvider : ResourceProviderBase
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x2000059")]
+		internal class InternalOp
+		{
+			[Token(Token = "0x40000E4")]
+			[FieldOffset(Offset = "0x10")]
+			private ResourceRequest m_RequestOperation;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x40000E5")]
+			[FieldOffset(Offset = "0x18")]
+			private ProvideHandle m_ProvideHandle;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x6000201")]
+			[Address(RVA = "0x2A69568", Offset = "0x2A69568", VA = "0x2A69568")]
+			public void Start(ProvideHandle provideHandle)
+			{
+			}
 
-		2. Incorrect dll files were provided to AssetRipper.
+			[Token(Token = "0x6000202")]
+			[Address(RVA = "0x2A77194", Offset = "0x2A77194", VA = "0x2A77194")]
+			private bool WaitForCompletionHandler()
+			{
+				return default;
+			}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+			[Token(Token = "0x6000203")]
+			[Address(RVA = "0x2A772A4", Offset = "0x2A772A4", VA = "0x2A772A4")]
+			private void AsyncOperationCompleted(AsyncOperation op)
+			{
+			}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+			[Token(Token = "0x6000204")]
+			[Address(RVA = "0x2A77438", Offset = "0x2A77438", VA = "0x2A77438")]
+			public float PercentComplete()
+			{
+				return default;
+			}
 
-		3. Assembly Reconstruction has not been implemented.
+			[Token(Token = "0x6000205")]
+			[Address(RVA = "0x2A69560", Offset = "0x2A69560", VA = "0x2A69560")]
+			public InternalOp()
+			{
+			}
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x60001FE")]
+		[Address(RVA = "0x2A68CA8", Offset = "0x2A68CA8", VA = "0x2A68CA8", Slot = "17")]
+		public override void Provide(ProvideHandle pi)
+		{
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x60001FF")]
+		[Address(RVA = "0x2A69740", Offset = "0x2A69740", VA = "0x2A69740", Slot = "15")]
+		public override void Release(IResourceLocation location, object asset)
+		{
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
-
-		5. Script Content Level 0
-
-			AssetRipper was set to not load any script information.
-
-		6. Cpp2IL failed to decompile Il2Cpp data
-
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x6000200")]
+		[Address(RVA = "0x2A69884", Offset = "0x2A69884", VA = "0x2A69884")]
+		public LegacyResourcesProvider()
+		{
+		}
 	}
 }

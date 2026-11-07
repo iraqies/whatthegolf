@@ -1,66 +1,119 @@
-using UnityEngine;
+using System;
+using Il2CppDummyDll;
 
 namespace Unity.Notifications.iOS
 {
-	public class AuthorizationRequest : MonoBehaviour
+	[Token(Token = "0x2000004")]
+	public class AuthorizationRequest : IDisposable
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x400000C")]
+		[FieldOffset(Offset = "0x10")]
+		private bool m_IsFinished;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x400000D")]
+		[FieldOffset(Offset = "0x11")]
+		private bool m_Granted;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x400000E")]
+		[FieldOffset(Offset = "0x18")]
+		private string m_Error;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x400000F")]
+		[FieldOffset(Offset = "0x20")]
+		private string m_DeviceToken;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x17000001")]
+		public bool IsFinished
+		{
+			[Token(Token = "0x6000001")]
+			[Address(RVA = "0x2A41890", Offset = "0x2A41890", VA = "0x2A41890")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000002")]
+			[Address(RVA = "0x2A41960", Offset = "0x2A41960", VA = "0x2A41960")]
+			private set
+			{
+			}
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x17000002")]
+		public bool Granted
+		{
+			[Token(Token = "0x6000003")]
+			[Address(RVA = "0x2A41968", Offset = "0x2A41968", VA = "0x2A41968")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000004")]
+			[Address(RVA = "0x2A41A38", Offset = "0x2A41A38", VA = "0x2A41A38")]
+			private set
+			{
+			}
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x17000003")]
+		public string Error
+		{
+			[Token(Token = "0x6000005")]
+			[Address(RVA = "0x2A41A40", Offset = "0x2A41A40", VA = "0x2A41A40")]
+			get
+			{
+				return null;
+			}
+			[Token(Token = "0x6000006")]
+			[Address(RVA = "0x2A41B10", Offset = "0x2A41B10", VA = "0x2A41B10")]
+			private set
+			{
+			}
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x17000004")]
+		public string DeviceToken
+		{
+			[Token(Token = "0x6000007")]
+			[Address(RVA = "0x2A41B18", Offset = "0x2A41B18", VA = "0x2A41B18")]
+			get
+			{
+				return null;
+			}
+			[Token(Token = "0x6000008")]
+			[Address(RVA = "0x2A41BE8", Offset = "0x2A41BE8", VA = "0x2A41BE8")]
+			private set
+			{
+			}
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x6000009")]
+		[Address(RVA = "0x2A41BF0", Offset = "0x2A41BF0", VA = "0x2A41BF0")]
+		static AuthorizationRequest()
+		{
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x600000A")]
+		[Address(RVA = "0x2A41C98", Offset = "0x2A41C98", VA = "0x2A41C98")]
+		public AuthorizationRequest(AuthorizationOption authorizationOption, bool registerForRemoteNotifications)
+		{
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x600000B")]
+		[Address(RVA = "0x2A41CF0", Offset = "0x2A41CF0", VA = "0x2A41CF0")]
+		private void OnAuthorizationRequestCompleted(iOSAuthorizationRequestData requestData)
+		{
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x600000C")]
+		[Address(RVA = "0x2A41DE0", Offset = "0x2A41DE0", VA = "0x2A41DE0")]
+		internal static void OnAuthorizationRequestCompleted(IntPtr request, iOSAuthorizationRequestData requestData)
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
-
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x600000D")]
+		[Address(RVA = "0x2A41F84", Offset = "0x2A41F84", VA = "0x2A41F84", Slot = "4")]
+		public void Dispose()
+		{
+		}
 	}
 }

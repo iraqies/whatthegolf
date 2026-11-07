@@ -1,66 +1,81 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Triband.BuildPipeline
 {
-	public class ConfigurableAddress : MonoBehaviour
+	[Token(Token = "0x2000004")]
+	public class ConfigurableAddress : GuidScriptableObject
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x2000005")]
+		public enum EType
+		{
+			[Token(Token = "0x400000D")]
+			OBJECT = 0,
+			[Token(Token = "0x400000E")]
+			STRING = 1,
+			[Token(Token = "0x400000F")]
+			INT = 2,
+			[Token(Token = "0x4000010")]
+			FLOAT = 3,
+			[Token(Token = "0x4000011")]
+			BOOL = 4
+		}
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000008")]
+		internal const string UNKNOWN_TYPE = "[Any Type]";
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000009")]
+		[FieldOffset(Offset = "0x20")]
+		[SerializeField]
+		private string _customAddress;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x400000A")]
+		[FieldOffset(Offset = "0x28")]
+		[SerializeField]
+		private EType _type;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x400000B")]
+		[FieldOffset(Offset = "0x30")]
+		[SerializeField]
+		private string _objectType;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x17000004")]
+		internal EType valueType
+		{
+			[Token(Token = "0x6000006")]
+			[Address(RVA = "0x29F75EC", Offset = "0x29F75EC", VA = "0x29F75EC")]
+			get
+			{
+				return default;
+			}
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x17000005")]
+		internal string objectValueType
+		{
+			[Token(Token = "0x6000007")]
+			[Address(RVA = "0x29F75F4", Offset = "0x29F75F4", VA = "0x29F75F4")]
+			get
+			{
+				return null;
+			}
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x17000006")]
+		public string address
+		{
+			[Token(Token = "0x6000008")]
+			[Address(RVA = "0x29F75FC", Offset = "0x29F75FC", VA = "0x29F75FC")]
+			get
+			{
+				return null;
+			}
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
-
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
-
-		5. Script Content Level 0
-
-			AssetRipper was set to not load any script information.
-
-		6. Cpp2IL failed to decompile Il2Cpp data
-
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x6000009")]
+		[Address(RVA = "0x29F7638", Offset = "0x29F7638", VA = "0x29F7638")]
+		public ConfigurableAddress()
+		{
+		}
 	}
 }

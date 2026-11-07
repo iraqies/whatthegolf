@@ -1,66 +1,216 @@
-using UnityEngine;
+using Il2CppDummyDll;
 
 namespace Moments.Encoder
 {
-	public class NeuQuant : MonoBehaviour
+	[Token(Token = "0x2000285")]
+	public class NeuQuant
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x40010D1")]
+		[FieldOffset(Offset = "0x0")]
+		protected static readonly int netsize;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40010D2")]
+		[FieldOffset(Offset = "0x4")]
+		protected static readonly int prime1;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40010D3")]
+		[FieldOffset(Offset = "0x8")]
+		protected static readonly int prime2;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40010D4")]
+		[FieldOffset(Offset = "0xC")]
+		protected static readonly int prime3;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40010D5")]
+		[FieldOffset(Offset = "0x10")]
+		protected static readonly int prime4;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40010D6")]
+		[FieldOffset(Offset = "0x14")]
+		protected static readonly int minpicturebytes;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x40010D7")]
+		[FieldOffset(Offset = "0x18")]
+		protected static readonly int maxnetpos;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x40010D8")]
+		[FieldOffset(Offset = "0x1C")]
+		protected static readonly int netbiasshift;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x40010D9")]
+		[FieldOffset(Offset = "0x20")]
+		protected static readonly int ncycles;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x40010DA")]
+		[FieldOffset(Offset = "0x24")]
+		protected static readonly int intbiasshift;
 
-		5. Script Content Level 0
+		[Token(Token = "0x40010DB")]
+		[FieldOffset(Offset = "0x28")]
+		protected static readonly int intbias;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x40010DC")]
+		[FieldOffset(Offset = "0x2C")]
+		protected static readonly int gammashift;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x40010DD")]
+		[FieldOffset(Offset = "0x30")]
+		protected static readonly int gamma;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x40010DE")]
+		[FieldOffset(Offset = "0x34")]
+		protected static readonly int betashift;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x40010DF")]
+		[FieldOffset(Offset = "0x38")]
+		protected static readonly int beta;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x40010E0")]
+		[FieldOffset(Offset = "0x3C")]
+		protected static readonly int betagamma;
 
-		*/
+		[Token(Token = "0x40010E1")]
+		[FieldOffset(Offset = "0x40")]
+		protected static readonly int initrad;
+
+		[Token(Token = "0x40010E2")]
+		[FieldOffset(Offset = "0x44")]
+		protected static readonly int radiusbiasshift;
+
+		[Token(Token = "0x40010E3")]
+		[FieldOffset(Offset = "0x48")]
+		protected static readonly int radiusbias;
+
+		[Token(Token = "0x40010E4")]
+		[FieldOffset(Offset = "0x4C")]
+		protected static readonly int initradius;
+
+		[Token(Token = "0x40010E5")]
+		[FieldOffset(Offset = "0x50")]
+		protected static readonly int radiusdec;
+
+		[Token(Token = "0x40010E6")]
+		[FieldOffset(Offset = "0x54")]
+		protected static readonly int alphabiasshift;
+
+		[Token(Token = "0x40010E7")]
+		[FieldOffset(Offset = "0x58")]
+		protected static readonly int initalpha;
+
+		[Token(Token = "0x40010E8")]
+		[FieldOffset(Offset = "0x10")]
+		protected int alphadec;
+
+		[Token(Token = "0x40010E9")]
+		[FieldOffset(Offset = "0x5C")]
+		protected static readonly int radbiasshift;
+
+		[Token(Token = "0x40010EA")]
+		[FieldOffset(Offset = "0x60")]
+		protected static readonly int radbias;
+
+		[Token(Token = "0x40010EB")]
+		[FieldOffset(Offset = "0x64")]
+		protected static readonly int alpharadbshift;
+
+		[Token(Token = "0x40010EC")]
+		[FieldOffset(Offset = "0x68")]
+		protected static readonly int alpharadbias;
+
+		[Token(Token = "0x40010ED")]
+		[FieldOffset(Offset = "0x18")]
+		protected byte[] thepicture;
+
+		[Token(Token = "0x40010EE")]
+		[FieldOffset(Offset = "0x20")]
+		protected int lengthcount;
+
+		[Token(Token = "0x40010EF")]
+		[FieldOffset(Offset = "0x24")]
+		protected int samplefac;
+
+		[Token(Token = "0x40010F0")]
+		[FieldOffset(Offset = "0x28")]
+		protected int[][] network;
+
+		[Token(Token = "0x40010F1")]
+		[FieldOffset(Offset = "0x30")]
+		protected int[] netindex;
+
+		[Token(Token = "0x40010F2")]
+		[FieldOffset(Offset = "0x38")]
+		protected int[] bias;
+
+		[Token(Token = "0x40010F3")]
+		[FieldOffset(Offset = "0x40")]
+		protected int[] freq;
+
+		[Token(Token = "0x40010F4")]
+		[FieldOffset(Offset = "0x48")]
+		protected int[] radpower;
+
+		[Token(Token = "0x60010A1")]
+		[Address(RVA = "0x13BAB74", Offset = "0x13BAB74", VA = "0x13BAB74")]
+		public NeuQuant(byte[] thepic, int len, int sample)
+		{
+		}
+
+		[Token(Token = "0x60010A2")]
+		[Address(RVA = "0x13BADE8", Offset = "0x13BADE8", VA = "0x13BADE8")]
+		public byte[] ColorMap()
+		{
+			return null;
+		}
+
+		[Token(Token = "0x60010A3")]
+		[Address(RVA = "0x13BB074", Offset = "0x13BB074", VA = "0x13BB074")]
+		public void Inxbuild()
+		{
+		}
+
+		[Token(Token = "0x60010A4")]
+		[Address(RVA = "0x13BB3AC", Offset = "0x13BB3AC", VA = "0x13BB3AC")]
+		public void Learn()
+		{
+		}
+
+		[Token(Token = "0x60010A5")]
+		[Address(RVA = "0x13BBFBC", Offset = "0x13BBFBC", VA = "0x13BBFBC")]
+		public int Map(int b, int g, int r)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60010A6")]
+		[Address(RVA = "0x13BC21C", Offset = "0x13BC21C", VA = "0x13BC21C")]
+		public byte[] Process()
+		{
+			return null;
+		}
+
+		[Token(Token = "0x60010A7")]
+		[Address(RVA = "0x13BC250", Offset = "0x13BC250", VA = "0x13BC250")]
+		public void Unbiasnet()
+		{
+		}
+
+		[Token(Token = "0x60010A8")]
+		[Address(RVA = "0x13BBCF0", Offset = "0x13BBCF0", VA = "0x13BBCF0")]
+		protected void Alterneigh(int rad, int i, int b, int g, int r)
+		{
+		}
+
+		[Token(Token = "0x60010A9")]
+		[Address(RVA = "0x13BBBC0", Offset = "0x13BBBC0", VA = "0x13BBBC0")]
+		protected void Altersingle(int alpha, int i, int b, int g, int r)
+		{
+		}
+
+		[Token(Token = "0x60010AA")]
+		[Address(RVA = "0x13BB91C", Offset = "0x13BB91C", VA = "0x13BB91C")]
+		protected int Contest(int b, int g, int r)
+		{
+			return default;
+		}
 	}
 }

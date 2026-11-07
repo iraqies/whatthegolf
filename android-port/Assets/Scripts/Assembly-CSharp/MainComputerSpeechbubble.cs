@@ -1,63 +1,121 @@
+using System;
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
 
-public class MainComputerSpeechbubble : MonoBehaviour
+[Token(Token = "0x2000A50")]
+public class MainComputerSpeechbubble : GolfBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Serializable]
+	[Token(Token = "0x2000A51")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x42C70", Offset = "0x42C70")]
+	private sealed class _003C_003Ec
+	{
+		[Token(Token = "0x4003901")]
+		[FieldOffset(Offset = "0x0")]
+		public static readonly _003C_003Ec _003C_003E9;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4003902")]
+		[FieldOffset(Offset = "0x8")]
+		public static Func<OverworldMainDoorPlate, bool> _003C_003E9__8_0;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4003903")]
+		[FieldOffset(Offset = "0x10")]
+		public static Func<OverworldMainDoorPlate, bool> _003C_003E9__11_0;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x600312B")]
+		[Address(RVA = "0x17F14E8", Offset = "0x17F14E8", VA = "0x17F14E8")]
+		public _003C_003Ec()
+		{
+		}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x600312C")]
+		[Address(RVA = "0x17F14F0", Offset = "0x17F14F0", VA = "0x17F14F0")]
+		internal bool _003CRobot_OnPlateChanged_003Eb__8_0(OverworldMainDoorPlate p)
+		{
+			return default;
+		}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x600312D")]
+		[Address(RVA = "0x17F1508", Offset = "0x17F1508", VA = "0x17F1508")]
+		internal bool _003CUpddateSpeechBubbles_003Eb__11_0(OverworldMainDoorPlate p)
+		{
+			return default;
+		}
+	}
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x40038FB")]
+	[FieldOffset(Offset = "0x20")]
+	public List<SpeechbubbleList> textOnIndicatorOn;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x40038FC")]
+	[FieldOffset(Offset = "0x28")]
+	public SpeechbubbleList textOnHitBeforeIndicators;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x40038FD")]
+	[FieldOffset(Offset = "0x30")]
+	public SpeechbubbleList textOnHitWithSomeIndicators;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x40038FE")]
+	[FieldOffset(Offset = "0x38")]
+	public SpeechbubbleList textOnHitWithAllIndicators;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x40038FF")]
+	[FieldOffset(Offset = "0x40")]
+	[SerializeField]
+	private ShowSpeechbubbleOnHit hitbubble;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4003900")]
+	[FieldOffset(Offset = "0x48")]
+	[SerializeField]
+	private OverworldMainDoorRobot robot;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x6003122")]
+	[Address(RVA = "0x1555A54", Offset = "0x1555A54", VA = "0x1555A54", Slot = "4")]
+	public override void OnPrePlayOrPreCompile()
+	{
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x6003123")]
+	[Address(RVA = "0x1555AE0", Offset = "0x1555AE0", VA = "0x1555AE0")]
+	private void Awake()
+	{
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x6003124")]
+	[Address(RVA = "0x1555B74", Offset = "0x1555B74", VA = "0x1555B74")]
+	private void Robot_OnPlateChanged()
+	{
+	}
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x6003125")]
+	[Address(RVA = "0x1555FD4", Offset = "0x1555FD4", VA = "0x1555FD4")]
+	private void OnCollisionEnter2D(Collision2D collision)
+	{
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x6003126")]
+	[Address(RVA = "0x155616C", Offset = "0x155616C", VA = "0x155616C")]
+	private void Robot_OnIsReady()
+	{
+	}
 
-	*/
+	[Token(Token = "0x6003127")]
+	[Address(RVA = "0x1555E0C", Offset = "0x1555E0C", VA = "0x1555E0C")]
+	private void UpddateSpeechBubbles()
+	{
+	}
+
+	[Token(Token = "0x6003128")]
+	[Address(RVA = "0x1556170", Offset = "0x1556170", VA = "0x1556170")]
+	public MainComputerSpeechbubble()
+	{
+	}
+
+	[Token(Token = "0x6003129")]
+	[Address(RVA = "0x1556178", Offset = "0x1556178", VA = "0x1556178")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x697E4", Offset = "0x697E4")]
+	private void _003CRobot_OnPlateChanged_003Eb__8_1()
+	{
+	}
 }

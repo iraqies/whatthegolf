@@ -1,66 +1,141 @@
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.UI;
+using WhatTheGolf.LevelDesigner.Events;
 
 namespace WhatTheGolf.LevelDesigner.GUI
 {
-	public class ToolGUI : MonoBehaviour
+	[Token(Token = "0x20012A6")]
+	public class ToolGUI : BaseGUI, IRequireEvents<GameStateEvent>, IRequireEvents
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x40064A6")]
+		[FieldOffset(Offset = "0x40")]
+		[SerializeField]
+		private PersistentButton m_SelectionToolButton;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40064A7")]
+		[FieldOffset(Offset = "0x48")]
+		[SerializeField]
+		private BrushToolGUI m_PaintToolButton;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40064A8")]
+		[FieldOffset(Offset = "0x50")]
+		[SerializeField]
+		private BrushToolGUI m_EraseToolButton;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40064A9")]
+		[FieldOffset(Offset = "0x58")]
+		[SerializeField]
+		private Button m_UndoButton;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40064AA")]
+		[FieldOffset(Offset = "0x60")]
+		[SerializeField]
+		private Button m_RedoButton;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x170009E1")]
+		public override bool isActiveOnOpen
+		{
+			[Token(Token = "0x60056A7")]
+			[Address(RVA = "0x171DC94", Offset = "0x171DC94", VA = "0x171DC94", Slot = "4")]
+			get
+			{
+				return default;
+			}
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x170009E2")]
+		public override bool hasFocus
+		{
+			[Token(Token = "0x60056A8")]
+			[Address(RVA = "0x171DC9C", Offset = "0x171DC9C", VA = "0x171DC9C", Slot = "5")]
+			get
+			{
+				return default;
+			}
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x170009E3")]
+		private bool isDraggingSlider
+		{
+			[Token(Token = "0x60056A9")]
+			[Address(RVA = "0x171DCE8", Offset = "0x171DCE8", VA = "0x171DCE8")]
+			get
+			{
+				return default;
+			}
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x60056AA")]
+		[Address(RVA = "0x171DD34", Offset = "0x171DD34", VA = "0x171DD34", Slot = "6")]
+		public override void Init()
+		{
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x60056AB")]
+		[Address(RVA = "0x171E094", Offset = "0x171E094", VA = "0x171E094")]
+		private void Update()
+		{
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x60056AC")]
+		[Address(RVA = "0x171E0F0", Offset = "0x171E0F0", VA = "0x171E0F0")]
+		private void OnSelectionToolSelected(PersistentButton obj)
+		{
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x60056AD")]
+		[Address(RVA = "0x171E154", Offset = "0x171E154", VA = "0x171E154")]
+		private void OnPaintToolChanged()
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x60056AE")]
+		[Address(RVA = "0x171E18C", Offset = "0x171E18C", VA = "0x171E18C")]
+		private void OnEraseToolChanged()
+		{
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x60056AF")]
+		[Address(RVA = "0x171E1C4", Offset = "0x171E1C4", VA = "0x171E1C4")]
+		private void OnUndoClicked()
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x60056B0")]
+		[Address(RVA = "0x171E228", Offset = "0x171E228", VA = "0x171E228")]
+		private void OnRedoClicked()
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x60056B1")]
+		[Address(RVA = "0x171E28C", Offset = "0x171E28C", VA = "0x171E28C")]
+		private void Show()
+		{
+		}
 
-		*/
+		[Token(Token = "0x60056B2")]
+		[Address(RVA = "0x171E2F0", Offset = "0x171E2F0", VA = "0x171E2F0")]
+		private void Hide()
+		{
+		}
+
+		[Token(Token = "0x60056B3")]
+		[Address(RVA = "0x171E3D4", Offset = "0x171E3D4", VA = "0x171E3D4")]
+		private void Disable()
+		{
+		}
+
+		[Token(Token = "0x60056B4")]
+		[Address(RVA = "0x171E3FC", Offset = "0x171E3FC", VA = "0x171E3FC", Slot = "7")]
+		public void OnEvent(GameStateEvent evt)
+		{
+		}
+
+		[Token(Token = "0x60056B5")]
+		[Address(RVA = "0x171E4A0", Offset = "0x171E4A0", VA = "0x171E4A0")]
+		public ToolGUI()
+		{
+		}
 	}
 }

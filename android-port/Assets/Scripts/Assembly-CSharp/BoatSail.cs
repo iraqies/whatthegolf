@@ -1,63 +1,114 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
-public class BoatSail : MonoBehaviour
+[Token(Token = "0x2000A8D")]
+public class BoatSail : OverworldBall2D
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4003A9A")]
+	[FieldOffset(Offset = "0xD8")]
+	public Transform MastPivot;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4003A9B")]
+	[FieldOffset(Offset = "0xE0")]
+	public float MastRotateSpeed;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4003A9C")]
+	[FieldOffset(Offset = "0xE8")]
+	public Transform SailControl;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4003A9D")]
+	[FieldOffset(Offset = "0xF0")]
+	public Vector2 SailRange;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4003A9E")]
+	[FieldOffset(Offset = "0xF8")]
+	public float SailSpeedMod;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4003A9F")]
+	[FieldOffset(Offset = "0x100")]
+	public LineRenderer Line;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4003AA0")]
+	[FieldOffset(Offset = "0x108")]
+	public Rigidbody2D Rigid;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4003AA1")]
+	[FieldOffset(Offset = "0x110")]
+	public float BaseSpeed;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4003AA2")]
+	[FieldOffset(Offset = "0x114")]
+	public float MaxSpeed;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4003AA3")]
+	[FieldOffset(Offset = "0x118")]
+	public float BoatRotateSpeed;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4003AA4")]
+	[FieldOffset(Offset = "0x11C")]
+	public float sidewaysDrag;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4003AA5")]
+	[FieldOffset(Offset = "0x120")]
+	private Vector3 boatDir;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4003AA6")]
+	[FieldOffset(Offset = "0x12C")]
+	private Vector3 dir;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4003AA7")]
+	[FieldOffset(Offset = "0x138")]
+	private float curSpeed;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4003AA8")]
+	[FieldOffset(Offset = "0x13C")]
+	private Vector3 currentWindForce;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4003AA9")]
+	[FieldOffset(Offset = "0x148")]
+	private Vector3 baseWindForce;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x4003AAA")]
+	[FieldOffset(Offset = "0x154")]
+	private float windDecrease;
 
-	*/
+	[Token(Token = "0x4003AAB")]
+	[FieldOffset(Offset = "0x158")]
+	private float sailCurrent;
+
+	[Token(Token = "0x6003261")]
+	[Address(RVA = "0x1616EA0", Offset = "0x1616EA0", VA = "0x1616EA0", Slot = "14")]
+	protected override void Controller_OnCancel()
+	{
+	}
+
+	[Token(Token = "0x6003262")]
+	[Address(RVA = "0x1616ED0", Offset = "0x1616ED0", VA = "0x1616ED0", Slot = "17")]
+	protected override void Shooter_OnShoot(Vector3 dir)
+	{
+	}
+
+	[Token(Token = "0x6003263")]
+	[Address(RVA = "0x1616F04", Offset = "0x1616F04", VA = "0x1616F04", Slot = "16")]
+	protected override void Controller_OnAimUpdate(Vector3 dir, bool arg2)
+	{
+	}
+
+	[Token(Token = "0x6003264")]
+	[Address(RVA = "0x161700C", Offset = "0x161700C", VA = "0x161700C")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x6003265")]
+	[Address(RVA = "0x1617308", Offset = "0x1617308", VA = "0x1617308", Slot = "12")]
+	protected override void FixedUpdate()
+	{
+	}
+
+	[Token(Token = "0x6003266")]
+	[Address(RVA = "0x16174FC", Offset = "0x16174FC", VA = "0x16174FC")]
+	public BoatSail()
+	{
+	}
 }

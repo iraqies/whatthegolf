@@ -1,66 +1,116 @@
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Arena
 {
-	public class ArenaCrabShooter : MonoBehaviour
+	[Token(Token = "0x2001216")]
+	public class ArenaCrabShooter : GolfBallShooterBase
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x40061BB")]
+		[FieldOffset(Offset = "0x60")]
+		public float continuousMovementMultiplier;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40061BC")]
+		[FieldOffset(Offset = "0x64")]
+		public float addForceContinuousMultiplier;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40061BD")]
+		[FieldOffset(Offset = "0x68")]
+		public float addForceShootMultiplier;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40061BE")]
+		[FieldOffset(Offset = "0x6C")]
+		public ForceMode aimUpdateForceMode;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40061BF")]
+		[FieldOffset(Offset = "0x70")]
+		public ForceMode onShootForceMode;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40061C0")]
+		[FieldOffset(Offset = "0x74")]
+		public float fullShootVelocity;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x40061C1")]
+		[FieldOffset(Offset = "0x78")]
+		public SpiderLegs Legs;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x40061C2")]
+		[FieldOffset(Offset = "0x80")]
+		public Transform Body;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x40061C3")]
+		[FieldOffset(Offset = "0x88")]
+		public bool moveOnAim;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x40061C4")]
+		[FieldOffset(Offset = "0x90")]
+		public Animator AnimatorCrab;
 
-		5. Script Content Level 0
+		[Token(Token = "0x40061C5")]
+		[FieldOffset(Offset = "0x98")]
+		public Animator AnimatorRider;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x40061C6")]
+		[FieldOffset(Offset = "0xA0")]
+		private int shootFrames;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x40061C7")]
+		[FieldOffset(Offset = "0xA4")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x5856C", Offset = "0x5856C")]
+		private bool UseAddForce__BackingField;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x1700092F")]
+		public bool DidShoot
+		{
+			[Token(Token = "0x6005346")]
+			[Address(RVA = "0x1421B24", Offset = "0x1421B24", VA = "0x1421B24")]
+			get
+			{
+				return default;
+			}
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x17000930")]
+		public bool UseAddForce
+		{
+			[Token(Token = "0x6005347")]
+			[Address(RVA = "0x1421F30", Offset = "0x1421F30", VA = "0x1421F30")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x70EC8", Offset = "0x70EC8")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6005348")]
+			[Address(RVA = "0x1421F38", Offset = "0x1421F38", VA = "0x1421F38")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x70ED8", Offset = "0x70ED8")]
+			set
+			{
+			}
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x6005349")]
+		[Address(RVA = "0x1421F40", Offset = "0x1421F40", VA = "0x1421F40", Slot = "12")]
+		protected override void FixedUpdate()
+		{
+		}
 
-		*/
+		[Token(Token = "0x600534A")]
+		[Address(RVA = "0x1421F74", Offset = "0x1421F74", VA = "0x1421F74", Slot = "6")]
+		public override void OnAimUpdate(Vector3 boost, bool onlyAimArrow)
+		{
+		}
+
+		[Token(Token = "0x600534B")]
+		[Address(RVA = "0x1422168", Offset = "0x1422168", VA = "0x1422168", Slot = "7")]
+		public override void OnShoot(Vector3 boost)
+		{
+		}
+
+		[Token(Token = "0x600534C")]
+		[Address(RVA = "0x14223F8", Offset = "0x14223F8", VA = "0x14223F8")]
+		public ArenaCrabShooter()
+		{
+		}
 	}
 }

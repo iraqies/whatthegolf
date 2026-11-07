@@ -1,66 +1,167 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Audio;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Puzzle
 {
-	public class PuzzleRotatableBox : MonoBehaviour
+	[Token(Token = "0x200103E")]
+	public class PuzzleRotatableBox : PuzzleObjectBase
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x200103F")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x476D4", Offset = "0x476D4")]
+		private sealed class _003C_003Ec__DisplayClass6_0
+		{
+			[Token(Token = "0x40055A9")]
+			[FieldOffset(Offset = "0x10")]
+			public PuzzleRotatableBox _003C_003E4__this;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x40055AA")]
+			[FieldOffset(Offset = "0x18")]
+			public Quaternion rot;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x40055AB")]
+			[FieldOffset(Offset = "0x28")]
+			public Quaternion newRotation;
 
-		2. Incorrect dll files were provided to AssetRipper.
+			[Token(Token = "0x60048D2")]
+			[Address(RVA = "0x182F25C", Offset = "0x182F25C", VA = "0x182F25C")]
+			public _003C_003Ec__DisplayClass6_0()
+			{
+			}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+			[Token(Token = "0x60048D3")]
+			[Address(RVA = "0x182F264", Offset = "0x182F264", VA = "0x182F264")]
+			internal void _003CRotate_003Eb__0(float t)
+			{
+			}
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x2001040")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x476E4", Offset = "0x476E4")]
+		private sealed class _003CRotate_003Ed__6 : IEnumerator<object>, IEnumerator, IDisposable
+		{
+			[Token(Token = "0x40055AC")]
+			[FieldOffset(Offset = "0x10")]
+			private int _003C_003E1__state;
 
-		3. Assembly Reconstruction has not been implemented.
+			[Token(Token = "0x40055AD")]
+			[FieldOffset(Offset = "0x18")]
+			private object _003C_003E2__current;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+			[Token(Token = "0x40055AE")]
+			[FieldOffset(Offset = "0x20")]
+			public PuzzleRotatableBox _003C_003E4__this;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+			[Token(Token = "0x170007B1")]
+			private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+			{
+				[Token(Token = "0x60048D7")]
+				[Address(RVA = "0x182F51C", Offset = "0x182F51C", VA = "0x182F51C", Slot = "4")]
+				[DebuggerHidden]
+				get
+				{
+					return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+				}
+			}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+			[Token(Token = "0x170007B2")]
+			private object System_002ECollections_002EIEnumerator_002ECurrent
+			{
+				[Token(Token = "0x60048D9")]
+				[Address(RVA = "0x182F564", Offset = "0x182F564", VA = "0x182F564", Slot = "7")]
+				[DebuggerHidden]
+				get
+				{
+					return System_002ECollections_002EIEnumerator_002Eget_Current();
+				}
+			}
 
-		5. Script Content Level 0
+			[Token(Token = "0x60048D4")]
+			[Address(RVA = "0x182F2D4", Offset = "0x182F2D4", VA = "0x182F2D4")]
+			[DebuggerHidden]
+			public _003CRotate_003Ed__6(int _003C_003E1__state)
+			{
+			}
 
-			AssetRipper was set to not load any script information.
+			[Token(Token = "0x60048D5")]
+			[Address(RVA = "0x182F300", Offset = "0x182F300", VA = "0x182F300", Slot = "5")]
+			[DebuggerHidden]
+			private void System_002EIDisposable_002EDispose()
+			{
+			}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+			[Token(Token = "0x60048D6")]
+			[Address(RVA = "0x182F304", Offset = "0x182F304", VA = "0x182F304", Slot = "6")]
+			private bool MoveNext()
+			{
+				return default;
+			}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+			[Token(Token = "0x60048D7")]
+			[Address(RVA = "0x182F51C", Offset = "0x182F51C", VA = "0x182F51C", Slot = "4")]
+			[DebuggerHidden]
+			private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+			{
+				return null;
+			}
 
-		7. An incorrect path was provided to AssetRipper.
+			[Token(Token = "0x60048D8")]
+			[Address(RVA = "0x182F524", Offset = "0x182F524", VA = "0x182F524", Slot = "8")]
+			[DebuggerHidden]
+			private void System_002ECollections_002EIEnumerator_002EReset()
+			{
+			}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+			[Token(Token = "0x60048D9")]
+			[Address(RVA = "0x182F564", Offset = "0x182F564", VA = "0x182F564", Slot = "7")]
+			[DebuggerHidden]
+			private object System_002ECollections_002EIEnumerator_002Eget_Current()
+			{
+				return null;
+			}
+		}
 
-		*/
+		[Token(Token = "0x40055A4")]
+		[FieldOffset(Offset = "0x34")]
+		public float rotationTime;
+
+		[Token(Token = "0x40055A5")]
+		[FieldOffset(Offset = "0x38")]
+		public bool rotateClockwise;
+
+		[Token(Token = "0x40055A6")]
+		[FieldOffset(Offset = "0x3C")]
+		private float nextHitTime;
+
+		[Token(Token = "0x40055A7")]
+		[FieldOffset(Offset = "0x40")]
+		private Coroutine routine;
+
+		[Token(Token = "0x40055A8")]
+		[FieldOffset(Offset = "0x48")]
+		public RandomAudioClips turnClips;
+
+		[Token(Token = "0x60048CF")]
+		[Address(RVA = "0x16310D8", Offset = "0x16310D8", VA = "0x16310D8")]
+		private void OnCollisionEnter2D(Collision2D collision)
+		{
+		}
+
+		[Token(Token = "0x60048D0")]
+		[Address(RVA = "0x1631408", Offset = "0x1631408", VA = "0x1631408")]
+		private IEnumerator Rotate(Rigidbody2D rb)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x60048D1")]
+		[Address(RVA = "0x163147C", Offset = "0x163147C", VA = "0x163147C")]
+		public PuzzleRotatableBox()
+		{
+		}
 	}
 }

@@ -1,66 +1,228 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Cinemachine
 {
-	public class CinemachinePathBase : MonoBehaviour
+	[Token(Token = "0x200006A")]
+	public abstract class CinemachinePathBase : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Serializable]
+		[Token(Token = "0x200006B")]
+		public class Appearance
+		{
+			[Token(Token = "0x400027A")]
+			[FieldOffset(Offset = "0x10")]
+			public Color pathColor;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x400027B")]
+			[FieldOffset(Offset = "0x20")]
+			public Color inactivePathColor;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x400027C")]
+			[FieldOffset(Offset = "0x30")]
+			[AttributeAttribute(Name = "RangeAttribute", RVA = "0x7925C", Offset = "0x7925C")]
+			public float width;
 
-		2. Incorrect dll files were provided to AssetRipper.
+			[Token(Token = "0x60002A6")]
+			[Address(RVA = "0x1911950", Offset = "0x1911950", VA = "0x1911950")]
+			public Appearance()
+			{
+			}
+		}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x200006C")]
+		public enum PositionUnits
+		{
+			[Token(Token = "0x400027E")]
+			PathUnits = 0,
+			[Token(Token = "0x400027F")]
+			Distance = 1,
+			[Token(Token = "0x4000280")]
+			Normalized = 2
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000272")]
+		[FieldOffset(Offset = "0x18")]
+		[AttributeAttribute(Name = "RangeAttribute", RVA = "0x79240", Offset = "0x79240")]
+		public int m_Resolution;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4000273")]
+		[FieldOffset(Offset = "0x20")]
+		public Appearance m_Appearance;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4000274")]
+		[FieldOffset(Offset = "0x28")]
+		private float[] m_DistanceToPos;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4000275")]
+		[FieldOffset(Offset = "0x30")]
+		private float[] m_PosToDistance;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4000276")]
+		[FieldOffset(Offset = "0x38")]
+		private int m_CachedSampleSteps;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4000277")]
+		[FieldOffset(Offset = "0x3C")]
+		private float m_PathLength;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4000278")]
+		[FieldOffset(Offset = "0x40")]
+		private float m_cachedPosStepSize;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4000279")]
+		[FieldOffset(Offset = "0x44")]
+		private float m_cachedDistanceStepSize;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x170000AF")]
+		public abstract float MinPos
+		{
+			[Token(Token = "0x600028F")]
+			get;
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x170000B0")]
+		public abstract float MaxPos
+		{
+			[Token(Token = "0x6000290")]
+			get;
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x170000B1")]
+		public abstract bool Looped
+		{
+			[Token(Token = "0x6000291")]
+			get;
+		}
 
-		*/
+		[Token(Token = "0x170000B2")]
+		public abstract int DistanceCacheSampleStepsPerSegment
+		{
+			[Token(Token = "0x600029D")]
+			get;
+		}
+
+		[Token(Token = "0x170000B3")]
+		public float PathLength
+		{
+			[Token(Token = "0x60002A0")]
+			[Address(RVA = "0x18FCF98", Offset = "0x18FCF98", VA = "0x18FCF98")]
+			get
+			{
+				return default;
+			}
+		}
+
+		[Token(Token = "0x6000292")]
+		[Address(RVA = "0x18FCBB0", Offset = "0x18FCBB0", VA = "0x18FCBB0", Slot = "7")]
+		public virtual float StandardizePos(float pos)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000293")]
+		public abstract Vector3 EvaluatePosition(float pos);
+
+		[Token(Token = "0x6000294")]
+		public abstract Vector3 EvaluateTangent(float pos);
+
+		[Token(Token = "0x6000295")]
+		public abstract Quaternion EvaluateOrientation(float pos);
+
+		[Token(Token = "0x6000296")]
+		[Address(RVA = "0x18FCC9C", Offset = "0x18FCC9C", VA = "0x18FCC9C", Slot = "11")]
+		public virtual float FindClosestPoint(Vector3 p, int startSegment, int searchRadius, int stepsPerSegment)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000297")]
+		[Address(RVA = "0x18FCF50", Offset = "0x18FCF50", VA = "0x18FCF50")]
+		public float MinUnit(PositionUnits units)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000298")]
+		[Address(RVA = "0x18FCF70", Offset = "0x18FCF70", VA = "0x18FCF70")]
+		public float MaxUnit(PositionUnits units)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000299")]
+		[Address(RVA = "0x18FD068", Offset = "0x18FD068", VA = "0x18FD068", Slot = "12")]
+		public virtual float StandardizeUnit(float pos, PositionUnits units)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x600029A")]
+		[Address(RVA = "0x18FD264", Offset = "0x18FD264", VA = "0x18FD264")]
+		public Vector3 EvaluatePositionAtUnit(float pos, PositionUnits units)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x600029B")]
+		[Address(RVA = "0x18FD424", Offset = "0x18FD424", VA = "0x18FD424")]
+		public Vector3 EvaluateTangentAtUnit(float pos, PositionUnits units)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x600029C")]
+		[Address(RVA = "0x18FD450", Offset = "0x18FD450", VA = "0x18FD450")]
+		public Quaternion EvaluateOrientationAtUnit(float pos, PositionUnits units)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x600029E")]
+		[Address(RVA = "0x18FD47C", Offset = "0x18FD47C", VA = "0x18FD47C", Slot = "14")]
+		public virtual void InvalidateDistanceCache()
+		{
+		}
+
+		[Token(Token = "0x600029F")]
+		[Address(RVA = "0x18FD488", Offset = "0x18FD488", VA = "0x18FD488")]
+		public bool DistanceCacheIsValid()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60002A1")]
+		[Address(RVA = "0x18FD1CC", Offset = "0x18FD1CC", VA = "0x18FD1CC")]
+		public float StandardizePathDistance(float distance)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60002A2")]
+		[Address(RVA = "0x18FD290", Offset = "0x18FD290", VA = "0x18FD290")]
+		public float ToNativePathUnits(float pos, PositionUnits units)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60002A3")]
+		[Address(RVA = "0x18FD7D8", Offset = "0x18FD7D8", VA = "0x18FD7D8")]
+		public float FromPathNativeUnits(float pos, PositionUnits units)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60002A4")]
+		[Address(RVA = "0x18FD520", Offset = "0x18FD520", VA = "0x18FD520")]
+		private void ResamplePath(int stepsPerSegment)
+		{
+		}
+
+		[Token(Token = "0x60002A5")]
+		[Address(RVA = "0x18FCB3C", Offset = "0x18FCB3C", VA = "0x18FCB3C")]
+		protected CinemachinePathBase()
+		{
+		}
 	}
 }

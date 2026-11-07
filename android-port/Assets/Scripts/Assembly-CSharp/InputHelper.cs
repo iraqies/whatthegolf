@@ -1,63 +1,195 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000BFF")]
 public class InputHelper : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x400426D")]
+	[FieldOffset(Offset = "0x0")]
+	private static float controllerTime;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x400426E")]
+	public const string INPUT_UI_HORIZONTAL = "UI Horizontal";
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x400426F")]
+	public const string INPUT_UI_VERTICAL = "UI Vertical";
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4004270")]
+	public const string INPUT_UI_CONFIRM = "Confirm UI";
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4004271")]
+	public const string INPUT_OPEN_MENU = "Open Menu";
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4004272")]
+	public const string INPUT_CLOSE_MENU = "Close Menu";
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4004273")]
+	public const string INPUT_BACK = "Go Back";
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4004274")]
+	public const string INPUT_DEBUG1 = "Debug1";
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4004275")]
+	public const string INPUT_DEBUG2 = "Debug2";
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4004276")]
+	public const string INPUT_DEBUG3 = "Debug3";
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4004277")]
+	public const string INPUT_DEBUG4 = "Debug4";
 
-	5. Script Content Level 0
+	[Token(Token = "0x4004278")]
+	public const string INPUT_CHEAT = "Cheat";
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x600398D")]
+	[Address(RVA = "0x14EDCB8", Offset = "0x14EDCB8", VA = "0x14EDCB8")]
+	[Attribute(Name = "RuntimeInitializeOnLoadMethodAttribute", RVA = "0x6B3A0", Offset = "0x6B3A0")]
+	private static void Init()
+	{
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x600398E")]
+	[Address(RVA = "0x14EDD20", Offset = "0x14EDD20", VA = "0x14EDD20")]
+	public static bool IsNavigatingWithController()
+	{
+		return default;
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x600398F")]
+	[Address(RVA = "0x14EDF48", Offset = "0x14EDF48", VA = "0x14EDF48")]
+	public static bool IsNavigatingWithKeyboard()
+	{
+		return default;
+	}
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x6003990")]
+	[Address(RVA = "0x14EDFC0", Offset = "0x14EDFC0", VA = "0x14EDFC0")]
+	public static bool IsCurrentJoystickOrKeyboard()
+	{
+		return default;
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x6003991")]
+	[Address(RVA = "0x14EE0A8", Offset = "0x14EE0A8", VA = "0x14EE0A8")]
+	public static void UpdateLastInput()
+	{
+	}
 
-	*/
+	[Token(Token = "0x6003992")]
+	[Address(RVA = "0x14EE2CC", Offset = "0x14EE2CC", VA = "0x14EE2CC")]
+	private static int GetAllPlayerAxisRounded(string axisName)
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6003993")]
+	[Address(RVA = "0x14EE3F8", Offset = "0x14EE3F8", VA = "0x14EE3F8")]
+	private static bool GetAllPlayerButtonUp(string buttonName)
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6003994")]
+	[Address(RVA = "0x14EE25C", Offset = "0x14EE25C", VA = "0x14EE25C")]
+	public static int GetAllPlayerAxisRoundedHorizontal()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6003995")]
+	[Address(RVA = "0x14EE4FC", Offset = "0x14EE4FC", VA = "0x14EE4FC")]
+	public static int GetAllPlayerAxisRoundedVertical()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6003996")]
+	[Address(RVA = "0x14EE56C", Offset = "0x14EE56C", VA = "0x14EE56C")]
+	public static bool GetAllPlayerButtonConfirm()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6003997")]
+	[Address(RVA = "0x14E98A0", Offset = "0x14E98A0", VA = "0x14E98A0")]
+	public static bool GetAllPlayerButtonCancel()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6003998")]
+	[Address(RVA = "0x14EE5DC", Offset = "0x14EE5DC", VA = "0x14EE5DC")]
+	public static bool GetAllPlayerButtonOpenMenu()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6003999")]
+	[Address(RVA = "0x14EE64C", Offset = "0x14EE64C", VA = "0x14EE64C")]
+	public static bool GetAllPlayerButtonGoBack()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x600399A")]
+	[Address(RVA = "0x14EE6BC", Offset = "0x14EE6BC", VA = "0x14EE6BC")]
+	public static bool GetAllPlayerButtonDebug1()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x600399B")]
+	[Address(RVA = "0x14EE72C", Offset = "0x14EE72C", VA = "0x14EE72C")]
+	public static bool GetAllPlayerButtonDebug2()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x600399C")]
+	[Address(RVA = "0x14EE79C", Offset = "0x14EE79C", VA = "0x14EE79C")]
+	public static bool GetAllPlayerButtonDebug3()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x600399D")]
+	[Address(RVA = "0x14EE80C", Offset = "0x14EE80C", VA = "0x14EE80C")]
+	public static bool GetAllPlayerButtonDebug4()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x600399E")]
+	[Address(RVA = "0x14EE87C", Offset = "0x14EE87C", VA = "0x14EE87C")]
+	public static bool GetAllPlayerButtonCheat()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x600399F")]
+	[Address(RVA = "0x14EE8EC", Offset = "0x14EE8EC", VA = "0x14EE8EC")]
+	public static bool TouchedOrMouseClicked()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x60039A0")]
+	[Address(RVA = "0x14EEA04", Offset = "0x14EEA04", VA = "0x14EEA04")]
+	public static bool GetAllPlayerButtonDown(string buttonName)
+	{
+		return default;
+	}
+
+	[Token(Token = "0x60039A1")]
+	[Address(RVA = "0x14EEB08", Offset = "0x14EEB08", VA = "0x14EEB08")]
+	public static Vector2 FixAxialDeadzoneForAppleArcade(Vector2 dir)
+	{
+		return default;
+	}
+
+	[Token(Token = "0x60039A2")]
+	[Address(RVA = "0x14EEBD8", Offset = "0x14EEBD8", VA = "0x14EEBD8")]
+	public InputHelper()
+	{
+	}
 }

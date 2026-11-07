@@ -1,66 +1,206 @@
+using Audio.Impact;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Audio
 {
-	public class ImpactUser : MonoBehaviour
+	[Token(Token = "0x200135F")]
+	public class ImpactUser : MonoBehaviour, ISpatializeDisable
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x40067B0")]
+		[FieldOffset(Offset = "0x18")]
+		[SerializeField]
+		private bool getFirstRigidbodyInParent;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40067B1")]
+		[FieldOffset(Offset = "0x19")]
+		[SerializeField]
+		private bool sizeAffects;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40067B2")]
+		[FieldOffset(Offset = "0x1C")]
+		[SerializeField]
+		private ObjectWeight objectSize;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40067B3")]
+		[FieldOffset(Offset = "0x20")]
+		[SerializeField]
+		private bool disableOnOutOfBounds;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40067B4")]
+		[FieldOffset(Offset = "0x24")]
+		[SerializeField]
+		private float startDelay;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40067B5")]
+		[FieldOffset(Offset = "0x28")]
+		[SerializeField]
+		public ImpactAsset impactAsset;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x40067B6")]
+		[FieldOffset(Offset = "0x30")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x5A0F0", Offset = "0x5A0F0")]
+		private bool IsEnabled__BackingField;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x40067B7")]
+		[FieldOffset(Offset = "0x31")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x5A100", Offset = "0x5A100")]
+		private bool DisableSpatial__BackingField;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x40067B8")]
+		[FieldOffset(Offset = "0x34")]
+		private float nextPlayTime;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x40067B9")]
+		[FieldOffset(Offset = "0x38")]
+		private bool isCollisionWithPlayer;
 
-		5. Script Content Level 0
+		[Token(Token = "0x40067BA")]
+		[FieldOffset(Offset = "0x39")]
+		private bool isMultiplayerLevel;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x40067BB")]
+		[FieldOffset(Offset = "0x3C")]
+		private int layerMaskGolfBall;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x17000A2F")]
+		public bool GetFirstRigidbodyInParent
+		{
+			[Token(Token = "0x6005A59")]
+			[Address(RVA = "0x14E7F88", Offset = "0x14E7F88", VA = "0x14E7F88")]
+			get
+			{
+				return default;
+			}
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x17000A30")]
+		public bool SizeAffects
+		{
+			[Token(Token = "0x6005A5A")]
+			[Address(RVA = "0x14E7F90", Offset = "0x14E7F90", VA = "0x14E7F90")]
+			get
+			{
+				return default;
+			}
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x17000A31")]
+		public ObjectWeight ObjectSize
+		{
+			[Token(Token = "0x6005A5B")]
+			[Address(RVA = "0x14E7F98", Offset = "0x14E7F98", VA = "0x14E7F98")]
+			get
+			{
+				return default;
+			}
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x17000A32")]
+		public bool DisableOnOutOfBounds
+		{
+			[Token(Token = "0x6005A5C")]
+			[Address(RVA = "0x14E7FA0", Offset = "0x14E7FA0", VA = "0x14E7FA0")]
+			get
+			{
+				return default;
+			}
+		}
 
-		*/
+		[Token(Token = "0x17000A33")]
+		public float StartDelay
+		{
+			[Token(Token = "0x6005A5D")]
+			[Address(RVA = "0x14E7FA8", Offset = "0x14E7FA8", VA = "0x14E7FA8")]
+			get
+			{
+				return default;
+			}
+		}
+
+		[Token(Token = "0x17000A34")]
+		public bool IsEnabled
+		{
+			[Token(Token = "0x6005A5E")]
+			[Address(RVA = "0x14E7FB0", Offset = "0x14E7FB0", VA = "0x14E7FB0")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x72308", Offset = "0x72308")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6005A5F")]
+			[Address(RVA = "0x14E7FB8", Offset = "0x14E7FB8", VA = "0x14E7FB8")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x72318", Offset = "0x72318")]
+			set
+			{
+			}
+		}
+
+		[Token(Token = "0x17000A35")]
+		public bool DisableSpatial
+		{
+			[Token(Token = "0x6005A60")]
+			[Address(RVA = "0x14E7FC0", Offset = "0x14E7FC0", VA = "0x14E7FC0", Slot = "5")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x72328", Offset = "0x72328")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6005A61")]
+			[Address(RVA = "0x14E7FC8", Offset = "0x14E7FC8", VA = "0x14E7FC8", Slot = "4")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x72338", Offset = "0x72338")]
+			set
+			{
+			}
+		}
+
+		[Token(Token = "0x6005A62")]
+		[Address(RVA = "0x14E7FD0", Offset = "0x14E7FD0", VA = "0x14E7FD0")]
+		private void Start()
+		{
+		}
+
+		[Token(Token = "0x6005A63")]
+		[Address(RVA = "0x14E802C", Offset = "0x14E802C", VA = "0x14E802C")]
+		private void Awake()
+		{
+		}
+
+		[Token(Token = "0x6005A64")]
+		[Address(RVA = "0x14E8214", Offset = "0x14E8214", VA = "0x14E8214", Slot = "6")]
+		protected virtual void OnCollisionEnter(Collision collision)
+		{
+		}
+
+		[Token(Token = "0x6005A65")]
+		[Address(RVA = "0x14E8308", Offset = "0x14E8308", VA = "0x14E8308", Slot = "7")]
+		protected virtual void OnCollisionEnter2D(Collision2D collision)
+		{
+		}
+
+		[Token(Token = "0x6005A66")]
+		[Address(RVA = "0x14E83F4", Offset = "0x14E83F4", VA = "0x14E83F4", Slot = "8")]
+		protected virtual bool Validate(HitInfo info)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6005A67")]
+		[Address(RVA = "0x14E7D70", Offset = "0x14E7D70", VA = "0x14E7D70")]
+		public void OnHit(HitInfo info)
+		{
+		}
+
+		[Token(Token = "0x6005A68")]
+		[Address(RVA = "0x14E83FC", Offset = "0x14E83FC", VA = "0x14E83FC")]
+		private void OnTriggerEnter(Collider other)
+		{
+		}
+
+		[Token(Token = "0x6005A69")]
+		[Address(RVA = "0x14E7B10", Offset = "0x14E7B10", VA = "0x14E7B10")]
+		public ImpactUser()
+		{
+		}
 	}
 }

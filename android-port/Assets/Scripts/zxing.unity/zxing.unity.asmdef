@@ -1,0 +1,7 @@
+{
+  "name": "zxing.unity",
+  "references": [
+    "Il2CppDummyDll"
+  ],
+  "allowUnsafeCode": true
+}

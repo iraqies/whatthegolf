@@ -1,66 +1,107 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace RootMotion.FinalIK
 {
-	public class IKSolverFABRIKRoot : MonoBehaviour
+	[Serializable]
+	[Token(Token = "0x2000176")]
+	public class IKSolverFABRIKRoot : IKSolver
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4000963")]
+		[FieldOffset(Offset = "0x58")]
+		public int iterations;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000964")]
+		[FieldOffset(Offset = "0x5C")]
+		[AttributeAttribute(Name = "RangeAttribute", RVA = "0x360E8", Offset = "0x360E8")]
+		public float rootPin;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000965")]
+		[FieldOffset(Offset = "0x60")]
+		public FABRIKChain[] chains;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4000966")]
+		[FieldOffset(Offset = "0x68")]
+		private bool zeroWeightApplied;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4000967")]
+		[FieldOffset(Offset = "0x70")]
+		private bool[] isRoot;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000968")]
+		[FieldOffset(Offset = "0x78")]
+		private Vector3 rootDefaultPosition;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6000A93")]
+		[Address(RVA = "0x138E7B0", Offset = "0x138E7B0", VA = "0x138E7B0", Slot = "4")]
+		public override bool IsValid(ref string message)
+		{
+			return default;
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6000A94")]
+		[Address(RVA = "0x138EE34", Offset = "0x138EE34", VA = "0x138EE34", Slot = "9")]
+		public override void StoreDefaultLocalState()
+		{
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x6000A95")]
+		[Address(RVA = "0x138EECC", Offset = "0x138EECC", VA = "0x138EECC", Slot = "8")]
+		public override void FixTransforms()
+		{
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6000A96")]
+		[Address(RVA = "0x138EF70", Offset = "0x138EF70", VA = "0x138EF70", Slot = "10")]
+		protected override void OnInitiate()
+		{
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x6000A97")]
+		[Address(RVA = "0x138F068", Offset = "0x138F068", VA = "0x138F068")]
+		private bool IsRoot(int index)
+		{
+			return default;
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x6000A98")]
+		[Address(RVA = "0x138F118", Offset = "0x138F118", VA = "0x138F118", Slot = "11")]
+		protected override void OnUpdate()
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x6000A99")]
+		[Address(RVA = "0x138F568", Offset = "0x138F568", VA = "0x138F568", Slot = "6")]
+		public override Point[] GetPoints()
+		{
+			return null;
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x6000A9A")]
+		[Address(RVA = "0x138F75C", Offset = "0x138F75C", VA = "0x138F75C", Slot = "7")]
+		public override Point GetPoint(Transform transform)
+		{
+			return null;
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x6000A9B")]
+		[Address(RVA = "0x138F620", Offset = "0x138F620", VA = "0x138F620")]
+		private void AddPointsToArray(ref Point[] array, FABRIKChain chain)
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x6000A9C")]
+		[Address(RVA = "0x138F318", Offset = "0x138F318", VA = "0x138F318")]
+		private Vector3 GetCentroid()
+		{
+			return default;
+		}
 
-		*/
+		[Token(Token = "0x6000A9D")]
+		[Address(RVA = "0x138F7F4", Offset = "0x138F7F4", VA = "0x138F7F4")]
+		public IKSolverFABRIKRoot()
+		{
+		}
 	}
 }

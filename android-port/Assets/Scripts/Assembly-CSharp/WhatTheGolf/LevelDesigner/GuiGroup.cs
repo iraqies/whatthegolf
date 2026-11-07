@@ -1,66 +1,71 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
+using WhatTheGolf.LevelDesigner.GUI;
 
 namespace WhatTheGolf.LevelDesigner
 {
-	public class GuiGroup : MonoBehaviour
+	[Serializable]
+	[Token(Token = "0x2001248")]
+	public class GuiGroup
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4006288")]
+		[FieldOffset(Offset = "0x10")]
+		[SerializeField]
+		private string m_Name;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4006289")]
+		[FieldOffset(Offset = "0x18")]
+		[SerializeField]
+		private StateType[] m_StateMask;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x400628A")]
+		[FieldOffset(Offset = "0x20")]
+		[SerializeField]
+		private BaseGUI[] m_GuiPrefabs;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x400628B")]
+		[FieldOffset(Offset = "0x28")]
+		private Transform m_Container;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x400628C")]
+		[FieldOffset(Offset = "0x30")]
+		private BaseGUI[] m_Guis;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x17000976")]
+		public StateType[] stateMask
+		{
+			[Token(Token = "0x600542E")]
+			[Address(RVA = "0x14BEBC4", Offset = "0x14BEBC4", VA = "0x14BEBC4")]
+			get
+			{
+				return null;
+			}
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x600542F")]
+		[Address(RVA = "0x14BE278", Offset = "0x14BE278", VA = "0x14BE278")]
+		public void Init(Camera camera)
+		{
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6005430")]
+		[Address(RVA = "0x14BEB80", Offset = "0x14BEB80", VA = "0x14BEB80")]
+		public void SetActive(bool value)
+		{
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x6005431")]
+		[Address(RVA = "0x14BE79C", Offset = "0x14BE79C", VA = "0x14BE79C")]
+		public bool HasFocus()
+		{
+			return default;
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
-
-		5. Script Content Level 0
-
-			AssetRipper was set to not load any script information.
-
-		6. Cpp2IL failed to decompile Il2Cpp data
-
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x6005432")]
+		[Address(RVA = "0x14BEBCC", Offset = "0x14BEBCC", VA = "0x14BEBCC")]
+		public GuiGroup()
+		{
+		}
 	}
 }

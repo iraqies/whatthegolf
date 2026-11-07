@@ -1,63 +1,131 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000BF9")]
 public class ShareToImgur : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x2000BFA")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x43EE8", Offset = "0x43EE8")]
+	private sealed class _003CAppScreenshotUpload_003Ed__1 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x4004250")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4004251")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4004252")]
+		[FieldOffset(Offset = "0x20")]
+		public ShareToImgur _003C_003E4__this;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4004253")]
+		[FieldOffset(Offset = "0x28")]
+		private string _003Cfilename_003E5__2;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4004254")]
+		[FieldOffset(Offset = "0x30")]
+		private float _003CstartTime_003E5__3;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x170005FC")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x600397D")]
+			[Address(RVA = "0x1848C9C", Offset = "0x1848C9C", VA = "0x1848C9C", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x170005FD")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x600397F")]
+			[Address(RVA = "0x1848CE4", Offset = "0x1848CE4", VA = "0x1848CE4", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x600397A")]
+		[Address(RVA = "0x184875C", Offset = "0x184875C", VA = "0x184875C")]
+		[DebuggerHidden]
+		public _003CAppScreenshotUpload_003Ed__1(int _003C_003E1__state)
+		{
+		}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x600397B")]
+		[Address(RVA = "0x1848788", Offset = "0x1848788", VA = "0x1848788", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
 
-	4. This script is unnecessary.
+		[Token(Token = "0x600397C")]
+		[Address(RVA = "0x184878C", Offset = "0x184878C", VA = "0x184878C", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x600397D")]
+		[Address(RVA = "0x1848C9C", Offset = "0x1848C9C", VA = "0x1848C9C", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
 
-	5. Script Content Level 0
+		[Token(Token = "0x600397E")]
+		[Address(RVA = "0x1848CA4", Offset = "0x1848CA4", VA = "0x1848CA4", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
 
-		AssetRipper was set to not load any script information.
+		[Token(Token = "0x600397F")]
+		[Address(RVA = "0x1848CE4", Offset = "0x1848CE4", VA = "0x1848CE4", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x6003976")]
+	[Address(RVA = "0x169DF5C", Offset = "0x169DF5C", VA = "0x169DF5C")]
+	private void Start()
+	{
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x6003977")]
+	[Address(RVA = "0x169DFD8", Offset = "0x169DFD8", VA = "0x169DFD8")]
+	private IEnumerator AppScreenshotUpload()
+	{
+		return null;
+	}
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x6003978")]
+	[Address(RVA = "0x169E04C", Offset = "0x169E04C", VA = "0x169E04C")]
+	public bool MyRemoteCertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+	{
+		return default;
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x6003979")]
+	[Address(RVA = "0x169E234", Offset = "0x169E234", VA = "0x169E234")]
+	public ShareToImgur()
+	{
+	}
 }

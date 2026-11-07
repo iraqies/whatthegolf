@@ -1,66 +1,191 @@
-using UnityEngine;
+using System;
+using System.Collections.Generic;
+using Il2CppDummyDll;
+using UnityEngine.Playables;
 
 namespace UnityEngine.Timeline
 {
-	public class TimeNotificationBehaviour : MonoBehaviour
+	[Token(Token = "0x200002E")]
+	public class TimeNotificationBehaviour : PlayableBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x200002F")]
+		private struct NotificationEntry
+		{
+			[Token(Token = "0x40000D4")]
+			[FieldOffset(Offset = "0x0")]
+			public double time;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x40000D5")]
+			[FieldOffset(Offset = "0x8")]
+			public INotification payload;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x40000D6")]
+			[FieldOffset(Offset = "0x10")]
+			public bool notificationFired;
 
-		2. Incorrect dll files were provided to AssetRipper.
+			[Token(Token = "0x40000D7")]
+			[FieldOffset(Offset = "0x12")]
+			public NotificationFlags flags;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+			[Token(Token = "0x17000092")]
+			public bool triggerInEditor
+			{
+				[Token(Token = "0x60001E8")]
+				[Address(RVA = "0x2AEBD10", Offset = "0x2AEBD10", VA = "0x2AEBD10")]
+				get
+				{
+					return default;
+				}
+			}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+			[Token(Token = "0x17000093")]
+			public bool prewarm
+			{
+				[Token(Token = "0x60001E9")]
+				[Address(RVA = "0x2AEBD04", Offset = "0x2AEBD04", VA = "0x2AEBD04")]
+				get
+				{
+					return default;
+				}
+			}
 
-		3. Assembly Reconstruction has not been implemented.
+			[Token(Token = "0x17000094")]
+			public bool triggerOnce
+			{
+				[Token(Token = "0x60001EA")]
+				[Address(RVA = "0x2AEB324", Offset = "0x2AEB324", VA = "0x2AEB324")]
+				get
+				{
+					return default;
+				}
+			}
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Serializable]
+		[Token(Token = "0x2000030")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x1BBA00", Offset = "0x1BBA00")]
+		private sealed class _003C_003Ec
+		{
+			[Token(Token = "0x40000D8")]
+			[FieldOffset(Offset = "0x0")]
+			public static readonly _003C_003Ec _003C_003E9;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+			[Token(Token = "0x40000D9")]
+			[FieldOffset(Offset = "0x8")]
+			public static Comparison<NotificationEntry> _003C_003E9__12_0;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+			[Token(Token = "0x60001EC")]
+			[Address(RVA = "0x2AFA068", Offset = "0x2AFA068", VA = "0x2AFA068")]
+			public _003C_003Ec()
+			{
+			}
 
-		5. Script Content Level 0
+			[Token(Token = "0x60001ED")]
+			[Address(RVA = "0x2AFA070", Offset = "0x2AFA070", VA = "0x2AFA070")]
+			internal int _003CSortNotifications_003Eb__12_0(NotificationEntry x, NotificationEntry y)
+			{
+				return default;
+			}
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x40000D0")]
+		[FieldOffset(Offset = "0x10")]
+		private readonly List<NotificationEntry> m_Notifications;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x40000D1")]
+		[FieldOffset(Offset = "0x18")]
+		private double m_PreviousTime;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x40000D2")]
+		[FieldOffset(Offset = "0x20")]
+		private bool m_NeedSortNotifications;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x40000D3")]
+		[FieldOffset(Offset = "0x28")]
+		private Playable m_TimeSource;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x17000091")]
+		public Playable timeSource
+		{
+			[Token(Token = "0x60001DB")]
+			[Address(RVA = "0x2AEAFFC", Offset = "0x2AEAFFC", VA = "0x2AEAFFC")]
+			set
+			{
+			}
+		}
 
-		*/
+		[Token(Token = "0x60001DC")]
+		[Address(RVA = "0x2AE9CCC", Offset = "0x2AE9CCC", VA = "0x2AE9CCC")]
+		public static ScriptPlayable<TimeNotificationBehaviour> Create(PlayableGraph graph, double duration, DirectorWrapMode loopMode)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60001DD")]
+		[Address(RVA = "0x2AE9E14", Offset = "0x2AE9E14", VA = "0x2AE9E14")]
+		public void AddNotification(double time, INotification payload, NotificationFlags flags = NotificationFlags.Retroactive)
+		{
+		}
+
+		[Token(Token = "0x60001DE")]
+		[Address(RVA = "0x2AEB004", Offset = "0x2AEB004", VA = "0x2AEB004", Slot = "13")]
+		public override void OnGraphStart(Playable playable)
+		{
+		}
+
+		[Token(Token = "0x60001DF")]
+		[Address(RVA = "0x2AEB330", Offset = "0x2AEB330", VA = "0x2AEB330", Slot = "18")]
+		public override void OnBehaviourPause(Playable playable, FrameData info)
+		{
+		}
+
+		[Token(Token = "0x60001E0")]
+		[Address(RVA = "0x2AEB600", Offset = "0x2AEB600", VA = "0x2AEB600", Slot = "19")]
+		public override void PrepareFrame(Playable playable, FrameData info)
+		{
+		}
+
+		[Token(Token = "0x60001E1")]
+		[Address(RVA = "0x2AEB1D4", Offset = "0x2AEB1D4", VA = "0x2AEB1D4")]
+		private void SortNotifications()
+		{
+		}
+
+		[Token(Token = "0x60001E2")]
+		[Address(RVA = "0x2AEBC8C", Offset = "0x2AEBC8C", VA = "0x2AEBC8C")]
+		private static bool CanRestoreNotification(NotificationEntry e, FrameData info, double currentTime, double previousTime)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60001E3")]
+		[Address(RVA = "0x2AEBA7C", Offset = "0x2AEBA7C", VA = "0x2AEBA7C")]
+		private void TriggerNotificationsInRange(double start, double end, FrameData info, Playable playable, bool checkState)
+		{
+		}
+
+		[Token(Token = "0x60001E4")]
+		[Address(RVA = "0x2AEB974", Offset = "0x2AEB974", VA = "0x2AEB974")]
+		private void SyncDurationWithExternalSource(Playable playable)
+		{
+		}
+
+		[Token(Token = "0x60001E5")]
+		[Address(RVA = "0x2AEB56C", Offset = "0x2AEB56C", VA = "0x2AEB56C")]
+		private static void Trigger_internal(Playable playable, PlayableOutput output, ref NotificationEntry e)
+		{
+		}
+
+		[Token(Token = "0x60001E6")]
+		[Address(RVA = "0x2AEBCFC", Offset = "0x2AEBCFC", VA = "0x2AEBCFC")]
+		private static void Restore_internal(ref NotificationEntry e)
+		{
+		}
+
+		[Token(Token = "0x60001E7")]
+		[Address(RVA = "0x2AEBD1C", Offset = "0x2AEBD1C", VA = "0x2AEBD1C")]
+		public TimeNotificationBehaviour()
+		{
+		}
 	}
 }

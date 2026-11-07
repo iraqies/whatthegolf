@@ -1,63 +1,191 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.Events;
 
+[Token(Token = "0x2000E96")]
 public class PopCornSpawner : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x2000E97")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x45138", Offset = "0x45138")]
+	private sealed class _003CSpawnCoroutine_003Ed__15 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x4004ECD")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4004ECE")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4004ECF")]
+		[FieldOffset(Offset = "0x20")]
+		public PopCornSpawner _003C_003E4__this;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4004ED0")]
+		[FieldOffset(Offset = "0x28")]
+		private int _003Ci_003E5__2;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x170006FA")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x600441C")]
+			[Address(RVA = "0x182A624", Offset = "0x182A624", VA = "0x182A624", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x170006FB")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x600441E")]
+			[Address(RVA = "0x182A66C", Offset = "0x182A66C", VA = "0x182A66C", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6004419")]
+		[Address(RVA = "0x182A1F8", Offset = "0x182A1F8", VA = "0x182A1F8")]
+		[DebuggerHidden]
+		public _003CSpawnCoroutine_003Ed__15(int _003C_003E1__state)
+		{
+		}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x600441A")]
+		[Address(RVA = "0x182A224", Offset = "0x182A224", VA = "0x182A224", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x600441B")]
+		[Address(RVA = "0x182A228", Offset = "0x182A228", VA = "0x182A228", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
 
-	4. This script is unnecessary.
+		[Token(Token = "0x600441C")]
+		[Address(RVA = "0x182A624", Offset = "0x182A624", VA = "0x182A624", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x600441D")]
+		[Address(RVA = "0x182A62C", Offset = "0x182A62C", VA = "0x182A62C", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
 
-	5. Script Content Level 0
+		[Token(Token = "0x600441E")]
+		[Address(RVA = "0x182A66C", Offset = "0x182A66C", VA = "0x182A66C", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4004EC0")]
+	[FieldOffset(Offset = "0x18")]
+	public int collectedCorn;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4004EC1")]
+	[FieldOffset(Offset = "0x20")]
+	[SerializeField]
+	private MultiplePlayerCameraFollow m_multiCameraFollow;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4004EC2")]
+	[FieldOffset(Offset = "0x28")]
+	[SerializeField]
+	private Transform m_popCornSpawnPosition;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4004EC3")]
+	[FieldOffset(Offset = "0x30")]
+	[SerializeField]
+	private GameObject[] m_cornPrefabs;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x4004EC4")]
+	[FieldOffset(Offset = "0x38")]
+	[SerializeField]
+	private GameObject m_lid;
 
-	*/
+	[Token(Token = "0x4004EC5")]
+	[FieldOffset(Offset = "0x40")]
+	[SerializeField]
+	private Rigidbody m_stoveRb;
+
+	[Token(Token = "0x4004EC6")]
+	[FieldOffset(Offset = "0x48")]
+	[SerializeField]
+	private UnityEvent OnPopCornPops;
+
+	[Token(Token = "0x4004EC7")]
+	[FieldOffset(Offset = "0x50")]
+	[SerializeField]
+	private UnityEvent OnLidAppears;
+
+	[Token(Token = "0x4004EC8")]
+	[FieldOffset(Offset = "0x58")]
+	[SerializeField]
+	private UnityEvent OnPopcornCooked;
+
+	[Token(Token = "0x4004EC9")]
+	[FieldOffset(Offset = "0x60")]
+	private bool spawned;
+
+	[Token(Token = "0x4004ECA")]
+	[FieldOffset(Offset = "0x64")]
+	private int popCornToSpawn;
+
+	[Token(Token = "0x4004ECB")]
+	[FieldOffset(Offset = "0x68")]
+	private List<GameObject> storedCorn;
+
+	[Token(Token = "0x4004ECC")]
+	[FieldOffset(Offset = "0x70")]
+	private List<Transform> popCorn;
+
+	[Token(Token = "0x6004414")]
+	[Address(RVA = "0x161A194", Offset = "0x161A194", VA = "0x161A194")]
+	public void SpawnpopCorn()
+	{
+	}
+
+	[Token(Token = "0x6004415")]
+	[Address(RVA = "0x161A298", Offset = "0x161A298", VA = "0x161A298")]
+	private void AddPopCorn()
+	{
+	}
+
+	[Token(Token = "0x6004416")]
+	[Address(RVA = "0x161A224", Offset = "0x161A224", VA = "0x161A224")]
+	private IEnumerator SpawnCoroutine()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6004417")]
+	[Address(RVA = "0x161A2A8", Offset = "0x161A2A8", VA = "0x161A2A8")]
+	private void OnTriggerEnter(Collider other)
+	{
+	}
+
+	[Token(Token = "0x6004418")]
+	[Address(RVA = "0x161A358", Offset = "0x161A358", VA = "0x161A358")]
+	public PopCornSpawner()
+	{
+	}
 }

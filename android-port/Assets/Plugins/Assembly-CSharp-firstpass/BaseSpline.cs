@@ -1,63 +1,264 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
-public class BaseSpline : MonoBehaviour
+[Token(Token = "0x2000027")]
+public abstract class BaseSpline
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x2000028")]
+	public enum UniSplineType
+	{
+		[Token(Token = "0x4000063")]
+		CatmullRom = 0,
+		[Token(Token = "0x4000064")]
+		Hermite = 1,
+		[Token(Token = "0x4000065")]
+		KochanekBartels = 2
+	}
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x2000029")]
+	public enum SplineWrapMode
+	{
+		[Token(Token = "0x4000067")]
+		Once = 0,
+		[Token(Token = "0x4000068")]
+		Repeat = 1,
+		[Token(Token = "0x4000069")]
+		PingPong = 2,
+		[Token(Token = "0x400006A")]
+		Loop = 3
+	}
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x200002A")]
+	public enum SplinePointType
+	{
+		[Token(Token = "0x400006C")]
+		Corner = 0,
+		[Token(Token = "0x400006D")]
+		Smooth = 1,
+		[Token(Token = "0x400006E")]
+		Bezier = 2,
+		[Token(Token = "0x400006F")]
+		BezierCorner = 3
+	}
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x200002B")]
+	public enum SplineSegmentType
+	{
+		[Token(Token = "0x4000071")]
+		Linear = 0,
+		[Token(Token = "0x4000072")]
+		Curve = 1
+	}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x200002C")]
+	public enum SplineReparamType
+	{
+		[Token(Token = "0x4000074")]
+		None = 0,
+		[Token(Token = "0x4000075")]
+		Simple = 1,
+		[Token(Token = "0x4000076")]
+		RungeKutta = 2
+	}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x200002D")]
+	public class SplineIterator
+	{
+		[Token(Token = "0x4000077")]
+		[FieldOffset(Offset = "0x10")]
+		private Transform m_transform;
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4000078")]
+		[FieldOffset(Offset = "0x18")]
+		private BaseSpline m_spline;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4000079")]
+		[FieldOffset(Offset = "0x20")]
+		private int m_segidx;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x400007A")]
+		[FieldOffset(Offset = "0x24")]
+		private int m_startidx;
 
-	4. This script is unnecessary.
+		[Token(Token = "0x400007B")]
+		[FieldOffset(Offset = "0x28")]
+		private int m_endidx;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x400007C")]
+		[FieldOffset(Offset = "0x2C")]
+		private bool m_reverse;
 
-	5. Script Content Level 0
+		[Token(Token = "0x400007D")]
+		[FieldOffset(Offset = "0x2D")]
+		private bool m_back;
 
-		AssetRipper was set to not load any script information.
+		[Token(Token = "0x400007E")]
+		[FieldOffset(Offset = "0x2E")]
+		private bool m_onceout;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x400007F")]
+		[FieldOffset(Offset = "0x30")]
+		private float m_segpos;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x600009E")]
+		[Address(RVA = "0x1336C24", Offset = "0x1336C24", VA = "0x1336C24")]
+		internal SplineIterator(BaseSpline spline, bool reverse, int startidx, int endidx)
+		{
+		}
 
-	7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x600009F")]
+		[Address(RVA = "0x1336D40", Offset = "0x1336D40", VA = "0x1336D40")]
+		public void SetTransform(Transform trnsfrm)
+		{
+		}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x60000A0")]
+		[Address(RVA = "0x1336D48", Offset = "0x1336D48", VA = "0x1336D48")]
+		public Vector3 GetPosition()
+		{
+			return default;
+		}
 
-	*/
+		[Token(Token = "0x60000A1")]
+		[Address(RVA = "0x1336E5C", Offset = "0x1336E5C", VA = "0x1336E5C")]
+		public Vector3 GetTangent()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60000A2")]
+		[Address(RVA = "0x1336CDC", Offset = "0x1336CDC", VA = "0x1336CDC")]
+		public void Reset()
+		{
+		}
+
+		[Token(Token = "0x60000A3")]
+		[Address(RVA = "0x1337064", Offset = "0x1337064", VA = "0x1337064")]
+		public void SetOffset(float offset)
+		{
+		}
+
+		[Token(Token = "0x60000A4")]
+		[Address(RVA = "0x13370E0", Offset = "0x13370E0", VA = "0x13370E0")]
+		public void Iterate(float length)
+		{
+		}
+
+		[Token(Token = "0x60000A5")]
+		[Address(RVA = "0x1337054", Offset = "0x1337054", VA = "0x1337054")]
+		private void SetToStart()
+		{
+		}
+
+		[Token(Token = "0x60000A6")]
+		[Address(RVA = "0x1337010", Offset = "0x1337010", VA = "0x1337010")]
+		private void SetToEnd()
+		{
+		}
+	}
+
+	[Token(Token = "0x400005D")]
+	[FieldOffset(Offset = "0x10")]
+	[SerializeField]
+	protected SplineWrapMode m_wrapmode;
+
+	[Token(Token = "0x400005E")]
+	[FieldOffset(Offset = "0x14")]
+	[SerializeField]
+	protected float m_length;
+
+	[Token(Token = "0x400005F")]
+	[FieldOffset(Offset = "0x18")]
+	[SerializeField]
+	protected int m_stepcount;
+
+	[Token(Token = "0x4000060")]
+	[FieldOffset(Offset = "0x1C")]
+	[SerializeField]
+	protected SplineReparamType m_reparam;
+
+	[Token(Token = "0x4000061")]
+	[FieldOffset(Offset = "0x20")]
+	protected int m_buildnum;
+
+	[Token(Token = "0x17000019")]
+	public int BuildNum
+	{
+		[Token(Token = "0x6000090")]
+		[Address(RVA = "0x12FB518", Offset = "0x12FB518", VA = "0x12FB518")]
+		get
+		{
+			return default;
+		}
+	}
+
+	[Token(Token = "0x1700001A")]
+	public float Length
+	{
+		[Token(Token = "0x6000091")]
+		[Address(RVA = "0x12FB520", Offset = "0x12FB520", VA = "0x12FB520")]
+		get
+		{
+			return default;
+		}
+	}
+
+	[Token(Token = "0x1700001B")]
+	public SplineWrapMode WrapMode
+	{
+		[Token(Token = "0x6000092")]
+		[Address(RVA = "0x12FB528", Offset = "0x12FB528", VA = "0x12FB528")]
+		get
+		{
+			return default;
+		}
+	}
+
+	[Token(Token = "0x6000093")]
+	public abstract int GetSegmentCount();
+
+	[Token(Token = "0x6000094")]
+	protected abstract float GetSegmentLength(int segidx);
+
+	[Token(Token = "0x6000095")]
+	protected abstract float GetSegmentStartLength(int segidx);
+
+	[Token(Token = "0x6000096")]
+	protected abstract int FindSegment(float offset);
+
+	[Token(Token = "0x6000097")]
+	protected abstract Vector3 GetDrawPosition(int segidx, float segpos);
+
+	[Token(Token = "0x6000098")]
+	protected abstract Vector3 GetPosition(int segidx, float segpos);
+
+	[Token(Token = "0x6000099")]
+	protected abstract Vector3 GetTangent(int segidx, float segpos);
+
+	[Token(Token = "0x600009A")]
+	[Address(RVA = "0x12FB530", Offset = "0x12FB530", VA = "0x12FB530")]
+	public SplineIterator GetIterator()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x600009B")]
+	[Address(RVA = "0x12FB5B8", Offset = "0x12FB5B8", VA = "0x12FB5B8")]
+	public SplineIterator GetPartialIterator(int startidx, int endidx)
+	{
+		return null;
+	}
+
+	[Token(Token = "0x600009C")]
+	[Address(RVA = "0x12FB63C", Offset = "0x12FB63C", VA = "0x12FB63C")]
+	public Vector3[] GenerateDrawPoints(int divs)
+	{
+		return null;
+	}
+
+	[Token(Token = "0x600009D")]
+	[Address(RVA = "0x12FB7B4", Offset = "0x12FB7B4", VA = "0x12FB7B4")]
+	protected BaseSpline()
+	{
+	}
 }

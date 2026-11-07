@@ -1,63 +1,172 @@
+using System;
+using System.Collections.Generic;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000201")]
 public class SetTorusSizeInShader : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Serializable]
+	[Token(Token = "0x2000202")]
+	public class Shape
+	{
+		[Token(Token = "0x40009D7")]
+		[FieldOffset(Offset = "0x10")]
+		public float Size;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40009D8")]
+		[FieldOffset(Offset = "0x18")]
+		public Transform TestPosition;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x6000903")]
+		[Address(RVA = "0x1843144", Offset = "0x1843144", VA = "0x1843144")]
+		public Shape()
+		{
+		}
+	}
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Serializable]
+	[Token(Token = "0x2000203")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3E3D8", Offset = "0x3E3D8")]
+	private sealed class _003C_003Ec
+	{
+		[Token(Token = "0x40009D9")]
+		[FieldOffset(Offset = "0x0")]
+		public static readonly _003C_003Ec _003C_003E9;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40009DA")]
+		[FieldOffset(Offset = "0x8")]
+		public static Func<Shape, float> _003C_003E9__16_0;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40009DB")]
+		[FieldOffset(Offset = "0x10")]
+		public static Func<Shape, float> _003C_003E9__18_2;
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6000905")]
+		[Address(RVA = "0x184310C", Offset = "0x184310C", VA = "0x184310C")]
+		public _003C_003Ec()
+		{
+		}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6000906")]
+		[Address(RVA = "0x1843114", Offset = "0x1843114", VA = "0x1843114")]
+		internal float _003CAwake_003Eb__16_0(Shape s)
+		{
+			return default;
+		}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x6000907")]
+		[Address(RVA = "0x184312C", Offset = "0x184312C", VA = "0x184312C")]
+		internal float _003CUpdate_003Eb__18_2(Shape s)
+		{
+			return default;
+		}
+	}
 
-	4. This script is unnecessary.
+	[Token(Token = "0x40009C8")]
+	[FieldOffset(Offset = "0x18")]
+	public Material Mat;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x40009C9")]
+	[FieldOffset(Offset = "0x20")]
+	public List<Shape> Sizes;
 
-	5. Script Content Level 0
+	[Token(Token = "0x40009CA")]
+	[FieldOffset(Offset = "0x28")]
+	public Transform GiraffeHand;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x40009CB")]
+	[FieldOffset(Offset = "0x30")]
+	public GolfBallController Controller;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x40009CC")]
+	[FieldOffset(Offset = "0x38")]
+	public float DistanceThreshold;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x40009CD")]
+	[FieldOffset(Offset = "0x3C")]
+	public float RotateSpeed;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x40009CE")]
+	[FieldOffset(Offset = "0x40")]
+	public float SculptSpeed;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x40009CF")]
+	[FieldOffset(Offset = "0x44")]
+	public float WinFat;
 
-	*/
+	[Token(Token = "0x40009D0")]
+	[FieldOffset(Offset = "0x48")]
+	public ParticleSystem Particles;
+
+	[Token(Token = "0x40009D1")]
+	[FieldOffset(Offset = "0x50")]
+	public Transform Bottom;
+
+	[Token(Token = "0x40009D2")]
+	[FieldOffset(Offset = "0x58")]
+	public float TestPositionSpacing;
+
+	[Token(Token = "0x40009D3")]
+	[FieldOffset(Offset = "0x5C")]
+	public float TestSize;
+
+	[Token(Token = "0x40009D4")]
+	[FieldOffset(Offset = "0x60")]
+	public AudioSource clayAudioSource;
+
+	[Token(Token = "0x40009D5")]
+	[FieldOffset(Offset = "0x68")]
+	private bool hasShot;
+
+	[Token(Token = "0x40009D6")]
+	[FieldOffset(Offset = "0x6C")]
+	private float targetVolume;
+
+	[Token(Token = "0x60008FC")]
+	[Address(RVA = "0x16902DC", Offset = "0x16902DC", VA = "0x16902DC")]
+	private void Awake()
+	{
+	}
+
+	[Token(Token = "0x60008FD")]
+	[Address(RVA = "0x169068C", Offset = "0x169068C", VA = "0x169068C")]
+	private void ControllerOnOnShoot(Vector3 obj)
+	{
+	}
+
+	[Token(Token = "0x60008FE")]
+	[Address(RVA = "0x1690698", Offset = "0x1690698", VA = "0x1690698")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x60008FF")]
+	[Address(RVA = "0x1690B50", Offset = "0x1690B50", VA = "0x1690B50")]
+	private void OnDrawGizmosSelected()
+	{
+	}
+
+	[Token(Token = "0x6000900")]
+	[Address(RVA = "0x1690CE4", Offset = "0x1690CE4", VA = "0x1690CE4")]
+	public SetTorusSizeInShader()
+	{
+	}
+
+	[Token(Token = "0x6000901")]
+	[Address(RVA = "0x1690D14", Offset = "0x1690D14", VA = "0x1690D14")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x5F6EC", Offset = "0x5F6EC")]
+	private bool _003CUpdate_003Eb__18_0(Shape s)
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6000902")]
+	[Address(RVA = "0x1690DA0", Offset = "0x1690DA0", VA = "0x1690DA0")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x5F6FC", Offset = "0x5F6FC")]
+	private float _003CUpdate_003Eb__18_1(Shape s)
+	{
+		return default;
+	}
 }

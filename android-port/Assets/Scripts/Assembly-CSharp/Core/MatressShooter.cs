@@ -1,66 +1,219 @@
+using CameraStack;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Core
 {
-	public class MatressShooter : MonoBehaviour
+	[Token(Token = "0x2001420")]
+	public class MatressShooter : GolfBallShooterBase
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4006C5B")]
+		[FieldOffset(Offset = "0x60")]
+		[SerializeField]
+		public float minShootVelocity;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4006C5C")]
+		[FieldOffset(Offset = "0x64")]
+		[SerializeField]
+		public float fullShootVelocity;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4006C5D")]
+		[FieldOffset(Offset = "0x68")]
+		[SerializeField]
+		public float pitch;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4006C5E")]
+		[FieldOffset(Offset = "0x70")]
+		[SerializeField]
+		public AnimationCurve powerToPitchWeightCurve;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4006C5F")]
+		[FieldOffset(Offset = "0x78")]
+		[SerializeField]
+		public float spin;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4006C60")]
+		[FieldOffset(Offset = "0x7C")]
+		[SerializeField]
+		protected bool lookInShotDirection;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4006C61")]
+		[FieldOffset(Offset = "0x7D")]
+		public bool lookInAimDirection;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4006C62")]
+		[FieldOffset(Offset = "0x7E")]
+		[SerializeField]
+		protected bool onlyLookWhenChargingOnController;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4006C63")]
+		[FieldOffset(Offset = "0x80")]
+		public float LookInAimDirectionSpeed;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4006C64")]
+		[FieldOffset(Offset = "0x84")]
+		[SerializeField]
+		protected bool dontLookInAimDirectionWhenBlocked;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4006C65")]
+		[FieldOffset(Offset = "0x85")]
+		[SerializeField]
+		protected bool useLocalUp;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4006C66")]
+		[FieldOffset(Offset = "0x86")]
+		[SerializeField]
+		public bool zeroPitchIfNotGrouneded;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4006C67")]
+		[FieldOffset(Offset = "0x88")]
+		[SerializeField]
+		public Animator anim;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x4006C68")]
+		[FieldOffset(Offset = "0x90")]
+		[SerializeField]
+		public float bendSpeed;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x4006C69")]
+		[FieldOffset(Offset = "0x98")]
+		private string bendParam;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x4006C6A")]
+		[FieldOffset(Offset = "0xA0")]
+		private float targetBend;
 
-		*/
+		[Token(Token = "0x4006C6B")]
+		[FieldOffset(Offset = "0xA4")]
+		private float currentBend;
+
+		[Token(Token = "0x4006C6C")]
+		[FieldOffset(Offset = "0xA8")]
+		[SerializeField]
+		[Attribute(Name = "RangeAttribute", RVA = "0x5B2E4", Offset = "0x5B2E4")]
+		private float currentSqueeze;
+
+		[Token(Token = "0x4006C6D")]
+		[FieldOffset(Offset = "0xB0")]
+		private string squeezeParam;
+
+		[Token(Token = "0x4006C6E")]
+		[FieldOffset(Offset = "0xB8")]
+		[SerializeField]
+		public float squeezeSpeed;
+
+		[Token(Token = "0x4006C6F")]
+		[FieldOffset(Offset = "0xBC")]
+		[SerializeField]
+		private float disableSqueezeStartupTime;
+
+		[Token(Token = "0x4006C70")]
+		[FieldOffset(Offset = "0xC0")]
+		[SerializeField]
+		private CBFollow camera;
+
+		[Token(Token = "0x4006C71")]
+		[FieldOffset(Offset = "0xC8")]
+		[SerializeField]
+		private Vector2 cameraFramingAfterFirstShot;
+
+		[Token(Token = "0x4006C72")]
+		[FieldOffset(Offset = "0xD0")]
+		private float awakeTime;
+
+		[Token(Token = "0x4006C73")]
+		[FieldOffset(Offset = "0xD4")]
+		private bool isAiming;
+
+		[Token(Token = "0x4006C74")]
+		[FieldOffset(Offset = "0xD5")]
+		private bool isFirstShot;
+
+		[Token(Token = "0x4006C75")]
+		[FieldOffset(Offset = "0xD8")]
+		[SerializeField]
+		private AnimationCurve squeezeDecay;
+
+		[Token(Token = "0x4006C76")]
+		[FieldOffset(Offset = "0xE0")]
+		[SerializeField]
+		private float squeezeForceNormalizer;
+
+		[Token(Token = "0x4006C77")]
+		[FieldOffset(Offset = "0xE4")]
+		[SerializeField]
+		private float squeezeMinDuration;
+
+		[Token(Token = "0x4006C78")]
+		[FieldOffset(Offset = "0xE8")]
+		[SerializeField]
+		private float squeezeMaxDuration;
+
+		[Token(Token = "0x4006C79")]
+		[FieldOffset(Offset = "0xEC")]
+		[SerializeField]
+		private float oscillationSpeed;
+
+		[Token(Token = "0x4006C7A")]
+		[FieldOffset(Offset = "0xF0")]
+		private float squeezeStrength;
+
+		[Token(Token = "0x4006C7B")]
+		[FieldOffset(Offset = "0xF4")]
+		private float collisionTime;
+
+		[Token(Token = "0x6005D95")]
+		[Address(RVA = "0x155EF88", Offset = "0x155EF88", VA = "0x155EF88", Slot = "11")]
+		protected override void Awake()
+		{
+		}
+
+		[Token(Token = "0x6005D96")]
+		[Address(RVA = "0x155EFB8", Offset = "0x155EFB8", VA = "0x155EFB8", Slot = "4")]
+		public override void OnActivate()
+		{
+		}
+
+		[Token(Token = "0x6005D97")]
+		[Address(RVA = "0x155EFF0", Offset = "0x155EFF0", VA = "0x155EFF0", Slot = "6")]
+		public override void OnAimUpdate(Vector3 boost, bool onlyAimArrow)
+		{
+		}
+
+		[Token(Token = "0x6005D98")]
+		[Address(RVA = "0x155F270", Offset = "0x155F270", VA = "0x155F270", Slot = "8")]
+		public override void OnCancel()
+		{
+		}
+
+		[Token(Token = "0x6005D99")]
+		[Address(RVA = "0x155F298", Offset = "0x155F298", VA = "0x155F298", Slot = "9")]
+		public override void OnReset()
+		{
+		}
+
+		[Token(Token = "0x6005D9A")]
+		[Address(RVA = "0x155F2C0", Offset = "0x155F2C0", VA = "0x155F2C0", Slot = "7")]
+		public override void OnShoot(Vector3 boost)
+		{
+		}
+
+		[Token(Token = "0x6005D9B")]
+		[Address(RVA = "0x155F560", Offset = "0x155F560", VA = "0x155F560")]
+		private void Update()
+		{
+		}
+
+		[Token(Token = "0x6005D9C")]
+		[Address(RVA = "0x155F644", Offset = "0x155F644", VA = "0x155F644")]
+		private void OnCollisionEnter(Collision collision)
+		{
+		}
+
+		[Token(Token = "0x6005D9D")]
+		[Address(RVA = "0x155F724", Offset = "0x155F724", VA = "0x155F724")]
+		public MatressShooter()
+		{
+		}
 	}
 }

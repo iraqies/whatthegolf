@@ -1,66 +1,176 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace RootMotion.FinalIK
 {
-	public class IKSolverHeuristic : MonoBehaviour
+	[Serializable]
+	[Token(Token = "0x200017B")]
+	public class IKSolverHeuristic : IKSolver
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x400098D")]
+		[FieldOffset(Offset = "0x58")]
+		public Transform target;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x400098E")]
+		[FieldOffset(Offset = "0x60")]
+		public float tolerance;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x400098F")]
+		[FieldOffset(Offset = "0x64")]
+		public int maxIterations;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4000990")]
+		[FieldOffset(Offset = "0x68")]
+		public bool useRotationLimits;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4000991")]
+		[FieldOffset(Offset = "0x69")]
+		public bool XY;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000992")]
+		[FieldOffset(Offset = "0x70")]
+		public Bone[] bones;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4000993")]
+		[FieldOffset(Offset = "0x78")]
+		protected Vector3 lastLocalDirection;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4000994")]
+		[FieldOffset(Offset = "0x84")]
+		protected float chainLength;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x1700015F")]
+		protected virtual int minBones
+		{
+			[Token(Token = "0x6000AD9")]
+			[Address(RVA = "0x1393A84", Offset = "0x1393A84", VA = "0x1393A84", Slot = "12")]
+			get
+			{
+				return default;
+			}
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x17000160")]
+		protected virtual bool boneLengthCanBeZero
+		{
+			[Token(Token = "0x6000ADA")]
+			[Address(RVA = "0x1393A8C", Offset = "0x1393A8C", VA = "0x1393A8C", Slot = "13")]
+			get
+			{
+				return default;
+			}
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x17000161")]
+		protected virtual bool allowCommonParent
+		{
+			[Token(Token = "0x6000ADB")]
+			[Address(RVA = "0x1393A94", Offset = "0x1393A94", VA = "0x1393A94", Slot = "14")]
+			get
+			{
+				return default;
+			}
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x17000162")]
+		protected virtual Vector3 localDirection
+		{
+			[Token(Token = "0x6000ADF")]
+			[Address(RVA = "0x1393F30", Offset = "0x1393F30", VA = "0x1393F30", Slot = "15")]
+			get
+			{
+				return default;
+			}
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x17000163")]
+		protected float positionOffset
+		{
+			[Token(Token = "0x6000AE0")]
+			[Address(RVA = "0x1393FF8", Offset = "0x1393FF8", VA = "0x1393FF8")]
+			get
+			{
+				return default;
+			}
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x6000AD3")]
+		[Address(RVA = "0x1393340", Offset = "0x1393340", VA = "0x1393340")]
+		public bool SetChain(Transform[] hierarchy, Transform root)
+		{
+			return default;
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x6000AD4")]
+		[Address(RVA = "0x13934DC", Offset = "0x13934DC", VA = "0x13934DC", Slot = "9")]
+		public override void StoreDefaultLocalState()
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x6000AD5")]
+		[Address(RVA = "0x1393548", Offset = "0x1393548", VA = "0x1393548", Slot = "8")]
+		public override void FixTransforms()
+		{
+		}
 
-		*/
+		[Token(Token = "0x6000AD6")]
+		[Address(RVA = "0x13935CC", Offset = "0x13935CC", VA = "0x13935CC", Slot = "4")]
+		public override bool IsValid(ref string message)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000AD7")]
+		[Address(RVA = "0x139397C", Offset = "0x139397C", VA = "0x139397C", Slot = "6")]
+		public override Point[] GetPoints()
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6000AD8")]
+		[Address(RVA = "0x1393984", Offset = "0x1393984", VA = "0x1393984", Slot = "7")]
+		public override Point GetPoint(Transform transform)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6000ADC")]
+		[Address(RVA = "0x1393A9C", Offset = "0x1393A9C", VA = "0x1393A9C", Slot = "10")]
+		protected override void OnInitiate()
+		{
+		}
+
+		[Token(Token = "0x6000ADD")]
+		[Address(RVA = "0x1393AA0", Offset = "0x1393AA0", VA = "0x1393AA0", Slot = "11")]
+		protected override void OnUpdate()
+		{
+		}
+
+		[Token(Token = "0x6000ADE")]
+		[Address(RVA = "0x1393AA4", Offset = "0x1393AA4", VA = "0x1393AA4")]
+		protected void InitiateBones()
+		{
+		}
+
+		[Token(Token = "0x6000AE1")]
+		[Address(RVA = "0x139404C", Offset = "0x139404C", VA = "0x139404C")]
+		protected Vector3 GetSingularityOffset()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000AE2")]
+		[Address(RVA = "0x1394368", Offset = "0x1394368", VA = "0x1394368")]
+		private bool SingularityDetected()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000AE3")]
+		[Address(RVA = "0x1394564", Offset = "0x1394564", VA = "0x1394564")]
+		public IKSolverHeuristic()
+		{
+		}
 	}
 }

@@ -1,66 +1,169 @@
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace I2.Loc
 {
-	public class LanguageSource : MonoBehaviour
+	[Token(Token = "0x20012EB")]
+	[ExecuteInEditMode]
+	public class LanguageSource : MonoBehaviour, ISerializationCallbackReceiver, ILanguageSource
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x20012EC")]
+		public delegate void fnOnSourceUpdated(LanguageSourceData source, bool ReceivedNewData, string errorMsg);
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40065C6")]
+		[FieldOffset(Offset = "0x18")]
+		public LanguageSourceData mSource;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40065C7")]
+		[FieldOffset(Offset = "0x20")]
+		public int version;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40065C8")]
+		[FieldOffset(Offset = "0x24")]
+		public bool NeverDestroy;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40065C9")]
+		[FieldOffset(Offset = "0x25")]
+		public bool UserAgreesToHaveItOnTheScene;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40065CA")]
+		[FieldOffset(Offset = "0x26")]
+		public bool UserAgreesToHaveItInsideThePluginsFolder;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x40065CB")]
+		[FieldOffset(Offset = "0x27")]
+		public bool GoogleLiveSyncIsUptoDate;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x40065CC")]
+		[FieldOffset(Offset = "0x28")]
+		public List<Object> Assets;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x40065CD")]
+		[FieldOffset(Offset = "0x30")]
+		public string Google_WebServiceURL;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x40065CE")]
+		[FieldOffset(Offset = "0x38")]
+		public string Google_SpreadsheetKey;
 
-		5. Script Content Level 0
+		[Token(Token = "0x40065CF")]
+		[FieldOffset(Offset = "0x40")]
+		public string Google_SpreadsheetName;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x40065D0")]
+		[FieldOffset(Offset = "0x48")]
+		public string Google_LastUpdatedVersion;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x40065D1")]
+		[FieldOffset(Offset = "0x50")]
+		public LanguageSourceData.eGoogleUpdateFrequency GoogleUpdateFrequency;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x40065D2")]
+		[FieldOffset(Offset = "0x54")]
+		public float GoogleUpdateDelay;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x40065D3")]
+		[FieldOffset(Offset = "0x58")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x59B4C", Offset = "0x59B4C")]
+		private fnOnSourceUpdated m_Event_OnSourceUpdateFromGoogle;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x40065D4")]
+		[FieldOffset(Offset = "0x60")]
+		public List<LanguageData> mLanguages;
 
-		*/
+		[Token(Token = "0x40065D5")]
+		[FieldOffset(Offset = "0x68")]
+		public bool IgnoreDeviceLanguage;
+
+		[Token(Token = "0x40065D6")]
+		[FieldOffset(Offset = "0x6C")]
+		public LanguageSourceData.eAllowUnloadLanguages _AllowUnloadingLanguages;
+
+		[Token(Token = "0x40065D7")]
+		[FieldOffset(Offset = "0x70")]
+		public List<TermData> mTerms;
+
+		[Token(Token = "0x40065D8")]
+		[FieldOffset(Offset = "0x78")]
+		public bool CaseInsensitiveTerms;
+
+		[Token(Token = "0x40065D9")]
+		[FieldOffset(Offset = "0x7C")]
+		public LanguageSourceData.MissingTranslationAction OnMissingTranslation;
+
+		[Token(Token = "0x40065DA")]
+		[FieldOffset(Offset = "0x80")]
+		public string mTerm_AppName;
+
+		[Token(Token = "0x17000A09")]
+		public LanguageSourceData SourceData
+		{
+			[Token(Token = "0x60057BC")]
+			[Address(RVA = "0x1502FFC", Offset = "0x1502FFC", VA = "0x1502FFC", Slot = "6")]
+			get
+			{
+				return null;
+			}
+			[Token(Token = "0x60057BD")]
+			[Address(RVA = "0x1503004", Offset = "0x1503004", VA = "0x1503004", Slot = "7")]
+			set
+			{
+			}
+		}
+
+		[Token(Token = "0x14000099")]
+		public event fnOnSourceUpdated Event_OnSourceUpdateFromGoogle
+		{
+			[Token(Token = "0x60057BE")]
+			[Address(RVA = "0x150300C", Offset = "0x150300C", VA = "0x150300C")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x71E24", Offset = "0x71E24")]
+			add
+			{
+			}
+			[Token(Token = "0x60057BF")]
+			[Address(RVA = "0x15030B0", Offset = "0x15030B0", VA = "0x15030B0")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x71E34", Offset = "0x71E34")]
+			remove
+			{
+			}
+		}
+
+		[Token(Token = "0x60057C0")]
+		[Address(RVA = "0x1503154", Offset = "0x1503154", VA = "0x1503154")]
+		private void Awake()
+		{
+		}
+
+		[Token(Token = "0x60057C1")]
+		[Address(RVA = "0x1503200", Offset = "0x1503200", VA = "0x1503200")]
+		private void OnDestroy()
+		{
+		}
+
+		[Token(Token = "0x60057C2")]
+		[Address(RVA = "0x15032F4", Offset = "0x15032F4", VA = "0x15032F4")]
+		public string GetSourceName()
+		{
+			return null;
+		}
+
+		[Token(Token = "0x60057C3")]
+		[Address(RVA = "0x15033EC", Offset = "0x15033EC", VA = "0x15033EC", Slot = "4")]
+		public void OnBeforeSerialize()
+		{
+		}
+
+		[Token(Token = "0x60057C4")]
+		[Address(RVA = "0x15033F8", Offset = "0x15033F8", VA = "0x15033F8", Slot = "5")]
+		public void OnAfterDeserialize()
+		{
+		}
+
+		[Token(Token = "0x60057C5")]
+		[Address(RVA = "0x1503A60", Offset = "0x1503A60", VA = "0x1503A60")]
+		public LanguageSource()
+		{
+		}
 	}
 }

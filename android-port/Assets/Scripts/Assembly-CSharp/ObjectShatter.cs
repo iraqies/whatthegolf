@@ -1,63 +1,125 @@
+using System;
+using System.Runtime.InteropServices;
+using Chronos;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x200082B")]
 public class ObjectShatter : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Serializable]
+	[Token(Token = "0x200082C")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x41898", Offset = "0x41898")]
+	private sealed class _003C_003Ec
+	{
+		[Token(Token = "0x4002C12")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x0")]
+		public static readonly _003C_003Ec _003C_003E9;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4002C13")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x8")]
+		public static Func<Timeline, RigidbodyTimeline3D> _003C_003E9__5_0;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x600259E")]
+		[Address(RVA = "0x180A1BC", Offset = "0x180A1BC", VA = "0x180A1BC")]
+		public _003C_003Ec()
+		{
+		}
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x600259F")]
+		[Address(RVA = "0x180A1C4", Offset = "0x180A1C4", VA = "0x180A1C4")]
+		internal RigidbodyTimeline3D _003CStart_003Eb__5_0(Timeline t)
+		{
+			return null;
+		}
+	}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x200082D")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x418A8", Offset = "0x418A8")]
+	private sealed class _003C_003Ec__DisplayClass8_0
+	{
+		[Token(Token = "0x4002C14")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x10")]
+		public Vector3 impactPoint;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4002C15")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x1C")]
+		public float force;
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4002C16")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x20")]
+		public ForceMode forceMode;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4002C17")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
+		public ObjectShatter _003C_003E4__this;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x60025A0")]
+		[Address(RVA = "0x180A1DC", Offset = "0x180A1DC", VA = "0x180A1DC")]
+		public _003C_003Ec__DisplayClass8_0()
+		{
+		}
 
-	4. This script is unnecessary.
+		[Token(Token = "0x60025A1")]
+		[Address(RVA = "0x180A1E4", Offset = "0x180A1E4", VA = "0x180A1E4")]
+		internal void _003CShatter_003Eb__0(RigidbodyTimeline3D r)
+		{
+		}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x60025A2")]
+		[Address(RVA = "0x180A2B0", Offset = "0x180A2B0", VA = "0x180A2B0")]
+		internal void _003CShatter_003Eb__1(Rigidbody r)
+		{
+		}
+	}
 
-	5. Script Content Level 0
+	[Token(Token = "0x4002C0D")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x18")]
+	public bool UseTimelines;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4002C0E")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x19")]
+	public bool UnparentAllRigidbodies;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4002C0F")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x20")]
+	private RigidbodyTimeline3D[] rigidbodiesTimeline;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4002C10")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
+	private Rigidbody[] rigidbodies;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4002C11")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x30")]
+	private bool hasShattered;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x6002598")]
+	[Address(RVA = "0x159261C", Offset = "0x159261C", VA = "0x159261C")]
+	private void Start()
+	{
+	}
 
-	*/
+	[Token(Token = "0x6002599")]
+	[Address(RVA = "0x159281C", Offset = "0x159281C", VA = "0x159281C")]
+	private void Toggle(bool isEnabled, [Optional] Action<RigidbodyTimeline3D> doToRigid)
+	{
+	}
+
+	[Token(Token = "0x600259A")]
+	[Address(RVA = "0x1592930", Offset = "0x1592930", VA = "0x1592930")]
+	private void ToggleRagdolls(bool isEnabled, [Optional] Action<Rigidbody> doToRigid)
+	{
+	}
+
+	[Token(Token = "0x600259B")]
+	[Address(RVA = "0x1592A4C", Offset = "0x1592A4C", VA = "0x1592A4C")]
+	public void Shatter(Vector3 impactPoint, float force, float explosionRadius, float upwardsModifier, ForceMode forceMode)
+	{
+	}
+
+	[Token(Token = "0x600259C")]
+	[Address(RVA = "0x1592C18", Offset = "0x1592C18", VA = "0x1592C18")]
+	public ObjectShatter()
+	{
+	}
 }

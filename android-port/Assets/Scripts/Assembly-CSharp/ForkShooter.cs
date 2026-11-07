@@ -1,63 +1,232 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
-public class ForkShooter : MonoBehaviour
+[Token(Token = "0x2000E83")]
+public class ForkShooter : GolfBallShooterBase
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x2000E84")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x450B8", Offset = "0x450B8")]
+	private sealed class _003CStickCooldownRoutine_003Ed__25 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x4004E7A")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4004E7B")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4004E7C")]
+		[FieldOffset(Offset = "0x20")]
+		public ForkShooter _003C_003E4__this;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4004E7D")]
+		[FieldOffset(Offset = "0x28")]
+		public Vector3 shootDir;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x170006F2")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x60043D7")]
+			[Address(RVA = "0x17A99F0", Offset = "0x17A99F0", VA = "0x17A99F0", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x170006F3")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x60043D9")]
+			[Address(RVA = "0x17A9A38", Offset = "0x17A9A38", VA = "0x17A9A38", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x60043D4")]
+		[Address(RVA = "0x17A981C", Offset = "0x17A981C", VA = "0x17A981C")]
+		[DebuggerHidden]
+		public _003CStickCooldownRoutine_003Ed__25(int _003C_003E1__state)
+		{
+		}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x60043D5")]
+		[Address(RVA = "0x17A9848", Offset = "0x17A9848", VA = "0x17A9848", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x60043D6")]
+		[Address(RVA = "0x17A984C", Offset = "0x17A984C", VA = "0x17A984C", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
 
-	4. This script is unnecessary.
+		[Token(Token = "0x60043D7")]
+		[Address(RVA = "0x17A99F0", Offset = "0x17A99F0", VA = "0x17A99F0", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x60043D8")]
+		[Address(RVA = "0x17A99F8", Offset = "0x17A99F8", VA = "0x17A99F8", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
 
-	5. Script Content Level 0
+		[Token(Token = "0x60043D9")]
+		[Address(RVA = "0x17A9A38", Offset = "0x17A9A38", VA = "0x17A9A38", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4004E68")]
+	[FieldOffset(Offset = "0x60")]
+	[SerializeField]
+	public float minShootVelocity;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4004E69")]
+	[FieldOffset(Offset = "0x64")]
+	[SerializeField]
+	public float fullShootVelocity;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4004E6A")]
+	[FieldOffset(Offset = "0x68")]
+	[SerializeField]
+	public float pitch;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4004E6B")]
+	[FieldOffset(Offset = "0x6C")]
+	[SerializeField]
+	public float spin;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x4004E6C")]
+	[FieldOffset(Offset = "0x70")]
+	[SerializeField]
+	protected bool lookInShotDirection;
 
-	*/
+	[Token(Token = "0x4004E6D")]
+	[FieldOffset(Offset = "0x71")]
+	public bool lookInAimDirection;
+
+	[Token(Token = "0x4004E6E")]
+	[FieldOffset(Offset = "0x72")]
+	[SerializeField]
+	protected bool onlyLookWhenChargingOnController;
+
+	[Token(Token = "0x4004E6F")]
+	[FieldOffset(Offset = "0x74")]
+	public float LookInAimDirectionSpeed;
+
+	[Token(Token = "0x4004E70")]
+	[FieldOffset(Offset = "0x78")]
+	[SerializeField]
+	protected bool dontLookInAimDirectionWhenBlocked;
+
+	[Token(Token = "0x4004E71")]
+	[FieldOffset(Offset = "0x79")]
+	[SerializeField]
+	protected bool useLocalUp;
+
+	[Token(Token = "0x4004E72")]
+	[FieldOffset(Offset = "0x7A")]
+	[SerializeField]
+	public bool zeroPitchIfNotGrouneded;
+
+	[Token(Token = "0x4004E73")]
+	[FieldOffset(Offset = "0x7C")]
+	[SerializeField]
+	private float depthOfStabbing;
+
+	[Token(Token = "0x4004E74")]
+	[FieldOffset(Offset = "0x80")]
+	[SerializeField]
+	private float SecondsBeforeSticking;
+
+	[Token(Token = "0x4004E75")]
+	[FieldOffset(Offset = "0x88")]
+	private Coroutine stickCooldown;
+
+	[Token(Token = "0x4004E76")]
+	[FieldOffset(Offset = "0x90")]
+	private FixedJoint stickJoint;
+
+	[Token(Token = "0x4004E77")]
+	[FieldOffset(Offset = "0x98")]
+	private Rigidbody collisionRb;
+
+	[Token(Token = "0x4004E78")]
+	[FieldOffset(Offset = "0xA0")]
+	private bool isAiming;
+
+	[Token(Token = "0x4004E79")]
+	[FieldOffset(Offset = "0xA1")]
+	private bool canStick;
+
+	[Token(Token = "0x60043CC")]
+	[Address(RVA = "0x1471F14", Offset = "0x1471F14", VA = "0x1471F14")]
+	private void Start()
+	{
+	}
+
+	[Token(Token = "0x60043CD")]
+	[Address(RVA = "0x1471F38", Offset = "0x1471F38", VA = "0x1471F38", Slot = "6")]
+	public override void OnAimUpdate(Vector3 boost, bool onlyAimArrow)
+	{
+	}
+
+	[Token(Token = "0x60043CE")]
+	[Address(RVA = "0x14721A0", Offset = "0x14721A0", VA = "0x14721A0")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x60043CF")]
+	[Address(RVA = "0x1472250", Offset = "0x1472250", VA = "0x1472250", Slot = "8")]
+	public override void OnCancel()
+	{
+	}
+
+	[Token(Token = "0x60043D0")]
+	[Address(RVA = "0x1472258", Offset = "0x1472258", VA = "0x1472258", Slot = "7")]
+	public override void OnShoot(Vector3 boost)
+	{
+	}
+
+	[Token(Token = "0x60043D1")]
+	[Address(RVA = "0x14725D4", Offset = "0x14725D4", VA = "0x14725D4")]
+	private void OnCollisionStay(Collision collision)
+	{
+	}
+
+	[Token(Token = "0x60043D2")]
+	[Address(RVA = "0x147253C", Offset = "0x147253C", VA = "0x147253C")]
+	private IEnumerator StickCooldownRoutine(Vector3 shootDir)
+	{
+		return null;
+	}
+
+	[Token(Token = "0x60043D3")]
+	[Address(RVA = "0x147284C", Offset = "0x147284C", VA = "0x147284C")]
+	public ForkShooter()
+	{
+	}
 }

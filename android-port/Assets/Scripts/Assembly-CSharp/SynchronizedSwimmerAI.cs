@@ -1,63 +1,103 @@
+using System;
+using System.Collections.Generic;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x200026F")]
 public class SynchronizedSwimmerAI : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4000CA1")]
+	[FieldOffset(Offset = "0x18")]
+	[SerializeField]
+	private SwimmerShooter shooter;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4000CA2")]
+	[FieldOffset(Offset = "0x20")]
+	[SerializeField]
+	private List<Vector3> sequence;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4000CA3")]
+	[FieldOffset(Offset = "0x28")]
+	[SerializeField]
+	public float delayBetweenMoves;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4000CA4")]
+	[FieldOffset(Offset = "0x2C")]
+	private int currentMoveIndex;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4000CA5")]
+	[FieldOffset(Offset = "0x30")]
+	private float lastMoveTime;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4000CA6")]
+	[FieldOffset(Offset = "0x38")]
+	[SerializeField]
+	private Rigidbody rb;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4000CA7")]
+	[FieldOffset(Offset = "0x40")]
+	[SerializeField]
+	private ShootArrow shootArrow;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4000CA8")]
+	[FieldOffset(Offset = "0x48")]
+	private float inputTarget;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4000CA9")]
+	[FieldOffset(Offset = "0x50")]
+	private GolfBallController controller;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4000CAA")]
+	[FieldOffset(Offset = "0x58")]
+	private float currentAnimVel;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4000CAB")]
+	[FieldOffset(Offset = "0x5C")]
+	[SerializeField]
+	private float shootArrowAnimSmoothTime;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4000CAC")]
+	[FieldOffset(Offset = "0x60")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x4AD74", Offset = "0x4AD74")]
+	private Action<SynchronizedSwimmerAI> m_OnMoveTargetReached;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4000CAD")]
+	[FieldOffset(Offset = "0x68")]
+	private bool raisedEventForLastMove;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x14000007")]
+	public event Action<SynchronizedSwimmerAI> OnMoveTargetReached
+	{
+		[Token(Token = "0x6000AF7")]
+		[Address(RVA = "0x16F5D94", Offset = "0x16F5D94", VA = "0x16F5D94")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x5FE6C", Offset = "0x5FE6C")]
+		add
+		{
+		}
+		[Token(Token = "0x6000AF8")]
+		[Address(RVA = "0x16F5E38", Offset = "0x16F5E38", VA = "0x16F5E38")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x5FE7C", Offset = "0x5FE7C")]
+		remove
+		{
+		}
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x6000AF9")]
+	[Address(RVA = "0x16F5EDC", Offset = "0x16F5EDC", VA = "0x16F5EDC")]
+	private void Start()
+	{
+	}
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x6000AFA")]
+	[Address(RVA = "0x16F5F5C", Offset = "0x16F5F5C", VA = "0x16F5F5C")]
+	private void Update()
+	{
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x6000AFB")]
+	[Address(RVA = "0x16F6188", Offset = "0x16F6188", VA = "0x16F6188")]
+	public SynchronizedSwimmerAI()
+	{
+	}
 }

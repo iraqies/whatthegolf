@@ -1,66 +1,89 @@
-using UnityEngine;
+using System;
+using Il2CppDummyDll;
+using Kilt.Collections;
 
 namespace Kilt
 {
-	public class DelayedFunctionUtils : MonoBehaviour
+	[Token(Token = "0x2000086")]
+	public class DelayedFunctionUtils : Singleton<DelayedFunctionUtils>
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4000247")]
+		[FieldOffset(Offset = "0x0")]
+		private static ArrayDict<float, FunctionAndParams> m_functionsToCallOverTime;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000248")]
+		[FieldOffset(Offset = "0x8")]
+		private static DateTime _lastCheckedTime;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x17000045")]
+		public static ArrayDict<float, FunctionAndParams> FunctionsToCallOverTime
+		{
+			[Token(Token = "0x6000254")]
+			[Address(RVA = "0x13645DC", Offset = "0x13645DC", VA = "0x13645DC")]
+			get
+			{
+				return null;
+			}
+		}
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x6000255")]
+		[Address(RVA = "0x13646C8", Offset = "0x13646C8", VA = "0x13646C8")]
+		static DelayedFunctionUtils()
+		{
+		}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x6000256")]
+		[Address(RVA = "0x13647A0", Offset = "0x13647A0", VA = "0x13647A0")]
+		private static void Init()
+		{
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x6000257")]
+		[Address(RVA = "0x1364844", Offset = "0x1364844", VA = "0x1364844")]
+		private static void EditorUpdate()
+		{
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6000258")]
+		[Address(RVA = "0x1364CA4", Offset = "0x1364CA4", VA = "0x1364CA4")]
+		private static void RegisterInCallerOverTime(FunctionAndParams p_struct, float p_time)
+		{
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6000259")]
+		[Address(RVA = "0x136489C", Offset = "0x136489C", VA = "0x136489C")]
+		private static void ProcessStaticTime()
+		{
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x600025A")]
+		[Address(RVA = "0x1364D6C", Offset = "0x1364D6C", VA = "0x1364D6C", Slot = "8")]
+		protected virtual void Update()
+		{
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x600025B")]
+		[Address(RVA = "0x1364DDC", Offset = "0x1364DDC", VA = "0x1364DDC")]
+		public static void CallFunction(Delegate p_functionPointer, float p_time, bool p_tryCreateInstance = true)
+		{
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x600025C")]
+		[Address(RVA = "0x1364E78", Offset = "0x1364E78", VA = "0x1364E78")]
+		public static void CallFunction(Delegate p_functionPointer, object[] p_params, float p_time, bool p_tryCreateInstance = true)
+		{
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x600025D")]
+		[Address(RVA = "0x1365028", Offset = "0x1365028", VA = "0x1365028")]
+		private static void TryCreateInstance()
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
-
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x600025E")]
+		[Address(RVA = "0x13650C8", Offset = "0x13650C8", VA = "0x13650C8")]
+		public DelayedFunctionUtils()
+		{
+		}
 	}
 }

@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: FreeHorse
   m_EditorClassIdentifier:
   Icons:
-  - {fileID: 21300000, guid: 57c79db53945a9547b9a9610c7ccc923, type: 2}
+  - {fileID: 21300000, guid: 8723137d22ac5bf4dac489df6595a652, type: 2}

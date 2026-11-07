@@ -1,63 +1,237 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Hub;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000E3B")]
 public class SpecialDayOverworldButton2D : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Serializable]
+	[Token(Token = "0x2000E3C")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x44EF8", Offset = "0x44EF8")]
+	private sealed class _003C_003Ec
+	{
+		[Token(Token = "0x4004D35")]
+		[FieldOffset(Offset = "0x0")]
+		public static readonly _003C_003Ec _003C_003E9;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4004D36")]
+		[FieldOffset(Offset = "0x8")]
+		public static Action _003C_003E9__12_0;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4004D37")]
+		[FieldOffset(Offset = "0x10")]
+		public static Action _003C_003E9__12_1;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4004D38")]
+		[FieldOffset(Offset = "0x18")]
+		public static Action _003C_003E9__16_0;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x60042BC")]
+		[Address(RVA = "0x1854B58", Offset = "0x1854B58", VA = "0x1854B58")]
+		public _003C_003Ec()
+		{
+		}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x60042BD")]
+		[Address(RVA = "0x1854B60", Offset = "0x1854B60", VA = "0x1854B60")]
+		internal void _003CSetState_003Eb__12_0()
+		{
+		}
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x60042BE")]
+		[Address(RVA = "0x1854B64", Offset = "0x1854B64", VA = "0x1854B64")]
+		internal void _003CSetState_003Eb__12_1()
+		{
+		}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x60042BF")]
+		[Address(RVA = "0x1854B68", Offset = "0x1854B68", VA = "0x1854B68")]
+		internal void _003COnCollisionEnter2D_003Eb__16_0()
+		{
+		}
+	}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x2000E3D")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x44F08", Offset = "0x44F08")]
+	private sealed class _003CBlinkRoutine_003Ed__15 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x4004D39")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-	4. This script is unnecessary.
+		[Token(Token = "0x4004D3A")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4004D3B")]
+		[FieldOffset(Offset = "0x20")]
+		public SpecialDayOverworldButton2D _003C_003E4__this;
 
-	5. Script Content Level 0
+		[Token(Token = "0x4004D3C")]
+		[FieldOffset(Offset = "0x28")]
+		private WaitForSeconds _003Cwait_003E5__2;
 
-		AssetRipper was set to not load any script information.
+		[Token(Token = "0x170006DB")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x60042C3")]
+			[Address(RVA = "0x1854DC0", Offset = "0x1854DC0", VA = "0x1854DC0", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x170006DC")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x60042C5")]
+			[Address(RVA = "0x1854E08", Offset = "0x1854E08", VA = "0x1854E08", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x60042C0")]
+		[Address(RVA = "0x1854B6C", Offset = "0x1854B6C", VA = "0x1854B6C")]
+		[DebuggerHidden]
+		public _003CBlinkRoutine_003Ed__15(int _003C_003E1__state)
+		{
+		}
 
-	7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x60042C1")]
+		[Address(RVA = "0x1854B98", Offset = "0x1854B98", VA = "0x1854B98", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x60042C2")]
+		[Address(RVA = "0x1854B9C", Offset = "0x1854B9C", VA = "0x1854B9C", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
 
-	*/
+		[Token(Token = "0x60042C3")]
+		[Address(RVA = "0x1854DC0", Offset = "0x1854DC0", VA = "0x1854DC0", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
+
+		[Token(Token = "0x60042C4")]
+		[Address(RVA = "0x1854DC8", Offset = "0x1854DC8", VA = "0x1854DC8", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
+
+		[Token(Token = "0x60042C5")]
+		[Address(RVA = "0x1854E08", Offset = "0x1854E08", VA = "0x1854E08", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
+
+	[Token(Token = "0x4004D29")]
+	[FieldOffset(Offset = "0x18")]
+	public SpecialDayOverworldDoor door;
+
+	[Token(Token = "0x4004D2A")]
+	[FieldOffset(Offset = "0x20")]
+	[SerializeField]
+	private PerlinShake bubbleShake;
+
+	[Token(Token = "0x4004D2B")]
+	[FieldOffset(Offset = "0x28")]
+	[SerializeField]
+	private SpriteRenderer[] ButtonRenderers;
+
+	[Token(Token = "0x4004D2C")]
+	[FieldOffset(Offset = "0x30")]
+	[SerializeField]
+	private SpriteRenderer[] ButtonBackRenderers;
+
+	[Token(Token = "0x4004D2D")]
+	[FieldOffset(Offset = "0x38")]
+	[SerializeField]
+	private Transform openIndicator;
+
+	[Token(Token = "0x4004D2E")]
+	[FieldOffset(Offset = "0x40")]
+	[SerializeField]
+	private SpecialDayLockView lockView;
+
+	[Token(Token = "0x4004D2F")]
+	[FieldOffset(Offset = "0x48")]
+	[SerializeField]
+	private SpecialDayView view;
+
+	[Token(Token = "0x4004D30")]
+	[FieldOffset(Offset = "0x50")]
+	public Color[] OpenColors;
+
+	[Token(Token = "0x4004D31")]
+	[FieldOffset(Offset = "0x58")]
+	public Color[] UnlockedColors;
+
+	[Token(Token = "0x4004D32")]
+	[FieldOffset(Offset = "0x60")]
+	private OverworldID _overworldID;
+
+	[Token(Token = "0x4004D33")]
+	[FieldOffset(Offset = "0x68")]
+	private Coroutine _currentBlinkRoutine;
+
+	[Token(Token = "0x4004D34")]
+	[FieldOffset(Offset = "0x70")]
+	private bool _canOpen;
+
+	[Token(Token = "0x60042B5")]
+	[Address(RVA = "0x16CAC1C", Offset = "0x16CAC1C", VA = "0x16CAC1C")]
+	public void SetState(bool isOpen, bool hasBeenOpenedBefore)
+	{
+	}
+
+	[Token(Token = "0x60042B6")]
+	[Address(RVA = "0x16CB030", Offset = "0x16CB030", VA = "0x16CB030")]
+	public void SetOpenIndicator(bool open, bool setRotation = false)
+	{
+	}
+
+	[Token(Token = "0x60042B7")]
+	[Address(RVA = "0x16CB128", Offset = "0x16CB128", VA = "0x16CB128")]
+	public void ToggleBlinkRoutine(bool turnOn)
+	{
+	}
+
+	[Token(Token = "0x60042B8")]
+	[Address(RVA = "0x16CB2A0", Offset = "0x16CB2A0", VA = "0x16CB2A0")]
+	private IEnumerator BlinkRoutine()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x60042B9")]
+	[Address(RVA = "0x16CA328", Offset = "0x16CA328", VA = "0x16CA328")]
+	public void OnCollisionEnter2D(Collision2D collision)
+	{
+	}
+
+	[Token(Token = "0x60042BA")]
+	[Address(RVA = "0x16CB39C", Offset = "0x16CB39C", VA = "0x16CB39C")]
+	public SpecialDayOverworldButton2D()
+	{
+	}
 }

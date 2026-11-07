@@ -1,5 +1,7 @@
 {
   "name": "Triband.GolfTerrainRuntime",
-  "references": [],
+  "references": [
+    "Il2CppDummyDll"
+  ],
   "allowUnsafeCode": true
 }

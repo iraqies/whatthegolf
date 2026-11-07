@@ -1,66 +1,216 @@
-using UnityEngine;
+using System;
+using System.Collections.Generic;
+using Il2CppDummyDll;
+using UnityEngine.EventSystems;
 
 namespace UnityEngine.UI
 {
-	public class RectMask2D : MonoBehaviour
+	[Token(Token = "0x2000051")]
+	[ExecuteAlways]
+	[AttributeAttribute(Name = "RequireComponent", RVA = "0x1F66CC", Offset = "0x1F66CC")]
+	[DisallowMultipleComponent]
+	public class RectMask2D : UIBehaviour, IClipper, ICanvasRaycastFilter
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[NonSerialized]
+		[Token(Token = "0x4000185")]
+		[FieldOffset(Offset = "0x18")]
+		private readonly RectangularVertexClipper m_VertexClipper;
 
-		1. No dll files were provided to AssetRipper.
+		[NonSerialized]
+		[Token(Token = "0x4000186")]
+		[FieldOffset(Offset = "0x20")]
+		private RectTransform m_RectTransform;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[NonSerialized]
+		[Token(Token = "0x4000187")]
+		[FieldOffset(Offset = "0x28")]
+		private HashSet<MaskableGraphic> m_MaskableTargets;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[NonSerialized]
+		[Token(Token = "0x4000188")]
+		[FieldOffset(Offset = "0x30")]
+		private HashSet<IClippable> m_ClipTargets;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[NonSerialized]
+		[Token(Token = "0x4000189")]
+		[FieldOffset(Offset = "0x38")]
+		private bool m_ShouldRecalculateClipRects;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[NonSerialized]
+		[Token(Token = "0x400018A")]
+		[FieldOffset(Offset = "0x40")]
+		private List<RectMask2D> m_Clippers;
 
-		3. Assembly Reconstruction has not been implemented.
+		[NonSerialized]
+		[Token(Token = "0x400018B")]
+		[FieldOffset(Offset = "0x48")]
+		private Rect m_LastClipRectCanvasSpace;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[NonSerialized]
+		[Token(Token = "0x400018C")]
+		[FieldOffset(Offset = "0x58")]
+		private bool m_ForceClip;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x400018D")]
+		[FieldOffset(Offset = "0x5C")]
+		[SerializeField]
+		private Vector4 m_Padding;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x400018E")]
+		[FieldOffset(Offset = "0x6C")]
+		[SerializeField]
+		private Vector2Int m_Softness;
 
-		5. Script Content Level 0
+		[NonSerialized]
+		[Token(Token = "0x400018F")]
+		[FieldOffset(Offset = "0x78")]
+		private Canvas m_Canvas;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4000190")]
+		[FieldOffset(Offset = "0x80")]
+		private Vector3[] m_Corners;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x170000E2")]
+		public Vector4 padding
+		{
+			[Token(Token = "0x6000345")]
+			[Address(RVA = "0x2C2F148", Offset = "0x2C2F148", VA = "0x2C2F148")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000346")]
+			[Address(RVA = "0x2C2F154", Offset = "0x2C2F154", VA = "0x2C2F154")]
+			set
+			{
+			}
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x170000E3")]
+		public Vector2Int softness
+		{
+			[Token(Token = "0x6000347")]
+			[Address(RVA = "0x2C2F160", Offset = "0x2C2F160", VA = "0x2C2F160")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000348")]
+			[Address(RVA = "0x2C2F168", Offset = "0x2C2F168", VA = "0x2C2F168")]
+			set
+			{
+			}
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x170000E4")]
+		internal Canvas Canvas
+		{
+			[Token(Token = "0x6000349")]
+			[Address(RVA = "0x2C2F1B0", Offset = "0x2C2F1B0", VA = "0x2C2F1B0")]
+			get
+			{
+				return null;
+			}
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x170000E5")]
+		public Rect canvasRect
+		{
+			[Token(Token = "0x600034A")]
+			[Address(RVA = "0x2C2F334", Offset = "0x2C2F334", VA = "0x2C2F334")]
+			get
+			{
+				return default;
+			}
+		}
 
-		*/
+		[Token(Token = "0x170000E6")]
+		public RectTransform rectTransform
+		{
+			[Token(Token = "0x600034B")]
+			[Address(RVA = "0x2C2F3C0", Offset = "0x2C2F3C0", VA = "0x2C2F3C0")]
+			get
+			{
+				return null;
+			}
+		}
+
+		[Token(Token = "0x170000E7")]
+		private Rect rootCanvasRect
+		{
+			[Token(Token = "0x6000351")]
+			[Address(RVA = "0x2C2F7E4", Offset = "0x2C2F7E4", VA = "0x2C2F7E4")]
+			get
+			{
+				return default;
+			}
+		}
+
+		[Token(Token = "0x600034C")]
+		[Address(RVA = "0x2C2F41C", Offset = "0x2C2F41C", VA = "0x2C2F41C")]
+		protected RectMask2D()
+		{
+		}
+
+		[Token(Token = "0x600034D")]
+		[Address(RVA = "0x2C2F584", Offset = "0x2C2F584", VA = "0x2C2F584", Slot = "5")]
+		protected override void OnEnable()
+		{
+		}
+
+		[Token(Token = "0x600034E")]
+		[Address(RVA = "0x2C2F5C0", Offset = "0x2C2F5C0", VA = "0x2C2F5C0", Slot = "7")]
+		protected override void OnDisable()
+		{
+		}
+
+		[Token(Token = "0x600034F")]
+		[Address(RVA = "0x2C2F67C", Offset = "0x2C2F67C", VA = "0x2C2F67C", Slot = "8")]
+		protected override void OnDestroy()
+		{
+		}
+
+		[Token(Token = "0x6000350")]
+		[Address(RVA = "0x2C2F6A8", Offset = "0x2C2F6A8", VA = "0x2C2F6A8", Slot = "19")]
+		public virtual bool IsRaycastLocationValid(Vector2 sp, Camera eventCamera)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000352")]
+		[Address(RVA = "0x2C2F960", Offset = "0x2C2F960", VA = "0x2C2F960", Slot = "20")]
+		public virtual void PerformClipping()
+		{
+		}
+
+		[Token(Token = "0x6000353")]
+		[Address(RVA = "0x2C30134", Offset = "0x2C30134", VA = "0x2C30134", Slot = "21")]
+		public virtual void UpdateClipSoftness()
+		{
+		}
+
+		[Token(Token = "0x6000354")]
+		[Address(RVA = "0x2C2A28C", Offset = "0x2C2A28C", VA = "0x2C2A28C")]
+		public void AddClippable(IClippable clippable)
+		{
+		}
+
+		[Token(Token = "0x6000355")]
+		[Address(RVA = "0x2C2A0D0", Offset = "0x2C2A0D0", VA = "0x2C2A0D0")]
+		public void RemoveClippable(IClippable clippable)
+		{
+		}
+
+		[Token(Token = "0x6000356")]
+		[Address(RVA = "0x2C30478", Offset = "0x2C30478", VA = "0x2C30478", Slot = "12")]
+		protected override void OnTransformParentChanged()
+		{
+		}
+
+		[Token(Token = "0x6000357")]
+		[Address(RVA = "0x2C304A8", Offset = "0x2C304A8", VA = "0x2C304A8", Slot = "15")]
+		protected override void OnCanvasHierarchyChanged()
+		{
+		}
 	}
 }

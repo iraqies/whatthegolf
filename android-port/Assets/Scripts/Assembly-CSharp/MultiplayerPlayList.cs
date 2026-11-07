@@ -1,63 +1,126 @@
-using UnityEngine;
+using System;
+using System.Collections.Generic;
+using Core;
+using Il2CppDummyDll;
 
-public class MultiplayerPlayList : MonoBehaviour
+[Token(Token = "0x2000136")]
+public class MultiplayerPlayList : LevelDataContainerBase
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x2000137")]
+	public enum LevelSelectionTypes
+	{
+		[Token(Token = "0x4000575")]
+		Random = 0,
+		[Token(Token = "0x4000576")]
+		Ordered = 1
+	}
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x2000138")]
+	public enum MatchTypes
+	{
+		[Token(Token = "0x4000578")]
+		FewestStrokes = 0,
+		[Token(Token = "0x4000579")]
+		FirstToFlag = 1
+	}
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Serializable]
+	[Token(Token = "0x2000139")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3DBE0", Offset = "0x3DBE0")]
+	private sealed class _003C_003Ec
+	{
+		[Token(Token = "0x400057A")]
+		[FieldOffset(Offset = "0x0")]
+		public static readonly _003C_003Ec _003C_003E9;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x400057B")]
+		[FieldOffset(Offset = "0x8")]
+		public static Func<LevelData, LevelDataAndChallenge> _003C_003E9__6_0;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x6000552")]
+		[Address(RVA = "0x1803444", Offset = "0x1803444", VA = "0x1803444")]
+		public _003C_003Ec()
+		{
+		}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x6000553")]
+		[Address(RVA = "0x180344C", Offset = "0x180344C", VA = "0x180344C")]
+		internal LevelDataAndChallenge _003CGetLevelDatasWithChallenges_003Eb__6_0(LevelData d)
+		{
+			return null;
+		}
+	}
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x400056C")]
+	[FieldOffset(Offset = "0x20")]
+	public LevelDataContainer IntroLevels;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x400056D")]
+	[FieldOffset(Offset = "0x28")]
+	public List<LevelDataContainer> Levels;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x400056E")]
+	[FieldOffset(Offset = "0x30")]
+	public LevelDataContainer OutroLevels;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x400056F")]
+	[FieldOffset(Offset = "0x38")]
+	public LevelDataContainer NextBatch;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4000570")]
+	[FieldOffset(Offset = "0x40")]
+	public LevelDataContainer UnusedLevels;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4000571")]
+	[FieldOffset(Offset = "0x48")]
+	public int LevelsToPlay;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4000572")]
+	[FieldOffset(Offset = "0x4C")]
+	public LevelSelectionTypes LevelSelection;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4000573")]
+	[FieldOffset(Offset = "0x50")]
+	public MatchTypes MatchType;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x600054B")]
+	[Address(RVA = "0x1582B40", Offset = "0x1582B40", VA = "0x1582B40")]
+	public bool HasNextBatch()
+	{
+		return default;
+	}
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x600054C")]
+	[Address(RVA = "0x1582BBC", Offset = "0x1582BBC", VA = "0x1582BBC")]
+	public List<LevelData> GetNextBatch()
+	{
+		return null;
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x600054D")]
+	[Address(RVA = "0x1582DA8", Offset = "0x1582DA8", VA = "0x1582DA8")]
+	public List<LevelData> GetAllLevels()
+	{
+		return null;
+	}
 
-	*/
+	[Token(Token = "0x600054E")]
+	[Address(RVA = "0x1583544", Offset = "0x1583544", VA = "0x1583544", Slot = "4")]
+	public override List<LevelData> GetLevelDatas()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x600054F")]
+	[Address(RVA = "0x1583548", Offset = "0x1583548", VA = "0x1583548", Slot = "5")]
+	public override List<LevelDataAndChallenge> GetLevelDatasWithChallenges()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6000550")]
+	[Address(RVA = "0x15836BC", Offset = "0x15836BC", VA = "0x15836BC")]
+	public MultiplayerPlayList()
+	{
+	}
 }

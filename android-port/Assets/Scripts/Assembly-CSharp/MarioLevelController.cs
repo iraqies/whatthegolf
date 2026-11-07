@@ -1,63 +1,205 @@
+using System;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
-public class MarioLevelController : MonoBehaviour
+[Token(Token = "0x20007E0")]
+public class MarioLevelController : GolfBallShooterBase
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x40029E0")]
+	[FieldOffset(Offset = "0x60")]
+	[SerializeField]
+	public float fullShootVelocity;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x40029E1")]
+	[FieldOffset(Offset = "0x64")]
+	[SerializeField]
+	public float pitch;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x40029E2")]
+	[FieldOffset(Offset = "0x68")]
+	[SerializeField]
+	protected float spin;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x40029E3")]
+	[FieldOffset(Offset = "0x70")]
+	public Action OnLevelReset;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x40029E4")]
+	[FieldOffset(Offset = "0x78")]
+	public float KillAddForce;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x40029E5")]
+	[FieldOffset(Offset = "0x80")]
+	public Transform LookTransform;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x40029E6")]
+	[FieldOffset(Offset = "0x88")]
+	public float RotateSpeed;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x40029E7")]
+	[FieldOffset(Offset = "0x8C")]
+	public LayerMask GroundLayer;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x40029E8")]
+	[FieldOffset(Offset = "0x90")]
+	public float GroundCheckDist;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x40029E9")]
+	[FieldOffset(Offset = "0x94")]
+	public float HelperCheckDist;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x40029EA")]
+	[FieldOffset(Offset = "0x98")]
+	public float ExtraHorizontalForceTime;
 
-	5. Script Content Level 0
+	[Token(Token = "0x40029EB")]
+	[FieldOffset(Offset = "0x9C")]
+	public float HelperForce;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x40029EC")]
+	[FieldOffset(Offset = "0xA0")]
+	public Vector3 Up;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x40029ED")]
+	[FieldOffset(Offset = "0xAC")]
+	public bool BlockShootingInAir;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x40029EE")]
+	[FieldOffset(Offset = "0xB0")]
+	public ParticleSystem RunParticles;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x40029EF")]
+	[FieldOffset(Offset = "0xB8")]
+	public float SphereCastRadius;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x40029F0")]
+	[FieldOffset(Offset = "0xC0")]
+	public Animator Animator;
 
-	*/
+	[Token(Token = "0x40029F1")]
+	[FieldOffset(Offset = "0xC8")]
+	public Vector3 ExtraBoostDir;
+
+	[Token(Token = "0x40029F2")]
+	[FieldOffset(Offset = "0xD4")]
+	public bool CanWallJump;
+
+	[Token(Token = "0x40029F3")]
+	[FieldOffset(Offset = "0xD8")]
+	public LayerMask WallLayers;
+
+	[Token(Token = "0x40029F4")]
+	[FieldOffset(Offset = "0xDC")]
+	public float ChangeDragSpeed;
+
+	[Token(Token = "0x40029F5")]
+	[FieldOffset(Offset = "0xE0")]
+	public float wallDrag;
+
+	[Token(Token = "0x40029F6")]
+	[FieldOffset(Offset = "0xE4")]
+	public bool useWalkingHelper;
+
+	[Token(Token = "0x40029F7")]
+	[FieldOffset(Offset = "0xE5")]
+	private bool resetting;
+
+	[Token(Token = "0x40029F8")]
+	[FieldOffset(Offset = "0xE8")]
+	private Vector3 currentDirection;
+
+	[Token(Token = "0x40029F9")]
+	[FieldOffset(Offset = "0xF4")]
+	private float applyForceTimer;
+
+	[Token(Token = "0x40029FA")]
+	[FieldOffset(Offset = "0xF8")]
+	private float dragTarget;
+
+	[Token(Token = "0x40029FB")]
+	[FieldOffset(Offset = "0xFC")]
+	private float origDrag;
+
+	[Token(Token = "0x40029FC")]
+	[FieldOffset(Offset = "0x100")]
+	private Vector3 lastFrameVelocity;
+
+	[Token(Token = "0x40029FD")]
+	[FieldOffset(Offset = "0x10C")]
+	private float forcingGroundedFor;
+
+	[Token(Token = "0x6002423")]
+	[Address(RVA = "0x155C5DC", Offset = "0x155C5DC", VA = "0x155C5DC", Slot = "11")]
+	protected override void Awake()
+	{
+	}
+
+	[Token(Token = "0x6002424")]
+	[Address(RVA = "0x155C62C", Offset = "0x155C62C", VA = "0x155C62C", Slot = "7")]
+	public override void OnShoot(Vector3 boost)
+	{
+	}
+
+	[Token(Token = "0x6002425")]
+	[Address(RVA = "0x155CBD4", Offset = "0x155CBD4", VA = "0x155CBD4", Slot = "12")]
+	protected override void FixedUpdate()
+	{
+	}
+
+	[Token(Token = "0x6002426")]
+	[Address(RVA = "0x155C7B8", Offset = "0x155C7B8", VA = "0x155C7B8")]
+	private void CheckIfNeedHelp(bool ignoreGrounded = false)
+	{
+	}
+
+	[Token(Token = "0x6002427")]
+	[Address(RVA = "0x155CF08", Offset = "0x155CF08", VA = "0x155CF08")]
+	public Vector3 GetVelocityLastFrame()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6002428")]
+	[Address(RVA = "0x155CF18", Offset = "0x155CF18", VA = "0x155CF18")]
+	public void ForceGroundedForSeconds(float secs)
+	{
+	}
+
+	[Token(Token = "0x6002429")]
+	[Address(RVA = "0x155C9A0", Offset = "0x155C9A0", VA = "0x155C9A0")]
+	private bool IsGrounded()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x600242A")]
+	[Address(RVA = "0x155CF20", Offset = "0x155CF20", VA = "0x155CF20")]
+	private void OnCollisionEnter(Collision c)
+	{
+	}
+
+	[Token(Token = "0x600242B")]
+	[Address(RVA = "0x155D1E0", Offset = "0x155D1E0", VA = "0x155D1E0")]
+	private void OnCollisionStay(Collision c)
+	{
+	}
+
+	[Token(Token = "0x600242C")]
+	[Address(RVA = "0x155D45C", Offset = "0x155D45C", VA = "0x155D45C")]
+	private void OnCollisionExit(Collision c)
+	{
+	}
+
+	[Token(Token = "0x600242D")]
+	[Address(RVA = "0x155D588", Offset = "0x155D588", VA = "0x155D588")]
+	public void ForceOutOfBounds()
+	{
+	}
+
+	[Token(Token = "0x600242E")]
+	[Address(RVA = "0x155D58C", Offset = "0x155D58C", VA = "0x155D58C")]
+	public MarioLevelController()
+	{
+	}
 }

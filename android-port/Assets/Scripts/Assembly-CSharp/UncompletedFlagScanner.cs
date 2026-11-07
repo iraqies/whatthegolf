@@ -1,63 +1,242 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Audio;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000AD9")]
 public class UncompletedFlagScanner : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Serializable]
+	[Token(Token = "0x2000ADA")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x43348", Offset = "0x43348")]
+	private sealed class _003C_003Ec
+	{
+		[Token(Token = "0x4003C8C")]
+		[FieldOffset(Offset = "0x0")]
+		public static readonly _003C_003Ec _003C_003E9;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4003C8D")]
+		[FieldOffset(Offset = "0x8")]
+		public static Func<OverworldGoal, bool> _003C_003E9__11_0;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4003C8E")]
+		[FieldOffset(Offset = "0x10")]
+		public static Func<OverworldGoal, bool> _003C_003E9__11_1;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4003C8F")]
+		[FieldOffset(Offset = "0x18")]
+		public static Func<OverworldGoal, bool> _003C_003E9__11_2;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x60033DC")]
+		[Address(RVA = "0x1871688", Offset = "0x1871688", VA = "0x1871688")]
+		public _003C_003Ec()
+		{
+		}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x60033DD")]
+		[Address(RVA = "0x1871690", Offset = "0x1871690", VA = "0x1871690")]
+		internal bool _003CMoveCameraRoutine_003Eb__11_0(OverworldGoal g)
+		{
+			return default;
+		}
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x60033DE")]
+		[Address(RVA = "0x18716F0", Offset = "0x18716F0", VA = "0x18716F0")]
+		internal bool _003CMoveCameraRoutine_003Eb__11_1(OverworldGoal g)
+		{
+			return default;
+		}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x60033DF")]
+		[Address(RVA = "0x1871750", Offset = "0x1871750", VA = "0x1871750")]
+		internal bool _003CMoveCameraRoutine_003Eb__11_2(OverworldGoal g)
+		{
+			return default;
+		}
+	}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x2000ADB")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x43358", Offset = "0x43358")]
+	private sealed class _003CMoveCameraRoutine_003Ed__11 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x4003C90")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-	4. This script is unnecessary.
+		[Token(Token = "0x4003C91")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4003C92")]
+		[FieldOffset(Offset = "0x20")]
+		public UncompletedFlagScanner _003C_003E4__this;
 
-	5. Script Content Level 0
+		[Token(Token = "0x4003C93")]
+		[FieldOffset(Offset = "0x28")]
+		public OverworldBall2D ball;
 
-		AssetRipper was set to not load any script information.
+		[Token(Token = "0x4003C94")]
+		[FieldOffset(Offset = "0x30")]
+		public Vector3 collisionPoint;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4003C95")]
+		[FieldOffset(Offset = "0x3C")]
+		private Vector3 _003ColdPos_003E5__2;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x4003C96")]
+		[FieldOffset(Offset = "0x48")]
+		private Vector3 _003CgoalPos_003E5__3;
 
-	7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x4003C97")]
+		[FieldOffset(Offset = "0x54")]
+		private Vector3 _003CballOffset_003E5__4;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x4003C98")]
+		[FieldOffset(Offset = "0x60")]
+		private float _003CstartSize_003E5__5;
 
-	*/
+		[Token(Token = "0x4003C99")]
+		[FieldOffset(Offset = "0x68")]
+		private FlagScannerEffect _003Ceffect_003E5__6;
+
+		[Token(Token = "0x4003C9A")]
+		[FieldOffset(Offset = "0x70")]
+		private float _003Ctimer_003E5__7;
+
+		[Token(Token = "0x4003C9B")]
+		[FieldOffset(Offset = "0x74")]
+		private int _003CtestIndex_003E5__8;
+
+		[Token(Token = "0x1700055A")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x60033E3")]
+			[Address(RVA = "0x1872128", Offset = "0x1872128", VA = "0x1872128", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
+
+		[Token(Token = "0x1700055B")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x60033E5")]
+			[Address(RVA = "0x1872170", Offset = "0x1872170", VA = "0x1872170", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
+
+		[Token(Token = "0x60033E0")]
+		[Address(RVA = "0x18717B0", Offset = "0x18717B0", VA = "0x18717B0")]
+		[DebuggerHidden]
+		public _003CMoveCameraRoutine_003Ed__11(int _003C_003E1__state)
+		{
+		}
+
+		[Token(Token = "0x60033E1")]
+		[Address(RVA = "0x18717DC", Offset = "0x18717DC", VA = "0x18717DC", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
+
+		[Token(Token = "0x60033E2")]
+		[Address(RVA = "0x18717E0", Offset = "0x18717E0", VA = "0x18717E0", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60033E3")]
+		[Address(RVA = "0x1872128", Offset = "0x1872128", VA = "0x1872128", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
+
+		[Token(Token = "0x60033E4")]
+		[Address(RVA = "0x1872130", Offset = "0x1872130", VA = "0x1872130", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
+
+		[Token(Token = "0x60033E5")]
+		[Address(RVA = "0x1872170", Offset = "0x1872170", VA = "0x1872170", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
+
+	[Token(Token = "0x4003C83")]
+	[FieldOffset(Offset = "0x18")]
+	public float StayDuration;
+
+	[Token(Token = "0x4003C84")]
+	[FieldOffset(Offset = "0x1C")]
+	public float ZoomedSize;
+
+	[Token(Token = "0x4003C85")]
+	[FieldOffset(Offset = "0x20")]
+	public float PushAwayDistance;
+
+	[Token(Token = "0x4003C86")]
+	[FieldOffset(Offset = "0x24")]
+	public float MoveMod;
+
+	[Token(Token = "0x4003C87")]
+	[FieldOffset(Offset = "0x28")]
+	public Material ScannerEffect;
+
+	[Token(Token = "0x4003C88")]
+	[FieldOffset(Offset = "0x30")]
+	public ClipSettingsCollection FoundFlagClip;
+
+	[Token(Token = "0x4003C89")]
+	[FieldOffset(Offset = "0x38")]
+	public ClipSettingsCollection NoFlagsLeftClip;
+
+	[Token(Token = "0x4003C8A")]
+	[FieldOffset(Offset = "0x40")]
+	private List<OverworldGoal> allGoals;
+
+	[Token(Token = "0x4003C8B")]
+	[FieldOffset(Offset = "0x48")]
+	private bool routineRunning;
+
+	[Token(Token = "0x60033D7")]
+	[Address(RVA = "0x173A8E8", Offset = "0x173A8E8", VA = "0x173A8E8")]
+	public void Init(List<OverworldGoal> goals)
+	{
+	}
+
+	[Token(Token = "0x60033D8")]
+	[Address(RVA = "0x173A8F0", Offset = "0x173A8F0", VA = "0x173A8F0")]
+	private void OnCollisionEnter2D(Collision2D other)
+	{
+	}
+
+	[Token(Token = "0x60033D9")]
+	[Address(RVA = "0x173AA98", Offset = "0x173AA98", VA = "0x173AA98")]
+	private IEnumerator MoveCameraRoutine(OverworldBall2D ball, Vector3 collisionPoint)
+	{
+		return null;
+	}
+
+	[Token(Token = "0x60033DA")]
+	[Address(RVA = "0x173AB34", Offset = "0x173AB34", VA = "0x173AB34")]
+	public UncompletedFlagScanner()
+	{
+	}
 }

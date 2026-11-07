@@ -1,63 +1,219 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Audio;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000796")]
 public class JumpObstacle : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x2000797")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x41500", Offset = "0x41500")]
+	private sealed class _003C_003Ec__DisplayClass14_0
+	{
+		[Token(Token = "0x4002812")]
+		[FieldOffset(Offset = "0x10")]
+		public JumpObstacle _003C_003E4__this;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4002813")]
+		[FieldOffset(Offset = "0x18")]
+		public Rigidbody rigidbody;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4002814")]
+		[FieldOffset(Offset = "0x20")]
+		public Vector3 pullDir;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x60022CC")]
+		[Address(RVA = "0x17CB988", Offset = "0x17CB988", VA = "0x17CB988")]
+		public _003C_003Ec__DisplayClass14_0()
+		{
+		}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x60022CD")]
+		[Address(RVA = "0x17CB990", Offset = "0x17CB990", VA = "0x17CB990")]
+		internal void _003CBounceAndPull_003Eb__0(float t)
+		{
+		}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x60022CE")]
+		[Address(RVA = "0x17CBA18", Offset = "0x17CBA18", VA = "0x17CBA18")]
+		internal void _003CBounceAndPull_003Eb__1(float t)
+		{
+		}
+	}
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x2000798")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x41510", Offset = "0x41510")]
+	private sealed class _003CBounceAndPull_003Ed__14 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x4002815")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4002816")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x4002817")]
+		[FieldOffset(Offset = "0x20")]
+		public JumpObstacle _003C_003E4__this;
 
-	4. This script is unnecessary.
+		[Token(Token = "0x4002818")]
+		[FieldOffset(Offset = "0x28")]
+		public Rigidbody rigidbody;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x170003CD")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x60022D2")]
+			[Address(RVA = "0x17CBE28", Offset = "0x17CBE28", VA = "0x17CBE28", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-	5. Script Content Level 0
+		[Token(Token = "0x170003CE")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x60022D4")]
+			[Address(RVA = "0x17CBE70", Offset = "0x17CBE70", VA = "0x17CBE70", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
 
-		AssetRipper was set to not load any script information.
+		[Token(Token = "0x60022CF")]
+		[Address(RVA = "0x17CBA88", Offset = "0x17CBA88", VA = "0x17CBA88")]
+		[DebuggerHidden]
+		public _003CBounceAndPull_003Ed__14(int _003C_003E1__state)
+		{
+		}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x60022D0")]
+		[Address(RVA = "0x17CBAB4", Offset = "0x17CBAB4", VA = "0x17CBAB4", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x60022D1")]
+		[Address(RVA = "0x17CBAB8", Offset = "0x17CBAB8", VA = "0x17CBAB8", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
 
-	7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x60022D2")]
+		[Address(RVA = "0x17CBE28", Offset = "0x17CBE28", VA = "0x17CBE28", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x60022D3")]
+		[Address(RVA = "0x17CBE30", Offset = "0x17CBE30", VA = "0x17CBE30", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
 
-	*/
+		[Token(Token = "0x60022D4")]
+		[Address(RVA = "0x17CBE70", Offset = "0x17CBE70", VA = "0x17CBE70", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
+
+	[Token(Token = "0x4002806")]
+	[FieldOffset(Offset = "0x18")]
+	[SerializeField]
+	private OnTriggerEnterListener trampolineTrigger;
+
+	[Token(Token = "0x4002807")]
+	[FieldOffset(Offset = "0x20")]
+	[SerializeField]
+	private float jumpHeight;
+
+	[Token(Token = "0x4002808")]
+	[FieldOffset(Offset = "0x28")]
+	[SerializeField]
+	private Transform pullPosition;
+
+	[Token(Token = "0x4002809")]
+	[FieldOffset(Offset = "0x30")]
+	[SerializeField]
+	private float pullDuration;
+
+	[Token(Token = "0x400280A")]
+	[FieldOffset(Offset = "0x34")]
+	[SerializeField]
+	private float pullForce;
+
+	[Token(Token = "0x400280B")]
+	[FieldOffset(Offset = "0x38")]
+	[SerializeField]
+	private float reactionDelay;
+
+	[Token(Token = "0x400280C")]
+	[FieldOffset(Offset = "0x40")]
+	[SerializeField]
+	private ClipSettingsCollection reactionClips;
+
+	[Token(Token = "0x400280D")]
+	[FieldOffset(Offset = "0x48")]
+	[SerializeField]
+	private ClipSettingsCollection bounceClips;
+
+	[Token(Token = "0x400280E")]
+	[FieldOffset(Offset = "0x50")]
+	[SerializeField]
+	private Transform effectTransform;
+
+	[Token(Token = "0x400280F")]
+	[FieldOffset(Offset = "0x58")]
+	[SerializeField]
+	private AnimationCurve effectScale;
+
+	[Token(Token = "0x4002810")]
+	[FieldOffset(Offset = "0x60")]
+	[SerializeField]
+	private float effectDuration;
+
+	[Token(Token = "0x4002811")]
+	[FieldOffset(Offset = "0x64")]
+	private bool isPulling;
+
+	[Token(Token = "0x60022C8")]
+	[Address(RVA = "0x14F8ACC", Offset = "0x14F8ACC", VA = "0x14F8ACC")]
+	private void Awake()
+	{
+	}
+
+	[Token(Token = "0x60022C9")]
+	[Address(RVA = "0x14F8B60", Offset = "0x14F8B60", VA = "0x14F8B60")]
+	private void HandleTrigger(Collider other)
+	{
+	}
+
+	[Token(Token = "0x60022CA")]
+	[Address(RVA = "0x14F8C60", Offset = "0x14F8C60", VA = "0x14F8C60")]
+	private IEnumerator BounceAndPull(Rigidbody rigidbody)
+	{
+		return null;
+	}
+
+	[Token(Token = "0x60022CB")]
+	[Address(RVA = "0x14F8CD8", Offset = "0x14F8CD8", VA = "0x14F8CD8")]
+	public JumpObstacle()
+	{
+	}
 }

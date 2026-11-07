@@ -1,63 +1,268 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.AI;
 
+[Token(Token = "0x2000947")]
 public class Skeleton : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x2000948")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x42190", Offset = "0x42190")]
+	private sealed class _003CDeathAndRebirth_003Ed__29 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x40032F6")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40032F7")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40032F8")]
+		[FieldOffset(Offset = "0x20")]
+		public Skeleton _003C_003E4__this;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40032F9")]
+		[FieldOffset(Offset = "0x28")]
+		private Vector3 _003CdeathPosition_003E5__2;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40032FA")]
+		[FieldOffset(Offset = "0x34")]
+		private Quaternion _003CdeathRotation_003E5__3;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40032FB")]
+		[FieldOffset(Offset = "0x44")]
+		private float _003Ct_003E5__4;
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x17000470")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x6002B3B")]
+			[Address(RVA = "0x1850DE4", Offset = "0x1850DE4", VA = "0x1850DE4", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x17000471")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x6002B3D")]
+			[Address(RVA = "0x1850E2C", Offset = "0x1850E2C", VA = "0x1850E2C", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x6002B38")]
+		[Address(RVA = "0x18509E0", Offset = "0x18509E0", VA = "0x18509E0")]
+		[DebuggerHidden]
+		public _003CDeathAndRebirth_003Ed__29(int _003C_003E1__state)
+		{
+		}
 
-	4. This script is unnecessary.
+		[Token(Token = "0x6002B39")]
+		[Address(RVA = "0x1850A0C", Offset = "0x1850A0C", VA = "0x1850A0C", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6002B3A")]
+		[Address(RVA = "0x1850A10", Offset = "0x1850A10", VA = "0x1850A10", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
 
-	5. Script Content Level 0
+		[Token(Token = "0x6002B3B")]
+		[Address(RVA = "0x1850DE4", Offset = "0x1850DE4", VA = "0x1850DE4", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
 
-		AssetRipper was set to not load any script information.
+		[Token(Token = "0x6002B3C")]
+		[Address(RVA = "0x1850DEC", Offset = "0x1850DEC", VA = "0x1850DEC", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x6002B3D")]
+		[Address(RVA = "0x1850E2C", Offset = "0x1850E2C", VA = "0x1850E2C", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x40032DC")]
+	[FieldOffset(Offset = "0x18")]
+	public Rigidbody ballRb;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x40032DD")]
+	[FieldOffset(Offset = "0x20")]
+	public float upKickForce;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x40032DE")]
+	[FieldOffset(Offset = "0x24")]
+	public float forwardKickForce;
 
-	*/
+	[Token(Token = "0x40032DF")]
+	[FieldOffset(Offset = "0x28")]
+	public float kickRange;
+
+	[Token(Token = "0x40032E0")]
+	[FieldOffset(Offset = "0x2C")]
+	public float sightRange;
+
+	[Token(Token = "0x40032E1")]
+	[FieldOffset(Offset = "0x30")]
+	public float timeBeforeStopChase;
+
+	[Token(Token = "0x40032E2")]
+	[FieldOffset(Offset = "0x34")]
+	public float sightAngle;
+
+	[Token(Token = "0x40032E3")]
+	[FieldOffset(Offset = "0x38")]
+	public float breakForce;
+
+	[Token(Token = "0x40032E4")]
+	[FieldOffset(Offset = "0x3C")]
+	public float rebuildTime;
+
+	[Token(Token = "0x40032E5")]
+	[FieldOffset(Offset = "0x40")]
+	public Transform raycastOrigin;
+
+	[Token(Token = "0x40032E6")]
+	[FieldOffset(Offset = "0x48")]
+	public float disableTimeAfterKick;
+
+	[Token(Token = "0x40032E7")]
+	[FieldOffset(Offset = "0x50")]
+	public Rigidbody[] skeletonParts;
+
+	[Token(Token = "0x40032E8")]
+	[FieldOffset(Offset = "0x58")]
+	public GameObject skeletonDead;
+
+	[Token(Token = "0x40032E9")]
+	[FieldOffset(Offset = "0x60")]
+	public GameObject skeletonAlive;
+
+	[Token(Token = "0x40032EA")]
+	[FieldOffset(Offset = "0x68")]
+	public Transform rebuildForceTarget;
+
+	[Token(Token = "0x40032EB")]
+	[FieldOffset(Offset = "0x70")]
+	public Skeleton skeletonPrefab;
+
+	[Token(Token = "0x40032EC")]
+	[FieldOffset(Offset = "0x78")]
+	private NavMeshAgent navAgent;
+
+	[Token(Token = "0x40032ED")]
+	[FieldOffset(Offset = "0x80")]
+	private bool isAlive;
+
+	[Token(Token = "0x40032EE")]
+	[FieldOffset(Offset = "0x88")]
+	private Rigidbody rigid;
+
+	[Token(Token = "0x40032EF")]
+	[FieldOffset(Offset = "0x90")]
+	private NavMeshPath path;
+
+	[Token(Token = "0x40032F0")]
+	[FieldOffset(Offset = "0x98")]
+	private float lastPlayerSighting;
+
+	[Token(Token = "0x40032F1")]
+	[FieldOffset(Offset = "0x9C")]
+	private Vector3 target;
+
+	[Token(Token = "0x40032F2")]
+	[FieldOffset(Offset = "0xA8")]
+	private float lastKickTime;
+
+	[Token(Token = "0x40032F3")]
+	[FieldOffset(Offset = "0xAC")]
+	private bool initialized;
+
+	[Token(Token = "0x40032F4")]
+	[FieldOffset(Offset = "0xB0")]
+	public float rebuildForce;
+
+	[Token(Token = "0x40032F5")]
+	[FieldOffset(Offset = "0xB8")]
+	public AnimationCurve rebuildForceCurve;
+
+	[Token(Token = "0x6002B2F")]
+	[Address(RVA = "0x16B3750", Offset = "0x16B3750", VA = "0x16B3750")]
+	private void Start()
+	{
+	}
+
+	[Token(Token = "0x6002B30")]
+	[Address(RVA = "0x16B380C", Offset = "0x16B380C", VA = "0x16B380C")]
+	public void Initialize(Vector3 position, Quaternion rotation, Rigidbody ballRb, Skeleton prefab)
+	{
+	}
+
+	[Token(Token = "0x6002B31")]
+	[Address(RVA = "0x16B3A84", Offset = "0x16B3A84", VA = "0x16B3A84")]
+	private void OnCollisionEnter(Collision collision)
+	{
+	}
+
+	[Token(Token = "0x6002B32")]
+	[Address(RVA = "0x16B3BE0", Offset = "0x16B3BE0", VA = "0x16B3BE0")]
+	private IEnumerator DeathAndRebirth()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6002B33")]
+	[Address(RVA = "0x16B3C54", Offset = "0x16B3C54", VA = "0x16B3C54")]
+	private void DoKick(Rigidbody other)
+	{
+	}
+
+	[Token(Token = "0x6002B34")]
+	[Address(RVA = "0x16B3DA0", Offset = "0x16B3DA0", VA = "0x16B3DA0")]
+	private bool CanSee(GameObject obj)
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6002B35")]
+	[Address(RVA = "0x16B4088", Offset = "0x16B4088", VA = "0x16B4088")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x6002B36")]
+	[Address(RVA = "0x16B42CC", Offset = "0x16B42CC", VA = "0x16B42CC")]
+	private void OnDrawGizmos()
+	{
+	}
+
+	[Token(Token = "0x6002B37")]
+	[Address(RVA = "0x16B44E8", Offset = "0x16B44E8", VA = "0x16B44E8")]
+	public Skeleton()
+	{
+	}
 }

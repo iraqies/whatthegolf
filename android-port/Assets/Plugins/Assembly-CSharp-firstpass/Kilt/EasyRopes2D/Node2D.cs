@@ -1,66 +1,219 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Kilt.EasyRopes2D
 {
+	[Token(Token = "0x20000A9")]
 	public class Node2D : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x20000AA")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x335CC", Offset = "0x335CC")]
+		private sealed class _003CRequestApplyIgnoreRopeCollision_003Ed__15 : IEnumerator<object>, IEnumerator, IDisposable
+		{
+			[Token(Token = "0x4000310")]
+			[FieldOffset(Offset = "0x10")]
+			private int _003C_003E1__state;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x4000311")]
+			[FieldOffset(Offset = "0x18")]
+			private object _003C_003E2__current;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x4000312")]
+			[FieldOffset(Offset = "0x20")]
+			public Node2D _003C_003E4__this;
 
-		2. Incorrect dll files were provided to AssetRipper.
+			[Token(Token = "0x4000313")]
+			[FieldOffset(Offset = "0x28")]
+			public bool p_force;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+			[Token(Token = "0x4000314")]
+			[FieldOffset(Offset = "0x30")]
+			private List<Collider2D> _003Cv_selfColliders_003E5__2;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+			[Token(Token = "0x4000315")]
+			[FieldOffset(Offset = "0x38")]
+			private List<GameObject>.Enumerator _003C_003E7__wrap2;
 
-		3. Assembly Reconstruction has not been implemented.
+			[Token(Token = "0x4000316")]
+			[FieldOffset(Offset = "0x50")]
+			private GameObject _003Cv_object_003E5__4;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+			[Token(Token = "0x1700008A")]
+			private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+			{
+				[Token(Token = "0x60003E2")]
+				[Address(RVA = "0x1350AD0", Offset = "0x1350AD0", VA = "0x1350AD0", Slot = "4")]
+				[DebuggerHidden]
+				get
+				{
+					return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+				}
+			}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+			[Token(Token = "0x1700008B")]
+			private object System_002ECollections_002EIEnumerator_002ECurrent
+			{
+				[Token(Token = "0x60003E4")]
+				[Address(RVA = "0x1350B18", Offset = "0x1350B18", VA = "0x1350B18", Slot = "7")]
+				[DebuggerHidden]
+				get
+				{
+					return System_002ECollections_002EIEnumerator_002Eget_Current();
+				}
+			}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+			[Token(Token = "0x60003DE")]
+			[Address(RVA = "0x13501E4", Offset = "0x13501E4", VA = "0x13501E4")]
+			[DebuggerHidden]
+			public _003CRequestApplyIgnoreRopeCollision_003Ed__15(int _003C_003E1__state)
+			{
+			}
 
-		5. Script Content Level 0
+			[Token(Token = "0x60003DF")]
+			[Address(RVA = "0x1350210", Offset = "0x1350210", VA = "0x1350210", Slot = "5")]
+			[DebuggerHidden]
+			private void System_002EIDisposable_002EDispose()
+			{
+			}
 
-			AssetRipper was set to not load any script information.
+			[Token(Token = "0x60003E0")]
+			[Address(RVA = "0x13502E4", Offset = "0x13502E4", VA = "0x13502E4", Slot = "6")]
+			private bool MoveNext()
+			{
+				return default;
+			}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+			[Token(Token = "0x60003E1")]
+			[Address(RVA = "0x1350288", Offset = "0x1350288", VA = "0x1350288")]
+			private void _003C_003Em__Finally1()
+			{
+			}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+			[Token(Token = "0x60003E2")]
+			[Address(RVA = "0x1350AD0", Offset = "0x1350AD0", VA = "0x1350AD0", Slot = "4")]
+			[DebuggerHidden]
+			private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+			{
+				return null;
+			}
 
-		7. An incorrect path was provided to AssetRipper.
+			[Token(Token = "0x60003E3")]
+			[Address(RVA = "0x1350AD8", Offset = "0x1350AD8", VA = "0x1350AD8", Slot = "8")]
+			[DebuggerHidden]
+			private void System_002ECollections_002EIEnumerator_002EReset()
+			{
+			}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+			[Token(Token = "0x60003E4")]
+			[Address(RVA = "0x1350B18", Offset = "0x1350B18", VA = "0x1350B18", Slot = "7")]
+			[DebuggerHidden]
+			private object System_002ECollections_002EIEnumerator_002Eget_Current()
+			{
+				return null;
+			}
+		}
 
-		*/
+		[Token(Token = "0x400030D")]
+		[FieldOffset(Offset = "0x18")]
+		private Rope2D _ropeParent;
+
+		[Token(Token = "0x400030E")]
+		[FieldOffset(Offset = "0x20")]
+		private bool _needApplyIgnore;
+
+		[Token(Token = "0x400030F")]
+		[FieldOffset(Offset = "0x21")]
+		private bool _started;
+
+		[Token(Token = "0x17000087")]
+		public Rope2D RopeParent
+		{
+			[Token(Token = "0x60003D2")]
+			[Address(RVA = "0x13BC478", Offset = "0x13BC478", VA = "0x13BC478")]
+			get
+			{
+				return null;
+			}
+		}
+
+		[Token(Token = "0x17000088")]
+		protected virtual bool NeedApplyIgnore
+		{
+			[Token(Token = "0x60003D3")]
+			[Address(RVA = "0x13BC524", Offset = "0x13BC524", VA = "0x13BC524", Slot = "4")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x60003D4")]
+			[Address(RVA = "0x13BC52C", Offset = "0x13BC52C", VA = "0x13BC52C", Slot = "5")]
+			set
+			{
+			}
+		}
+
+		[Token(Token = "0x17000089")]
+		protected virtual bool Started
+		{
+			[Token(Token = "0x60003D5")]
+			[Address(RVA = "0x13BC540", Offset = "0x13BC540", VA = "0x13BC540", Slot = "6")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x60003D6")]
+			[Address(RVA = "0x13BC548", Offset = "0x13BC548", VA = "0x13BC548", Slot = "7")]
+			set
+			{
+			}
+		}
+
+		[Token(Token = "0x60003D7")]
+		[Address(RVA = "0x13BC55C", Offset = "0x13BC55C", VA = "0x13BC55C", Slot = "8")]
+		protected virtual void OnEnable()
+		{
+		}
+
+		[Token(Token = "0x60003D8")]
+		[Address(RVA = "0x13BC5A4", Offset = "0x13BC5A4", VA = "0x13BC5A4", Slot = "9")]
+		protected virtual void Start()
+		{
+		}
+
+		[Token(Token = "0x60003D9")]
+		[Address(RVA = "0x13BC600", Offset = "0x13BC600", VA = "0x13BC600", Slot = "10")]
+		protected virtual void OnDisable()
+		{
+		}
+
+		[Token(Token = "0x60003DA")]
+		[Address(RVA = "0x13BC610", Offset = "0x13BC610", VA = "0x13BC610", Slot = "11")]
+		public virtual void ApplyIgnoreRopeCollision(bool p_force = false)
+		{
+		}
+
+		[Token(Token = "0x60003DB")]
+		[Address(RVA = "0x13BC690", Offset = "0x13BC690", VA = "0x13BC690", Slot = "12")]
+		protected virtual IEnumerator RequestApplyIgnoreRopeCollision(bool p_force)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x60003DC")]
+		[Address(RVA = "0x13BC70C", Offset = "0x13BC70C", VA = "0x13BC70C")]
+		public bool Cut()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60003DD")]
+		[Address(RVA = "0x13BC7F8", Offset = "0x13BC7F8", VA = "0x13BC7F8")]
+		public Node2D()
+		{
+		}
 	}
 }

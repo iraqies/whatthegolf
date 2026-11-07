@@ -1,66 +1,99 @@
-using UnityEngine;
+using System.Collections.Generic;
+using Il2CppDummyDll;
 
 namespace UnityEngine.UI
 {
-	public class Shadow : MonoBehaviour
+	[Token(Token = "0x200007A")]
+	public class Shadow : BaseMeshEffect
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4000246")]
+		[FieldOffset(Offset = "0x20")]
+		[SerializeField]
+		private Color m_EffectColor;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000247")]
+		[FieldOffset(Offset = "0x30")]
+		[SerializeField]
+		private Vector2 m_EffectDistance;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000248")]
+		[FieldOffset(Offset = "0x38")]
+		[SerializeField]
+		private bool m_UseGraphicAlpha;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4000249")]
+		private const float kMaxEffectDistance = 600f;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x17000151")]
+		public Color effectColor
+		{
+			[Token(Token = "0x60004FF")]
+			[Address(RVA = "0x2C39C78", Offset = "0x2C39C78", VA = "0x2C39C78")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000500")]
+			[Address(RVA = "0x2C39C84", Offset = "0x2C39C84", VA = "0x2C39C84")]
+			set
+			{
+			}
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x17000152")]
+		public Vector2 effectDistance
+		{
+			[Token(Token = "0x6000501")]
+			[Address(RVA = "0x2C39D70", Offset = "0x2C39D70", VA = "0x2C39D70")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000502")]
+			[Address(RVA = "0x2C39D78", Offset = "0x2C39D78", VA = "0x2C39D78")]
+			set
+			{
+			}
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x17000153")]
+		public bool useGraphicAlpha
+		{
+			[Token(Token = "0x6000503")]
+			[Address(RVA = "0x2C39E9C", Offset = "0x2C39E9C", VA = "0x2C39E9C")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000504")]
+			[Address(RVA = "0x2C39EA4", Offset = "0x2C39EA4", VA = "0x2C39EA4")]
+			set
+			{
+			}
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x60004FE")]
+		[Address(RVA = "0x2C39C0C", Offset = "0x2C39C0C", VA = "0x2C39C0C")]
+		protected Shadow()
+		{
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x6000505")]
+		[Address(RVA = "0x2C39F68", Offset = "0x2C39F68", VA = "0x2C39F68")]
+		protected void ApplyShadowZeroAlloc(List<UIVertex> verts, Color32 color, int start, int end, float x, float y)
+		{
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6000506")]
+		[Address(RVA = "0x2C3A240", Offset = "0x2C3A240", VA = "0x2C3A240")]
+		protected void ApplyShadow(List<UIVertex> verts, Color32 color, int start, int end, float x, float y)
+		{
+		}
 
-		5. Script Content Level 0
-
-			AssetRipper was set to not load any script information.
-
-		6. Cpp2IL failed to decompile Il2Cpp data
-
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x6000507")]
+		[Address(RVA = "0x2C3A248", Offset = "0x2C3A248", VA = "0x2C3A248", Slot = "20")]
+		public override void ModifyMesh(VertexHelper vh)
+		{
+		}
 	}
 }

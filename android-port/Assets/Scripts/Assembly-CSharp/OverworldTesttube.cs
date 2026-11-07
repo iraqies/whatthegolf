@@ -1,63 +1,122 @@
+using Audio;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000AC4")]
+[Attribute(Name = "RequireComponent", RVA = "0x43180", Offset = "0x43180")]
+[Attribute(Name = "RequireComponent", RVA = "0x43180", Offset = "0x43180")]
 public class OverworldTesttube : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x2000AC5")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x4321C", Offset = "0x4321C")]
+	private sealed class _003C_003Ec__DisplayClass15_0
+	{
+		[Token(Token = "0x4003C08")]
+		[FieldOffset(Offset = "0x10")]
+		public ParticleSystem.MainModule main;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x6003388")]
+		[Address(RVA = "0x181E268", Offset = "0x181E268", VA = "0x181E268")]
+		public _003C_003Ec__DisplayClass15_0()
+		{
+		}
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x6003389")]
+		[Address(RVA = "0x181E270", Offset = "0x181E270", VA = "0x181E270")]
+		internal void _003COnCollisionEnter2D_003Eb__0(float t)
+		{
+		}
+	}
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4003BFC")]
+	[FieldOffset(Offset = "0x18")]
+	public Transform floatyObject;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4003BFD")]
+	[FieldOffset(Offset = "0x20")]
+	public float floatyDistance;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4003BFE")]
+	[FieldOffset(Offset = "0x24")]
+	public float floatyRotation;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4003BFF")]
+	[FieldOffset(Offset = "0x28")]
+	public bool isRotatingSineWave;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4003C00")]
+	[FieldOffset(Offset = "0x30")]
+	public RandomAudioClips hitSfx;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4003C01")]
+	[FieldOffset(Offset = "0x38")]
+	public ParticleSystem particles;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4003C02")]
+	[FieldOffset(Offset = "0x40")]
+	private float nextHitSound;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4003C03")]
+	[FieldOffset(Offset = "0x48")]
+	private Collider2D col;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4003C04")]
+	[FieldOffset(Offset = "0x50")]
+	private Coroutine lastRoutine;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4003C05")]
+	[FieldOffset(Offset = "0x58")]
+	private Vector3 baseFloatyPosition;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4003C06")]
+	[FieldOffset(Offset = "0x64")]
+	private Quaternion baseFloatyRotation;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4003C07")]
+	[FieldOffset(Offset = "0x74")]
+	private float floatTime;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x6003381")]
+	[Address(RVA = "0x15CD98C", Offset = "0x15CD98C", VA = "0x15CD98C")]
+	private void Awake()
+	{
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x6003382")]
+	[Address(RVA = "0x15CDA14", Offset = "0x15CDA14", VA = "0x15CDA14")]
+	private void OnDrawGizmosSelected()
+	{
+	}
 
-	*/
+	[Token(Token = "0x6003383")]
+	[Address(RVA = "0x15CDB44", Offset = "0x15CDB44", VA = "0x15CDB44")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x6003384")]
+	[Address(RVA = "0x15CDD1C", Offset = "0x15CDD1C", VA = "0x15CDD1C")]
+	private void OnCollisionEnter2D(Collision2D collision)
+	{
+	}
+
+	[Token(Token = "0x6003385")]
+	[Address(RVA = "0x15CE0A4", Offset = "0x15CE0A4", VA = "0x15CE0A4")]
+	public OverworldTesttube()
+	{
+	}
+
+	[Token(Token = "0x6003386")]
+	[Address(RVA = "0x15CE0AC", Offset = "0x15CE0AC", VA = "0x15CE0AC")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x6A438", Offset = "0x6A438")]
+	private void _003COnCollisionEnter2D_003Eb__15_1(float t)
+	{
+	}
+
+	[Token(Token = "0x6003387")]
+	[Address(RVA = "0x15CE110", Offset = "0x15CE110", VA = "0x15CE110")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x6A448", Offset = "0x6A448")]
+	private void _003COnCollisionEnter2D_003Eb__15_2()
+	{
+	}
 }

@@ -1,66 +1,114 @@
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Kilt.EasyRopes2D
 {
+	[Token(Token = "0x20000B5")]
+	[ExecuteInEditMode]
 	public class TacksInventory : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4000378")]
+		[FieldOffset(Offset = "0x18")]
+		private List<Tack> m_tacksInObject;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000379")]
+		[FieldOffset(Offset = "0x20")]
+		private bool _needCheckKinematic;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x400037A")]
+		[FieldOffset(Offset = "0x21")]
+		private bool _needFillWithChildrenTacks;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x170000C4")]
+		public List<Tack> TacksInObject
+		{
+			[Token(Token = "0x60004C2")]
+			[Address(RVA = "0x1318E2C", Offset = "0x1318E2C", VA = "0x1318E2C")]
+			get
+			{
+				return null;
+			}
+			[Token(Token = "0x60004C3")]
+			[Address(RVA = "0x1318EA8", Offset = "0x1318EA8", VA = "0x1318EA8")]
+			protected set
+			{
+			}
+		}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x60004C4")]
+		[Address(RVA = "0x1318EBC", Offset = "0x1318EBC", VA = "0x1318EBC", Slot = "4")]
+		protected virtual void Awake()
+		{
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x60004C5")]
+		[Address(RVA = "0x1318F8C", Offset = "0x1318F8C", VA = "0x1318F8C", Slot = "5")]
+		protected virtual void Start()
+		{
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x60004C6")]
+		[Address(RVA = "0x1319364", Offset = "0x1319364", VA = "0x1319364", Slot = "6")]
+		protected virtual void Update()
+		{
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x60004C7")]
+		[Address(RVA = "0x1319390", Offset = "0x1319390", VA = "0x1319390")]
+		public void AddTackInList(Tack p_tack)
+		{
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x60004C8")]
+		[Address(RVA = "0x1319494", Offset = "0x1319494", VA = "0x1319494")]
+		public void RemoveTackFromList(Tack p_tack)
+		{
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x60004C9")]
+		[Address(RVA = "0x1318EC4", Offset = "0x1318EC4", VA = "0x1318EC4")]
+		public void FillWithChildrenTacks(bool p_force = false)
+		{
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x60004CA")]
+		[Address(RVA = "0x13183E8", Offset = "0x13183E8", VA = "0x13183E8")]
+		public void MarkToCheckKinematic()
+		{
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x60004CB")]
+		[Address(RVA = "0x1318FB8", Offset = "0x1318FB8", VA = "0x1318FB8")]
+		public void CheckKinematic(bool p_force = false)
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x60004CC")]
+		[Address(RVA = "0x1318CA4", Offset = "0x1318CA4", VA = "0x1318CA4")]
+		public GameObject GetTackObjectWithIndex(int p_index, bool p_returnDefaultWhenOutOfBounds = true)
+		{
+			return null;
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x60004CD")]
+		[Address(RVA = "0x131959C", Offset = "0x131959C", VA = "0x131959C")]
+		public Tack GetTackWithIndex(int p_index, bool p_returnDefaultWhenOutOfBounds = true)
+		{
+			return null;
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x60004CE")]
+		[Address(RVA = "0x1318424", Offset = "0x1318424", VA = "0x1318424")]
+		public int GetIndexOfTack(Tack p_tack, bool p_addThisTackIfNotAdded = true)
+		{
+			return default;
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x60004CF")]
+		[Address(RVA = "0x1319900", Offset = "0x1319900", VA = "0x1319900")]
+		public TacksInventory()
+		{
+		}
 	}
 }

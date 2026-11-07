@@ -1,66 +1,267 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Triband.Splines
 {
-	public class SplinePoint : MonoBehaviour
+	[Serializable]
+	[Token(Token = "0x2000007")]
+	public sealed class SplinePoint
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4000019")]
+		[FieldOffset(Offset = "0x10")]
+		[SerializeField]
+		private Vector3 m_Position;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x400001A")]
+		[FieldOffset(Offset = "0x1C")]
+		[SerializeField]
+		private Quaternion m_Rotation;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x400001B")]
+		[FieldOffset(Offset = "0x2C")]
+		[SerializeField]
+		private Vector3 m_LeftTangent;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x400001C")]
+		[FieldOffset(Offset = "0x38")]
+		[SerializeField]
+		private Vector3 m_RightTangent;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x400001D")]
+		[FieldOffset(Offset = "0x44")]
+		[SerializeField]
+		private HandleMode m_HandleMode;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x400001E")]
+		[FieldOffset(Offset = "0x48")]
+		[SerializeField]
+		private TangentMode m_LeftTangentMode;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x400001F")]
+		[FieldOffset(Offset = "0x4C")]
+		[SerializeField]
+		private TangentMode m_RightTangentMode;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4000020")]
+		[FieldOffset(Offset = "0x50")]
+		[SerializeField]
+		private Vector3 m_Up;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4000021")]
+		[FieldOffset(Offset = "0x60")]
+		private Spline m_Spline;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x1700000B")]
+		public Spline spline
+		{
+			[Token(Token = "0x6000036")]
+			[Address(RVA = "0x2A0908C", Offset = "0x2A0908C", VA = "0x2A0908C")]
+			get
+			{
+				return null;
+			}
+			[Token(Token = "0x6000037")]
+			[Address(RVA = "0x2A09094", Offset = "0x2A09094", VA = "0x2A09094")]
+			set
+			{
+			}
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x1700000C")]
+		public Vector3 position
+		{
+			[Token(Token = "0x6000038")]
+			[Address(RVA = "0x2A0909C", Offset = "0x2A0909C", VA = "0x2A0909C")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000039")]
+			[Address(RVA = "0x2A0318C", Offset = "0x2A0318C", VA = "0x2A0318C")]
+			set
+			{
+			}
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x1700000D")]
+		public Vector3 leftTangent
+		{
+			[Token(Token = "0x600003A")]
+			[Address(RVA = "0x2A09340", Offset = "0x2A09340", VA = "0x2A09340")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x600003B")]
+			[Address(RVA = "0x2A0464C", Offset = "0x2A0464C", VA = "0x2A0464C")]
+			set
+			{
+			}
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x1700000E")]
+		public Vector3 rightTangent
+		{
+			[Token(Token = "0x600003C")]
+			[Address(RVA = "0x2A098D8", Offset = "0x2A098D8", VA = "0x2A098D8")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x600003D")]
+			[Address(RVA = "0x2A04654", Offset = "0x2A04654", VA = "0x2A04654")]
+			set
+			{
+			}
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x1700000F")]
+		public HandleMode handleMode
+		{
+			[Token(Token = "0x600003E")]
+			[Address(RVA = "0x2A099B8", Offset = "0x2A099B8", VA = "0x2A099B8")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x600003F")]
+			[Address(RVA = "0x2A048D4", Offset = "0x2A048D4", VA = "0x2A048D4")]
+			set
+			{
+			}
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x17000010")]
+		public TangentMode leftTangentMode
+		{
+			[Token(Token = "0x6000040")]
+			[Address(RVA = "0x2A09EEC", Offset = "0x2A09EEC", VA = "0x2A09EEC")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000041")]
+			[Address(RVA = "0x2A048D8", Offset = "0x2A048D8", VA = "0x2A048D8")]
+			set
+			{
+			}
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x17000011")]
+		public TangentMode rightTangentMode
+		{
+			[Token(Token = "0x6000042")]
+			[Address(RVA = "0x2A0A1D8", Offset = "0x2A0A1D8", VA = "0x2A0A1D8")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000043")]
+			[Address(RVA = "0x2A048E0", Offset = "0x2A048E0", VA = "0x2A048E0")]
+			set
+			{
+			}
+		}
 
-		*/
+		[Token(Token = "0x17000012")]
+		public Vector3 up
+		{
+			[Token(Token = "0x6000044")]
+			[Address(RVA = "0x2A0A1E0", Offset = "0x2A0A1E0", VA = "0x2A0A1E0")]
+			get
+			{
+				return default;
+			}
+		}
+
+		[Token(Token = "0x6000034")]
+		[Address(RVA = "0x2A02B3C", Offset = "0x2A02B3C", VA = "0x2A02B3C")]
+		internal SplinePoint(Spline spline, Vector3 position, Quaternion rotation, Vector3 leftTangent, Vector3 rightTangent, Vector3 up)
+		{
+		}
+
+		[Token(Token = "0x6000035")]
+		[Address(RVA = "0x2A03A70", Offset = "0x2A03A70", VA = "0x2A03A70")]
+		internal SplinePoint(Spline spline, Vector3 position, Quaternion rotation, Vector3 leftTangent, Vector3 rightTangent, Vector3 up, HandleMode handleMode, TangentMode leftTangentMode, TangentMode rightTangentMode)
+		{
+		}
+
+		[Token(Token = "0x6000045")]
+		[Address(RVA = "0x2A04110", Offset = "0x2A04110", VA = "0x2A04110")]
+		public Vector3 GetTangent(TangentDirection direction)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000046")]
+		[Address(RVA = "0x2A0A1EC", Offset = "0x2A0A1EC", VA = "0x2A0A1EC")]
+		public SplinePoint GetPreviousPoint()
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6000047")]
+		[Address(RVA = "0x2A0A2D0", Offset = "0x2A0A2D0", VA = "0x2A0A2D0")]
+		public SplinePoint GetNextPoint()
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6000048")]
+		[Address(RVA = "0x2A09420", Offset = "0x2A09420", VA = "0x2A09420")]
+		public Vector3 GetLinearTangent(TangentDirection direction)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000049")]
+		[Address(RVA = "0x2A090A8", Offset = "0x2A090A8", VA = "0x2A090A8")]
+		private void UpdatePosition(Vector3 position)
+		{
+		}
+
+		[Token(Token = "0x600004A")]
+		[Address(RVA = "0x2A09528", Offset = "0x2A09528", VA = "0x2A09528")]
+		private void UpdateTangent(Vector3 value, TangentDirection direction)
+		{
+		}
+
+		[Token(Token = "0x600004B")]
+		[Address(RVA = "0x2A099C0", Offset = "0x2A099C0", VA = "0x2A099C0")]
+		private void UpdateHandleMode(HandleMode mode)
+		{
+		}
+
+		[Token(Token = "0x600004C")]
+		[Address(RVA = "0x2A09EF4", Offset = "0x2A09EF4", VA = "0x2A09EF4")]
+		private void UpdateTangentMode(TangentMode mode, TangentDirection direction)
+		{
+		}
+
+		[Token(Token = "0x600004D")]
+		[Address(RVA = "0x2A04D60", Offset = "0x2A04D60", VA = "0x2A04D60")]
+		internal void RecursivelyAutoSmoothTangents()
+		{
+		}
+
+		[Token(Token = "0x600004E")]
+		[Address(RVA = "0x2A0A3C0", Offset = "0x2A0A3C0", VA = "0x2A0A3C0")]
+		public bool AutoSmoothTangents()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x600004F")]
+		[Address(RVA = "0x2A0A76C", Offset = "0x2A0A76C", VA = "0x2A0A76C")]
+		public void AutoSmoothTangentsOnPreviousPoint(SplinePoint recursionOrigin)
+		{
+		}
+
+		[Token(Token = "0x6000050")]
+		[Address(RVA = "0x2A0A7B0", Offset = "0x2A0A7B0", VA = "0x2A0A7B0")]
+		public void AutoSmoothTangentsOnNextPoint(SplinePoint recursionOrigin)
+		{
+		}
 	}
 }

@@ -1,63 +1,121 @@
+using System.Collections.Generic;
+using Audio;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
-public class SnakeShooter : MonoBehaviour
+[Token(Token = "0x2000851")]
+public class SnakeShooter : GolfBall2DShooterBase
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4002D0C")]
+	[FieldOffset(Offset = "0x48")]
+	public List<GameObject> FoodItems;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4002D0D")]
+	[FieldOffset(Offset = "0x50")]
+	public GameObject Flag;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4002D0E")]
+	[FieldOffset(Offset = "0x58")]
+	public float SpawnInterval;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4002D0F")]
+	[FieldOffset(Offset = "0x60")]
+	public BoxCollider SpawnArea;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4002D10")]
+	[FieldOffset(Offset = "0x68")]
+	public int EatGoal;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4002D11")]
+	[FieldOffset(Offset = "0x6C")]
+	public LayerMask FoodLayer;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4002D12")]
+	[FieldOffset(Offset = "0x70")]
+	public LayerMask WallLayer;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4002D13")]
+	[FieldOffset(Offset = "0x78")]
+	public Snake2D SnakePart;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4002D14")]
+	[FieldOffset(Offset = "0x80")]
+	public float Force;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4002D15")]
+	[FieldOffset(Offset = "0x88")]
+	public RandomAudioClips EatClips;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4002D16")]
+	[FieldOffset(Offset = "0x90")]
+	public RandomAudioClips FailClips;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4002D17")]
+	[FieldOffset(Offset = "0x98")]
+	private readonly Dictionary<int, Vector2> directions;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4002D18")]
+	[FieldOffset(Offset = "0xA0")]
+	private Quaternion targetLookAt;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4002D19")]
+	[FieldOffset(Offset = "0xB0")]
+	private bool objectSpawnedAndAlive;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4002D1A")]
+	[FieldOffset(Offset = "0xB4")]
+	private float objectSpawnTimer;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4002D1B")]
+	[FieldOffset(Offset = "0xB8")]
+	private float eatCooldown;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x4002D1C")]
+	[FieldOffset(Offset = "0xBC")]
+	private bool dead;
 
-	*/
+	[Token(Token = "0x4002D1D")]
+	[FieldOffset(Offset = "0xBD")]
+	private bool nextSpawnIsFlag;
+
+	[Token(Token = "0x4002D1E")]
+	[FieldOffset(Offset = "0xC0")]
+	private GameObject flagRef;
+
+	[Token(Token = "0x600265B")]
+	[Address(RVA = "0x16B93F8", Offset = "0x16B93F8", VA = "0x16B93F8")]
+	private void Start()
+	{
+	}
+
+	[Token(Token = "0x600265C")]
+	[Address(RVA = "0x16B94A0", Offset = "0x16B94A0", VA = "0x16B94A0", Slot = "7")]
+	public override void OnShoot(Vector3 boost)
+	{
+	}
+
+	[Token(Token = "0x600265D")]
+	[Address(RVA = "0x16B95AC", Offset = "0x16B95AC", VA = "0x16B95AC", Slot = "6")]
+	public override void OnAimUpdate(Vector3 boost, bool onlyAimArrow)
+	{
+	}
+
+	[Token(Token = "0x600265E")]
+	[Address(RVA = "0x16B9684", Offset = "0x16B9684", VA = "0x16B9684")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x600265F")]
+	[Address(RVA = "0x16B9A90", Offset = "0x16B9A90", VA = "0x16B9A90")]
+	private void OnTriggerEnter2D(Collider2D col)
+	{
+	}
+
+	[Token(Token = "0x6002660")]
+	[Address(RVA = "0x16B9E3C", Offset = "0x16B9E3C", VA = "0x16B9E3C")]
+	public SnakeShooter()
+	{
+	}
 }

@@ -1,66 +1,67 @@
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Triband.GolfTerrainTool
 {
-	public class MeshUtil : MonoBehaviour
+	[Token(Token = "0x200000D")]
+	public static class MeshUtil
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x6000057")]
+		[Address(RVA = "0x29FBC14", Offset = "0x29FBC14", VA = "0x29FBC14")]
+		public static void UpdateMesh(CanvasParameters canvasParameters, MeshParameters parameters, ref Mesh mesh, byte[] values)
+		{
+		}
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x6000058")]
+		[Address(RVA = "0x29FCB1C", Offset = "0x29FCB1C", VA = "0x29FCB1C")]
+		private static void InitialContour(CanvasParameters canvasParameters, byte[] values, ref List<Vector2> contourVertices, ref List<int> contourTriangles, ref List<int> contourEdges)
+		{
+		}
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x6000059")]
+		[Address(RVA = "0x29FD7B8", Offset = "0x29FD7B8", VA = "0x29FD7B8")]
+		private static void SmoothContour(ref List<Vector2> contourVertices, ref List<int> contourTriangles, ref List<int> contourEdges)
+		{
+		}
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x600005A")]
+		[Address(RVA = "0x29FDE24", Offset = "0x29FDE24", VA = "0x29FDE24")]
+		private static void GenerateEdgeNormals(ref List<Vector2> contourVertices, ref List<int> contourEdges, ref List<Vector3> edgeNormals)
+		{
+		}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x600005B")]
+		[Address(RVA = "0x29FE0E0", Offset = "0x29FE0E0", VA = "0x29FE0E0")]
+		private static void GenerateSurface(CanvasParameters canvasParameters, ref List<Vector2> contourVertices, ref List<int> contourTriangles, ref List<Vector3> meshVertices, ref List<int> meshTriangles, ref List<Vector3> meshNormals, ref List<Color32> meshColors)
+		{
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x600005C")]
+		[Address(RVA = "0x29FE36C", Offset = "0x29FE36C", VA = "0x29FE36C")]
+		private static void GenerateBevel(MeshParameters parameters, ref List<int> contourEdges, ref List<Vector3> edgeNormals, ref Dictionary<int, int> edgeDictionary, ref List<Vector3> meshVertices, ref List<Vector3> meshNormals, ref List<Color32> meshColors)
+		{
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x600005D")]
+		[Address(RVA = "0x29FE6C8", Offset = "0x29FE6C8", VA = "0x29FE6C8")]
+		private static void GenerateSkirt(MeshParameters parameters, ref List<int> contourEdges, ref List<Vector3> edgeNormals, ref Dictionary<int, int> edgeDictionary, ref List<Vector3> meshVertices, ref List<int> meshTriangles, ref List<Vector3> meshNormals, ref List<Color32> meshColors)
+		{
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x600005E")]
+		private static void Rotate2<T>(ref T v0, ref T v1, ref T v2, ref T v3)
+		{
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x600005F")]
+		private static void Rotate<T>(ref T v0, ref T v1, ref T v2, ref T v3)
+		{
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
-
-		5. Script Content Level 0
-
-			AssetRipper was set to not load any script information.
-
-		6. Cpp2IL failed to decompile Il2Cpp data
-
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x6000060")]
+		private static void Rotate<T>(ref T v0, ref T v1, ref T v2)
+		{
+		}
 	}
 }

@@ -1,66 +1,202 @@
-using UnityEngine;
+using System;
+using System.Collections.Generic;
+using Il2CppDummyDll;
 
 namespace RootMotion.Dynamics
 {
-	public class PuppetMasterSettings : MonoBehaviour
+	[Token(Token = "0x200012C")]
+	public class PuppetMasterSettings : Singleton<PuppetMasterSettings>
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Serializable]
+		[Token(Token = "0x200012D")]
+		public class PuppetUpdateLimit
+		{
+			[Token(Token = "0x400074B")]
+			[FieldOffset(Offset = "0x10")]
+			[AttributeAttribute(Name = "RangeAttribute", RVA = "0x35A74", Offset = "0x35A74")]
+			public int puppetsPerFrame;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x400074C")]
+			[FieldOffset(Offset = "0x14")]
+			private int index;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x6000853")]
+			[Address(RVA = "0x1353D7C", Offset = "0x1353D7C", VA = "0x1353D7C")]
+			public PuppetUpdateLimit()
+			{
+			}
 
-		2. Incorrect dll files were provided to AssetRipper.
+			[Token(Token = "0x6000854")]
+			[Address(RVA = "0x1353DA8", Offset = "0x1353DA8", VA = "0x1353DA8")]
+			public void Step(int puppetCount)
+			{
+			}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+			[Token(Token = "0x6000855")]
+			[Address(RVA = "0x1353DC4", Offset = "0x1353DC4", VA = "0x1353DC4")]
+			public bool Update(List<PuppetMaster> puppets, PuppetMaster puppetMaster)
+			{
+				return default;
+			}
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000741")]
+		[FieldOffset(Offset = "0x18")]
+		public PuppetUpdateLimit kinematicCollidersUpdateLimit;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4000742")]
+		[FieldOffset(Offset = "0x20")]
+		public PuppetUpdateLimit freeUpdateLimit;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4000743")]
+		[FieldOffset(Offset = "0x28")]
+		public PuppetUpdateLimit fixedUpdateLimit;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4000744")]
+		[FieldOffset(Offset = "0x30")]
+		public bool collisionStayMessages;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4000745")]
+		[FieldOffset(Offset = "0x31")]
+		public bool collisionExitMessages;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4000746")]
+		[FieldOffset(Offset = "0x34")]
+		public float activePuppetCollisionThresholdMlp;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4000747")]
+		[FieldOffset(Offset = "0x38")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x35A44", Offset = "0x35A44")]
+		private int currentlyActivePuppets__BackingField;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4000748")]
+		[FieldOffset(Offset = "0x3C")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x35A54", Offset = "0x35A54")]
+		private int currentlyKinematicPuppets__BackingField;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x4000749")]
+		[FieldOffset(Offset = "0x40")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x35A64", Offset = "0x35A64")]
+		private int currentlyDisabledPuppets__BackingField;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x400074A")]
+		[FieldOffset(Offset = "0x48")]
+		private List<PuppetMaster> _puppets;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x1700011D")]
+		public int currentlyActivePuppets
+		{
+			[Token(Token = "0x6000844")]
+			[Address(RVA = "0x13D53D0", Offset = "0x13D53D0", VA = "0x13D53D0")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x38D24", Offset = "0x38D24")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000845")]
+			[Address(RVA = "0x13D53D8", Offset = "0x13D53D8", VA = "0x13D53D8")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x38D34", Offset = "0x38D34")]
+			private set
+			{
+			}
+		}
 
-		*/
+		[Token(Token = "0x1700011E")]
+		public int currentlyKinematicPuppets
+		{
+			[Token(Token = "0x6000846")]
+			[Address(RVA = "0x13D53E0", Offset = "0x13D53E0", VA = "0x13D53E0")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x38D44", Offset = "0x38D44")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000847")]
+			[Address(RVA = "0x13D53E8", Offset = "0x13D53E8", VA = "0x13D53E8")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x38D54", Offset = "0x38D54")]
+			private set
+			{
+			}
+		}
+
+		[Token(Token = "0x1700011F")]
+		public int currentlyDisabledPuppets
+		{
+			[Token(Token = "0x6000848")]
+			[Address(RVA = "0x13D53F0", Offset = "0x13D53F0", VA = "0x13D53F0")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x38D64", Offset = "0x38D64")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000849")]
+			[Address(RVA = "0x13D53F8", Offset = "0x13D53F8", VA = "0x13D53F8")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x38D74", Offset = "0x38D74")]
+			private set
+			{
+			}
+		}
+
+		[Token(Token = "0x17000120")]
+		public List<PuppetMaster> puppets
+		{
+			[Token(Token = "0x600084A")]
+			[Address(RVA = "0x13D5400", Offset = "0x13D5400", VA = "0x13D5400")]
+			get
+			{
+				return null;
+			}
+		}
+
+		[Token(Token = "0x600084B")]
+		[Address(RVA = "0x13D5408", Offset = "0x13D5408", VA = "0x13D5408")]
+		public void Register(PuppetMaster puppetMaster)
+		{
+		}
+
+		[Token(Token = "0x600084C")]
+		[Address(RVA = "0x13D54A8", Offset = "0x13D54A8", VA = "0x13D54A8")]
+		public void Unregister(PuppetMaster puppetMaster)
+		{
+		}
+
+		[Token(Token = "0x600084D")]
+		[Address(RVA = "0x13D550C", Offset = "0x13D550C", VA = "0x13D550C")]
+		public bool UpdateMoveToTarget(PuppetMaster puppetMaster)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x600084E")]
+		[Address(RVA = "0x13D5534", Offset = "0x13D5534", VA = "0x13D5534")]
+		public bool UpdateFree(PuppetMaster puppetMaster)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x600084F")]
+		[Address(RVA = "0x13D555C", Offset = "0x13D555C", VA = "0x13D555C")]
+		public bool UpdateFixed(PuppetMaster puppetMaster)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000850")]
+		[Address(RVA = "0x13D5584", Offset = "0x13D5584", VA = "0x13D5584")]
+		private void Update()
+		{
+		}
+
+		[Token(Token = "0x6000851")]
+		[Address(RVA = "0x13D57BC", Offset = "0x13D57BC", VA = "0x13D57BC")]
+		private void FixedUpdate()
+		{
+		}
+
+		[Token(Token = "0x6000852")]
+		[Address(RVA = "0x13D5814", Offset = "0x13D5814", VA = "0x13D5814")]
+		public PuppetMasterSettings()
+		{
+		}
 	}
 }

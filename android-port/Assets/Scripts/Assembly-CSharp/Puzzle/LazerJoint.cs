@@ -1,66 +1,106 @@
+using System.Runtime.InteropServices;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Puzzle
 {
+	[Token(Token = "0x2001034")]
 	public class LazerJoint : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4005563")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x18")]
+		public LineRenderer line;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4005564")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x20")]
+		public float width;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4005565")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x24")]
+		public LayerMask layerMask;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4005566")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
+		public float length;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4005567")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x30")]
+		public ParticleSystem particles;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4005568")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x38")]
+		public bool emit;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4005569")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x3C")]
+		private Vector3 emitDirection;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x400556A")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x48")]
+		private float nextBallhit;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x400556B")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x4C")]
+		private Vector3 emitPosition;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x400556C")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x58")]
+		private PuzzleSwitchLaser laserSwitch;
 
-		5. Script Content Level 0
+		[Token(Token = "0x400556D")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x60")]
+		public SimplePortal enterPortal;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x400556E")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x68")]
+		public SimplePortal exitPortal;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x600488D")]
+		[Address(RVA = "0x151F28C", Offset = "0x151F28C", VA = "0x151F28C")]
+		public void Init(Vector3 startpos, Quaternion rotation, [Optional] SimplePortal enterPortal)
+		{
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x600488E")]
+		[Address(RVA = "0x151F338", Offset = "0x151F338", VA = "0x151F338")]
+		private void Update()
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x600488F")]
+		[Address(RVA = "0x151F408", Offset = "0x151F408", VA = "0x151F408")]
+		public void SetJointEmission(bool emit)
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x6004890")]
+		[Address(RVA = "0x151F4E8", Offset = "0x151F4E8", VA = "0x151F4E8")]
+		private void FixedUpdate()
+		{
+		}
 
-		*/
+		[Token(Token = "0x6004891")]
+		[Address(RVA = "0x151F914", Offset = "0x151F914", VA = "0x151F914")]
+		private void HandleHit(RaycastHit2D hit)
+		{
+		}
+
+		[Token(Token = "0x6004892")]
+		[Address(RVA = "0x151FCC0", Offset = "0x151FCC0", VA = "0x151FCC0")]
+		private void OnDisable()
+		{
+		}
+
+		[Token(Token = "0x6004893")]
+		[Address(RVA = "0x151FD68", Offset = "0x151FD68", VA = "0x151FD68")]
+		private void OnDestroy()
+		{
+		}
+
+		[Token(Token = "0x6004894")]
+		[Address(RVA = "0x151FE10", Offset = "0x151FE10", VA = "0x151FE10")]
+		public LazerJoint()
+		{
+		}
 	}
 }

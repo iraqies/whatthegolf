@@ -1,63 +1,155 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.Events;
 
+[Token(Token = "0x2000D96")]
 public class LerpRotationChooseObject : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x2000D97")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x44B80", Offset = "0x44B80")]
+	private sealed class _003CStartRotating_003Ed__7 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x40049F8")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40049F9")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40049FA")]
+		[FieldOffset(Offset = "0x20")]
+		public LerpRotationChooseObject _003C_003E4__this;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40049FB")]
+		[FieldOffset(Offset = "0x28")]
+		public Quaternion endValue;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40049FC")]
+		[FieldOffset(Offset = "0x38")]
+		public float duration;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40049FD")]
+		[FieldOffset(Offset = "0x3C")]
+		private float _003CmovementTime_003E5__2;
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x40049FE")]
+		[FieldOffset(Offset = "0x40")]
+		private Quaternion _003CstartValue_003E5__3;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x17000687")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x6003FE5")]
+			[Address(RVA = "0x17D0994", Offset = "0x17D0994", VA = "0x17D0994", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x17000688")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x6003FE7")]
+			[Address(RVA = "0x17D09DC", Offset = "0x17D09DC", VA = "0x17D09DC", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
 
-	4. This script is unnecessary.
+		[Token(Token = "0x6003FE2")]
+		[Address(RVA = "0x17D076C", Offset = "0x17D076C", VA = "0x17D076C")]
+		[DebuggerHidden]
+		public _003CStartRotating_003Ed__7(int _003C_003E1__state)
+		{
+		}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6003FE3")]
+		[Address(RVA = "0x17D0798", Offset = "0x17D0798", VA = "0x17D0798", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
 
-	5. Script Content Level 0
+		[Token(Token = "0x6003FE4")]
+		[Address(RVA = "0x17D079C", Offset = "0x17D079C", VA = "0x17D079C", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
 
-		AssetRipper was set to not load any script information.
+		[Token(Token = "0x6003FE5")]
+		[Address(RVA = "0x17D0994", Offset = "0x17D0994", VA = "0x17D0994", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x6003FE6")]
+		[Address(RVA = "0x17D099C", Offset = "0x17D099C", VA = "0x17D099C", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x6003FE7")]
+		[Address(RVA = "0x17D09DC", Offset = "0x17D09DC", VA = "0x17D09DC", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x40049F2")]
+	[FieldOffset(Offset = "0x18")]
+	public GameObject objectToRotate;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x40049F3")]
+	[FieldOffset(Offset = "0x20")]
+	public Vector3 targetRotation;
 
-	*/
+	[Token(Token = "0x40049F4")]
+	[FieldOffset(Offset = "0x2C")]
+	public float movementSpeed;
+
+	[Token(Token = "0x40049F5")]
+	[FieldOffset(Offset = "0x30")]
+	public AnimationCurve animationCurve;
+
+	[Token(Token = "0x40049F6")]
+	[FieldOffset(Offset = "0x38")]
+	public UnityEvent OnRotated;
+
+	[Token(Token = "0x40049F7")]
+	[FieldOffset(Offset = "0x40")]
+	private float movementDuration;
+
+	[Token(Token = "0x6003FDF")]
+	[Address(RVA = "0x1522D40", Offset = "0x1522D40", VA = "0x1522D40")]
+	public void Rotate()
+	{
+	}
+
+	[Token(Token = "0x6003FE0")]
+	[Address(RVA = "0x1522E04", Offset = "0x1522E04", VA = "0x1522E04")]
+	private IEnumerator StartRotating(Quaternion endValue, float duration)
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6003FE1")]
+	[Address(RVA = "0x1522EB0", Offset = "0x1522EB0", VA = "0x1522EB0")]
+	public LerpRotationChooseObject()
+	{
+	}
 }

@@ -1,66 +1,88 @@
+using System.Collections.Generic;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace GolfGames.Pinball
 {
-	public class PinballShooter : MonoBehaviour
+	[Token(Token = "0x20010B4")]
+	public class PinballShooter : GolfBall2DShooterBase
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x40057F5")]
+		[FieldOffset(Offset = "0x48")]
+		[SerializeField]
+		private float shootVelocity;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40057F6")]
+		[FieldOffset(Offset = "0x50")]
+		[SerializeField]
+		private AudioSource startShotAudio;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40057F7")]
+		[FieldOffset(Offset = "0x58")]
+		[SerializeField]
+		private AudioSource flipperAudio;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40057F8")]
+		[FieldOffset(Offset = "0x60")]
+		[SerializeField]
+		private ParticleSystem winParticles;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40057F9")]
+		[FieldOffset(Offset = "0x68")]
+		[SerializeField]
+		private PinballStartShooter pinballStartShooter;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40057FA")]
+		[FieldOffset(Offset = "0x70")]
+		[SerializeField]
+		private PinballFlipper[] flippers;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x40057FB")]
+		[FieldOffset(Offset = "0x78")]
+		[SerializeField]
+		private Pinball ball;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x40057FC")]
+		[FieldOffset(Offset = "0x80")]
+		private float shootTimer;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x40057FD")]
+		[FieldOffset(Offset = "0x84")]
+		private float startMotorSpeed;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x40057FE")]
+		[FieldOffset(Offset = "0x88")]
+		private List<Pinball> balls;
 
-		5. Script Content Level 0
+		[Token(Token = "0x6004ADD")]
+		[Address(RVA = "0x15E2C6C", Offset = "0x15E2C6C", VA = "0x15E2C6C", Slot = "11")]
+		protected override void Awake()
+		{
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x6004ADE")]
+		[Address(RVA = "0x15E2D0C", Offset = "0x15E2D0C", VA = "0x15E2D0C", Slot = "7")]
+		public override void OnShoot(Vector3 boost)
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x6004ADF")]
+		[Address(RVA = "0x15E2F80", Offset = "0x15E2F80", VA = "0x15E2F80")]
+		private void Update()
+		{
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x6004AE0")]
+		[Address(RVA = "0x15E306C", Offset = "0x15E306C", VA = "0x15E306C")]
+		public void AddBall(Pinball ball)
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x6004AE1")]
+		[Address(RVA = "0x15E30D0", Offset = "0x15E30D0", VA = "0x15E30D0")]
+		public PinballShooter()
+		{
+		}
 	}
 }

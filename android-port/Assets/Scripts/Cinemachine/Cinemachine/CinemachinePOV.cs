@@ -1,66 +1,110 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Cinemachine
 {
-	public class CinemachinePOV : MonoBehaviour
+	[Token(Token = "0x200004C")]
+	public class CinemachinePOV : CinemachineComponentBase
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x200004D")]
+		public enum RecenterTargetMode
+		{
+			[Token(Token = "0x40001B8")]
+			None = 0,
+			[Token(Token = "0x40001B9")]
+			FollowTargetForward = 1,
+			[Token(Token = "0x40001BA")]
+			LookAtTargetForward = 2
+		}
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40001B1")]
+		[FieldOffset(Offset = "0x50")]
+		public bool m_ApplyBeforeBody;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40001B2")]
+		[FieldOffset(Offset = "0x54")]
+		public RecenterTargetMode m_RecenterTarget;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40001B3")]
+		[FieldOffset(Offset = "0x58")]
+		public AxisState m_VerticalAxis;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40001B4")]
+		[FieldOffset(Offset = "0xB0")]
+		public AxisState.Recentering m_VerticalRecentering;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40001B5")]
+		[FieldOffset(Offset = "0xD0")]
+		public AxisState m_HorizontalAxis;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x40001B6")]
+		[FieldOffset(Offset = "0x128")]
+		public AxisState.Recentering m_HorizontalRecentering;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x1700005F")]
+		public override bool IsValid
+		{
+			[Token(Token = "0x60001C1")]
+			[Address(RVA = "0x18FB808", Offset = "0x18FB808", VA = "0x18FB808", Slot = "4")]
+			get
+			{
+				return default;
+			}
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x17000060")]
+		public override CinemachineCore.Stage Stage
+		{
+			[Token(Token = "0x60001C2")]
+			[Address(RVA = "0x18FB810", Offset = "0x18FB810", VA = "0x18FB810", Slot = "6")]
+			get
+			{
+				return default;
+			}
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x60001C3")]
+		[Address(RVA = "0x18FB818", Offset = "0x18FB818", VA = "0x18FB818")]
+		private void OnValidate()
+		{
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x60001C4")]
+		[Address(RVA = "0x18FB860", Offset = "0x18FB860", VA = "0x18FB860", Slot = "5")]
+		public override void PrePipelineMutateCameraState(ref CameraState curState, float deltaTime)
+		{
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x60001C5")]
+		[Address(RVA = "0x18FBAC8", Offset = "0x18FBAC8", VA = "0x18FBAC8", Slot = "7")]
+		public override void MutateCameraState(ref CameraState curState, float deltaTime)
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x60001C6")]
+		[Address(RVA = "0x18FB874", Offset = "0x18FB874", VA = "0x18FB874")]
+		private void ApplyPOV(ref CameraState curState, float deltaTime)
+		{
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x60001C7")]
+		[Address(RVA = "0x18FBAD8", Offset = "0x18FBAD8", VA = "0x18FBAD8")]
+		public Vector2 GetRecenterTarget()
+		{
+			return default;
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x60001C8")]
+		[Address(RVA = "0x18FBCCC", Offset = "0x18FBCCC", VA = "0x18FBCCC", Slot = "8")]
+		public override bool OnTransitionFromCamera(ICinemachineCamera fromCam, Vector3 worldUp, float deltaTime, ref CinemachineVirtualCameraBase.TransitionParams transitionParams)
+		{
+			return default;
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x60001C9")]
+		[Address(RVA = "0x18FC0EC", Offset = "0x18FC0EC", VA = "0x18FC0EC")]
+		public CinemachinePOV()
+		{
+		}
 	}
 }

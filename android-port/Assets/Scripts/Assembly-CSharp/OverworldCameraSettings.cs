@@ -1,63 +1,102 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x20009F6")]
 public class OverworldCameraSettings : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Serializable]
+	[Token(Token = "0x20009F7")]
+	public class CameraData
+	{
+		[Token(Token = "0x40036E6")]
+		[FieldOffset(Offset = "0x10")]
+		public float orthographicSize;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40036E7")]
+		[FieldOffset(Offset = "0x14")]
+		public float sideTrackPadding;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40036E8")]
+		[FieldOffset(Offset = "0x18")]
+		public float upperTrackPadding;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40036E9")]
+		[FieldOffset(Offset = "0x1C")]
+		public float lowerTrackPadding;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40036EA")]
+		[FieldOffset(Offset = "0x20")]
+		public bool lockVerticalAxis;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40036EB")]
+		[FieldOffset(Offset = "0x21")]
+		public bool lockHorizontalAxis;
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x40036EC")]
+		[FieldOffset(Offset = "0x24")]
+		public Vector2 offset;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x40036ED")]
+		[FieldOffset(Offset = "0x2C")]
+		public float tweenTime;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x40036EE")]
+		[FieldOffset(Offset = "0x30")]
+		public float tweenTimtweenTime;
 
-	4. This script is unnecessary.
+		[Token(Token = "0x40036EF")]
+		[FieldOffset(Offset = "0x34")]
+		public float lookAhead;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6002F37")]
+		[Address(RVA = "0x180EF5C", Offset = "0x180EF5C", VA = "0x180EF5C")]
+		public CameraData()
+		{
+		}
+	}
 
-	5. Script Content Level 0
+	[Token(Token = "0x40036E3")]
+	[FieldOffset(Offset = "0x18")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x50114", Offset = "0x50114")]
+	private Action<OverworldCameraSettings, float> m_OnSettingsUpdated;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x40036E4")]
+	[FieldOffset(Offset = "0x20")]
+	[AttributeAttribute(Name = "FormerlySerializedAsAttribute", RVA = "0x50124", Offset = "0x50124")]
+	public CameraData IOSData;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x40036E5")]
+	[FieldOffset(Offset = "0x28")]
+	[AttributeAttribute(Name = "FormerlySerializedAsAttribute", RVA = "0x5015C", Offset = "0x5015C")]
+	public CameraData PCTVData;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x1400005B")]
+	public event Action<OverworldCameraSettings, float> OnSettingsUpdated
+	{
+		[Token(Token = "0x6002F33")]
+		[Address(RVA = "0x15AF0D4", Offset = "0x15AF0D4", VA = "0x15AF0D4")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x68D58", Offset = "0x68D58")]
+		add
+		{
+		}
+		[Token(Token = "0x6002F34")]
+		[Address(RVA = "0x15B02D8", Offset = "0x15B02D8", VA = "0x15B02D8")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x68D68", Offset = "0x68D68")]
+		remove
+		{
+		}
+	}
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x6002F35")]
+	[Address(RVA = "0x15AE5EC", Offset = "0x15AE5EC", VA = "0x15AE5EC")]
+	public void SetValue(float pct)
+	{
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x6002F36")]
+	[Address(RVA = "0x15B037C", Offset = "0x15B037C", VA = "0x15B037C")]
+	public OverworldCameraSettings()
+	{
+	}
 }

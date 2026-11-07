@@ -1,66 +1,296 @@
-using UnityEngine;
+using System;
+using Il2CppDummyDll;
 
 namespace UnityEngine.UI
 {
-	public class FontData : MonoBehaviour
+	[Serializable]
+	[Token(Token = "0x2000016")]
+	public class FontData : ISerializationCallbackReceiver
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4000048")]
+		[FieldOffset(Offset = "0x10")]
+		[AttributeAttribute(Name = "FormerlySerializedAsAttribute", RVA = "0x1F7108", Offset = "0x1F7108")]
+		[SerializeField]
+		private Font m_Font;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000049")]
+		[FieldOffset(Offset = "0x18")]
+		[AttributeAttribute(Name = "FormerlySerializedAsAttribute", RVA = "0x1F7154", Offset = "0x1F7154")]
+		[SerializeField]
+		private int m_FontSize;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x400004A")]
+		[FieldOffset(Offset = "0x1C")]
+		[AttributeAttribute(Name = "FormerlySerializedAsAttribute", RVA = "0x1F71A0", Offset = "0x1F71A0")]
+		[SerializeField]
+		private FontStyle m_FontStyle;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x400004B")]
+		[FieldOffset(Offset = "0x20")]
+		[SerializeField]
+		private bool m_BestFit;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x400004C")]
+		[FieldOffset(Offset = "0x24")]
+		[SerializeField]
+		private int m_MinSize;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x400004D")]
+		[FieldOffset(Offset = "0x28")]
+		[SerializeField]
+		private int m_MaxSize;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x400004E")]
+		[FieldOffset(Offset = "0x2C")]
+		[AttributeAttribute(Name = "FormerlySerializedAsAttribute", RVA = "0x1F721C", Offset = "0x1F721C")]
+		[SerializeField]
+		private TextAnchor m_Alignment;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x400004F")]
+		[FieldOffset(Offset = "0x30")]
+		[SerializeField]
+		private bool m_AlignByGeometry;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4000050")]
+		[FieldOffset(Offset = "0x31")]
+		[AttributeAttribute(Name = "FormerlySerializedAsAttribute", RVA = "0x1F7278", Offset = "0x1F7278")]
+		[SerializeField]
+		private bool m_RichText;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4000051")]
+		[FieldOffset(Offset = "0x34")]
+		[SerializeField]
+		private HorizontalWrapMode m_HorizontalOverflow;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4000052")]
+		[FieldOffset(Offset = "0x38")]
+		[SerializeField]
+		private VerticalWrapMode m_VerticalOverflow;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4000053")]
+		[FieldOffset(Offset = "0x3C")]
+		[SerializeField]
+		private float m_LineSpacing;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x17000026")]
+		public static FontData defaultFontData
+		{
+			[Token(Token = "0x600009E")]
+			[Address(RVA = "0x2C045C4", Offset = "0x2C045C4", VA = "0x2C045C4")]
+			get
+			{
+				return null;
+			}
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x17000027")]
+		public Font font
+		{
+			[Token(Token = "0x600009F")]
+			[Address(RVA = "0x2C0465C", Offset = "0x2C0465C", VA = "0x2C0465C")]
+			get
+			{
+				return null;
+			}
+			[Token(Token = "0x60000A0")]
+			[Address(RVA = "0x2C04664", Offset = "0x2C04664", VA = "0x2C04664")]
+			set
+			{
+			}
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x17000028")]
+		public int fontSize
+		{
+			[Token(Token = "0x60000A1")]
+			[Address(RVA = "0x2C0466C", Offset = "0x2C0466C", VA = "0x2C0466C")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x60000A2")]
+			[Address(RVA = "0x2C04674", Offset = "0x2C04674", VA = "0x2C04674")]
+			set
+			{
+			}
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x17000029")]
+		public FontStyle fontStyle
+		{
+			[Token(Token = "0x60000A3")]
+			[Address(RVA = "0x2C0467C", Offset = "0x2C0467C", VA = "0x2C0467C")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x60000A4")]
+			[Address(RVA = "0x2C04684", Offset = "0x2C04684", VA = "0x2C04684")]
+			set
+			{
+			}
+		}
 
-		*/
+		[Token(Token = "0x1700002A")]
+		public bool bestFit
+		{
+			[Token(Token = "0x60000A5")]
+			[Address(RVA = "0x2C0468C", Offset = "0x2C0468C", VA = "0x2C0468C")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x60000A6")]
+			[Address(RVA = "0x2C04694", Offset = "0x2C04694", VA = "0x2C04694")]
+			set
+			{
+			}
+		}
+
+		[Token(Token = "0x1700002B")]
+		public int minSize
+		{
+			[Token(Token = "0x60000A7")]
+			[Address(RVA = "0x2C0469C", Offset = "0x2C0469C", VA = "0x2C0469C")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x60000A8")]
+			[Address(RVA = "0x2C046A4", Offset = "0x2C046A4", VA = "0x2C046A4")]
+			set
+			{
+			}
+		}
+
+		[Token(Token = "0x1700002C")]
+		public int maxSize
+		{
+			[Token(Token = "0x60000A9")]
+			[Address(RVA = "0x2C046AC", Offset = "0x2C046AC", VA = "0x2C046AC")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x60000AA")]
+			[Address(RVA = "0x2C046B4", Offset = "0x2C046B4", VA = "0x2C046B4")]
+			set
+			{
+			}
+		}
+
+		[Token(Token = "0x1700002D")]
+		public TextAnchor alignment
+		{
+			[Token(Token = "0x60000AB")]
+			[Address(RVA = "0x2C046BC", Offset = "0x2C046BC", VA = "0x2C046BC")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x60000AC")]
+			[Address(RVA = "0x2C046C4", Offset = "0x2C046C4", VA = "0x2C046C4")]
+			set
+			{
+			}
+		}
+
+		[Token(Token = "0x1700002E")]
+		public bool alignByGeometry
+		{
+			[Token(Token = "0x60000AD")]
+			[Address(RVA = "0x2C046CC", Offset = "0x2C046CC", VA = "0x2C046CC")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x60000AE")]
+			[Address(RVA = "0x2C046D4", Offset = "0x2C046D4", VA = "0x2C046D4")]
+			set
+			{
+			}
+		}
+
+		[Token(Token = "0x1700002F")]
+		public bool richText
+		{
+			[Token(Token = "0x60000AF")]
+			[Address(RVA = "0x2C046DC", Offset = "0x2C046DC", VA = "0x2C046DC")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x60000B0")]
+			[Address(RVA = "0x2C046E4", Offset = "0x2C046E4", VA = "0x2C046E4")]
+			set
+			{
+			}
+		}
+
+		[Token(Token = "0x17000030")]
+		public HorizontalWrapMode horizontalOverflow
+		{
+			[Token(Token = "0x60000B1")]
+			[Address(RVA = "0x2C046EC", Offset = "0x2C046EC", VA = "0x2C046EC")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x60000B2")]
+			[Address(RVA = "0x2C046F4", Offset = "0x2C046F4", VA = "0x2C046F4")]
+			set
+			{
+			}
+		}
+
+		[Token(Token = "0x17000031")]
+		public VerticalWrapMode verticalOverflow
+		{
+			[Token(Token = "0x60000B3")]
+			[Address(RVA = "0x2C046FC", Offset = "0x2C046FC", VA = "0x2C046FC")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x60000B4")]
+			[Address(RVA = "0x2C04704", Offset = "0x2C04704", VA = "0x2C04704")]
+			set
+			{
+			}
+		}
+
+		[Token(Token = "0x17000032")]
+		public float lineSpacing
+		{
+			[Token(Token = "0x60000B5")]
+			[Address(RVA = "0x2C0470C", Offset = "0x2C0470C", VA = "0x2C0470C")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x60000B6")]
+			[Address(RVA = "0x2C04714", Offset = "0x2C04714", VA = "0x2C04714")]
+			set
+			{
+			}
+		}
+
+		[Token(Token = "0x60000B7")]
+		[Address(RVA = "0x2C0471C", Offset = "0x2C0471C", VA = "0x2C0471C", Slot = "4")]
+		private void UnityEngine_002EISerializationCallbackReceiver_002EOnBeforeSerialize()
+		{
+		}
+
+		[Token(Token = "0x60000B8")]
+		[Address(RVA = "0x2C04720", Offset = "0x2C04720", VA = "0x2C04720", Slot = "5")]
+		private void UnityEngine_002EISerializationCallbackReceiver_002EOnAfterDeserialize()
+		{
+		}
+
+		[Token(Token = "0x60000B9")]
+		[Address(RVA = "0x2C04654", Offset = "0x2C04654", VA = "0x2C04654")]
+		public FontData()
+		{
+		}
 	}
 }

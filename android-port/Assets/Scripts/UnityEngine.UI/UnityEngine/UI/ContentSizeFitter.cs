@@ -1,66 +1,133 @@
-using UnityEngine;
+using System;
+using Il2CppDummyDll;
+using UnityEngine.EventSystems;
 
 namespace UnityEngine.UI
 {
-	public class ContentSizeFitter : MonoBehaviour
+	[Token(Token = "0x2000032")]
+	[AttributeAttribute(Name = "RequireComponent", RVA = "0x1F6414", Offset = "0x1F6414")]
+	[ExecuteAlways]
+	public class ContentSizeFitter : UIBehaviour, ILayoutSelfController, ILayoutController
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x2000033")]
+		public enum FitMode
+		{
+			[Token(Token = "0x4000126")]
+			Unconstrained = 0,
+			[Token(Token = "0x4000127")]
+			MinSize = 1,
+			[Token(Token = "0x4000128")]
+			PreferredSize = 2
+		}
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000121")]
+		[FieldOffset(Offset = "0x18")]
+		[SerializeField]
+		protected FitMode m_HorizontalFit;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000122")]
+		[FieldOffset(Offset = "0x1C")]
+		[SerializeField]
+		protected FitMode m_VerticalFit;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[NonSerialized]
+		[Token(Token = "0x4000123")]
+		[FieldOffset(Offset = "0x20")]
+		private RectTransform m_Rect;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4000124")]
+		[FieldOffset(Offset = "0x28")]
+		private DrivenRectTransformTracker m_Tracker;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x170000A1")]
+		public FitMode horizontalFit
+		{
+			[Token(Token = "0x6000245")]
+			[Address(RVA = "0x2BFD070", Offset = "0x2BFD070", VA = "0x2BFD070")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000246")]
+			[Address(RVA = "0x2BFD078", Offset = "0x2BFD078", VA = "0x2BFD078")]
+			set
+			{
+			}
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x170000A2")]
+		public FitMode verticalFit
+		{
+			[Token(Token = "0x6000247")]
+			[Address(RVA = "0x2BFD1EC", Offset = "0x2BFD1EC", VA = "0x2BFD1EC")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000248")]
+			[Address(RVA = "0x2BFD1F4", Offset = "0x2BFD1F4", VA = "0x2BFD1F4")]
+			set
+			{
+			}
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x170000A3")]
+		private RectTransform rectTransform
+		{
+			[Token(Token = "0x6000249")]
+			[Address(RVA = "0x2BFD2D4", Offset = "0x2BFD2D4", VA = "0x2BFD2D4")]
+			get
+			{
+				return null;
+			}
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x600024A")]
+		[Address(RVA = "0x2BFD380", Offset = "0x2BFD380", VA = "0x2BFD380")]
+		protected ContentSizeFitter()
+		{
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x600024B")]
+		[Address(RVA = "0x2BFD388", Offset = "0x2BFD388", VA = "0x2BFD388", Slot = "5")]
+		protected override void OnEnable()
+		{
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x600024C")]
+		[Address(RVA = "0x2BFD424", Offset = "0x2BFD424", VA = "0x2BFD424", Slot = "7")]
+		protected override void OnDisable()
+		{
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x600024D")]
+		[Address(RVA = "0x2BFD4B8", Offset = "0x2BFD4B8", VA = "0x2BFD4B8", Slot = "10")]
+		protected override void OnRectTransformDimensionsChange()
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x600024E")]
+		[Address(RVA = "0x2BFD54C", Offset = "0x2BFD54C", VA = "0x2BFD54C")]
+		private void HandleSelfFittingAlongAxis(int axis)
+		{
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x600024F")]
+		[Address(RVA = "0x2BFD618", Offset = "0x2BFD618", VA = "0x2BFD618", Slot = "19")]
+		public virtual void SetLayoutHorizontal()
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x6000250")]
+		[Address(RVA = "0x2BFD648", Offset = "0x2BFD648", VA = "0x2BFD648", Slot = "20")]
+		public virtual void SetLayoutVertical()
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x6000251")]
+		[Address(RVA = "0x2BFD158", Offset = "0x2BFD158", VA = "0x2BFD158")]
+		protected void SetDirty()
+		{
+		}
 	}
 }

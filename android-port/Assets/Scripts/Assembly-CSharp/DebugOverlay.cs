@@ -1,63 +1,154 @@
+using System.Text;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class DebugOverlay : MonoBehaviour
+[Token(Token = "0x2000591")]
+[Attribute(Name = "RequireComponent", RVA = "0x4067C", Offset = "0x4067C")]
+[Attribute(Name = "RequireComponent", RVA = "0x4067C", Offset = "0x4067C")]
+internal sealed class DebugOverlay : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4001C6D")]
+	[FieldOffset(Offset = "0x0")]
+	private static DebugOverlay s_Instance;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4001C6E")]
+	[FieldOffset(Offset = "0x18")]
+	private Canvas m_Canvas;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4001C6F")]
+	[FieldOffset(Offset = "0x20")]
+	private CanvasScaler m_CanvasScaler;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4001C70")]
+	[FieldOffset(Offset = "0x28")]
+	private Text m_Text;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4001C71")]
+	[FieldOffset(Offset = "0x30")]
+	private RectTransform m_TextTransform;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4001C72")]
+	[FieldOffset(Offset = "0x38")]
+	private StringBuilder m_Builder;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4001C73")]
+	[FieldOffset(Offset = "0x40")]
+	private string m_Version;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4001C74")]
+	[FieldOffset(Offset = "0x48")]
+	private LevelData m_LevelData;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4001C75")]
+	[FieldOffset(Offset = "0x50")]
+	private string m_ChallengeID;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4001C76")]
+	[FieldOffset(Offset = "0x58")]
+	private string m_Language;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4001C77")]
+	[FieldOffset(Offset = "0x60")]
+	private int m_SaveSlot;
 
-	5. Script Content Level 0
+	[Token(Token = "0x170002C3")]
+	public static DebugOverlay Instance
+	{
+		[Token(Token = "0x6001956")]
+		[Address(RVA = "0x18D588C", Offset = "0x18D588C", VA = "0x18D588C")]
+		get
+		{
+			return null;
+		}
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x170002C4")]
+	public Canvas canvas
+	{
+		[Token(Token = "0x6001957")]
+		[Address(RVA = "0x18D5A98", Offset = "0x18D5A98", VA = "0x18D5A98")]
+		get
+		{
+			return null;
+		}
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x170002C5")]
+	public CanvasScaler canvasScaler
+	{
+		[Token(Token = "0x6001958")]
+		[Address(RVA = "0x18D5B44", Offset = "0x18D5B44", VA = "0x18D5B44")]
+		get
+		{
+			return null;
+		}
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x6001959")]
+	[Address(RVA = "0x18D5BF0", Offset = "0x18D5BF0", VA = "0x18D5BF0")]
+	public void Initialize()
+	{
+	}
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x600195A")]
+	[Address(RVA = "0x18D5F98", Offset = "0x18D5F98", VA = "0x18D5F98")]
+	private void InitializeCanvas()
+	{
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x600195B")]
+	[Address(RVA = "0x18D6008", Offset = "0x18D6008", VA = "0x18D6008")]
+	private void InitializeText()
+	{
+	}
 
-	*/
+	[Token(Token = "0x600195C")]
+	[Address(RVA = "0x18D62D4", Offset = "0x18D62D4", VA = "0x18D62D4")]
+	public void UpdateText()
+	{
+	}
+
+	[Token(Token = "0x600195D")]
+	[Address(RVA = "0x18D69F8", Offset = "0x18D69F8", VA = "0x18D69F8")]
+	private void OnLevelLoaded(LevelData levelData)
+	{
+	}
+
+	[Token(Token = "0x600195E")]
+	[Address(RVA = "0x18D6A00", Offset = "0x18D6A00", VA = "0x18D6A00")]
+	private void OnChallengeSelected(string challengeId)
+	{
+	}
+
+	[Token(Token = "0x600195F")]
+	[Address(RVA = "0x18D6A08", Offset = "0x18D6A08", VA = "0x18D6A08")]
+	private void OnLevelWillUnload()
+	{
+	}
+
+	[Token(Token = "0x6001960")]
+	[Address(RVA = "0x18D6A6C", Offset = "0x18D6A6C", VA = "0x18D6A6C")]
+	private void OnSaveSlotChanged()
+	{
+	}
+
+	[Token(Token = "0x6001961")]
+	[Address(RVA = "0x18D6B1C", Offset = "0x18D6B1C", VA = "0x18D6B1C")]
+	private void OnLanguageChanged(string value)
+	{
+	}
+
+	[Token(Token = "0x6001962")]
+	[Address(RVA = "0x18D6C78", Offset = "0x18D6C78", VA = "0x18D6C78")]
+	private void OnMusicStateChanged(uint state)
+	{
+	}
+
+	[Token(Token = "0x6001963")]
+	[Address(RVA = "0x18D6D30", Offset = "0x18D6D30", VA = "0x18D6D30")]
+	public DebugOverlay()
+	{
+	}
 }

@@ -1,63 +1,153 @@
+using Audio;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
-public class MoonLanderShooter : MonoBehaviour
+[Token(Token = "0x20007E6")]
+public class MoonLanderShooter : ShooterBase
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4002A44")]
+	[FieldOffset(Offset = "0x20")]
+	[SerializeField]
+	private float thrust;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4002A45")]
+	[FieldOffset(Offset = "0x24")]
+	[SerializeField]
+	private float horizontalThrustRatio;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4002A46")]
+	[FieldOffset(Offset = "0x28")]
+	[SerializeField]
+	private float engineLocation;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4002A47")]
+	[FieldOffset(Offset = "0x30")]
+	[SerializeField]
+	private Rigidbody2D rigidbody2D;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4002A48")]
+	[FieldOffset(Offset = "0x38")]
+	[SerializeField]
+	private AudioSource leftAudioSource;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4002A49")]
+	[FieldOffset(Offset = "0x40")]
+	[SerializeField]
+	private AudioSource rightAudioSource;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4002A4A")]
+	[FieldOffset(Offset = "0x48")]
+	[SerializeField]
+	private Transform leftFlameTransform;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4002A4B")]
+	[FieldOffset(Offset = "0x50")]
+	[SerializeField]
+	private Transform rightFlameTransform;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4002A4C")]
+	[FieldOffset(Offset = "0x58")]
+	[SerializeField]
+	private AnimationCurve flameScaleCurve;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4002A4D")]
+	[FieldOffset(Offset = "0x60")]
+	[SerializeField]
+	private RandomAudioClips crashClips;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4002A4E")]
+	[FieldOffset(Offset = "0x68")]
+	[SerializeField]
+	private Transform feetRoot;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4002A4F")]
+	[FieldOffset(Offset = "0x70")]
+	private float left;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4002A50")]
+	[FieldOffset(Offset = "0x74")]
+	private float right;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4002A51")]
+	[FieldOffset(Offset = "0x78")]
+	private float left_target;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4002A52")]
+	[FieldOffset(Offset = "0x7C")]
+	private float right_target;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4002A53")]
+	[FieldOffset(Offset = "0x80")]
+	private float thrustChangeUp;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x4002A54")]
+	[FieldOffset(Offset = "0x84")]
+	private float thrustChangeDown;
 
-	*/
+	[Token(Token = "0x4002A55")]
+	[FieldOffset(Offset = "0x88")]
+	private float frameRotationRange;
+
+	[Token(Token = "0x4002A56")]
+	[FieldOffset(Offset = "0x8C")]
+	private float thrustDuration;
+
+	[Token(Token = "0x4002A57")]
+	[FieldOffset(Offset = "0x90")]
+	private float timer;
+
+	[Token(Token = "0x4002A58")]
+	[FieldOffset(Offset = "0x94")]
+	private float minThrust;
+
+	[Token(Token = "0x4002A59")]
+	[FieldOffset(Offset = "0x98")]
+	private float explosionForce;
+
+	[Token(Token = "0x4002A5A")]
+	[FieldOffset(Offset = "0xA0")]
+	private Level level;
+
+	[Token(Token = "0x600244C")]
+	[Address(RVA = "0x156D210", Offset = "0x156D210", VA = "0x156D210")]
+	private void Awake()
+	{
+	}
+
+	[Token(Token = "0x600244D")]
+	[Address(RVA = "0x156D278", Offset = "0x156D278", VA = "0x156D278", Slot = "7")]
+	public override void OnShoot(Vector3 boost)
+	{
+	}
+
+	[Token(Token = "0x600244E")]
+	[Address(RVA = "0x156D408", Offset = "0x156D408", VA = "0x156D408")]
+	public void FixedUpdate()
+	{
+	}
+
+	[Token(Token = "0x600244F")]
+	[Address(RVA = "0x156D734", Offset = "0x156D734", VA = "0x156D734")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x6002450")]
+	[Address(RVA = "0x156D848", Offset = "0x156D848", VA = "0x156D848")]
+	private void OnCollisionEnter2D(Collision2D collision)
+	{
+	}
+
+	[Token(Token = "0x6002451")]
+	[Address(RVA = "0x156DA1C", Offset = "0x156DA1C", VA = "0x156DA1C")]
+	private void Crash()
+	{
+	}
+
+	[Token(Token = "0x6002452")]
+	[Address(RVA = "0x156DA88", Offset = "0x156DA88", VA = "0x156DA88")]
+	public MoonLanderShooter()
+	{
+	}
 }

@@ -1,63 +1,77 @@
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x20006F6")]
 public class FPGHideCursor : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x400248B")]
+	[FieldOffset(Offset = "0x18")]
+	public bool ShowWhenAiming;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x400248C")]
+	[FieldOffset(Offset = "0x19")]
+	private bool cursorState;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x400248D")]
+	[FieldOffset(Offset = "0x20")]
+	private GolfBallController controller;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x400248E")]
+	[FieldOffset(Offset = "0x28")]
+	private bool origState;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x600201D")]
+	[Address(RVA = "0x1459450", Offset = "0x1459450", VA = "0x1459450")]
+	private void Start()
+	{
+	}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x600201E")]
+	[Address(RVA = "0x1459704", Offset = "0x1459704", VA = "0x1459704")]
+	private void OnDestroy()
+	{
+	}
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x600201F")]
+	[Address(RVA = "0x1459710", Offset = "0x1459710", VA = "0x1459710")]
+	private void Instance_OnComplete(Level.CompletedState obj)
+	{
+	}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x6002020")]
+	[Address(RVA = "0x1459744", Offset = "0x1459744", VA = "0x1459744")]
+	private void ControllerOnAimUpdate(Vector3 vector3, bool b)
+	{
+	}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x6002021")]
+	[Address(RVA = "0x14597B8", Offset = "0x14597B8", VA = "0x14597B8")]
+	private void ControllerOnAimStart()
+	{
+	}
 
-	4. This script is unnecessary.
+	[Token(Token = "0x6002022")]
+	[Address(RVA = "0x14597CC", Offset = "0x14597CC", VA = "0x14597CC")]
+	private void ControllerOnCancel()
+	{
+	}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x6002023")]
+	[Address(RVA = "0x14597D4", Offset = "0x14597D4", VA = "0x14597D4")]
+	private void ControllerOnShoot(Vector3 vector3)
+	{
+	}
 
-	5. Script Content Level 0
+	[Token(Token = "0x6002024")]
+	[Address(RVA = "0x14597DC", Offset = "0x14597DC", VA = "0x14597DC")]
+	private void Update()
+	{
+	}
 
-		AssetRipper was set to not load any script information.
-
-	6. Cpp2IL failed to decompile Il2Cpp data
-
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x6002025")]
+	[Address(RVA = "0x14598A8", Offset = "0x14598A8", VA = "0x14598A8")]
+	public FPGHideCursor()
+	{
+	}
 }

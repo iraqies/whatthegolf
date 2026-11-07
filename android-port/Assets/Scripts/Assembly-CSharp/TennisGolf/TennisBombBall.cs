@@ -1,66 +1,58 @@
+using Audio;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace TennisGolf
 {
-	public class TennisBombBall : MonoBehaviour
+	[Token(Token = "0x200109F")]
+	public class TennisBombBall : TennisBall
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4005779")]
+		[FieldOffset(Offset = "0xB0")]
+		public GameObject explosionPrefab;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x400577A")]
+		[FieldOffset(Offset = "0xB8")]
+		private ParticleSystem _explosion;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x400577B")]
+		[FieldOffset(Offset = "0xC0")]
+		public TennisOpponent tennisOpponent;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x400577C")]
+		[FieldOffset(Offset = "0xC8")]
+		public TennisPlayer tennisPlayer;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x400577D")]
+		[FieldOffset(Offset = "0xD0")]
+		public AudioEventAsset explosionSFX;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x400577E")]
+		[FieldOffset(Offset = "0xD8")]
+		public float explosionRange;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6004A81")]
+		[Address(RVA = "0x16F9088", Offset = "0x16F9088", VA = "0x16F9088")]
+		public void Start()
+		{
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6004A82")]
+		[Address(RVA = "0x16F9140", Offset = "0x16F9140", VA = "0x16F9140", Slot = "4")]
+		public override void CheckCollision(string collidingTag, GameObject hit)
+		{
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x6004A83")]
+		[Address(RVA = "0x16F92F8", Offset = "0x16F92F8", VA = "0x16F92F8")]
+		public void CheckPlayerDistance(Vector3 explosionPosition)
+		{
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
-
-		5. Script Content Level 0
-
-			AssetRipper was set to not load any script information.
-
-		6. Cpp2IL failed to decompile Il2Cpp data
-
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x6004A84")]
+		[Address(RVA = "0x16F93D4", Offset = "0x16F93D4", VA = "0x16F93D4")]
+		public TennisBombBall()
+		{
+		}
 	}
 }

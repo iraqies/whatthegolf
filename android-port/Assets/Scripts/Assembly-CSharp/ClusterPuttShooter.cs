@@ -1,63 +1,160 @@
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
-public class ClusterPuttShooter : MonoBehaviour
+[Token(Token = "0x2000714")]
+public class ClusterPuttShooter : GolfBallShooterBase
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4002543")]
+	[FieldOffset(Offset = "0x60")]
+	public float Force;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4002544")]
+	[FieldOffset(Offset = "0x64")]
+	public float Pitch;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4002545")]
+	[FieldOffset(Offset = "0x68")]
+	public Vector2 RandomRange;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4002546")]
+	[FieldOffset(Offset = "0x70")]
+	public float InheritVelocity;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4002547")]
+	[FieldOffset(Offset = "0x78")]
+	public Rigidbody[] rigidbodies;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4002548")]
+	[FieldOffset(Offset = "0x80")]
+	public Rigidbody[] blacklist;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4002549")]
+	[FieldOffset(Offset = "0x88")]
+	public GameObject Tracker;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x400254A")]
+	[FieldOffset(Offset = "0x90")]
+	public float MaxAutoAimDistance;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x400254B")]
+	[FieldOffset(Offset = "0x94")]
+	public float SphereCastRadius;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x400254C")]
+	[FieldOffset(Offset = "0x98")]
+	private Collider onCar;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x400254D")]
+	[FieldOffset(Offset = "0xA0")]
+	private BlockIfNotNearStuff blocker;
 
-	5. Script Content Level 0
+	[Token(Token = "0x400254E")]
+	[FieldOffset(Offset = "0xA8")]
+	private float delay;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x400254F")]
+	[FieldOffset(Offset = "0xAC")]
+	private float trackerTimer;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4002550")]
+	[FieldOffset(Offset = "0xB0")]
+	private Collider lastTrackerHit;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4002551")]
+	[FieldOffset(Offset = "0xB8")]
+	private string carLayer;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x60020AD")]
+	[Address(RVA = "0x18A5B00", Offset = "0x18A5B00", VA = "0x18A5B00", Slot = "11")]
+	protected override void Awake()
+	{
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x60020AE")]
+	[Address(RVA = "0x18A5BF4", Offset = "0x18A5BF4", VA = "0x18A5BF4")]
+	private void Update()
+	{
+	}
 
-	*/
+	[Token(Token = "0x60020AF")]
+	[Address(RVA = "0x18A5C6C", Offset = "0x18A5C6C", VA = "0x18A5C6C", Slot = "6")]
+	public override void OnAimUpdate(Vector3 boost, bool onlyAimArrow)
+	{
+	}
+
+	[Token(Token = "0x60020B0")]
+	[Address(RVA = "0x18A616C", Offset = "0x18A616C", VA = "0x18A616C", Slot = "8")]
+	public override void OnCancel()
+	{
+	}
+
+	[Token(Token = "0x60020B1")]
+	[Address(RVA = "0x18A61A4", Offset = "0x18A61A4", VA = "0x18A61A4", Slot = "7")]
+	public override void OnShoot(Vector3 boost)
+	{
+	}
+
+	[Token(Token = "0x60020B2")]
+	[Address(RVA = "0x18A6994", Offset = "0x18A6994", VA = "0x18A6994")]
+	private void OnCollisionEnter(Collision other)
+	{
+	}
+
+	[Token(Token = "0x60020B3")]
+	[Address(RVA = "0x18A6A70", Offset = "0x18A6A70", VA = "0x18A6A70")]
+	private void OnTriggerEnter(Collider other)
+	{
+	}
+
+	[Token(Token = "0x60020B4")]
+	[Address(RVA = "0x18A6B20", Offset = "0x18A6B20", VA = "0x18A6B20")]
+	private void OnTriggerExit(Collider other)
+	{
+	}
+
+	[Token(Token = "0x60020B5")]
+	[Address(RVA = "0x18A681C", Offset = "0x18A681C", VA = "0x18A681C")]
+	public static Vector3 CalculateVelocityForTarget(Vector3 startPosition, Vector3 target, float initialAngle)
+	{
+		return default;
+	}
+
+	[Token(Token = "0x60020B6")]
+	[Address(RVA = "0x18A6B78", Offset = "0x18A6B78", VA = "0x18A6B78")]
+	public ClusterPuttShooter()
+	{
+	}
+
+	[Token(Token = "0x60020B7")]
+	[Address(RVA = "0x18A6BF8", Offset = "0x18A6BF8", VA = "0x18A6BF8")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x65A20", Offset = "0x65A20")]
+	private bool _003COnAimUpdate_003Eb__17_0(RaycastHit h)
+	{
+		return default;
+	}
+
+	[Token(Token = "0x60020B8")]
+	[Address(RVA = "0x18A6C88", Offset = "0x18A6C88", VA = "0x18A6C88")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x65A30", Offset = "0x65A30")]
+	private float _003COnAimUpdate_003Eb__17_1(RaycastHit c)
+	{
+		return default;
+	}
+
+	[Token(Token = "0x60020B9")]
+	[Address(RVA = "0x18A6D0C", Offset = "0x18A6D0C", VA = "0x18A6D0C")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x65A40", Offset = "0x65A40")]
+	private bool _003COnShoot_003Eb__19_0(RaycastHit h)
+	{
+		return default;
+	}
+
+	[Token(Token = "0x60020BA")]
+	[Address(RVA = "0x18A6D9C", Offset = "0x18A6D9C", VA = "0x18A6D9C")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x65A50", Offset = "0x65A50")]
+	private float _003COnShoot_003Eb__19_1(RaycastHit c)
+	{
+		return default;
+	}
 }

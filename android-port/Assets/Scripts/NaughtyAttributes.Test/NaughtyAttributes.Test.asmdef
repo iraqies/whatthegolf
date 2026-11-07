@@ -1,5 +1,7 @@
 {
   "name": "NaughtyAttributes.Test",
-  "references": [],
+  "references": [
+    "Il2CppDummyDll"
+  ],
   "allowUnsafeCode": true
 }

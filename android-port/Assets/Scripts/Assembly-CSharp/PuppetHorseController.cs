@@ -1,63 +1,104 @@
+using Audio;
+using Core;
+using Il2CppDummyDll;
+using RootMotion.Demos;
 using UnityEngine;
 
-public class PuppetHorseController : MonoBehaviour
+[Token(Token = "0x2000229")]
+public class PuppetHorseController : UserControlThirdPerson
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4000AFA")]
+	[FieldOffset(Offset = "0x48")]
+	public GolfBallController Controller;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4000AFB")]
+	[FieldOffset(Offset = "0x50")]
+	public CharacterPuppet Puppet;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4000AFC")]
+	[FieldOffset(Offset = "0x58")]
+	public AnimationCurve AnimSpeedMultiplierCurve;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4000AFD")]
+	[FieldOffset(Offset = "0x60")]
+	public CharacterAnimationSimple animController;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4000AFE")]
+	[FieldOffset(Offset = "0x68")]
+	[SerializeField]
+	public float pitch;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4000AFF")]
+	[FieldOffset(Offset = "0x70")]
+	[SerializeField]
+	public AnimationCurve powerToPitchWeightCurve;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4000B00")]
+	[FieldOffset(Offset = "0x78")]
+	[SerializeField]
+	public float spin;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4000B01")]
+	[FieldOffset(Offset = "0x7C")]
+	[SerializeField]
+	public float jumpMinForce;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4000B02")]
+	[FieldOffset(Offset = "0x80")]
+	[SerializeField]
+	public float jumpMaxForce;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4000B03")]
+	[FieldOffset(Offset = "0x84")]
+	private float jumpStartTime;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4000B04")]
+	[FieldOffset(Offset = "0x88")]
+	private Rigidbody rb;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4000B05")]
+	[FieldOffset(Offset = "0x90")]
+	public ClipSettingsCollection ShootClip;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4000B06")]
+	[FieldOffset(Offset = "0x98")]
+	private CharacterAnimationThirdPerson characterAnimation;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4000B07")]
+	[FieldOffset(Offset = "0xA0")]
+	private Vector3 aimDir;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4000B08")]
+	[FieldOffset(Offset = "0xAC")]
+	private Vector3 moveDir;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x60009BD")]
+	[Address(RVA = "0x162BB88", Offset = "0x162BB88", VA = "0x162BB88", Slot = "4")]
+	protected override void Start()
+	{
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x60009BE")]
+	[Address(RVA = "0x162BD38", Offset = "0x162BD38", VA = "0x162BD38")]
+	public void OnShoot(Vector3 boost)
+	{
+	}
 
-	*/
+	[Token(Token = "0x60009BF")]
+	[Address(RVA = "0x162BE00", Offset = "0x162BE00", VA = "0x162BE00")]
+	public void OnAimUpdate(Vector3 boost, bool onlyAimArrow)
+	{
+	}
+
+	[Token(Token = "0x60009C0")]
+	[Address(RVA = "0x162BE3C", Offset = "0x162BE3C", VA = "0x162BE3C", Slot = "5")]
+	protected override void Update()
+	{
+	}
+
+	[Token(Token = "0x60009C1")]
+	[Address(RVA = "0x162C0F0", Offset = "0x162C0F0", VA = "0x162C0F0")]
+	public PuppetHorseController()
+	{
+	}
 }

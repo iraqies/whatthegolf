@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: NoBirds
   m_EditorClassIdentifier:
   Icons:
-  - {fileID: 21300000, guid: 2f3364a871a76b1448bd0d506b11e9f4, type: 2}
+  - {fileID: 21300000, guid: 87c4acc47655fcd4fa719d637228832d, type: 2}

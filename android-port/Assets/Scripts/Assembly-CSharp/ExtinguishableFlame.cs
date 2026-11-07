@@ -1,63 +1,127 @@
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.Events;
 
+[Token(Token = "0x2000BE6")]
 public class ExtinguishableFlame : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x2000BE7")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x43E78", Offset = "0x43E78")]
+	private sealed class _003C_003Ec__DisplayClass13_0
+	{
+		[Token(Token = "0x40041F6")]
+		[FieldOffset(Offset = "0x10")]
+		public ExtinguishableFlame _003C_003E4__this;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40041F7")]
+		[FieldOffset(Offset = "0x18")]
+		public Vector3 scaleFrom;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40041F8")]
+		[FieldOffset(Offset = "0x24")]
+		public Vector3 scaleTo;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x6003912")]
+		[Address(RVA = "0x17A1B48", Offset = "0x17A1B48", VA = "0x17A1B48")]
+		public _003C_003Ec__DisplayClass13_0()
+		{
+		}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x6003913")]
+		[Address(RVA = "0x17A1B50", Offset = "0x17A1B50", VA = "0x17A1B50")]
+		internal void _003CTakeDamage_003Eb__0(float v)
+		{
+		}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x6003914")]
+		[Address(RVA = "0x17A1C00", Offset = "0x17A1C00", VA = "0x17A1C00")]
+		internal void _003CTakeDamage_003Eb__1()
+		{
+		}
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6003915")]
+		[Address(RVA = "0x17A1C28", Offset = "0x17A1C28", VA = "0x17A1C28")]
+		internal void _003CTakeDamage_003Eb__2(float v)
+		{
+		}
+	}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x40041ED")]
+	[FieldOffset(Offset = "0x18")]
+	public Transform flameTransform;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x40041EE")]
+	[FieldOffset(Offset = "0x20")]
+	public float loseHealthCooldown;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x40041EF")]
+	[FieldOffset(Offset = "0x24")]
+	public float flameScaleTime;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x40041F0")]
+	[FieldOffset(Offset = "0x28")]
+	public int startingHealth;
 
-	5. Script Content Level 0
+	[Token(Token = "0x40041F1")]
+	[FieldOffset(Offset = "0x2C")]
+	public Vector3 endScale;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x40041F2")]
+	[FieldOffset(Offset = "0x38")]
+	public UnityEvent OnFlameExtinguished;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x40041F3")]
+	[FieldOffset(Offset = "0x40")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x50DF8", Offset = "0x50DF8")]
+	private int CurrentHealth__BackingField;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x40041F4")]
+	[FieldOffset(Offset = "0x44")]
+	private float m_lastHealthTime;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x40041F5")]
+	[FieldOffset(Offset = "0x48")]
+	private Vector3 m_StartScale;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x170005F4")]
+	public int CurrentHealth
+	{
+		[Token(Token = "0x600390C")]
+		[Address(RVA = "0x1454BB8", Offset = "0x1454BB8", VA = "0x1454BB8")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x6B1E8", Offset = "0x6B1E8")]
+		get
+		{
+			return default;
+		}
+		[Token(Token = "0x600390D")]
+		[Address(RVA = "0x1454BC0", Offset = "0x1454BC0", VA = "0x1454BC0")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x6B1F8", Offset = "0x6B1F8")]
+		private set
+		{
+		}
+	}
 
-	*/
+	[Token(Token = "0x600390E")]
+	[Address(RVA = "0x1454BC8", Offset = "0x1454BC8", VA = "0x1454BC8")]
+	private void Awake()
+	{
+	}
+
+	[Token(Token = "0x600390F")]
+	[Address(RVA = "0x1454C14", Offset = "0x1454C14", VA = "0x1454C14")]
+	public void TakeDamage(int damage)
+	{
+	}
+
+	[Token(Token = "0x6003910")]
+	[Address(RVA = "0x1454E98", Offset = "0x1454E98", VA = "0x1454E98")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x6003911")]
+	[Address(RVA = "0x1454ED8", Offset = "0x1454ED8", VA = "0x1454ED8")]
+	public ExtinguishableFlame()
+	{
+	}
 }

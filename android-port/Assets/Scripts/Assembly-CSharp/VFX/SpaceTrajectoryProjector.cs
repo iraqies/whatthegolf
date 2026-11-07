@@ -1,66 +1,144 @@
+using Core;
+using Il2CppDummyDll;
+using SpaceGolf;
 using UnityEngine;
 
 namespace VFX
 {
+	[Token(Token = "0x200101E")]
 	public class SpaceTrajectoryProjector : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x40054F7")]
+		[FieldOffset(Offset = "0x18")]
+		[SerializeField]
+		private LineRenderer trajectoryProjectionPrefab;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40054F8")]
+		[FieldOffset(Offset = "0x20")]
+		[SerializeField]
+		private float fullShootVelocity;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40054F9")]
+		[FieldOffset(Offset = "0x24")]
+		[SerializeField]
+		private float pitch;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40054FA")]
+		[FieldOffset(Offset = "0x28")]
+		[SerializeField]
+		private float ballRadius;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40054FB")]
+		[FieldOffset(Offset = "0x2C")]
+		[SerializeField]
+		private int maxSamples;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40054FC")]
+		[FieldOffset(Offset = "0x30")]
+		[SerializeField]
+		private float sampleRate;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x40054FD")]
+		[FieldOffset(Offset = "0x34")]
+		[SerializeField]
+		private bool debug;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x40054FE")]
+		[FieldOffset(Offset = "0x38")]
+		private LineRenderer trajectoryProjection;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x40054FF")]
+		[FieldOffset(Offset = "0x40")]
+		private LineRenderer circle;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4005500")]
+		[FieldOffset(Offset = "0x48")]
+		private GolfBallController golfBallController;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4005501")]
+		[FieldOffset(Offset = "0x50")]
+		private ConstantForce constantForce;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4005502")]
+		[FieldOffset(Offset = "0x58")]
+		private Rigidbody rigidbody;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4005503")]
+		[FieldOffset(Offset = "0x60")]
+		private Planet[] planets;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x4005504")]
+		[FieldOffset(Offset = "0x68")]
+		private Vector3 prev;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x6004803")]
+		[Address(RVA = "0x16C3600", Offset = "0x16C3600", VA = "0x16C3600")]
+		private void Awake()
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x6004804")]
+		[Address(RVA = "0x16C38EC", Offset = "0x16C38EC", VA = "0x16C38EC")]
+		private void Update()
+		{
+		}
 
-		*/
+		[Token(Token = "0x6004805")]
+		[Address(RVA = "0x16C3A10", Offset = "0x16C3A10", VA = "0x16C3A10")]
+		private void OnCollisionEnter(Collision collision)
+		{
+		}
+
+		[Token(Token = "0x6004806")]
+		[Address(RVA = "0x16C388C", Offset = "0x16C388C", VA = "0x16C388C")]
+		private void ProbActive(bool active)
+		{
+		}
+
+		[Token(Token = "0x6004807")]
+		[Address(RVA = "0x16C3B58", Offset = "0x16C3B58", VA = "0x16C3B58")]
+		private void OnAim(Vector3 boost)
+		{
+		}
+
+		[Token(Token = "0x6004808")]
+		[Address(RVA = "0x16C41DC", Offset = "0x16C41DC", VA = "0x16C41DC")]
+		private Vector3 CalcGravity(Vector3 ballPosition)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6004809")]
+		[Address(RVA = "0x16C406C", Offset = "0x16C406C", VA = "0x16C406C")]
+		private void DrawCircle(Vector3 worldPosition)
+		{
+		}
+
+		[Token(Token = "0x600480A")]
+		[Address(RVA = "0x16C4418", Offset = "0x16C4418", VA = "0x16C4418")]
+		public SpaceTrajectoryProjector()
+		{
+		}
+
+		[Token(Token = "0x600480B")]
+		[Address(RVA = "0x16C4440", Offset = "0x16C4440", VA = "0x16C4440")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x6EE34", Offset = "0x6EE34")]
+		private void _003CAwake_003Eb__13_0(Vector3 boost, bool isCancelled)
+		{
+		}
+
+		[Token(Token = "0x600480C")]
+		[Address(RVA = "0x16C44B4", Offset = "0x16C44B4", VA = "0x16C44B4")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x6EE44", Offset = "0x6EE44")]
+		private void _003CAwake_003Eb__13_1(Vector3 boost)
+		{
+		}
+
+		[Token(Token = "0x600480D")]
+		[Address(RVA = "0x16C44C8", Offset = "0x16C44C8", VA = "0x16C44C8")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x6EE54", Offset = "0x6EE54")]
+		private void _003CAwake_003Eb__13_2()
+		{
+		}
 	}
 }

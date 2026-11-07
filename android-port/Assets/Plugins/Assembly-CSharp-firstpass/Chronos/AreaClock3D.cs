@@ -1,66 +1,48 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Chronos
 {
-	public class AreaClock3D : MonoBehaviour
+	[Token(Token = "0x200028F")]
+	[DisallowMultipleComponent]
+	public class AreaClock3D : AreaClock<Collider, Vector3>
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x60010E5")]
+		[Address(RVA = "0x12F0B5C", Offset = "0x12F0B5C", VA = "0x12F0B5C", Slot = "22")]
+		protected virtual void OnTriggerEnter(Collider other)
+		{
+		}
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x60010E6")]
+		[Address(RVA = "0x12F0C70", Offset = "0x12F0C70", VA = "0x12F0C70", Slot = "23")]
+		protected virtual void OnTriggerExit(Collider collider)
+		{
+		}
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x60010E7")]
+		[Address(RVA = "0x12F0D3C", Offset = "0x12F0D3C", VA = "0x12F0D3C", Slot = "19")]
+		protected override float PointToEdgeTimeScale(Vector3 position)
+		{
+			return default;
+		}
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x60010E8")]
+		[Address(RVA = "0x12F1220", Offset = "0x12F1220", VA = "0x12F1220", Slot = "20")]
+		public override bool ContainsPoint(Vector3 point)
+		{
+			return default;
+		}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x60010E9")]
+		[Address(RVA = "0x12F128C", Offset = "0x12F128C", VA = "0x12F128C", Slot = "21")]
+		public override void CacheComponents()
+		{
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
-
-		3. Assembly Reconstruction has not been implemented.
-
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
-
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
-
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
-
-		5. Script Content Level 0
-
-			AssetRipper was set to not load any script information.
-
-		6. Cpp2IL failed to decompile Il2Cpp data
-
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x60010EA")]
+		[Address(RVA = "0x12F1398", Offset = "0x12F1398", VA = "0x12F1398")]
+		public AreaClock3D()
+		{
+		}
 	}
 }

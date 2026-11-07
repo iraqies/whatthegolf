@@ -1,66 +1,109 @@
+using Il2CppDummyDll;
+using RootMotion.FinalIK;
 using UnityEngine;
 
 namespace RootMotion.Demos
 {
+	[Token(Token = "0x20001E7")]
 	public class BipedIKvsAnimatorIK : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4000CC0")]
+		[FieldOffset(Offset = "0x18")]
+		public Animator animator;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000CC1")]
+		[FieldOffset(Offset = "0x20")]
+		public BipedIK bipedIK;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000CC2")]
+		[FieldOffset(Offset = "0x28")]
+		public Transform lookAtTargetBiped;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4000CC3")]
+		[FieldOffset(Offset = "0x30")]
+		public Transform lookAtTargetAnimator;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4000CC4")]
+		[FieldOffset(Offset = "0x38")]
+		[Attribute(Name = "RangeAttribute", RVA = "0x36B5C", Offset = "0x36B5C")]
+		public float lookAtWeight;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000CC5")]
+		[FieldOffset(Offset = "0x3C")]
+		[Attribute(Name = "RangeAttribute", RVA = "0x36B74", Offset = "0x36B74")]
+		public float lookAtBodyWeight;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4000CC6")]
+		[FieldOffset(Offset = "0x40")]
+		[Attribute(Name = "RangeAttribute", RVA = "0x36B8C", Offset = "0x36B8C")]
+		public float lookAtHeadWeight;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4000CC7")]
+		[FieldOffset(Offset = "0x44")]
+		[Attribute(Name = "RangeAttribute", RVA = "0x36BA4", Offset = "0x36BA4")]
+		public float lookAtEyesWeight;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4000CC8")]
+		[FieldOffset(Offset = "0x48")]
+		[Attribute(Name = "RangeAttribute", RVA = "0x36BBC", Offset = "0x36BBC")]
+		public float lookAtClampWeight;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4000CC9")]
+		[FieldOffset(Offset = "0x4C")]
+		[Attribute(Name = "RangeAttribute", RVA = "0x36BD4", Offset = "0x36BD4")]
+		public float lookAtClampWeightHead;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4000CCA")]
+		[FieldOffset(Offset = "0x50")]
+		[Attribute(Name = "RangeAttribute", RVA = "0x36BEC", Offset = "0x36BEC")]
+		public float lookAtClampWeightEyes;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4000CCB")]
+		[FieldOffset(Offset = "0x58")]
+		public Transform footTargetBiped;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4000CCC")]
+		[FieldOffset(Offset = "0x60")]
+		public Transform footTargetAnimator;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x4000CCD")]
+		[FieldOffset(Offset = "0x68")]
+		[Attribute(Name = "RangeAttribute", RVA = "0x36C04", Offset = "0x36C04")]
+		public float footPositionWeight;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x4000CCE")]
+		[FieldOffset(Offset = "0x6C")]
+		[Attribute(Name = "RangeAttribute", RVA = "0x36C1C", Offset = "0x36C1C")]
+		public float footRotationWeight;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x4000CCF")]
+		[FieldOffset(Offset = "0x70")]
+		public Transform handTargetBiped;
 
-		*/
+		[Token(Token = "0x4000CD0")]
+		[FieldOffset(Offset = "0x78")]
+		public Transform handTargetAnimator;
+
+		[Token(Token = "0x4000CD1")]
+		[FieldOffset(Offset = "0x80")]
+		[Attribute(Name = "RangeAttribute", RVA = "0x36C34", Offset = "0x36C34")]
+		public float handPositionWeight;
+
+		[Token(Token = "0x4000CD2")]
+		[FieldOffset(Offset = "0x84")]
+		[Attribute(Name = "RangeAttribute", RVA = "0x36C4C", Offset = "0x36C4C")]
+		public float handRotationWeight;
+
+		[Token(Token = "0x6000DAA")]
+		[Address(RVA = "0x13021F0", Offset = "0x13021F0", VA = "0x13021F0")]
+		private void OnAnimatorIK(int layer)
+		{
+		}
+
+		[Token(Token = "0x6000DAB")]
+		[Address(RVA = "0x1302688", Offset = "0x1302688", VA = "0x1302688")]
+		public BipedIKvsAnimatorIK()
+		{
+		}
 	}
 }

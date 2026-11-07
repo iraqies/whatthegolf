@@ -1,63 +1,106 @@
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x200099C")]
+[Attribute(Name = "RequireComponent", RVA = "0x425A8", Offset = "0x425A8")]
 public class OverworldTriggerCameraBlender : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x40034EE")]
+	[FieldOffset(Offset = "0x18")]
+	public OverworldCameraSettings CameraSettings;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x40034EF")]
+	[FieldOffset(Offset = "0x20")]
+	public List<SpriteRenderer> backgroundRenderers;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x40034F0")]
+	[FieldOffset(Offset = "0x28")]
+	public Color baseBackground;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x40034F1")]
+	[FieldOffset(Offset = "0x38")]
+	public Color endBackground;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x40034F2")]
+	[FieldOffset(Offset = "0x48")]
+	private bool ballIsInside;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x40034F3")]
+	[FieldOffset(Offset = "0x50")]
+	private Coroutine current;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x40034F4")]
+	[FieldOffset(Offset = "0x58")]
+	private float lastPct;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x40034F5")]
+	[FieldOffset(Offset = "0x60")]
+	private Collider2D collider;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x40034F6")]
+	[FieldOffset(Offset = "0x68")]
+	public bool dontBlend;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x6002D1F")]
+	[Address(RVA = "0x15CE45C", Offset = "0x15CE45C", VA = "0x15CE45C")]
+	private void Awake()
+	{
+	}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x6002D20")]
+	[Address(RVA = "0x15CE4B8", Offset = "0x15CE4B8", VA = "0x15CE4B8")]
+	private void OnTriggerEnter2D(Collider2D other)
+	{
+	}
 
-	5. Script Content Level 0
+	[Token(Token = "0x6002D21")]
+	[Address(RVA = "0x15CE5AC", Offset = "0x15CE5AC", VA = "0x15CE5AC")]
+	public void BlendIn(float time)
+	{
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x6002D22")]
+	[Address(RVA = "0x15CE69C", Offset = "0x15CE69C", VA = "0x15CE69C")]
+	private void OnTriggerExit2D(Collider2D other)
+	{
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x6002D23")]
+	[Address(RVA = "0x15CE7C0", Offset = "0x15CE7C0", VA = "0x15CE7C0")]
+	public void BlendOut(float time)
+	{
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x6002D24")]
+	[Address(RVA = "0x15CE8B0", Offset = "0x15CE8B0", VA = "0x15CE8B0")]
+	public void BlendInWithoutSettings()
+	{
+	}
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x6002D25")]
+	[Address(RVA = "0x15CEA84", Offset = "0x15CEA84", VA = "0x15CEA84")]
+	public void BlendOutWithoutSettings()
+	{
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x6002D26")]
+	[Address(RVA = "0x15CEC54", Offset = "0x15CEC54", VA = "0x15CEC54")]
+	public OverworldTriggerCameraBlender()
+	{
+	}
 
-	*/
+	[Token(Token = "0x6002D27")]
+	[Address(RVA = "0x15CEC5C", Offset = "0x15CEC5C", VA = "0x15CEC5C")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x68444", Offset = "0x68444")]
+	private void _003CBlendIn_003Eb__11_0(float t)
+	{
+	}
+
+	[Token(Token = "0x6002D28")]
+	[Address(RVA = "0x15CEE54", Offset = "0x15CEE54", VA = "0x15CEE54")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x68454", Offset = "0x68454")]
+	private void _003CBlendOut_003Eb__13_0(float t)
+	{
+	}
 }

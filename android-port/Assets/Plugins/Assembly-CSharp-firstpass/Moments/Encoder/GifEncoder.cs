@@ -1,66 +1,183 @@
-using UnityEngine;
+using System.IO;
+using Il2CppDummyDll;
 
 namespace Moments.Encoder
 {
-	public class GifEncoder : MonoBehaviour
+	[Token(Token = "0x2000282")]
+	public class GifEncoder
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x40010A5")]
+		[FieldOffset(Offset = "0x10")]
+		protected int m_Width;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40010A6")]
+		[FieldOffset(Offset = "0x14")]
+		protected int m_Height;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40010A7")]
+		[FieldOffset(Offset = "0x18")]
+		protected int m_Repeat;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40010A8")]
+		[FieldOffset(Offset = "0x1C")]
+		protected int m_FrameDelay;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40010A9")]
+		[FieldOffset(Offset = "0x20")]
+		protected bool m_HasStarted;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40010AA")]
+		[FieldOffset(Offset = "0x28")]
+		protected FileStream m_FileStream;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x40010AB")]
+		[FieldOffset(Offset = "0x30")]
+		protected GifFrame m_CurrentFrame;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x40010AC")]
+		[FieldOffset(Offset = "0x38")]
+		protected byte[] m_Pixels;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x40010AD")]
+		[FieldOffset(Offset = "0x40")]
+		protected byte[] m_IndexedPixels;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x40010AE")]
+		[FieldOffset(Offset = "0x48")]
+		protected int m_ColorDepth;
 
-		5. Script Content Level 0
+		[Token(Token = "0x40010AF")]
+		[FieldOffset(Offset = "0x50")]
+		protected byte[] m_ColorTab;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x40010B0")]
+		[FieldOffset(Offset = "0x58")]
+		protected bool[] m_UsedEntry;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x40010B1")]
+		[FieldOffset(Offset = "0x60")]
+		protected int m_PaletteSize;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x40010B2")]
+		[FieldOffset(Offset = "0x64")]
+		protected int m_DisposalCode;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x40010B3")]
+		[FieldOffset(Offset = "0x68")]
+		protected bool m_ShouldCloseStream;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x40010B4")]
+		[FieldOffset(Offset = "0x69")]
+		protected bool m_IsFirstFrame;
 
-		*/
+		[Token(Token = "0x40010B5")]
+		[FieldOffset(Offset = "0x6A")]
+		protected bool m_IsSizeSet;
+
+		[Token(Token = "0x40010B6")]
+		[FieldOffset(Offset = "0x6C")]
+		protected int m_SampleInterval;
+
+		[Token(Token = "0x6001084")]
+		[Address(RVA = "0x1376D9C", Offset = "0x1376D9C", VA = "0x1376D9C")]
+		public GifEncoder(int repeat, int quality)
+		{
+		}
+
+		[Token(Token = "0x6001085")]
+		[Address(RVA = "0x1376E50", Offset = "0x1376E50", VA = "0x1376E50")]
+		public void SetDelay(int ms)
+		{
+		}
+
+		[Token(Token = "0x6001086")]
+		[Address(RVA = "0x1376E84", Offset = "0x1376E84", VA = "0x1376E84")]
+		public void AddFrame(GifFrame frame)
+		{
+		}
+
+		[Token(Token = "0x6001087")]
+		[Address(RVA = "0x1377854", Offset = "0x1377854", VA = "0x1377854")]
+		public void Start(FileStream os)
+		{
+		}
+
+		[Token(Token = "0x6001088")]
+		[Address(RVA = "0x1377A20", Offset = "0x1377A20", VA = "0x1377A20")]
+		public void Start(string file)
+		{
+		}
+
+		[Token(Token = "0x6001089")]
+		[Address(RVA = "0x1377B3C", Offset = "0x1377B3C", VA = "0x1377B3C")]
+		public void Finish()
+		{
+		}
+
+		[Token(Token = "0x600108A")]
+		[Address(RVA = "0x1377024", Offset = "0x1377024", VA = "0x1377024")]
+		protected void SetSize(int w, int h)
+		{
+		}
+
+		[Token(Token = "0x600108B")]
+		[Address(RVA = "0x1377034", Offset = "0x1377034", VA = "0x1377034")]
+		protected void GetImagePixels()
+		{
+		}
+
+		[Token(Token = "0x600108C")]
+		[Address(RVA = "0x1377178", Offset = "0x1377178", VA = "0x1377178")]
+		protected void AnalyzePixels()
+		{
+		}
+
+		[Token(Token = "0x600108D")]
+		[Address(RVA = "0x1377594", Offset = "0x1377594", VA = "0x1377594")]
+		protected void WriteGraphicCtrlExt()
+		{
+		}
+
+		[Token(Token = "0x600108E")]
+		[Address(RVA = "0x13776CC", Offset = "0x13776CC", VA = "0x13776CC")]
+		protected void WriteImageDesc()
+		{
+		}
+
+		[Token(Token = "0x600108F")]
+		[Address(RVA = "0x1377320", Offset = "0x1377320", VA = "0x1377320")]
+		protected void WriteLSD()
+		{
+		}
+
+		[Token(Token = "0x6001090")]
+		[Address(RVA = "0x1377490", Offset = "0x1377490", VA = "0x1377490")]
+		protected void WriteNetscapeExt()
+		{
+		}
+
+		[Token(Token = "0x6001091")]
+		[Address(RVA = "0x1377404", Offset = "0x1377404", VA = "0x1377404")]
+		protected void WritePalette()
+		{
+		}
+
+		[Token(Token = "0x6001092")]
+		[Address(RVA = "0x13777BC", Offset = "0x13777BC", VA = "0x13777BC")]
+		protected void WritePixels()
+		{
+		}
+
+		[Token(Token = "0x6001093")]
+		[Address(RVA = "0x1377CB0", Offset = "0x1377CB0", VA = "0x1377CB0")]
+		protected void WriteShort(int value)
+		{
+		}
+
+		[Token(Token = "0x6001094")]
+		[Address(RVA = "0x1377984", Offset = "0x1377984", VA = "0x1377984")]
+		protected void WriteString(string s)
+		{
+		}
 	}
 }

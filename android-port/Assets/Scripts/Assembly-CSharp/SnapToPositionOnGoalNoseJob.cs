@@ -1,63 +1,146 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000E61")]
 public class SnapToPositionOnGoalNoseJob : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x2000E62")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x45038", Offset = "0x45038")]
+	private sealed class _003CSnap_003Ed__6 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x4004DE8")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4004DE9")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4004DEA")]
+		[FieldOffset(Offset = "0x20")]
+		public SnapToPositionOnGoalNoseJob _003C_003E4__this;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4004DEB")]
+		[FieldOffset(Offset = "0x28")]
+		private Transform _003CinitialTransform_003E5__2;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4004DEC")]
+		[FieldOffset(Offset = "0x30")]
+		private float _003Ctime_003E5__3;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4004DED")]
+		[FieldOffset(Offset = "0x34")]
+		private float _003Cstep_003E5__4;
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x170006E6")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x6004349")]
+			[Address(RVA = "0x1851FC0", Offset = "0x1851FC0", VA = "0x1851FC0", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x170006E7")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x600434B")]
+			[Address(RVA = "0x1852008", Offset = "0x1852008", VA = "0x1852008", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x6004346")]
+		[Address(RVA = "0x1851C24", Offset = "0x1851C24", VA = "0x1851C24")]
+		[DebuggerHidden]
+		public _003CSnap_003Ed__6(int _003C_003E1__state)
+		{
+		}
 
-	4. This script is unnecessary.
+		[Token(Token = "0x6004347")]
+		[Address(RVA = "0x1851C50", Offset = "0x1851C50", VA = "0x1851C50", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6004348")]
+		[Address(RVA = "0x1851C54", Offset = "0x1851C54", VA = "0x1851C54", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
 
-	5. Script Content Level 0
+		[Token(Token = "0x6004349")]
+		[Address(RVA = "0x1851FC0", Offset = "0x1851FC0", VA = "0x1851FC0", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
 
-		AssetRipper was set to not load any script information.
+		[Token(Token = "0x600434A")]
+		[Address(RVA = "0x1851FC8", Offset = "0x1851FC8", VA = "0x1851FC8", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x600434B")]
+		[Address(RVA = "0x1852008", Offset = "0x1852008", VA = "0x1852008", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4004DE3")]
+	[FieldOffset(Offset = "0x18")]
+	public Transform target;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4004DE4")]
+	[FieldOffset(Offset = "0x20")]
+	public float angleRotations;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x4004DE5")]
+	[FieldOffset(Offset = "0x24")]
+	public float speed;
 
-	*/
+	[Token(Token = "0x4004DE6")]
+	[FieldOffset(Offset = "0x28")]
+	private bool started;
+
+	[Token(Token = "0x4004DE7")]
+	[FieldOffset(Offset = "0x30")]
+	public AnimationCurve animationCurve;
+
+	[Token(Token = "0x6004343")]
+	[Address(RVA = "0x16BA1A0", Offset = "0x16BA1A0", VA = "0x16BA1A0")]
+	public void SnapToPosition()
+	{
+	}
+
+	[Token(Token = "0x6004344")]
+	[Address(RVA = "0x16BA230", Offset = "0x16BA230", VA = "0x16BA230")]
+	private IEnumerator Snap()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6004345")]
+	[Address(RVA = "0x16BA2A4", Offset = "0x16BA2A4", VA = "0x16BA2A4")]
+	public SnapToPositionOnGoalNoseJob()
+	{
+	}
 }

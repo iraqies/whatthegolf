@@ -1,63 +1,139 @@
+using Il2CppDummyDll;
+using Rewired.Platforms.Switch;
 using UnityEngine;
 
+[Token(Token = "0x20003F4")]
 public class GyroController : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x400158D")]
+	[FieldOffset(Offset = "0x18")]
+	public bool isUpdatingGyro;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x400158E")]
+	[FieldOffset(Offset = "0x20")]
+	private Transform gyroTransform;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x400158F")]
+	[FieldOffset(Offset = "0x28")]
+	private Transform gyroLateTransform;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4001590")]
+	[FieldOffset(Offset = "0x30")]
+	private Quaternion startOffset;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4001591")]
+	[FieldOffset(Offset = "0x40")]
+	private Vector3 lastForwrd;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4001592")]
+	[FieldOffset(Offset = "0x4C")]
+	private Vector3 offset;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4001593")]
+	[FieldOffset(Offset = "0x58")]
+	private bool didInit;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4001594")]
+	[FieldOffset(Offset = "0x0")]
+	private static GyroController instance;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4001595")]
+	[FieldOffset(Offset = "0x5C")]
+	private Quaternion lastAttitude;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4001596")]
+	[FieldOffset(Offset = "0x6C")]
+	private float lastUpdate;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4001597")]
+	[FieldOffset(Offset = "0x70")]
+	private Vector3 tmpVel;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4001598")]
+	[FieldOffset(Offset = "0x8")]
+	private static NintendoSwitchInputManager nintendoSwitchInputManager;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x1700021F")]
+	public static GyroController Instance
+	{
+		[Token(Token = "0x6001287")]
+		[Address(RVA = "0x14BF5C8", Offset = "0x14BF5C8", VA = "0x14BF5C8")]
+		get
+		{
+			return null;
+		}
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x6001286")]
+	[Address(RVA = "0x14BF5A4", Offset = "0x14BF5A4", VA = "0x14BF5A4")]
+	public bool IsGyroEnabled()
+	{
+		return default;
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x6001288")]
+	[Address(RVA = "0x14BF914", Offset = "0x14BF914", VA = "0x14BF914")]
+	public bool IsGyroUsable()
+	{
+		return default;
+	}
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x6001289")]
+	[Address(RVA = "0x14BF91C", Offset = "0x14BF91C", VA = "0x14BF91C")]
+	public Vector3 GetOffset()
+	{
+		return default;
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x600128A")]
+	[Address(RVA = "0x14BF9B0", Offset = "0x14BF9B0", VA = "0x14BF9B0")]
+	private void OnApplicationPause(bool pause)
+	{
+	}
 
-	*/
+	[Token(Token = "0x600128B")]
+	[Address(RVA = "0x14BF708", Offset = "0x14BF708", VA = "0x14BF708")]
+	private void Init()
+	{
+	}
+
+	[Token(Token = "0x600128C")]
+	[Address(RVA = "0x14BFE0C", Offset = "0x14BFE0C", VA = "0x14BFE0C")]
+	public Transform GetGyroTransform()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x600128D")]
+	[Address(RVA = "0x14BFE14", Offset = "0x14BFE14", VA = "0x14BFE14")]
+	public Quaternion GetGyroAttitude()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x600128E")]
+	[Address(RVA = "0x14BFE38", Offset = "0x14BFE38", VA = "0x14BFE38")]
+	private Quaternion GetSwitchGyro()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x600128F")]
+	[Address(RVA = "0x14BFA1C", Offset = "0x14BFA1C", VA = "0x14BFA1C")]
+	private bool UpdateGyro()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6001290")]
+	[Address(RVA = "0x14C00D4", Offset = "0x14C00D4", VA = "0x14C00D4")]
+	public void Update()
+	{
+	}
+
+	[Token(Token = "0x6001291")]
+	[Address(RVA = "0x14C01B8", Offset = "0x14C01B8", VA = "0x14C01B8")]
+	public GyroController()
+	{
+	}
 }

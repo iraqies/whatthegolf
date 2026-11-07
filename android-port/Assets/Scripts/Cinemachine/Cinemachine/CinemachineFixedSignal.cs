@@ -1,66 +1,58 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Cinemachine
 {
-	public class CinemachineFixedSignal : MonoBehaviour
+	[Token(Token = "0x2000082")]
+	public class CinemachineFixedSignal : SignalSourceAsset
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x40002DB")]
+		[FieldOffset(Offset = "0x18")]
+		public AnimationCurve m_XCurve;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40002DC")]
+		[FieldOffset(Offset = "0x20")]
+		public AnimationCurve m_YCurve;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40002DD")]
+		[FieldOffset(Offset = "0x28")]
+		public AnimationCurve m_ZCurve;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x170000CE")]
+		public override float SignalDuration
+		{
+			[Token(Token = "0x6000315")]
+			[Address(RVA = "0x18F1344", Offset = "0x18F1344", VA = "0x18F1344", Slot = "5")]
+			get
+			{
+				return default;
+			}
+		}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x6000316")]
+		[Address(RVA = "0x18F13A4", Offset = "0x18F13A4", VA = "0x18F13A4")]
+		private float AxisDuration(AnimationCurve axis)
+		{
+			return default;
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x6000317")]
+		[Address(RVA = "0x18F1460", Offset = "0x18F1460", VA = "0x18F1460", Slot = "6")]
+		public override void GetSignal(float timeSinceSignalStart, out Vector3 pos, out Quaternion rot)
+		{
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6000318")]
+		[Address(RVA = "0x18F1548", Offset = "0x18F1548", VA = "0x18F1548")]
+		private float AxisValue(AnimationCurve axis, float time)
+		{
+			return default;
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
-
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
-
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
-
-		5. Script Content Level 0
-
-			AssetRipper was set to not load any script information.
-
-		6. Cpp2IL failed to decompile Il2Cpp data
-
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x6000319")]
+		[Address(RVA = "0x18F15A4", Offset = "0x18F15A4", VA = "0x18F15A4")]
+		public CinemachineFixedSignal()
+		{
+		}
 	}
 }

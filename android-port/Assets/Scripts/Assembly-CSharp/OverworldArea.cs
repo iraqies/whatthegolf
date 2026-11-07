@@ -1,63 +1,219 @@
+using System;
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x20009DB")]
 public class OverworldArea : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Serializable]
+	[Token(Token = "0x20009DC")]
+	public class BridgeConnection
+	{
+		[Token(Token = "0x4003628")]
+		[FieldOffset(Offset = "0x10")]
+		public OverworldBridgeIndicator bridge;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4003629")]
+		[FieldOffset(Offset = "0x18")]
+		public bool hasButton;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x400362A")]
+		[FieldOffset(Offset = "0x20")]
+		[SerializeField]
+		public Transform bridgepoint;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x400362B")]
+		[FieldOffset(Offset = "0x28")]
+		[SerializeField]
+		public OverworldIslandWall wall;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x400362C")]
+		[FieldOffset(Offset = "0x30")]
+		[SerializeField]
+		public OverworldButton button;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x6002E6E")]
+		[Address(RVA = "0x180C334", Offset = "0x180C334", VA = "0x180C334")]
+		public BridgeConnection()
+		{
+		}
+	}
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x20009DD")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x42790", Offset = "0x42790")]
+	private sealed class _003C_003Ec__DisplayClass12_0
+	{
+		[Token(Token = "0x400362D")]
+		[FieldOffset(Offset = "0x10")]
+		public BridgeConnection b;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x400362E")]
+		[FieldOffset(Offset = "0x18")]
+		public OverworldArea _003C_003E4__this;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x6002E6F")]
+		[Address(RVA = "0x180C2C0", Offset = "0x180C2C0", VA = "0x180C2C0")]
+		public _003C_003Ec__DisplayClass12_0()
+		{
+		}
 
-	4. This script is unnecessary.
+		[Token(Token = "0x6002E70")]
+		[Address(RVA = "0x180C2C8", Offset = "0x180C2C8", VA = "0x180C2C8")]
+		internal void _003CAwake_003Eb__0(OverworldBridgeIndicator brid)
+		{
+		}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6002E71")]
+		[Address(RVA = "0x180C2EC", Offset = "0x180C2EC", VA = "0x180C2EC")]
+		internal void _003CAwake_003Eb__1(OverworldBridgeIndicator brid)
+		{
+		}
 
-	5. Script Content Level 0
+		[Token(Token = "0x6002E72")]
+		[Address(RVA = "0x180C310", Offset = "0x180C310", VA = "0x180C310")]
+		internal void _003CAwake_003Eb__2(OverworldButton btn)
+		{
+		}
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x400361F")]
+	[FieldOffset(Offset = "0x18")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x4FF8C", Offset = "0x4FF8C")]
+	private Action<OverworldArea, OverworldButton> m_OnOpenBridge;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4003620")]
+	[FieldOffset(Offset = "0x20")]
+	public string description;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4003621")]
+	[FieldOffset(Offset = "0x28")]
+	public List<BridgeConnection> connectedBridges;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4003622")]
+	[FieldOffset(Offset = "0x30")]
+	[SerializeField]
+	private Transform cameraTarget;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x4003623")]
+	[FieldOffset(Offset = "0x38")]
+	[SerializeField]
+	private BoxCollider borderPrefab;
 
-	*/
+	[Token(Token = "0x4003624")]
+	[FieldOffset(Offset = "0x40")]
+	[SerializeField]
+	private OverworldButton buttonPrefab;
+
+	[Token(Token = "0x4003625")]
+	[FieldOffset(Offset = "0x48")]
+	[SerializeField]
+	private BoxCollider ground;
+
+	[Token(Token = "0x4003626")]
+	[FieldOffset(Offset = "0x50")]
+	private float wallWidth;
+
+	[Token(Token = "0x4003627")]
+	[FieldOffset(Offset = "0x54")]
+	private float bridgeWidth;
+
+	[Token(Token = "0x14000050")]
+	public event Action<OverworldArea, OverworldButton> OnOpenBridge
+	{
+		[Token(Token = "0x6002E5F")]
+		[Address(RVA = "0x159F7FC", Offset = "0x159F7FC", VA = "0x159F7FC")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x689F8", Offset = "0x689F8")]
+		add
+		{
+		}
+		[Token(Token = "0x6002E60")]
+		[Address(RVA = "0x159F8A0", Offset = "0x159F8A0", VA = "0x159F8A0")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x68A08", Offset = "0x68A08")]
+		remove
+		{
+		}
+	}
+
+	[Token(Token = "0x6002E61")]
+	[Address(RVA = "0x159F944", Offset = "0x159F944", VA = "0x159F944")]
+	public void Awake()
+	{
+	}
+
+	[Token(Token = "0x6002E62")]
+	[Address(RVA = "0x159FD70", Offset = "0x159FD70", VA = "0x159FD70")]
+	private void Bridge_OnChangeCount(BridgeConnection bridgeConnection)
+	{
+	}
+
+	[Token(Token = "0x6002E63")]
+	[Address(RVA = "0x15A0104", Offset = "0x15A0104", VA = "0x15A0104")]
+	private void Button_OnPress(OverworldButton button, BridgeConnection bridgeConnection)
+	{
+	}
+
+	[Token(Token = "0x6002E64")]
+	[Address(RVA = "0x15A01F8", Offset = "0x15A01F8", VA = "0x15A01F8")]
+	private void Bridge_OnOpen(BridgeConnection bridgeConnection)
+	{
+	}
+
+	[Token(Token = "0x6002E65")]
+	[Address(RVA = "0x15A029C", Offset = "0x15A029C", VA = "0x15A029C")]
+	public void GenerateIsland()
+	{
+	}
+
+	[Token(Token = "0x6002E66")]
+	[Address(RVA = "0x15A04C4", Offset = "0x15A04C4", VA = "0x15A04C4")]
+	private void MakeBridgeConnector(GeneratedIsland island)
+	{
+	}
+
+	[Token(Token = "0x6002E67")]
+	[Address(RVA = "0x15A0CC8", Offset = "0x15A0CC8", VA = "0x15A0CC8")]
+	private void MakeWalls(GeneratedIsland island)
+	{
+	}
+
+	[Token(Token = "0x6002E68")]
+	[Address(RVA = "0x15A1400", Offset = "0x15A1400", VA = "0x15A1400")]
+	private float distToClosestBridge(Vector3 start, Vector3 end, out BridgeConnection outBridge)
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6002E69")]
+	[Address(RVA = "0x15A101C", Offset = "0x15A101C", VA = "0x15A101C")]
+	private void MakeWall(string name, GeneratedIsland island, Vector3 start, Vector3 end)
+	{
+	}
+
+	[Token(Token = "0x6002E6A")]
+	[Address(RVA = "0x15A1740", Offset = "0x15A1740", VA = "0x15A1740")]
+	private Transform MakeWallObject(GameObject wallContainer, Vector3 start, Vector3 end)
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6002E6B")]
+	[Address(RVA = "0x15A1974", Offset = "0x15A1974", VA = "0x15A1974")]
+	public Vector3 GetCameraTarget(Vector3 pos)
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6002E6C")]
+	[Address(RVA = "0x15A1698", Offset = "0x15A1698", VA = "0x15A1698")]
+	public static Vector3 NearestPointOnLine(Vector3 a, Vector3 b, Vector3 point)
+	{
+		return default;
+	}
+
+	[Token(Token = "0x6002E6D")]
+	[Address(RVA = "0x15A1A18", Offset = "0x15A1A18", VA = "0x15A1A18")]
+	public OverworldArea()
+	{
+	}
 }

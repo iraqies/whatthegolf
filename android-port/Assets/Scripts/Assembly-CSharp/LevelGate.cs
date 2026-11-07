@@ -1,63 +1,74 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000882")]
 public class LevelGate : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4002EA3")]
+	[FieldOffset(Offset = "0x18")]
+	public float OpenY;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4002EA4")]
+	[FieldOffset(Offset = "0x1C")]
+	public float CloseY;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4002EA5")]
+	[FieldOffset(Offset = "0x20")]
+	public float Speed;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4002EA6")]
+	[FieldOffset(Offset = "0x24")]
+	public bool IsOpen;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4002EA7")]
+	[FieldOffset(Offset = "0x28")]
+	public int RequriedTurnOns;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4002EA8")]
+	[FieldOffset(Offset = "0x2C")]
+	private float targetY;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4002EA9")]
+	[FieldOffset(Offset = "0x30")]
+	private Rigidbody rigid;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4002EAA")]
+	[FieldOffset(Offset = "0x38")]
+	private int currentOns;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x6002747")]
+	[Address(RVA = "0x152DB40", Offset = "0x152DB40", VA = "0x152DB40")]
+	private void Start()
+	{
+	}
 
-	4. This script is unnecessary.
+	[Token(Token = "0x6002748")]
+	[Address(RVA = "0x152DBC0", Offset = "0x152DBC0", VA = "0x152DBC0")]
+	public void Toggle()
+	{
+	}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x6002749")]
+	[Address(RVA = "0x152DBF8", Offset = "0x152DBF8", VA = "0x152DBF8")]
+	public void TurnOn()
+	{
+	}
 
-	5. Script Content Level 0
+	[Token(Token = "0x600274A")]
+	[Address(RVA = "0x152DC24", Offset = "0x152DC24", VA = "0x152DC24")]
+	public void TurnOff()
+	{
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x600274B")]
+	[Address(RVA = "0x152DC4C", Offset = "0x152DC4C", VA = "0x152DC4C")]
+	private void Update()
+	{
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
-
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x600274C")]
+	[Address(RVA = "0x152DD9C", Offset = "0x152DD9C", VA = "0x152DD9C")]
+	public LevelGate()
+	{
+	}
 }

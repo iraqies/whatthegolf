@@ -1,66 +1,66 @@
+using GolfCourse;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace WhatTheGolf.LevelDesigner.Selectables
 {
-	public class Goal : MonoBehaviour
+	[Token(Token = "0x2001272")]
+	public class Goal : Selectable<GoalDefinition>
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x400632A")]
+		[FieldOffset(Offset = "0x60")]
+		[SerializeField]
+		private GolfGoal m_GolfGoal;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x400632B")]
+		[FieldOffset(Offset = "0x68")]
+		[SerializeField]
+		private GolfCoursePinGoal m_GolfCoursePinGoal;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x170009AA")]
+		public GolfGoal golfGoal
+		{
+			[Token(Token = "0x600553A")]
+			[Address(RVA = "0x148ED54", Offset = "0x148ED54", VA = "0x148ED54")]
+			get
+			{
+				return null;
+			}
+		}
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x170009AB")]
+		public override Transform rootObject
+		{
+			[Token(Token = "0x600553B")]
+			[Address(RVA = "0x148EE00", Offset = "0x148EE00", VA = "0x148EE00", Slot = "4")]
+			get
+			{
+				return null;
+			}
+		}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x600553C")]
+		[Address(RVA = "0x148EE08", Offset = "0x148EE08", VA = "0x148EE08")]
+		public void Start()
+		{
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x600553D")]
+		[Address(RVA = "0x148EF24", Offset = "0x148EF24", VA = "0x148EF24")]
+		private void OnEnterPlayMode()
+		{
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x600553E")]
+		[Address(RVA = "0x148EF44", Offset = "0x148EF44", VA = "0x148EF44")]
+		private void OnExitPlayMode()
+		{
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
-
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
-
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
-
-		5. Script Content Level 0
-
-			AssetRipper was set to not load any script information.
-
-		6. Cpp2IL failed to decompile Il2Cpp data
-
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x600553F")]
+		[Address(RVA = "0x148EF64", Offset = "0x148EF64", VA = "0x148EF64")]
+		public Goal()
+		{
+		}
 	}
 }

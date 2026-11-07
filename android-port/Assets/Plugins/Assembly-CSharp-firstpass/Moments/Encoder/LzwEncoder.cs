@@ -1,66 +1,163 @@
-using UnityEngine;
+using System.IO;
+using Il2CppDummyDll;
 
 namespace Moments.Encoder
 {
-	public class LzwEncoder : MonoBehaviour
+	[Token(Token = "0x2000284")]
+	public class LzwEncoder
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x40010BA")]
+		[FieldOffset(Offset = "0x0")]
+		private static readonly int EOF;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40010BB")]
+		[FieldOffset(Offset = "0x10")]
+		private byte[] pixAry;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40010BC")]
+		[FieldOffset(Offset = "0x18")]
+		private int initCodeSize;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40010BD")]
+		[FieldOffset(Offset = "0x1C")]
+		private int curPixel;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40010BE")]
+		[FieldOffset(Offset = "0x4")]
+		private static readonly int BITS;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40010BF")]
+		[FieldOffset(Offset = "0x8")]
+		private static readonly int HSIZE;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x40010C0")]
+		[FieldOffset(Offset = "0x20")]
+		private int n_bits;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x40010C1")]
+		[FieldOffset(Offset = "0x24")]
+		private int maxbits;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x40010C2")]
+		[FieldOffset(Offset = "0x28")]
+		private int maxcode;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x40010C3")]
+		[FieldOffset(Offset = "0x2C")]
+		private int maxmaxcode;
 
-		5. Script Content Level 0
+		[Token(Token = "0x40010C4")]
+		[FieldOffset(Offset = "0x30")]
+		private int[] htab;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x40010C5")]
+		[FieldOffset(Offset = "0x38")]
+		private int[] codetab;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x40010C6")]
+		[FieldOffset(Offset = "0x40")]
+		private int hsize;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x40010C7")]
+		[FieldOffset(Offset = "0x44")]
+		private int free_ent;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x40010C8")]
+		[FieldOffset(Offset = "0x48")]
+		private bool clear_flg;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x40010C9")]
+		[FieldOffset(Offset = "0x4C")]
+		private int g_init_bits;
 
-		*/
+		[Token(Token = "0x40010CA")]
+		[FieldOffset(Offset = "0x50")]
+		private int ClearCode;
+
+		[Token(Token = "0x40010CB")]
+		[FieldOffset(Offset = "0x54")]
+		private int EOFCode;
+
+		[Token(Token = "0x40010CC")]
+		[FieldOffset(Offset = "0x58")]
+		private int cur_accum;
+
+		[Token(Token = "0x40010CD")]
+		[FieldOffset(Offset = "0x5C")]
+		private int cur_bits;
+
+		[Token(Token = "0x40010CE")]
+		[FieldOffset(Offset = "0x60")]
+		private int[] masks;
+
+		[Token(Token = "0x40010CF")]
+		[FieldOffset(Offset = "0x68")]
+		private int a_count;
+
+		[Token(Token = "0x40010D0")]
+		[FieldOffset(Offset = "0x70")]
+		private byte[] accum;
+
+		[Token(Token = "0x6001096")]
+		[Address(RVA = "0x13A99A8", Offset = "0x13A99A8", VA = "0x13A99A8")]
+		public LzwEncoder(int width, int height, byte[] pixels, int color_depth)
+		{
+		}
+
+		[Token(Token = "0x6001097")]
+		[Address(RVA = "0x13A9B30", Offset = "0x13A9B30", VA = "0x13A9B30")]
+		private void Add(byte c, Stream outs)
+		{
+		}
+
+		[Token(Token = "0x6001098")]
+		[Address(RVA = "0x13A9C5C", Offset = "0x13A9C5C", VA = "0x13A9C5C")]
+		private void ClearTable(Stream outs)
+		{
+		}
+
+		[Token(Token = "0x6001099")]
+		[Address(RVA = "0x13A9CC8", Offset = "0x13A9CC8", VA = "0x13A9CC8")]
+		private void ResetCodeTable(int hsize)
+		{
+		}
+
+		[Token(Token = "0x600109A")]
+		[Address(RVA = "0x13A9F08", Offset = "0x13A9F08", VA = "0x13A9F08")]
+		private void Compress(int init_bits, Stream outs)
+		{
+		}
+
+		[Token(Token = "0x600109B")]
+		[Address(RVA = "0x13AA2D8", Offset = "0x13AA2D8", VA = "0x13AA2D8")]
+		public void Encode(Stream os)
+		{
+		}
+
+		[Token(Token = "0x600109C")]
+		[Address(RVA = "0x13A9B90", Offset = "0x13A9B90", VA = "0x13A9B90")]
+		private void Flush(Stream outs)
+		{
+		}
+
+		[Token(Token = "0x600109D")]
+		[Address(RVA = "0x13AA21C", Offset = "0x13AA21C", VA = "0x13AA21C")]
+		private int MaxCode(int n_bits)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x600109E")]
+		[Address(RVA = "0x13AA22C", Offset = "0x13AA22C", VA = "0x13AA22C")]
+		private int NextPixel()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x600109F")]
+		[Address(RVA = "0x13A9D1C", Offset = "0x13A9D1C", VA = "0x13A9D1C")]
+		private void Output(int code, Stream outs)
+		{
+		}
 	}
 }

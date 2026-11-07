@@ -1,66 +1,182 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace RootMotion.FinalIK
 {
-	public class IKSolverLimb : MonoBehaviour
+	[Serializable]
+	[Token(Token = "0x200017D")]
+	public class IKSolverLimb : IKSolverTrigonometric
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Serializable]
+		[Token(Token = "0x200017E")]
+		public enum BendModifier
+		{
+			[Token(Token = "0x40009B1")]
+			Animation = 0,
+			[Token(Token = "0x40009B2")]
+			Target = 1,
+			[Token(Token = "0x40009B3")]
+			Parent = 2,
+			[Token(Token = "0x40009B4")]
+			Arm = 3,
+			[Token(Token = "0x40009B5")]
+			Goal = 4
+		}
 
-		1. No dll files were provided to AssetRipper.
+		[Serializable]
+		[Token(Token = "0x200017F")]
+		public struct AxisDirection
+		{
+			[Token(Token = "0x40009B6")]
+			[FieldOffset(Offset = "0x0")]
+			public Vector3 direction;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x40009B7")]
+			[FieldOffset(Offset = "0xC")]
+			public Vector3 axis;
 
-		2. Incorrect dll files were provided to AssetRipper.
+			[Token(Token = "0x40009B8")]
+			[FieldOffset(Offset = "0x18")]
+			public float dot;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+			[Token(Token = "0x6000AF9")]
+			[Address(RVA = "0x133FB88", Offset = "0x133FB88", VA = "0x133FB88")]
+			public AxisDirection(Vector3 direction, Vector3 axis)
+			{
+			}
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40009A0")]
+		[FieldOffset(Offset = "0xA8")]
+		public AvatarIKGoal goal;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x40009A1")]
+		[FieldOffset(Offset = "0xAC")]
+		public BendModifier bendModifier;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x40009A2")]
+		[FieldOffset(Offset = "0xB0")]
+		[AttributeAttribute(Name = "RangeAttribute", RVA = "0x36188", Offset = "0x36188")]
+		public float maintainRotationWeight;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x40009A3")]
+		[FieldOffset(Offset = "0xB4")]
+		[AttributeAttribute(Name = "RangeAttribute", RVA = "0x361A0", Offset = "0x361A0")]
+		public float bendModifierWeight;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x40009A4")]
+		[FieldOffset(Offset = "0xB8")]
+		public Transform bendGoal;
 
-		5. Script Content Level 0
+		[Token(Token = "0x40009A5")]
+		[FieldOffset(Offset = "0xC0")]
+		private bool maintainBendFor1Frame;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x40009A6")]
+		[FieldOffset(Offset = "0xC1")]
+		private bool maintainRotationFor1Frame;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x40009A7")]
+		[FieldOffset(Offset = "0xC4")]
+		private Quaternion defaultRootRotation;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x40009A8")]
+		[FieldOffset(Offset = "0xD4")]
+		private Quaternion parentDefaultRotation;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x40009A9")]
+		[FieldOffset(Offset = "0xE4")]
+		private Quaternion bone3RotationBeforeSolve;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x40009AA")]
+		[FieldOffset(Offset = "0xF4")]
+		private Quaternion maintainRotation;
 
-		*/
+		[Token(Token = "0x40009AB")]
+		[FieldOffset(Offset = "0x104")]
+		private Quaternion bone3DefaultRotation;
+
+		[Token(Token = "0x40009AC")]
+		[FieldOffset(Offset = "0x114")]
+		private Vector3 _bendNormal;
+
+		[Token(Token = "0x40009AD")]
+		[FieldOffset(Offset = "0x120")]
+		private Vector3 animationNormal;
+
+		[Token(Token = "0x40009AE")]
+		[FieldOffset(Offset = "0x130")]
+		private AxisDirection[] axisDirectionsLeft;
+
+		[Token(Token = "0x40009AF")]
+		[FieldOffset(Offset = "0x138")]
+		private AxisDirection[] axisDirectionsRight;
+
+		[Token(Token = "0x17000164")]
+		private AxisDirection[] axisDirections
+		{
+			[Token(Token = "0x6000AF6")]
+			[Address(RVA = "0x13965AC", Offset = "0x13965AC", VA = "0x13965AC")]
+			get
+			{
+				return null;
+			}
+		}
+
+		[Token(Token = "0x6000AEF")]
+		[Address(RVA = "0x1395478", Offset = "0x1395478", VA = "0x1395478")]
+		public void MaintainRotation()
+		{
+		}
+
+		[Token(Token = "0x6000AF0")]
+		[Address(RVA = "0x13954CC", Offset = "0x13954CC", VA = "0x13954CC")]
+		public void MaintainBend()
+		{
+		}
+
+		[Token(Token = "0x6000AF1")]
+		[Address(RVA = "0x139551C", Offset = "0x139551C", VA = "0x139551C", Slot = "12")]
+		protected override void OnInitiateVirtual()
+		{
+		}
+
+		[Token(Token = "0x6000AF2")]
+		[Address(RVA = "0x1395994", Offset = "0x1395994", VA = "0x1395994", Slot = "13")]
+		protected override void OnUpdateVirtual()
+		{
+		}
+
+		[Token(Token = "0x6000AF3")]
+		[Address(RVA = "0x1396338", Offset = "0x1396338", VA = "0x1396338", Slot = "14")]
+		protected override void OnPostSolveVirtual()
+		{
+		}
+
+		[Token(Token = "0x6000AF4")]
+		[Address(RVA = "0x13963E4", Offset = "0x13963E4", VA = "0x13963E4")]
+		public IKSolverLimb()
+		{
+		}
+
+		[Token(Token = "0x6000AF5")]
+		[Address(RVA = "0x1396528", Offset = "0x1396528", VA = "0x1396528")]
+		public IKSolverLimb(AvatarIKGoal goal)
+		{
+		}
+
+		[Token(Token = "0x6000AF7")]
+		[Address(RVA = "0x1395808", Offset = "0x1395808", VA = "0x1395808")]
+		private void StoreAxisDirections(ref AxisDirection[] axisDirections)
+		{
+		}
+
+		[Token(Token = "0x6000AF8")]
+		[Address(RVA = "0x1395A64", Offset = "0x1395A64", VA = "0x1395A64")]
+		private Vector3 GetModifiedBendNormal()
+		{
+			return default;
+		}
 	}
 }

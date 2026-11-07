@@ -1,5 +1,8 @@
 {
   "name": "Unity.Addressables",
-  "references": [],
+  "references": [
+    "Il2CppDummyDll",
+    "Unity.ResourceManager"
+  ],
   "allowUnsafeCode": true
 }

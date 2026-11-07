@@ -1,63 +1,242 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000B12")]
 public class MovingStone : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x2000B13")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x434E8", Offset = "0x434E8")]
+	private sealed class _003CRoutine_003Ed__22 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x4003DE8")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4003DE9")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4003DEA")]
+		[FieldOffset(Offset = "0x20")]
+		public MovingStone _003C_003E4__this;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4003DEB")]
+		[FieldOffset(Offset = "0x28")]
+		private Vector3 _003CstartPos_003E5__2;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4003DEC")]
+		[FieldOffset(Offset = "0x38")]
+		private WaitForSeconds _003CwaitAfterMove_003E5__3;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4003DED")]
+		[FieldOffset(Offset = "0x40")]
+		private List<Vector3>.Enumerator _003C_003E7__wrap3;
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4003DEE")]
+		[FieldOffset(Offset = "0x60")]
+		private Vector3 _003Cpos_003E5__5;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4003DEF")]
+		[FieldOffset(Offset = "0x6C")]
+		private Vector3 _003Ctarget_003E5__6;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x4003DF0")]
+		[FieldOffset(Offset = "0x78")]
+		private float _003CstartValue_003E5__7;
 
-	4. This script is unnecessary.
+		[Token(Token = "0x4003DF1")]
+		[FieldOffset(Offset = "0x7C")]
+		private float _003Ct_003E5__8;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x1700056A")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x60034E4")]
+			[Address(RVA = "0x17FC020", Offset = "0x17FC020", VA = "0x17FC020", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-	5. Script Content Level 0
+		[Token(Token = "0x1700056B")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x60034E6")]
+			[Address(RVA = "0x17FC068", Offset = "0x17FC068", VA = "0x17FC068", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
 
-		AssetRipper was set to not load any script information.
+		[Token(Token = "0x60034E0")]
+		[Address(RVA = "0x17FBAA8", Offset = "0x17FBAA8", VA = "0x17FBAA8")]
+		[DebuggerHidden]
+		public _003CRoutine_003Ed__22(int _003C_003E1__state)
+		{
+		}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x60034E1")]
+		[Address(RVA = "0x17FBAD4", Offset = "0x17FBAD4", VA = "0x17FBAD4", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x60034E2")]
+		[Address(RVA = "0x17FBBB4", Offset = "0x17FBBB4", VA = "0x17FBBB4", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
 
-	7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x60034E3")]
+		[Address(RVA = "0x17FBB58", Offset = "0x17FBB58", VA = "0x17FBB58")]
+		private void _003C_003Em__Finally1()
+		{
+		}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x60034E4")]
+		[Address(RVA = "0x17FC020", Offset = "0x17FC020", VA = "0x17FC020", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
 
-	*/
+		[Token(Token = "0x60034E5")]
+		[Address(RVA = "0x17FC028", Offset = "0x17FC028", VA = "0x17FC028", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
+
+		[Token(Token = "0x60034E6")]
+		[Address(RVA = "0x17FC068", Offset = "0x17FC068", VA = "0x17FC068", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
+
+	[Token(Token = "0x4003DD8")]
+	[FieldOffset(Offset = "0x18")]
+	public bool isSuperPutt;
+
+	[Token(Token = "0x4003DD9")]
+	[FieldOffset(Offset = "0x1C")]
+	public float tweenTime;
+
+	[Token(Token = "0x4003DDA")]
+	[FieldOffset(Offset = "0x20")]
+	public float offsetTime;
+
+	[Token(Token = "0x4003DDB")]
+	[FieldOffset(Offset = "0x24")]
+	public float waitTime;
+
+	[Token(Token = "0x4003DDC")]
+	[FieldOffset(Offset = "0x28")]
+	public List<Transform> targets;
+
+	[Token(Token = "0x4003DDD")]
+	[FieldOffset(Offset = "0x30")]
+	public AudioSource audioSource;
+
+	[Token(Token = "0x4003DDE")]
+	[FieldOffset(Offset = "0x38")]
+	public List<AudioClip> clipAtEnd;
+
+	[Token(Token = "0x4003DDF")]
+	[FieldOffset(Offset = "0x40")]
+	private Rigidbody2D rigid;
+
+	[Token(Token = "0x4003DE0")]
+	[FieldOffset(Offset = "0x48")]
+	private List<Vector3> targetPositions;
+
+	[Token(Token = "0x4003DE1")]
+	[FieldOffset(Offset = "0x50")]
+	private Coroutine lastRoutine;
+
+	[Token(Token = "0x4003DE2")]
+	[FieldOffset(Offset = "0x58")]
+	private bool didInitialize;
+
+	[Token(Token = "0x4003DE3")]
+	[FieldOffset(Offset = "0x60")]
+	private Rigidbody2D ball;
+
+	[Token(Token = "0x4003DE4")]
+	[FieldOffset(Offset = "0x68")]
+	private Vector2 lastBallPos;
+
+	[Token(Token = "0x4003DE5")]
+	[FieldOffset(Offset = "0x70")]
+	private float totalBallMovement;
+
+	[Token(Token = "0x4003DE6")]
+	[FieldOffset(Offset = "0x74")]
+	private float volume;
+
+	[Token(Token = "0x4003DE7")]
+	[FieldOffset(Offset = "0x78")]
+	private float pitch;
+
+	[Token(Token = "0x60034D8")]
+	[Address(RVA = "0x15784EC", Offset = "0x15784EC", VA = "0x15784EC")]
+	public void Initialize()
+	{
+	}
+
+	[Token(Token = "0x60034D9")]
+	[Address(RVA = "0x1578978", Offset = "0x1578978", VA = "0x1578978")]
+	private void Instance_OnNewBall(Transmogrif.BALLSHAPES newShape)
+	{
+	}
+
+	[Token(Token = "0x60034DA")]
+	[Address(RVA = "0x15789E0", Offset = "0x15789E0", VA = "0x15789E0")]
+	private void OnEnable()
+	{
+	}
+
+	[Token(Token = "0x60034DB")]
+	[Address(RVA = "0x1578AD8", Offset = "0x1578AD8", VA = "0x1578AD8")]
+	private void OnDisable()
+	{
+	}
+
+	[Token(Token = "0x60034DC")]
+	[Address(RVA = "0x1578AE4", Offset = "0x1578AE4", VA = "0x1578AE4")]
+	private void OnDrawGizmosSelected()
+	{
+	}
+
+	[Token(Token = "0x60034DD")]
+	[Address(RVA = "0x1578D7C", Offset = "0x1578D7C", VA = "0x1578D7C")]
+	private void FixedUpdate()
+	{
+	}
+
+	[Token(Token = "0x60034DE")]
+	[Address(RVA = "0x1578A64", Offset = "0x1578A64", VA = "0x1578A64")]
+	private IEnumerator Routine()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x60034DF")]
+	[Address(RVA = "0x1578E34", Offset = "0x1578E34", VA = "0x1578E34")]
+	public MovingStone()
+	{
+	}
 }

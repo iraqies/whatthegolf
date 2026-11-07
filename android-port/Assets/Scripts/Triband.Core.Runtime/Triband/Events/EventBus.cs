@@ -1,66 +1,201 @@
+using System;
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 namespace Triband.Events
 {
-	public class EventBus : MonoBehaviour
+	[Token(Token = "0x200000B")]
+	public class EventBus
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x200000C")]
+		private struct EventCallback
+		{
+			[Token(Token = "0x4000022")]
+			[FieldOffset(Offset = "0x0")]
+			public object action;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x4000023")]
+			[FieldOffset(Offset = "0x8")]
+			public object target;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x1700000B")]
+			public bool isValid
+			{
+				[Token(Token = "0x600003D")]
+				[Address(RVA = "0x29F9A48", Offset = "0x29F9A48", VA = "0x29F9A48")]
+				get
+				{
+					return default;
+				}
+			}
+		}
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x200000D")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x1AF6D4", Offset = "0x1AF6D4")]
+		private sealed class _003C_003Ec__DisplayClass17_0<T> where T : struct
+		{
+			[Token(Token = "0x4000024")]
+			[FieldOffset(Offset = "0x0")]
+			public UnityAction<T> callback;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+			[Token(Token = "0x600003E")]
+			public _003C_003Ec__DisplayClass17_0()
+			{
+			}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+			[Token(Token = "0x600003F")]
+			internal bool _003CAddListenerInternal_003Eb__0(EventCallback item)
+			{
+				return default;
+			}
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Serializable]
+		[Token(Token = "0x200000E")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x1AF6E4", Offset = "0x1AF6E4")]
+		private sealed class _003C_003Ec
+		{
+			[Token(Token = "0x4000025")]
+			[FieldOffset(Offset = "0x0")]
+			public static readonly _003C_003Ec _003C_003E9;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+			[Token(Token = "0x4000026")]
+			[FieldOffset(Offset = "0x8")]
+			public static Predicate<EventCallback> _003C_003E9__21_0;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+			[Token(Token = "0x6000041")]
+			[Address(RVA = "0x29F9974", Offset = "0x29F9974", VA = "0x29F9974")]
+			public _003C_003Ec()
+			{
+			}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+			[Token(Token = "0x6000042")]
+			[Address(RVA = "0x29F997C", Offset = "0x29F997C", VA = "0x29F997C")]
+			internal bool _003CCleanupInvalidListenersInternal_003Eb__21_0(EventCallback e)
+			{
+				return default;
+			}
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x400001E")]
+		[FieldOffset(Offset = "0x0")]
+		private static EventBus s_instance;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x400001F")]
+		[FieldOffset(Offset = "0x8")]
+		private static EventBusCallbacks s_callbacks;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4000020")]
+		[FieldOffset(Offset = "0x10")]
+		private static bool s_appQuitting;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x4000021")]
+		[FieldOffset(Offset = "0x10")]
+		private Dictionary<Type, List<EventCallback>> _listenersPerEventType;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x1700000A")]
+		private static EventBus instance
+		{
+			[Token(Token = "0x600002C")]
+			[Address(RVA = "0x29F7C44", Offset = "0x29F7C44", VA = "0x29F7C44")]
+			get
+			{
+				return null;
+			}
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x600002B")]
+		[Address(RVA = "0x29F7BDC", Offset = "0x29F7BDC", VA = "0x29F7BDC")]
+		[AttributeAttribute(Name = "RuntimeInitializeOnLoadMethodAttribute", RVA = "0x1AF914", Offset = "0x1AF914")]
+		private static void Init()
+		{
+		}
 
-		*/
+		[Token(Token = "0x600002D")]
+		public static void RaiseEvent<T>(T eventInstance) where T : struct
+		{
+		}
+
+		[Token(Token = "0x600002E")]
+		public static void AddListener<T>(UnityAction<T> callback) where T : struct
+		{
+		}
+
+		[Token(Token = "0x600002F")]
+		public static void RemoveListener<T>(UnityAction<T> callback) where T : struct
+		{
+		}
+
+		[Token(Token = "0x6000030")]
+		[Address(RVA = "0x29F805C", Offset = "0x29F805C", VA = "0x29F805C")]
+		public static void RemoveAllListeners(UnityEngine.Object target)
+		{
+		}
+
+		[Token(Token = "0x6000031")]
+		[Address(RVA = "0x29F8388", Offset = "0x29F8388", VA = "0x29F8388")]
+		public static void CleanupInvalidListeners()
+		{
+		}
+
+		[Token(Token = "0x6000032")]
+		[Address(RVA = "0x29F86B0", Offset = "0x29F86B0", VA = "0x29F86B0")]
+		private void OnApplicationQuit()
+		{
+		}
+
+		[Token(Token = "0x6000033")]
+		[Address(RVA = "0x29F8718", Offset = "0x29F8718", VA = "0x29F8718")]
+		private void OnEnable()
+		{
+		}
+
+		[Token(Token = "0x6000034")]
+		[Address(RVA = "0x29F87E4", Offset = "0x29F87E4", VA = "0x29F87E4")]
+		private void OnDisable()
+		{
+		}
+
+		[Token(Token = "0x6000035")]
+		private void RaiseEventInternal<T>(T eventInstance) where T : struct
+		{
+		}
+
+		[Token(Token = "0x6000036")]
+		private void AddListenerInternal<T>(UnityAction<T> callback) where T : struct
+		{
+		}
+
+		[Token(Token = "0x6000037")]
+		private void RemoveListenerInternal<T>(UnityAction<T> callback) where T : struct
+		{
+		}
+
+		[Token(Token = "0x6000038")]
+		[Address(RVA = "0x29F8108", Offset = "0x29F8108", VA = "0x29F8108")]
+		private void RemoveAllListenersInternal(UnityEngine.Object target)
+		{
+		}
+
+		[Token(Token = "0x6000039")]
+		[Address(RVA = "0x29F88B0", Offset = "0x29F88B0", VA = "0x29F88B0")]
+		private void OnSceneUnloaded(Scene s)
+		{
+		}
+
+		[Token(Token = "0x600003A")]
+		[Address(RVA = "0x29F8420", Offset = "0x29F8420", VA = "0x29F8420")]
+		public void CleanupInvalidListenersInternal()
+		{
+		}
+
+		[Token(Token = "0x600003B")]
+		[Address(RVA = "0x29F7FD0", Offset = "0x29F7FD0", VA = "0x29F7FD0")]
+		public EventBus()
+		{
+		}
 	}
 }

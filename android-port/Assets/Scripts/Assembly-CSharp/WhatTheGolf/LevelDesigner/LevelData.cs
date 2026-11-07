@@ -1,66 +1,205 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace WhatTheGolf.LevelDesigner
 {
-	public class LevelData : MonoBehaviour
+	[Token(Token = "0x2001232")]
+	public sealed class LevelData : ScriptableObject
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x400624F")]
+		[FieldOffset(Offset = "0x18")]
+		[SerializeField]
+		private string m_LevelName;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4006250")]
+		[FieldOffset(Offset = "0x20")]
+		[SerializeField]
+		private string m_Description;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4006251")]
+		[FieldOffset(Offset = "0x28")]
+		[SerializeField]
+		private Texture2D m_Thumbnail;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4006252")]
+		[FieldOffset(Offset = "0x30")]
+		[SerializeField]
+		private LevelContentData m_ContentData;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4006253")]
+		[FieldOffset(Offset = "0x38")]
+		[SerializeField]
+		private bool m_CanPublish;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4006254")]
+		[FieldOffset(Offset = "0x39")]
+		[SerializeField]
+		private bool m_Published;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4006255")]
+		[FieldOffset(Offset = "0x3C")]
+		private Guid m_Guid;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4006256")]
+		[FieldOffset(Offset = "0x4C")]
+		private bool m_Completed;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4006257")]
+		[FieldOffset(Offset = "0x4D")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x5884C", Offset = "0x5884C")]
+		private bool hasUnsavedChanges__BackingField;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x17000946")]
+		public string levelName
+		{
+			[Token(Token = "0x60053CE")]
+			[Address(RVA = "0x1529228", Offset = "0x1529228", VA = "0x1529228")]
+			get
+			{
+				return null;
+			}
+			[Token(Token = "0x60053CF")]
+			[Address(RVA = "0x1529230", Offset = "0x1529230", VA = "0x1529230")]
+			set
+			{
+			}
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x17000947")]
+		public string description
+		{
+			[Token(Token = "0x60053D0")]
+			[Address(RVA = "0x1529238", Offset = "0x1529238", VA = "0x1529238")]
+			get
+			{
+				return null;
+			}
+			[Token(Token = "0x60053D1")]
+			[Address(RVA = "0x1529240", Offset = "0x1529240", VA = "0x1529240")]
+			set
+			{
+			}
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x17000948")]
+		public Texture2D thumbnail
+		{
+			[Token(Token = "0x60053D2")]
+			[Address(RVA = "0x1529248", Offset = "0x1529248", VA = "0x1529248")]
+			get
+			{
+				return null;
+			}
+			[Token(Token = "0x60053D3")]
+			[Address(RVA = "0x1529250", Offset = "0x1529250", VA = "0x1529250")]
+			set
+			{
+			}
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x17000949")]
+		public LevelContentData contentData
+		{
+			[Token(Token = "0x60053D4")]
+			[Address(RVA = "0x1529258", Offset = "0x1529258", VA = "0x1529258")]
+			get
+			{
+				return null;
+			}
+			[Token(Token = "0x60053D5")]
+			[Address(RVA = "0x1529260", Offset = "0x1529260", VA = "0x1529260")]
+			set
+			{
+			}
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x1700094A")]
+		public bool canPublish
+		{
+			[Token(Token = "0x60053D6")]
+			[Address(RVA = "0x1529268", Offset = "0x1529268", VA = "0x1529268")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x60053D7")]
+			[Address(RVA = "0x1529270", Offset = "0x1529270", VA = "0x1529270")]
+			set
+			{
+			}
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x1700094B")]
+		public bool published
+		{
+			[Token(Token = "0x60053D8")]
+			[Address(RVA = "0x1529278", Offset = "0x1529278", VA = "0x1529278")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x60053D9")]
+			[Address(RVA = "0x1529280", Offset = "0x1529280", VA = "0x1529280")]
+			set
+			{
+			}
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x1700094C")]
+		public Guid guid
+		{
+			[Token(Token = "0x60053DA")]
+			[Address(RVA = "0x1529288", Offset = "0x1529288", VA = "0x1529288")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x60053DB")]
+			[Address(RVA = "0x1529298", Offset = "0x1529298", VA = "0x1529298")]
+			set
+			{
+			}
+		}
 
-		*/
+		[Token(Token = "0x1700094D")]
+		public bool completed
+		{
+			[Token(Token = "0x60053DC")]
+			[Address(RVA = "0x15292A4", Offset = "0x15292A4", VA = "0x15292A4")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x60053DD")]
+			[Address(RVA = "0x15292AC", Offset = "0x15292AC", VA = "0x15292AC")]
+			set
+			{
+			}
+		}
+
+		[Token(Token = "0x1700094E")]
+		public bool hasUnsavedChanges
+		{
+			[Token(Token = "0x60053DE")]
+			[Address(RVA = "0x15292B4", Offset = "0x15292B4", VA = "0x15292B4")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x711B8", Offset = "0x711B8")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x60053DF")]
+			[Address(RVA = "0x15292BC", Offset = "0x15292BC", VA = "0x15292BC")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x711C8", Offset = "0x711C8")]
+			set
+			{
+			}
+		}
+
+		[Token(Token = "0x60053E0")]
+		[Address(RVA = "0x15292C4", Offset = "0x15292C4", VA = "0x15292C4")]
+		public LevelData()
+		{
+		}
 	}
 }

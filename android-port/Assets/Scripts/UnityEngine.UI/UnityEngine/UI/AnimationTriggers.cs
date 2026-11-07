@@ -1,66 +1,116 @@
-using UnityEngine;
+using System;
+using Il2CppDummyDll;
 
 namespace UnityEngine.UI
 {
-	public class AnimationTriggers : MonoBehaviour
+	[Serializable]
+	[Token(Token = "0x2000002")]
+	public class AnimationTriggers
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4000001")]
+		private const string kDefaultNormalAnimName = "Normal";
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000002")]
+		private const string kDefaultHighlightedAnimName = "Highlighted";
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000003")]
+		private const string kDefaultPressedAnimName = "Pressed";
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4000004")]
+		private const string kDefaultSelectedAnimName = "Selected";
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4000005")]
+		private const string kDefaultDisabledAnimName = "Disabled";
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000006")]
+		[FieldOffset(Offset = "0x10")]
+		[AttributeAttribute(Name = "FormerlySerializedAsAttribute", RVA = "0x1F6C38", Offset = "0x1F6C38")]
+		[SerializeField]
+		private string m_NormalTrigger;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4000007")]
+		[FieldOffset(Offset = "0x18")]
+		[AttributeAttribute(Name = "FormerlySerializedAsAttribute", RVA = "0x1F6C84", Offset = "0x1F6C84")]
+		[SerializeField]
+		private string m_HighlightedTrigger;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4000008")]
+		[FieldOffset(Offset = "0x20")]
+		[SerializeField]
+		[AttributeAttribute(Name = "FormerlySerializedAsAttribute", RVA = "0x1F6CD0", Offset = "0x1F6CD0")]
+		private string m_PressedTrigger;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4000009")]
+		[FieldOffset(Offset = "0x28")]
+		[AttributeAttribute(Name = "FormerlySerializedAsAttribute", RVA = "0x1F6D1C", Offset = "0x1F6D1C")]
+		[SerializeField]
+		private string m_SelectedTrigger;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x400000A")]
+		[FieldOffset(Offset = "0x30")]
+		[AttributeAttribute(Name = "FormerlySerializedAsAttribute", RVA = "0x1F6D68", Offset = "0x1F6D68")]
+		[SerializeField]
+		private string m_DisabledTrigger;
 
-		5. Script Content Level 0
+		[Token(Token = "0x17000001")]
+		public string normalTrigger
+		{
+			[Token(Token = "0x6000001")]
+			[Address(RVA = "0x2BF7214", Offset = "0x2BF7214", VA = "0x2BF7214")]
+			get
+			{
+				return null;
+			}
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x17000002")]
+		public string highlightedTrigger
+		{
+			[Token(Token = "0x6000002")]
+			[Address(RVA = "0x2BF721C", Offset = "0x2BF721C", VA = "0x2BF721C")]
+			get
+			{
+				return null;
+			}
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x17000003")]
+		public string pressedTrigger
+		{
+			[Token(Token = "0x6000003")]
+			[Address(RVA = "0x2BF7224", Offset = "0x2BF7224", VA = "0x2BF7224")]
+			get
+			{
+				return null;
+			}
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x17000004")]
+		public string selectedTrigger
+		{
+			[Token(Token = "0x6000004")]
+			[Address(RVA = "0x2BF722C", Offset = "0x2BF722C", VA = "0x2BF722C")]
+			get
+			{
+				return null;
+			}
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x17000005")]
+		public string disabledTrigger
+		{
+			[Token(Token = "0x6000005")]
+			[Address(RVA = "0x2BF7234", Offset = "0x2BF7234", VA = "0x2BF7234")]
+			get
+			{
+				return null;
+			}
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x6000006")]
+		[Address(RVA = "0x2BF723C", Offset = "0x2BF723C", VA = "0x2BF723C")]
+		public AnimationTriggers()
+		{
+		}
 	}
 }

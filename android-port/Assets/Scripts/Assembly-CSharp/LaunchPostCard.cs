@@ -1,63 +1,174 @@
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000D03")]
 public class LaunchPostCard : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[StructLayout((LayoutKind)3)]
+	[Token(Token = "0x2000D04")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x44648", Offset = "0x44648")]
+	private struct _003CClose_003Ed__11 : IAsyncStateMachine
+	{
+		[Token(Token = "0x40046B7")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x0")]
+		public int _003C_003E1__state;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40046B8")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x8")]
+		public AsyncVoidMethodBuilder _003C_003Et__builder;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40046B9")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
+		public LaunchPostCard _003C_003E4__this;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40046BA")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x30")]
+		private TaskAwaiter _003C_003Eu__1;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x6003D83")]
+		[Address(RVA = "0x17CEC30", Offset = "0x17CEC30", VA = "0x17CEC30", Slot = "4")]
+		private void MoveNext()
+		{
+		}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x6003D84")]
+		[Address(RVA = "0x17CEF04", Offset = "0x17CEF04", VA = "0x17CEF04", Slot = "5")]
+		[DebuggerHidden]
+		private void SetStateMachine(IAsyncStateMachine stateMachine)
+		{
+		}
+	}
 
-	3. Assembly Reconstruction has not been implemented.
+	[StructLayout((LayoutKind)3)]
+	[Token(Token = "0x2000D05")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x44658", Offset = "0x44658")]
+	private struct _003CExit_003Ed__13 : IAsyncStateMachine
+	{
+		[Token(Token = "0x40046BB")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x0")]
+		public int _003C_003E1__state;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x40046BC")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x8")]
+		public AsyncVoidMethodBuilder _003C_003Et__builder;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x40046BD")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
+		public LaunchPostCard _003C_003E4__this;
 
-	4. This script is unnecessary.
+		[Token(Token = "0x40046BE")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x30")]
+		private TaskAwaiter _003C_003Eu__1;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6003D85")]
+		[Address(RVA = "0x17CEF10", Offset = "0x17CEF10", VA = "0x17CEF10", Slot = "4")]
+		private void MoveNext()
+		{
+		}
 
-	5. Script Content Level 0
+		[Token(Token = "0x6003D86")]
+		[Address(RVA = "0x17CF10C", Offset = "0x17CF10C", VA = "0x17CF10C", Slot = "5")]
+		[DebuggerHidden]
+		private void SetStateMachine(IAsyncStateMachine stateMachine)
+		{
+		}
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x40046B0")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x18")]
+	public MainMenu2Button exit;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x40046B1")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x20")]
+	public MainMenu2Button toMenu;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x40046B2")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
+	private MainMenu2Button selected;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x40046B3")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x30")]
+	public GameObject PostCard;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x40046B4")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x38")]
+	public Animator animator;
 
-	*/
+	[Token(Token = "0x40046B5")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x40")]
+	private bool isOpen;
+
+	[Token(Token = "0x40046B6")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x41")]
+	private bool busyClosing;
+
+	[Token(Token = "0x6003D78")]
+	[Address(RVA = "0x151E96C", Offset = "0x151E96C", VA = "0x151E96C")]
+	private void Awake()
+	{
+	}
+
+	[Token(Token = "0x6003D79")]
+	[Address(RVA = "0x151EA24", Offset = "0x151EA24", VA = "0x151EA24")]
+	private void OnLastFlagCompleted(LevelData lastFlagLevelData)
+	{
+	}
+
+	[Token(Token = "0x6003D7A")]
+	[Address(RVA = "0x151EA50", Offset = "0x151EA50", VA = "0x151EA50")]
+	public void LaunchCardAnimation()
+	{
+	}
+
+	[Token(Token = "0x6003D7B")]
+	[Address(RVA = "0x151EC5C", Offset = "0x151EC5C", VA = "0x151EC5C")]
+	private static void DisableUI()
+	{
+	}
+
+	[Token(Token = "0x6003D7C")]
+	[Address(RVA = "0x151EC84", Offset = "0x151EC84", VA = "0x151EC84")]
+	private static void EnableUI()
+	{
+	}
+
+	[Token(Token = "0x6003D7D")]
+	[Address(RVA = "0x151ECA8", Offset = "0x151ECA8", VA = "0x151ECA8")]
+	public void Close()
+	{
+	}
+
+	[Token(Token = "0x6003D7E")]
+	[Address(RVA = "0x151ED40", Offset = "0x151ED40", VA = "0x151ED40")]
+	public void Exit()
+	{
+	}
+
+	[Token(Token = "0x6003D7F")]
+	[Address(RVA = "0x151EDD8", Offset = "0x151EDD8", VA = "0x151EDD8")]
+	private void SetSelectedButtonExit()
+	{
+	}
+
+	[Token(Token = "0x6003D80")]
+	[Address(RVA = "0x151EDE4", Offset = "0x151EDE4", VA = "0x151EDE4")]
+	private void SetSelectedButtonToMenu()
+	{
+	}
+
+	[Token(Token = "0x6003D81")]
+	[Address(RVA = "0x151EDF0", Offset = "0x151EDF0", VA = "0x151EDF0")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x6003D82")]
+	[Address(RVA = "0x151F008", Offset = "0x151F008", VA = "0x151F008")]
+	public LaunchPostCard()
+	{
+	}
 }

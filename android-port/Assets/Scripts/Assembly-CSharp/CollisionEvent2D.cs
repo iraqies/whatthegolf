@@ -1,63 +1,136 @@
+using System;
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.Events;
 
+[Token(Token = "0x200087F")]
 public class CollisionEvent2D : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Serializable]
+	[Token(Token = "0x2000880")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x41B20", Offset = "0x41B20")]
+	private sealed class _003C_003Ec
+	{
+		[Token(Token = "0x4002E9A")]
+		[FieldOffset(Offset = "0x0")]
+		public static readonly _003C_003Ec _003C_003E9;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4002E9B")]
+		[FieldOffset(Offset = "0x8")]
+		public static Action<float> _003C_003E9__16_0;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x6002740")]
+		[Address(RVA = "0x178E338", Offset = "0x178E338", VA = "0x178E338")]
+		public _003C_003Ec()
+		{
+		}
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x6002741")]
+		[Address(RVA = "0x178E340", Offset = "0x178E340", VA = "0x178E340")]
+		internal void _003CEnterInvoke_003Eb__16_0(float t)
+		{
+		}
+	}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4002E90")]
+	[FieldOffset(Offset = "0x18")]
+	public UnityEvent OnEnter;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4002E91")]
+	[FieldOffset(Offset = "0x20")]
+	public UnityEvent OnStay;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4002E92")]
+	[FieldOffset(Offset = "0x28")]
+	public UnityEvent OnExit;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4002E93")]
+	[FieldOffset(Offset = "0x30")]
+	public UnityEvent OnTriggerEnter;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4002E94")]
+	[FieldOffset(Offset = "0x38")]
+	public UnityEvent OnTriggerStay;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4002E95")]
+	[FieldOffset(Offset = "0x40")]
+	public UnityEvent OnTriggerExit;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4002E96")]
+	[FieldOffset(Offset = "0x48")]
+	public List<string> Tags;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4002E97")]
+	[FieldOffset(Offset = "0x50")]
+	public float minForce;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4002E98")]
+	[FieldOffset(Offset = "0x54")]
+	public bool acceptAny;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4002E99")]
+	[FieldOffset(Offset = "0x58")]
+	public float Delay;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x6002735")]
+	[Address(RVA = "0x18A80A8", Offset = "0x18A80A8", VA = "0x18A80A8")]
+	private void OnCollisionEnter2D(Collision2D other)
+	{
+	}
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x6002736")]
+	[Address(RVA = "0x18A8390", Offset = "0x18A8390", VA = "0x18A8390")]
+	private void OnCollisionStay2D(Collision2D other)
+	{
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x6002737")]
+	[Address(RVA = "0x18A84A8", Offset = "0x18A84A8", VA = "0x18A84A8")]
+	private void OnCollisionExit2D(Collision2D other)
+	{
+	}
 
-	*/
+	[Token(Token = "0x6002738")]
+	[Address(RVA = "0x18A85DC", Offset = "0x18A85DC", VA = "0x18A85DC")]
+	private void OnTriggerEnter2D(Collider2D other)
+	{
+	}
+
+	[Token(Token = "0x6002739")]
+	[Address(RVA = "0x18A869C", Offset = "0x18A869C", VA = "0x18A869C")]
+	private void OnTriggerStay2D(Collider2D other)
+	{
+	}
+
+	[Token(Token = "0x600273A")]
+	[Address(RVA = "0x18A875C", Offset = "0x18A875C", VA = "0x18A875C")]
+	private void OnTriggerExit2D(Collider2D other)
+	{
+	}
+
+	[Token(Token = "0x600273B")]
+	[Address(RVA = "0x18A81B8", Offset = "0x18A81B8", VA = "0x18A81B8")]
+	private void EnterInvoke()
+	{
+	}
+
+	[Token(Token = "0x600273C")]
+	[Address(RVA = "0x18A85C0", Offset = "0x18A85C0", VA = "0x18A85C0")]
+	private void ExitInvoke()
+	{
+	}
+
+	[Token(Token = "0x600273D")]
+	[Address(RVA = "0x18A881C", Offset = "0x18A881C", VA = "0x18A881C")]
+	public CollisionEvent2D()
+	{
+	}
+
+	[Token(Token = "0x600273E")]
+	[Address(RVA = "0x18A8824", Offset = "0x18A8824", VA = "0x18A8824")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x66E90", Offset = "0x66E90")]
+	private void _003CEnterInvoke_003Eb__16_1()
+	{
+	}
 }

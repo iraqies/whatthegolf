@@ -1,66 +1,78 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace MonitorComponents
 {
+	[Token(Token = "0x200026B")]
+	[ExecuteInEditMode]
 	public class MonitorDebugLog : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4000FD1")]
+		[FieldOffset(Offset = "0x18")]
+		public string filterPrefix;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000FD2")]
+		[FieldOffset(Offset = "0x20")]
+		private Monitor monitor;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x6001004")]
+		[Address(RVA = "0x13B07BC", Offset = "0x13B07BC", VA = "0x13B07BC")]
+		private void Awake()
+		{
+		}
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x6001005")]
+		[Address(RVA = "0x13B0844", Offset = "0x13B0844", VA = "0x13B0844")]
+		private void Start()
+		{
+		}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x6001006")]
+		[Address(RVA = "0x13B08FC", Offset = "0x13B08FC", VA = "0x13B08FC")]
+		public void UpdateMonitors()
+		{
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x6001007")]
+		[Address(RVA = "0x13B0A8C", Offset = "0x13B0A8C", VA = "0x13B0A8C")]
+		public void Update()
+		{
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6001008")]
+		[Address(RVA = "0x13B0ACC", Offset = "0x13B0ACC", VA = "0x13B0ACC")]
+		private void LogCallback(string logString, string stackTrace, LogType type)
+		{
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6001009")]
+		[Address(RVA = "0x13B0BAC", Offset = "0x13B0BAC", VA = "0x13B0BAC")]
+		public void OnEnable()
+		{
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x600100A")]
+		[Address(RVA = "0x13B0BB0", Offset = "0x13B0BB0", VA = "0x13B0BB0")]
+		public void OnDisable()
+		{
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x600100B")]
+		[Address(RVA = "0x13B0BB4", Offset = "0x13B0BB4", VA = "0x13B0BB4")]
+		public void OnDestroy()
+		{
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x600100C")]
+		[Address(RVA = "0x13B0C30", Offset = "0x13B0C30", VA = "0x13B0C30")]
+		private void RemoveMonitor()
+		{
+		}
 
-			AssetRipper was set to not load any script information.
-
-		6. Cpp2IL failed to decompile Il2Cpp data
-
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x600100D")]
+		[Address(RVA = "0x13B0CAC", Offset = "0x13B0CAC", VA = "0x13B0CAC")]
+		public MonitorDebugLog()
+		{
+		}
 	}
 }

@@ -1,63 +1,189 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x20009A8")]
 public class DoorBubble : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x20009A9")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x42660", Offset = "0x42660")]
+	private sealed class _003CBubbleShow_003Ed__8 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x4003530")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4003531")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4003532")]
+		[FieldOffset(Offset = "0x20")]
+		public DoorBubble _003C_003E4__this;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4003533")]
+		[FieldOffset(Offset = "0x28")]
+		private float _003CscaleUpDuration_003E5__2;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x170004B5")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x6002D74")]
+			[Address(RVA = "0x179D8E4", Offset = "0x179D8E4", VA = "0x179D8E4", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x170004B6")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x6002D76")]
+			[Address(RVA = "0x179D92C", Offset = "0x179D92C", VA = "0x179D92C", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6002D71")]
+		[Address(RVA = "0x179D680", Offset = "0x179D680", VA = "0x179D680")]
+		[DebuggerHidden]
+		public _003CBubbleShow_003Ed__8(int _003C_003E1__state)
+		{
+		}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6002D72")]
+		[Address(RVA = "0x179D6AC", Offset = "0x179D6AC", VA = "0x179D6AC", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x6002D73")]
+		[Address(RVA = "0x179D6B0", Offset = "0x179D6B0", VA = "0x179D6B0", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
 
-	4. This script is unnecessary.
+		[Token(Token = "0x6002D74")]
+		[Address(RVA = "0x179D8E4", Offset = "0x179D8E4", VA = "0x179D8E4", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6002D75")]
+		[Address(RVA = "0x179D8EC", Offset = "0x179D8EC", VA = "0x179D8EC", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
 
-	5. Script Content Level 0
+		[Token(Token = "0x6002D76")]
+		[Address(RVA = "0x179D92C", Offset = "0x179D92C", VA = "0x179D92C", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x400352C")]
+	[FieldOffset(Offset = "0x18")]
+	private DoorBubbleState state;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x400352D")]
+	[FieldOffset(Offset = "0x20")]
+	private Coroutine scaleCoroutine;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x400352E")]
+	[FieldOffset(Offset = "0x28")]
+	private bool hasShot;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x400352F")]
+	[FieldOffset(Offset = "0x2C")]
+	private float maxBubbleScale;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x170004B4")]
+	public DoorBubbleState State
+	{
+		[Token(Token = "0x6002D6B")]
+		[Address(RVA = "0x14329BC", Offset = "0x14329BC", VA = "0x14329BC")]
+		set
+		{
+		}
+	}
 
-	*/
+	[Token(Token = "0x6002D66")]
+	[Address(RVA = "0x14326A4", Offset = "0x14326A4", VA = "0x14326A4")]
+	public void Init()
+	{
+	}
+
+	[Token(Token = "0x6002D67")]
+	[Address(RVA = "0x14327EC", Offset = "0x14327EC", VA = "0x14327EC")]
+	public void UpdateBubbleSize()
+	{
+	}
+
+	[Token(Token = "0x6002D68")]
+	[Address(RVA = "0x1432750", Offset = "0x1432750", VA = "0x1432750")]
+	private void SetBubbleScale()
+	{
+	}
+
+	[Token(Token = "0x6002D69")]
+	[Address(RVA = "0x143285C", Offset = "0x143285C", VA = "0x143285C")]
+	public void Hit()
+	{
+	}
+
+	[Token(Token = "0x6002D6A")]
+	[Address(RVA = "0x1432948", Offset = "0x1432948", VA = "0x1432948")]
+	private IEnumerator BubbleShow()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6002D6C")]
+	[Address(RVA = "0x1432AC0", Offset = "0x1432AC0", VA = "0x1432AC0")]
+	private void OnEnable()
+	{
+	}
+
+	[Token(Token = "0x6002D6D")]
+	[Address(RVA = "0x1432AC8", Offset = "0x1432AC8", VA = "0x1432AC8")]
+	public DoorBubble()
+	{
+	}
+
+	[Token(Token = "0x6002D6E")]
+	[Address(RVA = "0x1432AD0", Offset = "0x1432AD0", VA = "0x1432AD0")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x68594", Offset = "0x68594")]
+	private void _003CInit_003Eb__4_0()
+	{
+	}
+
+	[Token(Token = "0x6002D6F")]
+	[Address(RVA = "0x1432ADC", Offset = "0x1432ADC", VA = "0x1432ADC")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x685A4", Offset = "0x685A4")]
+	private void _003CBubbleShow_003Eb__8_0(float t)
+	{
+	}
+
+	[Token(Token = "0x6002D70")]
+	[Address(RVA = "0x1432B5C", Offset = "0x1432B5C", VA = "0x1432B5C")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x685B4", Offset = "0x685B4")]
+	private void _003CBubbleShow_003Eb__8_1(float t)
+	{
+	}
 }

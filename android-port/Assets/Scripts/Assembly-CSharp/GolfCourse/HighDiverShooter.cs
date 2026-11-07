@@ -1,66 +1,183 @@
+using Buoyancy;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace GolfCourse
 {
-	public class HighDiverShooter : MonoBehaviour
+	[Token(Token = "0x2001201")]
+	public class HighDiverShooter : ShooterBase
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x40060E9")]
+		[FieldOffset(Offset = "0x20")]
+		[SerializeField]
+		private float velocityPreDive;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40060EA")]
+		[FieldOffset(Offset = "0x24")]
+		[SerializeField]
+		private float velocityPostDive;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40060EB")]
+		[FieldOffset(Offset = "0x28")]
+		[SerializeField]
+		private float spinPreDive;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40060EC")]
+		[FieldOffset(Offset = "0x2C")]
+		[SerializeField]
+		private float spinPostDive;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40060ED")]
+		[FieldOffset(Offset = "0x30")]
+		[SerializeField]
+		private float pitchPreDive;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40060EE")]
+		[FieldOffset(Offset = "0x34")]
+		[SerializeField]
+		private float pitchPostDive;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x40060EF")]
+		[FieldOffset(Offset = "0x38")]
+		[SerializeField]
+		private float maxForceTowardTarget;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x40060F0")]
+		[FieldOffset(Offset = "0x40")]
+		[SerializeField]
+		private Transform goTowardTargetOnDive;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x40060F1")]
+		[FieldOffset(Offset = "0x48")]
+		[SerializeField]
+		private Collider diveTrigger;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x40060F2")]
+		[FieldOffset(Offset = "0x50")]
+		[SerializeField]
+		private Animator animator;
 
-		5. Script Content Level 0
+		[Token(Token = "0x40060F3")]
+		[FieldOffset(Offset = "0x58")]
+		[SerializeField]
+		private BuoyancyTarget buoyancyTarget;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x40060F4")]
+		[FieldOffset(Offset = "0x60")]
+		[SerializeField]
+		private SphereCastGroundCheck groundCheck;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x40060F5")]
+		[FieldOffset(Offset = "0x68")]
+		public bool debugAddTorque;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x40060F6")]
+		[FieldOffset(Offset = "0x70")]
+		private Rigidbody hips;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x40060F7")]
+		[FieldOffset(Offset = "0x78")]
+		private Rigidbody[] rigidbodies;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x40060F8")]
+		[FieldOffset(Offset = "0x80")]
+		private bool didDive;
 
-		*/
+		[Token(Token = "0x40060F9")]
+		[FieldOffset(Offset = "0x81")]
+		private bool isCollapsed;
+
+		[Token(Token = "0x40060FA")]
+		[FieldOffset(Offset = "0x82")]
+		private bool hasLeftWater;
+
+		[Token(Token = "0x40060FB")]
+		[FieldOffset(Offset = "0x84")]
+		private Vector3 lastboost;
+
+		[Token(Token = "0x17000918")]
+		private float currentMaxVelocity
+		{
+			[Token(Token = "0x60052B8")]
+			[Address(RVA = "0x14C7238", Offset = "0x14C7238", VA = "0x14C7238")]
+			get
+			{
+				return default;
+			}
+		}
+
+		[Token(Token = "0x17000919")]
+		private float currentSpin
+		{
+			[Token(Token = "0x60052B9")]
+			[Address(RVA = "0x14C7254", Offset = "0x14C7254", VA = "0x14C7254")]
+			get
+			{
+				return default;
+			}
+		}
+
+		[Token(Token = "0x1700091A")]
+		private float currentPitch
+		{
+			[Token(Token = "0x60052BA")]
+			[Address(RVA = "0x14C7270", Offset = "0x14C7270", VA = "0x14C7270")]
+			get
+			{
+				return default;
+			}
+		}
+
+		[Token(Token = "0x60052BB")]
+		[Address(RVA = "0x14C728C", Offset = "0x14C728C", VA = "0x14C728C")]
+		private void Awake()
+		{
+		}
+
+		[Token(Token = "0x60052BC")]
+		[Address(RVA = "0x14C7410", Offset = "0x14C7410", VA = "0x14C7410")]
+		public bool CanShoot()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60052BD")]
+		[Address(RVA = "0x14C74D8", Offset = "0x14C74D8", VA = "0x14C74D8", Slot = "7")]
+		public override void OnShoot(Vector3 boost)
+		{
+		}
+
+		[Token(Token = "0x60052BE")]
+		[Address(RVA = "0x14C7910", Offset = "0x14C7910", VA = "0x14C7910")]
+		private void FixedUpdate()
+		{
+		}
+
+		[Token(Token = "0x60052BF")]
+		[Address(RVA = "0x14C7A44", Offset = "0x14C7A44", VA = "0x14C7A44")]
+		private void OnTriggerEnter(Collider other)
+		{
+		}
+
+		[Token(Token = "0x60052C0")]
+		[Address(RVA = "0x14C7848", Offset = "0x14C7848", VA = "0x14C7848")]
+		private Vector3 PitchBoost(Vector3 boost)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60052C1")]
+		[Address(RVA = "0x14C7B10", Offset = "0x14C7B10", VA = "0x14C7B10")]
+		public HighDiverShooter()
+		{
+		}
+
+		[Token(Token = "0x60052C2")]
+		[Address(RVA = "0x14C7B6C", Offset = "0x14C7B6C", VA = "0x14C7B6C")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x70BF8", Offset = "0x70BF8")]
+		private void _003CAwake_003Eb__24_0()
+		{
+		}
 	}
 }

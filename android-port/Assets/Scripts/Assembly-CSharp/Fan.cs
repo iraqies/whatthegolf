@@ -1,63 +1,176 @@
+using System.Collections.Generic;
+using Chronos;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000B08")]
 public class Fan : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4003D99")]
+	[FieldOffset(Offset = "0x18")]
+	public float SphereCastRadius;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4003D9A")]
+	[FieldOffset(Offset = "0x1C")]
+	public float SphereCastDistance;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4003D9B")]
+	[FieldOffset(Offset = "0x20")]
+	public BoxCollider EffectTrigger;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4003D9C")]
+	[FieldOffset(Offset = "0x28")]
+	public float MaxForce;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4003D9D")]
+	[FieldOffset(Offset = "0x2C")]
+	public bool CheckForTimeline;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4003D9E")]
+	[FieldOffset(Offset = "0x2D")]
+	public bool OnlyAddTimelines;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4003D9F")]
+	[FieldOffset(Offset = "0x30")]
+	public HashSet<Rigidbody> affectedObjects;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4003DA0")]
+	[FieldOffset(Offset = "0x38")]
+	public HashSet<Timeline> affectedTimelines;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4003DA1")]
+	[FieldOffset(Offset = "0x40")]
+	public ForceMode ForceMode;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4003DA2")]
+	[FieldOffset(Offset = "0x44")]
+	public bool IsOn;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4003DA3")]
+	[FieldOffset(Offset = "0x45")]
+	public bool ForceDependsOnDistance;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4003DA4")]
+	[FieldOffset(Offset = "0x48")]
+	private RotateAxis rotator;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4003DA5")]
+	[FieldOffset(Offset = "0x50")]
+	private float rotatorSpeed;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4003DA6")]
+	[FieldOffset(Offset = "0x54")]
+	private float rotatorSpeedTarget;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4003DA7")]
+	[FieldOffset(Offset = "0x58")]
+	private ParticleSystem particles;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4003DA8")]
+	[FieldOffset(Offset = "0x60")]
+	private AudioSource Source;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x4003DA9")]
+	[FieldOffset(Offset = "0x68")]
+	private float baseVolume;
 
-	*/
+	[Token(Token = "0x4003DAA")]
+	[FieldOffset(Offset = "0x6C")]
+	private float startEmission;
+
+	[Token(Token = "0x4003DAB")]
+	[FieldOffset(Offset = "0x70")]
+	[SerializeField]
+	private bool shouldOverrideForceDirection;
+
+	[Token(Token = "0x4003DAC")]
+	[FieldOffset(Offset = "0x74")]
+	[SerializeField]
+	private Vector3 overrideForceDirection;
+
+	[Token(Token = "0x17000568")]
+	private Vector3 forceDirection
+	{
+		[Token(Token = "0x60034A7")]
+		[Address(RVA = "0x145E1D4", Offset = "0x145E1D4", VA = "0x145E1D4")]
+		get
+		{
+			return default;
+		}
+	}
+
+	[Token(Token = "0x60034A8")]
+	[Address(RVA = "0x145E220", Offset = "0x145E220", VA = "0x145E220")]
+	private void Awake()
+	{
+	}
+
+	[Token(Token = "0x60034A9")]
+	[Address(RVA = "0x145E754", Offset = "0x145E754", VA = "0x145E754")]
+	private void OnTriggerEnter(Collider other)
+	{
+	}
+
+	[Token(Token = "0x60034AA")]
+	[Address(RVA = "0x145E96C", Offset = "0x145E96C", VA = "0x145E96C")]
+	private void OnTriggerExit(Collider other)
+	{
+	}
+
+	[Token(Token = "0x60034AB")]
+	[Address(RVA = "0x145EAE4", Offset = "0x145EAE4", VA = "0x145EAE4")]
+	private void FixedUpdate()
+	{
+	}
+
+	[Token(Token = "0x60034AC")]
+	[Address(RVA = "0x145F0D8", Offset = "0x145F0D8", VA = "0x145F0D8")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x60034AD")]
+	[Address(RVA = "0x145F5AC", Offset = "0x145F5AC", VA = "0x145F5AC")]
+	private void OnDrawGizmosSelected()
+	{
+	}
+
+	[Token(Token = "0x60034AE")]
+	[Address(RVA = "0x145F748", Offset = "0x145F748", VA = "0x145F748")]
+	public void Toggle()
+	{
+	}
+
+	[Token(Token = "0x60034AF")]
+	[Address(RVA = "0x145E48C", Offset = "0x145E48C", VA = "0x145E48C")]
+	public void Toggle(bool state)
+	{
+	}
+
+	[Token(Token = "0x60034B0")]
+	[Address(RVA = "0x145F758", Offset = "0x145F758", VA = "0x145F758")]
+	public Fan()
+	{
+	}
+
+	[Token(Token = "0x60034B1")]
+	[Address(RVA = "0x145F770", Offset = "0x145F770", VA = "0x145F770")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x6A868", Offset = "0x6A868")]
+	private void _003CToggle_003Eb__29_0(float t)
+	{
+	}
+
+	[Token(Token = "0x60034B2")]
+	[Address(RVA = "0x145F7B0", Offset = "0x145F7B0", VA = "0x145F7B0")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x6A878", Offset = "0x6A878")]
+	private void _003CToggle_003Eb__29_1(float t)
+	{
+	}
+
+	[Token(Token = "0x60034B3")]
+	[Address(RVA = "0x145F7F0", Offset = "0x145F7F0", VA = "0x145F7F0")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x6A888", Offset = "0x6A888")]
+	private void _003CToggle_003Eb__29_2()
+	{
+	}
 }

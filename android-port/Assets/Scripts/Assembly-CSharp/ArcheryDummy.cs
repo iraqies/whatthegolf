@@ -1,63 +1,72 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x200070B")]
 public class ArcheryDummy : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4002508")]
+	[FieldOffset(Offset = "0x18")]
+	public int breakJointCount;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4002509")]
+	[FieldOffset(Offset = "0x1C")]
+	public float breakDistance;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x400250A")]
+	[FieldOffset(Offset = "0x20")]
+	private Joint2D joint;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x400250B")]
+	[FieldOffset(Offset = "0x28")]
+	private int count;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x400250C")]
+	[FieldOffset(Offset = "0x2C")]
+	private bool didBreak;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x400250D")]
+	[FieldOffset(Offset = "0x30")]
+	private Vector3 basePos;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x400250E")]
+	[FieldOffset(Offset = "0x3C")]
+	public float breakMass;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x400250F")]
+	[FieldOffset(Offset = "0x40")]
+	public float breakDrag;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4002510")]
+	[FieldOffset(Offset = "0x44")]
+	public bool breakOnAngle;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x600207E")]
+	[Address(RVA = "0x141FFDC", Offset = "0x141FFDC", VA = "0x141FFDC")]
+	private void OnEnable()
+	{
+	}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x600207F")]
+	[Address(RVA = "0x1420054", Offset = "0x1420054", VA = "0x1420054")]
+	private void Update()
+	{
+	}
 
-	5. Script Content Level 0
+	[Token(Token = "0x6002080")]
+	[Address(RVA = "0x1420158", Offset = "0x1420158", VA = "0x1420158")]
+	private void BreakJoint()
+	{
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x6002081")]
+	[Address(RVA = "0x142024C", Offset = "0x142024C", VA = "0x142024C")]
+	private void OnTriggerEnter2D(Collider2D collision)
+	{
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
-
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x6002082")]
+	[Address(RVA = "0x142033C", Offset = "0x142033C", VA = "0x142033C")]
+	public ArcheryDummy()
+	{
+	}
 }

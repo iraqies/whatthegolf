@@ -1,66 +1,129 @@
+using System.Collections.Generic;
+using Audio.Conditions;
+using Audio.Rumble;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Audio
 {
-	public class RagdollCollisionSounds : MonoBehaviour
+	[Token(Token = "0x20013A3")]
+	public class RagdollCollisionSounds : MonoBehaviour, IAudioCullable
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4006990")]
+		[FieldOffset(Offset = "0x18")]
+		public Transform root;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4006991")]
+		[FieldOffset(Offset = "0x20")]
+		public List<Transform> limbs;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4006992")]
+		[FieldOffset(Offset = "0x28")]
+		public List<Transform> allLimbs;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4006993")]
+		[FieldOffset(Offset = "0x30")]
+		public string limbsParsed;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4006994")]
+		[FieldOffset(Offset = "0x38")]
+		public AudioMaterial audioMaterial;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4006995")]
+		[FieldOffset(Offset = "0x40")]
+		public AudioMaterial[] includeMaterials;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4006996")]
+		[FieldOffset(Offset = "0x48")]
+		public AudioMaterial[] excludeMaterials;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4006997")]
+		[FieldOffset(Offset = "0x50")]
+		public bool onlyBelow;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4006998")]
+		[FieldOffset(Offset = "0x51")]
+		public bool collideWithSelf;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4006999")]
+		[FieldOffset(Offset = "0x54")]
+		public float cooldown;
 
-		5. Script Content Level 0
+		[Token(Token = "0x400699A")]
+		[FieldOffset(Offset = "0x58")]
+		public float minVelocity;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x400699B")]
+		[FieldOffset(Offset = "0x5C")]
+		public float maxVelocity;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x400699C")]
+		[FieldOffset(Offset = "0x60")]
+		public bool goesAboveMaxVelocity;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x400699D")]
+		[FieldOffset(Offset = "0x68")]
+		public RandomAudioClips clips;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x400699E")]
+		[FieldOffset(Offset = "0x70")]
+		public ConditionChecker conditions;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x400699F")]
+		[FieldOffset(Offset = "0x78")]
+		public List<RumbleEventAsset> rumbles;
 
-		*/
+		[Token(Token = "0x40069A0")]
+		[FieldOffset(Offset = "0x80")]
+		private float nextEventTime;
+
+		[Token(Token = "0x40069A1")]
+		[FieldOffset(Offset = "0x88")]
+		private List<AudioMaterial> include;
+
+		[Token(Token = "0x40069A2")]
+		[FieldOffset(Offset = "0x90")]
+		private List<AudioMaterial> exclude;
+
+		[Token(Token = "0x40069A3")]
+		[FieldOffset(Offset = "0x98")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x5A6E0", Offset = "0x5A6E0")]
+		private bool IsVisible__BackingField;
+
+		[Token(Token = "0x17000A56")]
+		public bool IsVisible
+		{
+			[Token(Token = "0x6005BB0")]
+			[Address(RVA = "0x163B060", Offset = "0x163B060", VA = "0x163B060", Slot = "5")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x726B8", Offset = "0x726B8")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6005BB1")]
+			[Address(RVA = "0x163B068", Offset = "0x163B068", VA = "0x163B068", Slot = "4")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x726C8", Offset = "0x726C8")]
+			set
+			{
+			}
+		}
+
+		[Token(Token = "0x6005BB2")]
+		[Address(RVA = "0x163B070", Offset = "0x163B070", VA = "0x163B070")]
+		private void Start()
+		{
+		}
+
+		[Token(Token = "0x6005BB3")]
+		[Address(RVA = "0x163B584", Offset = "0x163B584", VA = "0x163B584")]
+		private void OnCollisionAudio(LimbCollisionInfo.LimbHitInfo hitInfo)
+		{
+		}
+
+		[Token(Token = "0x6005BB4")]
+		[Address(RVA = "0x163B7C0", Offset = "0x163B7C0", VA = "0x163B7C0")]
+		public RagdollCollisionSounds()
+		{
+		}
 	}
 }

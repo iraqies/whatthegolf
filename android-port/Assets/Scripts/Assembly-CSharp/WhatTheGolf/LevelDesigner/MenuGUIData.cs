@@ -1,66 +1,143 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace WhatTheGolf.LevelDesigner
 {
-	public class MenuGUIData : MonoBehaviour
+	[Token(Token = "0x2001245")]
+	public sealed class MenuGUIData : ScriptableObject
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4006277")]
+		[FieldOffset(Offset = "0x18")]
+		[SerializeField]
+		private Sprite m_CrownIcon;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4006278")]
+		[FieldOffset(Offset = "0x20")]
+		[SerializeField]
+		private Sprite m_SearchIcon;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4006279")]
+		[FieldOffset(Offset = "0x28")]
+		[SerializeField]
+		private Sprite m_PlayLevelIcon;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x400627A")]
+		[FieldOffset(Offset = "0x30")]
+		[SerializeField]
+		private Sprite m_EditLevelIcon;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x400627B")]
+		[FieldOffset(Offset = "0x38")]
+		[SerializeField]
+		private Color m_DefaultLabelColor;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x400627C")]
+		[FieldOffset(Offset = "0x48")]
+		[SerializeField]
+		private Color m_DarkLabelColor;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x400627D")]
+		[FieldOffset(Offset = "0x58")]
+		[SerializeField]
+		private Color m_SearchLabelColor;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x400627E")]
+		[FieldOffset(Offset = "0x68")]
+		[SerializeField]
+		private Color m_FavoruiteLabelColor;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x1700096A")]
+		public Sprite crownIcon
+		{
+			[Token(Token = "0x600541A")]
+			[Address(RVA = "0x1564CEC", Offset = "0x1564CEC", VA = "0x1564CEC")]
+			get
+			{
+				return null;
+			}
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x1700096B")]
+		public Sprite searchIcon
+		{
+			[Token(Token = "0x600541B")]
+			[Address(RVA = "0x1564CF4", Offset = "0x1564CF4", VA = "0x1564CF4")]
+			get
+			{
+				return null;
+			}
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x1700096C")]
+		public Sprite playLevelIcon
+		{
+			[Token(Token = "0x600541C")]
+			[Address(RVA = "0x1564CFC", Offset = "0x1564CFC", VA = "0x1564CFC")]
+			get
+			{
+				return null;
+			}
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x1700096D")]
+		public Sprite editLevelIcon
+		{
+			[Token(Token = "0x600541D")]
+			[Address(RVA = "0x1564D04", Offset = "0x1564D04", VA = "0x1564D04")]
+			get
+			{
+				return null;
+			}
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x1700096E")]
+		public Color defaultLabelColor
+		{
+			[Token(Token = "0x600541E")]
+			[Address(RVA = "0x1564D0C", Offset = "0x1564D0C", VA = "0x1564D0C")]
+			get
+			{
+				return default;
+			}
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x1700096F")]
+		public Color darkLabelColor
+		{
+			[Token(Token = "0x600541F")]
+			[Address(RVA = "0x1564D18", Offset = "0x1564D18", VA = "0x1564D18")]
+			get
+			{
+				return default;
+			}
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x17000970")]
+		public Color searchLabelColor
+		{
+			[Token(Token = "0x6005420")]
+			[Address(RVA = "0x1564D24", Offset = "0x1564D24", VA = "0x1564D24")]
+			get
+			{
+				return default;
+			}
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x17000971")]
+		public Color favouriteLabelColor
+		{
+			[Token(Token = "0x6005421")]
+			[Address(RVA = "0x1564D30", Offset = "0x1564D30", VA = "0x1564D30")]
+			get
+			{
+				return default;
+			}
+		}
 
-		*/
+		[Token(Token = "0x6005422")]
+		[Address(RVA = "0x1564D3C", Offset = "0x1564D3C", VA = "0x1564D3C")]
+		public MenuGUIData()
+		{
+		}
 	}
 }

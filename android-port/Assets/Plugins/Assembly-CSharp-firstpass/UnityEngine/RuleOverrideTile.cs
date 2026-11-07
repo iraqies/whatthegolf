@@ -1,66 +1,200 @@
-using UnityEngine;
+using System;
+using System.Collections.Generic;
+using Il2CppDummyDll;
+using UnityEngine.Tilemaps;
 
 namespace UnityEngine
 {
-	public class RuleOverrideTile : MonoBehaviour
+	[Serializable]
+	[Token(Token = "0x20000B6")]
+	[AttributeAttribute(Name = "DefaultMemberAttribute", RVA = "0x3360C", Offset = "0x3360C")]
+	public class RuleOverrideTile : RuleTile
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Serializable]
+		[Token(Token = "0x20000B7")]
+		public class TileSpritePair
+		{
+			[Token(Token = "0x4000380")]
+			[FieldOffset(Offset = "0x10")]
+			public Sprite m_OriginalSprite;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x4000381")]
+			[FieldOffset(Offset = "0x18")]
+			public Sprite m_OverrideSprite;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x60004DF")]
+			[Address(RVA = "0x1356244", Offset = "0x1356244", VA = "0x1356244")]
+			public TileSpritePair()
+			{
+			}
+		}
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Serializable]
+		[Token(Token = "0x20000B8")]
+		public class OverrideTilingRule
+		{
+			[Token(Token = "0x4000382")]
+			[FieldOffset(Offset = "0x10")]
+			public bool m_Enabled;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+			[Token(Token = "0x4000383")]
+			[FieldOffset(Offset = "0x18")]
+			public TilingRule m_TilingRule;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+			[Token(Token = "0x60004E0")]
+			[Address(RVA = "0x13560C4", Offset = "0x13560C4", VA = "0x13560C4")]
+			public OverrideTilingRule()
+			{
+			}
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x20000B9")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x33644", Offset = "0x33644")]
+		private sealed class _003C_003Ec__DisplayClass4_0
+		{
+			[Token(Token = "0x4000384")]
+			[FieldOffset(Offset = "0x10")]
+			public Sprite originalSprite;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+			[Token(Token = "0x60004E1")]
+			[Address(RVA = "0x135602C", Offset = "0x135602C", VA = "0x135602C")]
+			public _003C_003Ec__DisplayClass4_0()
+			{
+			}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+			[Token(Token = "0x60004E2")]
+			[Address(RVA = "0x1356034", Offset = "0x1356034", VA = "0x1356034")]
+			internal bool _003Cset_Item_003Eb__0(TileSpritePair spritePair)
+			{
+				return default;
+			}
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x400037B")]
+		[FieldOffset(Offset = "0x38")]
+		public RuleTile m_Tile;
 
-		5. Script Content Level 0
+		[Token(Token = "0x400037C")]
+		[FieldOffset(Offset = "0x40")]
+		public bool m_Advanced;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x400037D")]
+		[FieldOffset(Offset = "0x48")]
+		public List<TileSpritePair> m_Sprites;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x400037E")]
+		[FieldOffset(Offset = "0x50")]
+		public List<OverrideTilingRule> m_OverrideTilingRules;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x400037F")]
+		[FieldOffset(Offset = "0x58")]
+		public OverrideTilingRule m_OverrideDefault;
 
-		7. An incorrect path was provided to AssetRipper.
+		// C# has no syntax for parameterized property 'Item'.
+		// Its 'property:' attributes below are ignored by the compiler (CS0657).
+		[property: Token(Token = "0x170000C5")]
+		[Token(Token = "0x60004D0")]
+		[Address(RVA = "0x13F5CC8", Offset = "0x13F5CC8", VA = "0x13F5CC8")]
+		public Sprite get_Item(Sprite originalSprite)
+		{
+			return null;
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x60004D1")]
+		[Address(RVA = "0x13F5E9C", Offset = "0x13F5E9C", VA = "0x13F5E9C")]
+		public void set_Item(Sprite originalSprite, Sprite value)
+		{
+		}
 
-		*/
+		// C# has no syntax for parameterized property 'Item'.
+		// Its 'property:' attributes below are ignored by the compiler (CS0657).
+		[property: Token(Token = "0x170000C6")]
+		[Token(Token = "0x60004D2")]
+		[Address(RVA = "0x13F61E0", Offset = "0x13F61E0", VA = "0x13F61E0")]
+		public TilingRule get_Item(TilingRule originalRule)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x60004D3")]
+		[Address(RVA = "0x13F633C", Offset = "0x13F633C", VA = "0x13F633C")]
+		public void set_Item(TilingRule originalRule, TilingRule value)
+		{
+		}
+
+		[Token(Token = "0x170000C7")]
+		public TilingRule m_OriginalDefault
+		{
+			[Token(Token = "0x60004D4")]
+			[Address(RVA = "0x13F6690", Offset = "0x13F6690", VA = "0x13F6690")]
+			get
+			{
+				return null;
+			}
+		}
+
+		[Token(Token = "0x60004D5")]
+		[Address(RVA = "0x13F6840", Offset = "0x13F6840", VA = "0x13F6840", Slot = "7")]
+		public override bool StartUp(Vector3Int position, ITilemap tilemap, GameObject go)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60004D6")]
+		[Address(RVA = "0x13F6D6C", Offset = "0x13F6D6C", VA = "0x13F6D6C")]
+		public void ApplyOverrides(IList<KeyValuePair<Sprite, Sprite>> overrides)
+		{
+		}
+
+		[Token(Token = "0x60004D7")]
+		[Address(RVA = "0x13F6FA8", Offset = "0x13F6FA8", VA = "0x13F6FA8")]
+		public void GetOverrides(List<KeyValuePair<Sprite, Sprite>> overrides)
+		{
+		}
+
+		[Token(Token = "0x60004D8")]
+		[Address(RVA = "0x13F74C4", Offset = "0x13F74C4", VA = "0x13F74C4")]
+		public void ApplyOverrides(IList<KeyValuePair<TilingRule, TilingRule>> overrides)
+		{
+		}
+
+		[Token(Token = "0x60004D9")]
+		[Address(RVA = "0x13F7700", Offset = "0x13F7700", VA = "0x13F7700")]
+		public void GetOverrides(List<KeyValuePair<TilingRule, TilingRule>> overrides)
+		{
+		}
+
+		[Token(Token = "0x60004DA")]
+		[Address(RVA = "0x13F6898", Offset = "0x13F6898", VA = "0x13F6898")]
+		public void Override()
+		{
+		}
+
+		[Token(Token = "0x60004DB")]
+		[Address(RVA = "0x13F661C", Offset = "0x13F661C", VA = "0x13F661C")]
+		public TilingRule CloneTilingRule(TilingRule from)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x60004DC")]
+		[Address(RVA = "0x13F79A0", Offset = "0x13F79A0", VA = "0x13F79A0")]
+		public void CopyTilingRule(TilingRule from, TilingRule to, bool copyRule)
+		{
+		}
+
+		[Token(Token = "0x60004DD")]
+		[Address(RVA = "0x13F7A50", Offset = "0x13F7A50", VA = "0x13F7A50")]
+		public RuleOverrideTile()
+		{
+		}
+
+		[Token(Token = "0x60004DE")]
+		[Address(RVA = "0x13F7C14", Offset = "0x13F7C14", VA = "0x13F7C14")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x38164", Offset = "0x38164")]
+		private TilingRule _003COverride_003Eb__20_0(TilingRule rule)
+		{
+			return null;
+		}
 	}
 }

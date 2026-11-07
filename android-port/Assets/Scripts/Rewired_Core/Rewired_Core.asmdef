@@ -1,5 +1,8 @@
 {
   "name": "Rewired_Core",
-  "references": [],
+  "references": [
+    "Il2CppDummyDll",
+    "UnityEngine.UI"
+  ],
   "allowUnsafeCode": true
 }

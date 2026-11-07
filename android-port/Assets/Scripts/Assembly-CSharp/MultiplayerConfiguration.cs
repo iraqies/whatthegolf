@@ -1,63 +1,144 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using CameraStack;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
-public class MultiplayerConfiguration : MonoBehaviour
+[Token(Token = "0x2000133")]
+public class MultiplayerConfiguration
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x2000134")]
+	public class PlayerInfo
+	{
+		[Token(Token = "0x400055E")]
+		[FieldOffset(Offset = "0x10")]
+		public int InputIndex;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x400055F")]
+		[FieldOffset(Offset = "0x18")]
+		public CameraManager Cam;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000560")]
+		[FieldOffset(Offset = "0x20")]
+		public List<GolfBallController> Controllers;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4000561")]
+		[FieldOffset(Offset = "0x28")]
+		public List<GameObject> ControllerContainer;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4000562")]
+		[FieldOffset(Offset = "0x30")]
+		public int Strokes;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000563")]
+		[FieldOffset(Offset = "0x34")]
+		public int Points;
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4000564")]
+		[FieldOffset(Offset = "0x38")]
+		public GameObject BallToSpawn;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4000565")]
+		[FieldOffset(Offset = "0x40")]
+		public Stopwatch TimeSpent;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x4000566")]
+		[FieldOffset(Offset = "0x48")]
+		public PlayerColors.AvatarData Avatar;
 
-	4. This script is unnecessary.
+		[Token(Token = "0x4000567")]
+		[FieldOffset(Offset = "0x50")]
+		public LobbySpawnPoint.SpawnPointPositions Side;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4000568")]
+		[FieldOffset(Offset = "0x58")]
+		public Action<PlayerInfo> OnPlayerFinishedLevel;
 
-	5. Script Content Level 0
+		[Token(Token = "0x4000569")]
+		[FieldOffset(Offset = "0x60")]
+		public bool FinishedCurrentLevel;
 
-		AssetRipper was set to not load any script information.
+		[Token(Token = "0x400056A")]
+		[FieldOffset(Offset = "0x61")]
+		public bool ArenaLooser;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x170000B2")]
+		public string DisplayName
+		{
+			[Token(Token = "0x6000546")]
+			[Address(RVA = "0x17FC0E8", Offset = "0x17FC0E8", VA = "0x17FC0E8")]
+			get
+			{
+				return null;
+			}
+		}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x6000547")]
+		[Address(RVA = "0x17FC174", Offset = "0x17FC174", VA = "0x17FC174")]
+		public void Reset()
+		{
+		}
 
-	7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x6000548")]
+		[Address(RVA = "0x17FC1D8", Offset = "0x17FC1D8", VA = "0x17FC1D8")]
+		public PlayerInfo()
+		{
+		}
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x2000135")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3DBD0", Offset = "0x3DBD0")]
+	private sealed class _003C_003Ec__DisplayClass7_0
+	{
+		[Token(Token = "0x400056B")]
+		[FieldOffset(Offset = "0x10")]
+		public int index;
 
-	*/
+		[Token(Token = "0x6000549")]
+		[Address(RVA = "0x17FC0BC", Offset = "0x17FC0BC", VA = "0x17FC0BC")]
+		public _003C_003Ec__DisplayClass7_0()
+		{
+		}
+
+		[Token(Token = "0x600054A")]
+		[Address(RVA = "0x17FC0C4", Offset = "0x17FC0C4", VA = "0x17FC0C4")]
+		internal bool _003CGetPlayerWithIndex_003Eb__0(PlayerInfo p)
+		{
+			return default;
+		}
+	}
+
+	[Token(Token = "0x400055B")]
+	[FieldOffset(Offset = "0x10")]
+	public List<PlayerInfo> Players;
+
+	[Token(Token = "0x400055C")]
+	[FieldOffset(Offset = "0x18")]
+	public int LevelsLeft;
+
+	[Token(Token = "0x400055D")]
+	[FieldOffset(Offset = "0x1C")]
+	public MultiplayerPlayList.MatchTypes MatchType;
+
+	[Token(Token = "0x6000543")]
+	[Address(RVA = "0x157AABC", Offset = "0x157AABC", VA = "0x157AABC")]
+	public MultiplayerConfiguration()
+	{
+	}
+
+	[Token(Token = "0x6000544")]
+	[Address(RVA = "0x157AB40", Offset = "0x157AB40", VA = "0x157AB40")]
+	public PlayerInfo AddPlayer(MultiplayerLobby.LobbyPlayer player)
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6000545")]
+	[Address(RVA = "0x157ACAC", Offset = "0x157ACAC", VA = "0x157ACAC")]
+	public PlayerInfo GetPlayerWithIndex(int index)
+	{
+		return null;
+	}
 }

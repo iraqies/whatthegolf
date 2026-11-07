@@ -1,63 +1,57 @@
+using System.Collections.Generic;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
-public class MultiBallParChallenge : MonoBehaviour
+[Token(Token = "0x2000411")]
+public class MultiBallParChallenge : Challenge
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4001633")]
+	[FieldOffset(Offset = "0xA4")]
+	public int ScoreToBeat;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4001634")]
+	[FieldOffset(Offset = "0xA8")]
+	private List<GolfBallController> controllers;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4001635")]
+	[FieldOffset(Offset = "0xB0")]
+	private int strokeCount;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x600131F")]
+	[Address(RVA = "0x15795D0", Offset = "0x15795D0", VA = "0x15795D0", Slot = "8")]
+	protected override void Activate()
+	{
+	}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x6001320")]
+	[Address(RVA = "0x157986C", Offset = "0x157986C", VA = "0x157986C")]
+	private void OnObjectDestroyed(GameObject obj)
+	{
+	}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x6001321")]
+	[Address(RVA = "0x1579AB4", Offset = "0x1579AB4", VA = "0x1579AB4", Slot = "5")]
+	public override string GetDescription()
+	{
+		return null;
+	}
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x6001322")]
+	[Address(RVA = "0x1579BAC", Offset = "0x1579BAC", VA = "0x1579BAC")]
+	private void OnShoot(Vector3 vector3)
+	{
+	}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x6001323")]
+	[Address(RVA = "0x1579CA8", Offset = "0x1579CA8", VA = "0x1579CA8", Slot = "10")]
+	public override void OnLevelComplete(Level.CompletedState completedState)
+	{
+	}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
-
-	4. This script is unnecessary.
-
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
-
-	5. Script Content Level 0
-
-		AssetRipper was set to not load any script information.
-
-	6. Cpp2IL failed to decompile Il2Cpp data
-
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x6001324")]
+	[Address(RVA = "0x1579D48", Offset = "0x1579D48", VA = "0x1579D48")]
+	public MultiBallParChallenge()
+	{
+	}
 }

@@ -1,63 +1,267 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.AI;
 
+[Token(Token = "0x2000943")]
 public class Rogue : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x2000944")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x42170", Offset = "0x42170")]
+	private sealed class _003CAttack_003Ed__28 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x40032C2")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40032C3")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40032C4")]
+		[FieldOffset(Offset = "0x20")]
+		public Rogue _003C_003E4__this;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40032C5")]
+		[FieldOffset(Offset = "0x28")]
+		public Rigidbody other;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x1700046C")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x6002B19")]
+			[Address(RVA = "0x18361FC", Offset = "0x18361FC", VA = "0x18361FC", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x1700046D")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x6002B1B")]
+			[Address(RVA = "0x1836244", Offset = "0x1836244", VA = "0x1836244", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6002B16")]
+		[Address(RVA = "0x1835E44", Offset = "0x1835E44", VA = "0x1835E44")]
+		[DebuggerHidden]
+		public _003CAttack_003Ed__28(int _003C_003E1__state)
+		{
+		}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6002B17")]
+		[Address(RVA = "0x1835E70", Offset = "0x1835E70", VA = "0x1835E70", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x6002B18")]
+		[Address(RVA = "0x1835E74", Offset = "0x1835E74", VA = "0x1835E74", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
 
-	4. This script is unnecessary.
+		[Token(Token = "0x6002B19")]
+		[Address(RVA = "0x18361FC", Offset = "0x18361FC", VA = "0x18361FC", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6002B1A")]
+		[Address(RVA = "0x1836204", Offset = "0x1836204", VA = "0x1836204", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
 
-	5. Script Content Level 0
+		[Token(Token = "0x6002B1B")]
+		[Address(RVA = "0x1836244", Offset = "0x1836244", VA = "0x1836244", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x40032A9")]
+	[FieldOffset(Offset = "0x18")]
+	public Rigidbody ballRb;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x40032AA")]
+	[FieldOffset(Offset = "0x20")]
+	public float upKickForce;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x40032AB")]
+	[FieldOffset(Offset = "0x24")]
+	public float forwardKickForce;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x40032AC")]
+	[FieldOffset(Offset = "0x28")]
+	public float onAreaCheckDist;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x40032AD")]
+	[FieldOffset(Offset = "0x2C")]
+	public float sightRange;
 
-	*/
+	[Token(Token = "0x40032AE")]
+	[FieldOffset(Offset = "0x30")]
+	public float fadeInDuration;
+
+	[Token(Token = "0x40032AF")]
+	[FieldOffset(Offset = "0x34")]
+	public float maxAttackDist;
+
+	[Token(Token = "0x40032B0")]
+	[FieldOffset(Offset = "0x38")]
+	public SkinnedMeshRenderer rend;
+
+	[Token(Token = "0x40032B1")]
+	[FieldOffset(Offset = "0x40")]
+	public float shadowSpeed;
+
+	[Token(Token = "0x40032B2")]
+	[FieldOffset(Offset = "0x44")]
+	public float normalSpeed;
+
+	[Token(Token = "0x40032B3")]
+	[FieldOffset(Offset = "0x48")]
+	private NavMeshAgent navAgent;
+
+	[Token(Token = "0x40032B4")]
+	[FieldOffset(Offset = "0x50")]
+	private bool isAlive;
+
+	[Token(Token = "0x40032B5")]
+	[FieldOffset(Offset = "0x54")]
+	public float speedChangeAreaDistCheck;
+
+	[Token(Token = "0x40032B6")]
+	[FieldOffset(Offset = "0x58")]
+	public float retreatAfterAttackDuration;
+
+	[Token(Token = "0x40032B7")]
+	[FieldOffset(Offset = "0x5C")]
+	public float attackAnimationDuration;
+
+	[Token(Token = "0x40032B8")]
+	[FieldOffset(Offset = "0x60")]
+	public Rect respawnArea;
+
+	[Token(Token = "0x40032B9")]
+	[FieldOffset(Offset = "0x70")]
+	public string AttackParam;
+
+	[Token(Token = "0x40032BA")]
+	[FieldOffset(Offset = "0x78")]
+	public Animator anim;
+
+	[Token(Token = "0x40032BB")]
+	[FieldOffset(Offset = "0x80")]
+	private Rigidbody rigid;
+
+	[Token(Token = "0x40032BC")]
+	[FieldOffset(Offset = "0x88")]
+	private Vector3 target;
+
+	[Token(Token = "0x40032BD")]
+	[FieldOffset(Offset = "0x94")]
+	private float lastAttackTime;
+
+	[Token(Token = "0x40032BE")]
+	[FieldOffset(Offset = "0x98")]
+	private bool initialized;
+
+	[Token(Token = "0x40032BF")]
+	[FieldOffset(Offset = "0x99")]
+	private bool attacking;
+
+	[Token(Token = "0x40032C0")]
+	private const string innerShadow = "InnerShadow";
+
+	[Token(Token = "0x40032C1")]
+	private const string outerShadow = "OuterShadow";
+
+	[Token(Token = "0x6002B0B")]
+	[Address(RVA = "0x165A704", Offset = "0x165A704", VA = "0x165A704")]
+	private void Start()
+	{
+	}
+
+	[Token(Token = "0x6002B0C")]
+	[Address(RVA = "0x165A7B8", Offset = "0x165A7B8", VA = "0x165A7B8")]
+	public void Initialize(Vector3 position, Quaternion rotation)
+	{
+	}
+
+	[Token(Token = "0x6002B0D")]
+	[Address(RVA = "0x165AAE8", Offset = "0x165AAE8", VA = "0x165AAE8")]
+	private void OnTriggerStay(Collider other)
+	{
+	}
+
+	[Token(Token = "0x6002B0E")]
+	[Address(RVA = "0x165ACF8", Offset = "0x165ACF8", VA = "0x165ACF8")]
+	private IEnumerator Attack(Rigidbody other)
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6002B0F")]
+	[Address(RVA = "0x165AD70", Offset = "0x165AD70", VA = "0x165AD70")]
+	private void WarpToRandomInnerShadowTarget()
+	{
+	}
+
+	[Token(Token = "0x6002B10")]
+	[Address(RVA = "0x165ADFC", Offset = "0x165ADFC", VA = "0x165ADFC")]
+	private void SetRandomInnerShadowTarget(bool warp = false)
+	{
+	}
+
+	[Token(Token = "0x6002B11")]
+	[Address(RVA = "0x165AF60", Offset = "0x165AF60", VA = "0x165AF60")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x6002B12")]
+	[Address(RVA = "0x165B2C4", Offset = "0x165B2C4", VA = "0x165B2C4")]
+	private void OnDrawGizmos()
+	{
+	}
+
+	[Token(Token = "0x6002B13")]
+	[Address(RVA = "0x165B534", Offset = "0x165B534", VA = "0x165B534")]
+	public Rogue()
+	{
+	}
+
+	[Token(Token = "0x6002B14")]
+	[Address(RVA = "0x165B5E0", Offset = "0x165B5E0", VA = "0x165B5E0")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x679C0", Offset = "0x679C0")]
+	private void _003CAttack_003Eb__28_0(float t)
+	{
+	}
+
+	[Token(Token = "0x6002B15")]
+	[Address(RVA = "0x165B6C8", Offset = "0x165B6C8", VA = "0x165B6C8")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x679D0", Offset = "0x679D0")]
+	private void _003CAttack_003Eb__28_1(float t)
+	{
+	}
 }

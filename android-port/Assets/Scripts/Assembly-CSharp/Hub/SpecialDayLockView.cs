@@ -1,66 +1,116 @@
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Hub
 {
+	[Token(Token = "0x2001087")]
 	public class SpecialDayLockView : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[StructLayout((LayoutKind)3)]
+		[Token(Token = "0x2001088")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x479E4", Offset = "0x479E4")]
+		private struct _003CUnlock_003Ed__8 : IAsyncStateMachine
+		{
+			[Token(Token = "0x40056F2")]
+			[Il2CppDummyDll.FieldOffset(Offset = "0x0")]
+			public int _003C_003E1__state;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x40056F3")]
+			[Il2CppDummyDll.FieldOffset(Offset = "0x8")]
+			public AsyncVoidMethodBuilder _003C_003Et__builder;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x40056F4")]
+			[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
+			public bool immediate;
 
-		2. Incorrect dll files were provided to AssetRipper.
+			[Token(Token = "0x40056F5")]
+			[Il2CppDummyDll.FieldOffset(Offset = "0x30")]
+			public SpecialDayLockView _003C_003E4__this;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+			[Token(Token = "0x40056F6")]
+			[Il2CppDummyDll.FieldOffset(Offset = "0x38")]
+			private TaskAwaiter _003C_003Eu__1;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+			[Token(Token = "0x6004A23")]
+			[Address(RVA = "0x18547F8", Offset = "0x18547F8", VA = "0x18547F8", Slot = "4")]
+			private void MoveNext()
+			{
+			}
 
-		3. Assembly Reconstruction has not been implemented.
+			[Token(Token = "0x6004A24")]
+			[Address(RVA = "0x1854AEC", Offset = "0x1854AEC", VA = "0x1854AEC", Slot = "5")]
+			[DebuggerHidden]
+			private void SetStateMachine(IAsyncStateMachine stateMachine)
+			{
+			}
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x40056ED")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x18")]
+		[SerializeField]
+		private Animator animator;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x40056EE")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x20")]
+		[SerializeField]
+		private SpecialDayOverworldButton2D door;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x40056EF")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x0")]
+		private static readonly int Open;
 
-		5. Script Content Level 0
+		[Token(Token = "0x40056F0")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x4")]
+		private static readonly int Shake1;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x40056F1")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x8")]
+		private static readonly int Locked;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x6004A1B")]
+		[Address(RVA = "0x16CA310", Offset = "0x16CA310", VA = "0x16CA310")]
+		public void OnCollisionEnter2D(Collision2D other)
+		{
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x6004A1C")]
+		[Address(RVA = "0x16CA7D4", Offset = "0x16CA7D4", VA = "0x16CA7D4")]
+		public void SetState(bool active, bool hasBeenOpenedBefore)
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x6004A1D")]
+		[Address(RVA = "0x16CA964", Offset = "0x16CA964", VA = "0x16CA964")]
+		private void Shake()
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x6004A1E")]
+		[Address(RVA = "0x16CA9F0", Offset = "0x16CA9F0", VA = "0x16CA9F0")]
+		public void Unlock(bool immediate)
+		{
+		}
 
-		*/
+		[Token(Token = "0x6004A1F")]
+		[Address(RVA = "0x16CAB38", Offset = "0x16CAB38", VA = "0x16CAB38")]
+		private float GetAnimationDuration()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6004A20")]
+		[Address(RVA = "0x16CAA90", Offset = "0x16CAA90", VA = "0x16CAA90")]
+		private void Lock()
+		{
+		}
+
+		[Token(Token = "0x6004A21")]
+		[Address(RVA = "0x16CAB40", Offset = "0x16CAB40", VA = "0x16CAB40")]
+		public SpecialDayLockView()
+		{
+		}
 	}
 }

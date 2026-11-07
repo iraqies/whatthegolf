@@ -1,63 +1,215 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000E90")]
 public class PlayPack : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x2000E91")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x450F8", Offset = "0x450F8")]
+	private sealed class _003C_003Ec__DisplayClass2_0
+	{
+		[Token(Token = "0x4004EB1")]
+		[FieldOffset(Offset = "0x10")]
+		public PlayPack _003C_003E4__this;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4004EB2")]
+		[FieldOffset(Offset = "0x18")]
+		public List<LevelDataAndChallenge> levelsToPlay;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4004EB3")]
+		[FieldOffset(Offset = "0x20")]
+		public bool aborted;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4004EB4")]
+		[FieldOffset(Offset = "0x28")]
+		public Action _003C_003E9__1;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x6004405")]
+		[Address(RVA = "0x18282E4", Offset = "0x18282E4", VA = "0x18282E4")]
+		public _003C_003Ec__DisplayClass2_0()
+		{
+		}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x6004406")]
+		[Address(RVA = "0x18282EC", Offset = "0x18282EC", VA = "0x18282EC")]
+		internal void _003CPlayShowToAFriendLevels_003Eb__1()
+		{
+		}
+	}
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x2000E92")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x45108", Offset = "0x45108")]
+	private sealed class _003C_003Ec__DisplayClass2_1
+	{
+		[Token(Token = "0x4004EB5")]
+		[FieldOffset(Offset = "0x10")]
+		public int i;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4004EB6")]
+		[FieldOffset(Offset = "0x18")]
+		public _003C_003Ec__DisplayClass2_0 CS_0024_003C_003E8__locals1;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x6004407")]
+		[Address(RVA = "0x18282F8", Offset = "0x18282F8", VA = "0x18282F8")]
+		public _003C_003Ec__DisplayClass2_1()
+		{
+		}
 
-	4. This script is unnecessary.
+		[Token(Token = "0x6004408")]
+		[Address(RVA = "0x1828300", Offset = "0x1828300", VA = "0x1828300")]
+		internal void _003CPlayShowToAFriendLevels_003Eb__2(bool isCompleted)
+		{
+		}
+	}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x2000E93")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x45118", Offset = "0x45118")]
+	private sealed class _003C_003Ec__DisplayClass2_2
+	{
+		[Token(Token = "0x4004EB7")]
+		[FieldOffset(Offset = "0x10")]
+		public LevelDataAndChallenge levelc;
 
-	5. Script Content Level 0
+		[Token(Token = "0x4004EB8")]
+		[FieldOffset(Offset = "0x18")]
+		public _003C_003Ec__DisplayClass2_1 CS_0024_003C_003E8__locals2;
 
-		AssetRipper was set to not load any script information.
+		[Token(Token = "0x6004409")]
+		[Address(RVA = "0x1828570", Offset = "0x1828570", VA = "0x1828570")]
+		public _003C_003Ec__DisplayClass2_2()
+		{
+		}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x600440A")]
+		[Address(RVA = "0x1828578", Offset = "0x1828578", VA = "0x1828578")]
+		internal void _003CPlayShowToAFriendLevels_003Eb__0(Level.CompletedState s)
+		{
+		}
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x2000E94")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x45128", Offset = "0x45128")]
+	private sealed class _003CPlayShowToAFriendLevels_003Ed__2 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x4004EB9")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-	7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x4004EBA")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x4004EBB")]
+		[FieldOffset(Offset = "0x20")]
+		public PlayPack _003C_003E4__this;
 
-	*/
+		[Token(Token = "0x4004EBC")]
+		[FieldOffset(Offset = "0x28")]
+		private _003C_003Ec__DisplayClass2_0 _003C_003E8__1;
+
+		[Token(Token = "0x4004EBD")]
+		[FieldOffset(Offset = "0x30")]
+		private _003C_003Ec__DisplayClass2_1 _003C_003E8__2;
+
+		[Token(Token = "0x4004EBE")]
+		[FieldOffset(Offset = "0x38")]
+		private LevelManager _003ClevelManager_003E5__2;
+
+		[Token(Token = "0x170006F8")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x600440E")]
+			[Address(RVA = "0x1828B54", Offset = "0x1828B54", VA = "0x1828B54", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
+
+		[Token(Token = "0x170006F9")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x6004410")]
+			[Address(RVA = "0x1828B9C", Offset = "0x1828B9C", VA = "0x1828B9C", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
+
+		[Token(Token = "0x600440B")]
+		[Address(RVA = "0x1828640", Offset = "0x1828640", VA = "0x1828640")]
+		[DebuggerHidden]
+		public _003CPlayShowToAFriendLevels_003Ed__2(int _003C_003E1__state)
+		{
+		}
+
+		[Token(Token = "0x600440C")]
+		[Address(RVA = "0x182866C", Offset = "0x182866C", VA = "0x182866C", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
+
+		[Token(Token = "0x600440D")]
+		[Address(RVA = "0x1828670", Offset = "0x1828670", VA = "0x1828670", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x600440E")]
+		[Address(RVA = "0x1828B54", Offset = "0x1828B54", VA = "0x1828B54", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
+
+		[Token(Token = "0x600440F")]
+		[Address(RVA = "0x1828B5C", Offset = "0x1828B5C", VA = "0x1828B5C", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
+
+		[Token(Token = "0x6004410")]
+		[Address(RVA = "0x1828B9C", Offset = "0x1828B9C", VA = "0x1828B9C", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
+
+	[Token(Token = "0x4004EB0")]
+	[FieldOffset(Offset = "0x18")]
+	[SerializeField]
+	private DailyChallengeLevelDataContainer _container;
+
+	[Token(Token = "0x6004402")]
+	[Address(RVA = "0x15F49C8", Offset = "0x15F49C8", VA = "0x15F49C8")]
+	private void Start()
+	{
+	}
+
+	[Token(Token = "0x6004403")]
+	[Address(RVA = "0x15F4A44", Offset = "0x15F4A44", VA = "0x15F4A44")]
+	public IEnumerator PlayShowToAFriendLevels()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6004404")]
+	[Address(RVA = "0x15F4AB8", Offset = "0x15F4AB8", VA = "0x15F4AB8")]
+	public PlayPack()
+	{
+	}
 }

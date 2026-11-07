@@ -1,66 +1,150 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace RootMotion.FinalIK
 {
+	[Token(Token = "0x200019C")]
 	public class InteractionTarget : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Serializable]
+		[Token(Token = "0x200019D")]
+		public class Multiplier
+		{
+			[Token(Token = "0x4000B35")]
+			[FieldOffset(Offset = "0x10")]
+			public InteractionObject.WeightCurve.Type curve;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x4000B36")]
+			[FieldOffset(Offset = "0x14")]
+			public float multiplier;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x6000C4B")]
+			[Address(RVA = "0x134BBBC", Offset = "0x134BBBC", VA = "0x134BBBC")]
+			public Multiplier()
+			{
+			}
+		}
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4000B2B")]
+		[FieldOffset(Offset = "0x18")]
+		public FullBodyBipedEffector effectorType;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4000B2C")]
+		[FieldOffset(Offset = "0x20")]
+		public Multiplier[] multipliers;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000B2D")]
+		[FieldOffset(Offset = "0x28")]
+		public float interactionSpeedMlp;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4000B2E")]
+		[FieldOffset(Offset = "0x30")]
+		public Transform pivot;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4000B2F")]
+		[FieldOffset(Offset = "0x38")]
+		public Vector3 twistAxis;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4000B30")]
+		[FieldOffset(Offset = "0x44")]
+		public float twistWeight;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4000B31")]
+		[FieldOffset(Offset = "0x48")]
+		public float swingWeight;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4000B32")]
+		[FieldOffset(Offset = "0x4C")]
+		public bool rotateOnce;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4000B33")]
+		[FieldOffset(Offset = "0x50")]
+		private Quaternion defaultLocalRotation;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4000B34")]
+		[FieldOffset(Offset = "0x60")]
+		private Transform lastPivot;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x6000C3F")]
+		[Address(RVA = "0x13A61C8", Offset = "0x13A61C8", VA = "0x13A61C8")]
+		[AttributeAttribute(Name = "ContextMenu", RVA = "0x3A66C", Offset = "0x3A66C")]
+		private void OpenUserManual()
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x6000C40")]
+		[Address(RVA = "0x13A6210", Offset = "0x13A6210", VA = "0x13A6210")]
+		[AttributeAttribute(Name = "ContextMenu", RVA = "0x3A6A4", Offset = "0x3A6A4")]
+		private void OpenScriptReference()
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x6000C41")]
+		[Address(RVA = "0x13A6258", Offset = "0x13A6258", VA = "0x13A6258")]
+		[AttributeAttribute(Name = "ContextMenu", RVA = "0x3A6DC", Offset = "0x3A6DC")]
+		private void OpenTutorial1()
+		{
+		}
 
-		*/
+		[Token(Token = "0x6000C42")]
+		[Address(RVA = "0x13A62A0", Offset = "0x13A62A0", VA = "0x13A62A0")]
+		[AttributeAttribute(Name = "ContextMenu", RVA = "0x3A714", Offset = "0x3A714")]
+		private void OpenTutorial2()
+		{
+		}
+
+		[Token(Token = "0x6000C43")]
+		[Address(RVA = "0x13A62E8", Offset = "0x13A62E8", VA = "0x13A62E8")]
+		[AttributeAttribute(Name = "ContextMenu", RVA = "0x3A74C", Offset = "0x3A74C")]
+		private void OpenTutorial3()
+		{
+		}
+
+		[Token(Token = "0x6000C44")]
+		[Address(RVA = "0x13A6330", Offset = "0x13A6330", VA = "0x13A6330")]
+		[AttributeAttribute(Name = "ContextMenu", RVA = "0x3A784", Offset = "0x3A784")]
+		private void OpenTutorial4()
+		{
+		}
+
+		[Token(Token = "0x6000C45")]
+		[Address(RVA = "0x13A6378", Offset = "0x13A6378", VA = "0x13A6378")]
+		[AttributeAttribute(Name = "ContextMenu", RVA = "0x3A7BC", Offset = "0x3A7BC")]
+		private void SupportGroup()
+		{
+		}
+
+		[Token(Token = "0x6000C46")]
+		[Address(RVA = "0x13A63C0", Offset = "0x13A63C0", VA = "0x13A63C0")]
+		[AttributeAttribute(Name = "ContextMenu", RVA = "0x3A7F4", Offset = "0x3A7F4")]
+		private void ASThread()
+		{
+		}
+
+		[Token(Token = "0x6000C47")]
+		[Address(RVA = "0x13A6408", Offset = "0x13A6408", VA = "0x13A6408")]
+		public float GetValue(InteractionObject.WeightCurve.Type curveType)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000C48")]
+		[Address(RVA = "0x13A6480", Offset = "0x13A6480", VA = "0x13A6480")]
+		public void ResetRotation()
+		{
+		}
+
+		[Token(Token = "0x6000C49")]
+		[Address(RVA = "0x13A652C", Offset = "0x13A652C", VA = "0x13A652C")]
+		public void RotateTo(Vector3 position)
+		{
+		}
+
+		[Token(Token = "0x6000C4A")]
+		[Address(RVA = "0x13A6910", Offset = "0x13A6910", VA = "0x13A6910")]
+		public InteractionTarget()
+		{
+		}
 	}
 }

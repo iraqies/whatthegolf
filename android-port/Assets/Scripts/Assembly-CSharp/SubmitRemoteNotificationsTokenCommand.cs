@@ -1,63 +1,122 @@
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class SubmitRemoteNotificationsTokenCommand : MonoBehaviour
+[Token(Token = "0x2000953")]
+public class SubmitRemoteNotificationsTokenCommand
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[StructLayout((LayoutKind)3)]
+	[Token(Token = "0x2000954")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x42200", Offset = "0x42200")]
+	private struct _003CUploadToken_003Ed__5 : IAsyncStateMachine
+	{
+		[Token(Token = "0x4003351")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x0")]
+		public int _003C_003E1__state;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4003352")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x8")]
+		public AsyncVoidMethodBuilder _003C_003Et__builder;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4003353")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
+		public SubmitRemoteNotificationsTokenCommand _003C_003E4__this;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4003354")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x30")]
+		private TaskAwaiter _003C_003Eu__1;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x6002B82")]
+		[Address(RVA = "0x185BE00", Offset = "0x185BE00", VA = "0x185BE00", Slot = "4")]
+		private void MoveNext()
+		{
+		}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x6002B83")]
+		[Address(RVA = "0x185C0B8", Offset = "0x185C0B8", VA = "0x185C0B8", Slot = "5")]
+		[DebuggerHidden]
+		private void SetStateMachine(IAsyncStateMachine stateMachine)
+		{
+		}
+	}
 
-	3. Assembly Reconstruction has not been implemented.
+	[StructLayout((LayoutKind)3)]
+	[Token(Token = "0x2000955")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x42210", Offset = "0x42210")]
+	private struct _003CSendWebRequest_003Ed__6 : IAsyncStateMachine
+	{
+		[Token(Token = "0x4003355")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x0")]
+		public int _003C_003E1__state;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4003356")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x8")]
+		public AsyncTaskMethodBuilder _003C_003Et__builder;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x4003357")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x20")]
+		public WWWForm form;
 
-	4. This script is unnecessary.
+		[Token(Token = "0x4003358")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
+		public SubmitRemoteNotificationsTokenCommand _003C_003E4__this;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4003359")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x30")]
+		private UnityWebRequest _003Cwww_003E5__2;
 
-	5. Script Content Level 0
+		[Token(Token = "0x400335A")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x38")]
+		private TaskAwaiter _003C_003Eu__1;
 
-		AssetRipper was set to not load any script information.
+		[Token(Token = "0x6002B84")]
+		[Address(RVA = "0x185B8E8", Offset = "0x185B8E8", VA = "0x185B8E8", Slot = "4")]
+		private void MoveNext()
+		{
+		}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x6002B85")]
+		[Address(RVA = "0x185BDF4", Offset = "0x185BDF4", VA = "0x185BDF4", Slot = "5")]
+		[DebuggerHidden]
+		private void SetStateMachine(IAsyncStateMachine stateMachine)
+		{
+		}
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x400334F")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x10")]
+	private readonly string _pushNotificationToken;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4003350")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x18")]
+	private string _deviceId;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x6002B7E")]
+	[Address(RVA = "0x16E6E00", Offset = "0x16E6E00", VA = "0x16E6E00")]
+	public SubmitRemoteNotificationsTokenCommand(string pushNotificationToken)
+	{
+	}
 
-	*/
+	[Token(Token = "0x6002B7F")]
+	[Address(RVA = "0x16E6E2C", Offset = "0x16E6E2C", VA = "0x16E6E2C")]
+	public void Execute()
+	{
+	}
+
+	[Token(Token = "0x6002B80")]
+	[Address(RVA = "0x16E6FC4", Offset = "0x16E6FC4", VA = "0x16E6FC4")]
+	private void UploadToken()
+	{
+	}
+
+	[Token(Token = "0x6002B81")]
+	[Address(RVA = "0x16E705C", Offset = "0x16E705C", VA = "0x16E705C")]
+	private Task SendWebRequest(WWWForm form)
+	{
+		return null;
+	}
 }

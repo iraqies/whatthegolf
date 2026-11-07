@@ -1,66 +1,296 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Audio
 {
+	[Token(Token = "0x200137A")]
+	[AttributeAttribute(Name = "RequireComponent", RVA = "0x48D64", Offset = "0x48D64")]
 	public class IntroLoopOutro : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Serializable]
+		[Token(Token = "0x200137B")]
+		internal class ILO_Envelope
+		{
+			[Token(Token = "0x4006888")]
+			[FieldOffset(Offset = "0x10")]
+			public bool on;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x4006889")]
+			[FieldOffset(Offset = "0x14")]
+			public float attackTime;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x400688A")]
+			[FieldOffset(Offset = "0x18")]
+			public float decayTime;
 
-		2. Incorrect dll files were provided to AssetRipper.
+			[Token(Token = "0x400688B")]
+			[FieldOffset(Offset = "0x1C")]
+			[AttributeAttribute(Name = "RangeAttribute", RVA = "0x5A588", Offset = "0x5A588")]
+			public float sustainLevel;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+			[Token(Token = "0x400688C")]
+			[FieldOffset(Offset = "0x20")]
+			public float sustainTime;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+			[Token(Token = "0x400688D")]
+			[FieldOffset(Offset = "0x24")]
+			public float releaseTime;
 
-		3. Assembly Reconstruction has not been implemented.
+			[Token(Token = "0x400688E")]
+			[FieldOffset(Offset = "0x28")]
+			public AudioEnvelopeSettings reference;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+			[Token(Token = "0x6005B05")]
+			[Address(RVA = "0x17C8F84", Offset = "0x17C8F84", VA = "0x17C8F84")]
+			public ILO_Envelope()
+			{
+			}
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x200137C")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x48DCC", Offset = "0x48DCC")]
+		private sealed class _003CSetRunningMode_003Ed__23 : IEnumerator<object>, IEnumerator, IDisposable
+		{
+			[Token(Token = "0x400688F")]
+			[FieldOffset(Offset = "0x10")]
+			private int _003C_003E1__state;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+			[Token(Token = "0x4006890")]
+			[FieldOffset(Offset = "0x18")]
+			private object _003C_003E2__current;
 
-		5. Script Content Level 0
+			[Token(Token = "0x4006891")]
+			[FieldOffset(Offset = "0x20")]
+			public float time;
 
-			AssetRipper was set to not load any script information.
+			[Token(Token = "0x4006892")]
+			[FieldOffset(Offset = "0x28")]
+			public IntroLoopOutro _003C_003E4__this;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+			[Token(Token = "0x4006893")]
+			[FieldOffset(Offset = "0x30")]
+			public bool status;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+			[Token(Token = "0x17000A4B")]
+			private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+			{
+				[Token(Token = "0x6005B09")]
+				[Address(RVA = "0x17C8F34", Offset = "0x17C8F34", VA = "0x17C8F34", Slot = "4")]
+				[DebuggerHidden]
+				get
+				{
+					return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+				}
+			}
 
-		7. An incorrect path was provided to AssetRipper.
+			[Token(Token = "0x17000A4C")]
+			private object System_002ECollections_002EIEnumerator_002ECurrent
+			{
+				[Token(Token = "0x6005B0B")]
+				[Address(RVA = "0x17C8F7C", Offset = "0x17C8F7C", VA = "0x17C8F7C", Slot = "7")]
+				[DebuggerHidden]
+				get
+				{
+					return System_002ECollections_002EIEnumerator_002Eget_Current();
+				}
+			}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+			[Token(Token = "0x6005B06")]
+			[Address(RVA = "0x17C8E44", Offset = "0x17C8E44", VA = "0x17C8E44")]
+			[DebuggerHidden]
+			public _003CSetRunningMode_003Ed__23(int _003C_003E1__state)
+			{
+			}
 
-		*/
+			[Token(Token = "0x6005B07")]
+			[Address(RVA = "0x17C8E70", Offset = "0x17C8E70", VA = "0x17C8E70", Slot = "5")]
+			[DebuggerHidden]
+			private void System_002EIDisposable_002EDispose()
+			{
+			}
+
+			[Token(Token = "0x6005B08")]
+			[Address(RVA = "0x17C8E74", Offset = "0x17C8E74", VA = "0x17C8E74", Slot = "6")]
+			private bool MoveNext()
+			{
+				return default;
+			}
+
+			[Token(Token = "0x6005B09")]
+			[Address(RVA = "0x17C8F34", Offset = "0x17C8F34", VA = "0x17C8F34", Slot = "4")]
+			[DebuggerHidden]
+			private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+			{
+				return null;
+			}
+
+			[Token(Token = "0x6005B0A")]
+			[Address(RVA = "0x17C8F3C", Offset = "0x17C8F3C", VA = "0x17C8F3C", Slot = "8")]
+			[DebuggerHidden]
+			private void System_002ECollections_002EIEnumerator_002EReset()
+			{
+			}
+
+			[Token(Token = "0x6005B0B")]
+			[Address(RVA = "0x17C8F7C", Offset = "0x17C8F7C", VA = "0x17C8F7C", Slot = "7")]
+			[DebuggerHidden]
+			private object System_002ECollections_002EIEnumerator_002Eget_Current()
+			{
+				return null;
+			}
+		}
+
+		[Token(Token = "0x400687C")]
+		[FieldOffset(Offset = "0x18")]
+		public AudioClip intro;
+
+		[Token(Token = "0x400687D")]
+		[FieldOffset(Offset = "0x20")]
+		public AudioClip loop;
+
+		[Token(Token = "0x400687E")]
+		[FieldOffset(Offset = "0x28")]
+		public AudioClip outro;
+
+		[Token(Token = "0x400687F")]
+		[FieldOffset(Offset = "0x30")]
+		public bool canAlwaysRestart;
+
+		[Token(Token = "0x4006880")]
+		[FieldOffset(Offset = "0x38")]
+		[SerializeField]
+		private ILO_Envelope introEnvelope;
+
+		[Token(Token = "0x4006881")]
+		[FieldOffset(Offset = "0x40")]
+		[SerializeField]
+		private ILO_Envelope loopEnvelope;
+
+		[Token(Token = "0x4006882")]
+		[FieldOffset(Offset = "0x48")]
+		[SerializeField]
+		private ILO_Envelope outroEnvelope;
+
+		[Token(Token = "0x4006883")]
+		[FieldOffset(Offset = "0x50")]
+		private double introLength;
+
+		[Token(Token = "0x4006884")]
+		[FieldOffset(Offset = "0x58")]
+		private AudioSource origSource;
+
+		[Token(Token = "0x4006885")]
+		[FieldOffset(Offset = "0x60")]
+		private AudioSource[] m_src;
+
+		[Token(Token = "0x4006886")]
+		[FieldOffset(Offset = "0x68")]
+		private bool ending;
+
+		[Token(Token = "0x4006887")]
+		[FieldOffset(Offset = "0x69")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x5A578", Offset = "0x5A578")]
+		private bool Running__BackingField;
+
+		[Token(Token = "0x17000A49")]
+		public bool Running
+		{
+			[Token(Token = "0x6005AF7")]
+			[Address(RVA = "0x14F1F38", Offset = "0x14F1F38", VA = "0x14F1F38")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x72518", Offset = "0x72518")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6005AF8")]
+			[Address(RVA = "0x14F1F40", Offset = "0x14F1F40", VA = "0x14F1F40")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x72528", Offset = "0x72528")]
+			protected set
+			{
+			}
+		}
+
+		[Token(Token = "0x17000A4A")]
+		public AudioSource OrigSource
+		{
+			[Token(Token = "0x6005AF9")]
+			[Address(RVA = "0x14F1F48", Offset = "0x14F1F48", VA = "0x14F1F48")]
+			get
+			{
+				return null;
+			}
+		}
+
+		[Token(Token = "0x6005AFA")]
+		[Address(RVA = "0x14F1F50", Offset = "0x14F1F50", VA = "0x14F1F50")]
+		private void Awake()
+		{
+		}
+
+		[Token(Token = "0x6005AFB")]
+		[Address(RVA = "0x14F2724", Offset = "0x14F2724", VA = "0x14F2724")]
+		private void Update()
+		{
+		}
+
+		[Token(Token = "0x6005AFC")]
+		[Address(RVA = "0x14F27D8", Offset = "0x14F27D8", VA = "0x14F27D8")]
+		public void StartLoop()
+		{
+		}
+
+		[Token(Token = "0x6005AFD")]
+		[Address(RVA = "0x14F299C", Offset = "0x14F299C", VA = "0x14F299C")]
+		public void EndLoop()
+		{
+		}
+
+		[Token(Token = "0x6005AFE")]
+		[Address(RVA = "0x14F2DEC", Offset = "0x14F2DEC", VA = "0x14F2DEC")]
+		public void StopAll()
+		{
+		}
+
+		[Token(Token = "0x6005AFF")]
+		[Address(RVA = "0x14F2D60", Offset = "0x14F2D60", VA = "0x14F2D60")]
+		private IEnumerator SetRunningMode(bool status, float time)
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6005B00")]
+		[Address(RVA = "0x14F2B50", Offset = "0x14F2B50", VA = "0x14F2B50")]
+		private void SetAudioProperties(AudioSource src)
+		{
+		}
+
+		[Token(Token = "0x6005B01")]
+		[Address(RVA = "0x14F2034", Offset = "0x14F2034", VA = "0x14F2034")]
+		private double ReturnClipLength(AudioClip clip)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6005B02")]
+		[Address(RVA = "0x14F2080", Offset = "0x14F2080", VA = "0x14F2080")]
+		private void CreateAudioSources()
+		{
+		}
+
+		[Token(Token = "0x6005B03")]
+		[Address(RVA = "0x14F2E7C", Offset = "0x14F2E7C", VA = "0x14F2E7C")]
+		private void SetEnvelope(AudioEnvelopeSettings settings, ILO_Envelope e)
+		{
+		}
+
+		[Token(Token = "0x6005B04")]
+		[Address(RVA = "0x14F2F34", Offset = "0x14F2F34", VA = "0x14F2F34")]
+		public IntroLoopOutro()
+		{
+		}
 	}
 }

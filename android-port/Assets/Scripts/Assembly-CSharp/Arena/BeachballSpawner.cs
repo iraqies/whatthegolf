@@ -1,66 +1,70 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Arena
 {
+	[Token(Token = "0x200121F")]
 	public class BeachballSpawner : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x40061F0")]
+		[FieldOffset(Offset = "0x18")]
+		[SerializeField]
+		private GameObject ballPrefab;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40061F1")]
+		[FieldOffset(Offset = "0x20")]
+		[SerializeField]
+		private GameObject rockPrefab;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40061F2")]
+		[FieldOffset(Offset = "0x28")]
+		[SerializeField]
+		private int spawnRockInterval;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40061F3")]
+		[FieldOffset(Offset = "0x2C")]
+		[SerializeField]
+		private int maxToSpawn;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40061F4")]
+		[FieldOffset(Offset = "0x30")]
+		[SerializeField]
+		private float radius;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40061F5")]
+		[FieldOffset(Offset = "0x38")]
+		[SerializeField]
+		private MinMax randomInterval;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x40061F6")]
+		[FieldOffset(Offset = "0x40")]
+		[SerializeField]
+		private MinMax randomSizeMultiplier;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x40061F7")]
+		[FieldOffset(Offset = "0x48")]
+		private int spawnCount;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x40061F8")]
+		[FieldOffset(Offset = "0x4C")]
+		private float nextSpawnTime;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x600537C")]
+		[Address(RVA = "0x160C620", Offset = "0x160C620", VA = "0x160C620")]
+		private void Update()
+		{
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x600537D")]
+		[Address(RVA = "0x160C69C", Offset = "0x160C69C", VA = "0x160C69C")]
+		private void Spawn()
+		{
+		}
 
-			AssetRipper was set to not load any script information.
-
-		6. Cpp2IL failed to decompile Il2Cpp data
-
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x600537E")]
+		[Address(RVA = "0x160C874", Offset = "0x160C874", VA = "0x160C874")]
+		public BeachballSpawner()
+		{
+		}
 	}
 }

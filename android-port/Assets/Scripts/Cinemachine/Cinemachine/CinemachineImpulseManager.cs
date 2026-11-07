@@ -1,66 +1,255 @@
+using System;
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Cinemachine
 {
-	public class CinemachineImpulseManager : MonoBehaviour
+	[Token(Token = "0x2000087")]
+	public class CinemachineImpulseManager
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Serializable]
+		[Token(Token = "0x2000088")]
+		public struct EnvelopeDefinition
+		{
+			[Token(Token = "0x40002F6")]
+			[FieldOffset(Offset = "0x0")]
+			public AnimationCurve m_AttackShape;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x40002F7")]
+			[FieldOffset(Offset = "0x8")]
+			public AnimationCurve m_DecayShape;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x40002F8")]
+			[FieldOffset(Offset = "0x10")]
+			public float m_AttackTime;
 
-		2. Incorrect dll files were provided to AssetRipper.
+			[Token(Token = "0x40002F9")]
+			[FieldOffset(Offset = "0x14")]
+			public float m_SustainTime;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+			[Token(Token = "0x40002FA")]
+			[FieldOffset(Offset = "0x18")]
+			public float m_DecayTime;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+			[Token(Token = "0x40002FB")]
+			[FieldOffset(Offset = "0x1C")]
+			public bool m_ScaleWithImpact;
 
-		3. Assembly Reconstruction has not been implemented.
+			[Token(Token = "0x40002FC")]
+			[FieldOffset(Offset = "0x1D")]
+			public bool m_HoldForever;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+			[Token(Token = "0x170000D3")]
+			public float Duration
+			{
+				[Token(Token = "0x600032A")]
+				[Address(RVA = "0x1910A94", Offset = "0x1910A94", VA = "0x1910A94")]
+				get
+				{
+					return default;
+				}
+			}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+			[Token(Token = "0x6000329")]
+			[Address(RVA = "0x1910AB4", Offset = "0x1910AB4", VA = "0x1910AB4")]
+			public static EnvelopeDefinition Default()
+			{
+				return default;
+			}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+			[Token(Token = "0x600032B")]
+			[Address(RVA = "0x1910AE4", Offset = "0x1910AE4", VA = "0x1910AE4")]
+			public float GetValueAt(float offset)
+			{
+				return default;
+			}
 
-		5. Script Content Level 0
+			[Token(Token = "0x600032C")]
+			[Address(RVA = "0x1910CB0", Offset = "0x1910CB0", VA = "0x1910CB0")]
+			public void Clear()
+			{
+			}
 
-			AssetRipper was set to not load any script information.
+			[Token(Token = "0x600032D")]
+			[Address(RVA = "0x1910CC0", Offset = "0x1910CC0", VA = "0x1910CC0")]
+			public void Validate()
+			{
+			}
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x2000089")]
+		public class ImpulseEvent
+		{
+			[Token(Token = "0x200008A")]
+			public enum DirectionMode
+			{
+				[Token(Token = "0x4000307")]
+				Fixed = 0,
+				[Token(Token = "0x4000308")]
+				RotateTowardSource = 1
+			}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+			[Token(Token = "0x200008B")]
+			public enum DissipationMode
+			{
+				[Token(Token = "0x400030A")]
+				LinearDecay = 0,
+				[Token(Token = "0x400030B")]
+				SoftDecay = 1,
+				[Token(Token = "0x400030C")]
+				ExponentialDecay = 2
+			}
 
-		7. An incorrect path was provided to AssetRipper.
+			[Token(Token = "0x40002FD")]
+			[FieldOffset(Offset = "0x10")]
+			public float m_StartTime;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+			[Token(Token = "0x40002FE")]
+			[FieldOffset(Offset = "0x18")]
+			public EnvelopeDefinition m_Envelope;
 
-		*/
+			[Token(Token = "0x40002FF")]
+			[FieldOffset(Offset = "0x38")]
+			public ISignalSource6D m_SignalSource;
+
+			[Token(Token = "0x4000300")]
+			[FieldOffset(Offset = "0x40")]
+			public Vector3 m_Position;
+
+			[Token(Token = "0x4000301")]
+			[FieldOffset(Offset = "0x4C")]
+			public float m_Radius;
+
+			[Token(Token = "0x4000302")]
+			[FieldOffset(Offset = "0x50")]
+			public DirectionMode m_DirectionMode;
+
+			[Token(Token = "0x4000303")]
+			[FieldOffset(Offset = "0x54")]
+			public int m_Channel;
+
+			[Token(Token = "0x4000304")]
+			[FieldOffset(Offset = "0x58")]
+			public DissipationMode m_DissipationMode;
+
+			[Token(Token = "0x4000305")]
+			[FieldOffset(Offset = "0x5C")]
+			public float m_DissipationDistance;
+
+			[Token(Token = "0x170000D4")]
+			public bool Expired
+			{
+				[Token(Token = "0x600032E")]
+				[Address(RVA = "0x1910D18", Offset = "0x1910D18", VA = "0x1910D18")]
+				get
+				{
+					return default;
+				}
+			}
+
+			[Token(Token = "0x600032F")]
+			[Address(RVA = "0x1910D84", Offset = "0x1910D84", VA = "0x1910D84")]
+			public float DistanceDecay(float distance)
+			{
+				return default;
+			}
+
+			[Token(Token = "0x6000330")]
+			[Address(RVA = "0x1910EB0", Offset = "0x1910EB0", VA = "0x1910EB0")]
+			public bool GetDecayedSignal(Vector3 listenerPosition, bool use2D, out Vector3 pos, out Quaternion rot)
+			{
+				return default;
+			}
+
+			[Token(Token = "0x6000331")]
+			[Address(RVA = "0x1911208", Offset = "0x1911208", VA = "0x1911208")]
+			public void Clear()
+			{
+			}
+
+			[Token(Token = "0x6000332")]
+			[Address(RVA = "0x191125C", Offset = "0x191125C", VA = "0x191125C")]
+			internal ImpulseEvent()
+			{
+			}
+		}
+
+		[Token(Token = "0x40002F2")]
+		[FieldOffset(Offset = "0x0")]
+		private static CinemachineImpulseManager sInstance;
+
+		[Token(Token = "0x40002F3")]
+		[FieldOffset(Offset = "0x10")]
+		private List<ImpulseEvent> m_ExpiredEvents;
+
+		[Token(Token = "0x40002F4")]
+		[FieldOffset(Offset = "0x18")]
+		private List<ImpulseEvent> m_ActiveEvents;
+
+		[Token(Token = "0x40002F5")]
+		[FieldOffset(Offset = "0x20")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x793D8", Offset = "0x793D8")]
+		private bool IgnoreTimeScale__BackingField;
+
+		[Token(Token = "0x170000D0")]
+		public static CinemachineImpulseManager Instance
+		{
+			[Token(Token = "0x6000323")]
+			[Address(RVA = "0x18F8714", Offset = "0x18F8714", VA = "0x18F8714")]
+			get
+			{
+				return null;
+			}
+		}
+
+		[Token(Token = "0x170000D1")]
+		public bool IgnoreTimeScale
+		{
+			[Token(Token = "0x6000325")]
+			[Address(RVA = "0x18F8DF0", Offset = "0x18F8DF0", VA = "0x18F8DF0")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x79B58", Offset = "0x79B58")]
+			get
+			{
+				return default;
+			}
+		}
+
+		[Token(Token = "0x170000D2")]
+		private float CurrentTime
+		{
+			[Token(Token = "0x6000326")]
+			[Address(RVA = "0x18F8DF8", Offset = "0x18F8DF8", VA = "0x18F8DF8")]
+			get
+			{
+				return default;
+			}
+		}
+
+		[Token(Token = "0x6000322")]
+		[Address(RVA = "0x18F8DE8", Offset = "0x18F8DE8", VA = "0x18F8DE8")]
+		private CinemachineImpulseManager()
+		{
+		}
+
+		[Token(Token = "0x6000324")]
+		[Address(RVA = "0x18F8B14", Offset = "0x18F8B14", VA = "0x18F8B14")]
+		public bool GetImpulseAt(Vector3 listenerLocation, bool distance2D, int channelMask, out Vector3 pos, out Quaternion rot)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000327")]
+		[Address(RVA = "0x18F878C", Offset = "0x18F878C", VA = "0x18F878C")]
+		public ImpulseEvent NewImpulseEvent()
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6000328")]
+		[Address(RVA = "0x18F8840", Offset = "0x18F8840", VA = "0x18F8840")]
+		public void AddImpulseEvent(ImpulseEvent e)
+		{
+		}
 	}
 }

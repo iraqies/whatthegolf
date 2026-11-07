@@ -1,63 +1,107 @@
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
-public class RagdollShooterSim2d : MonoBehaviour
+[Token(Token = "0x2000232")]
+public class RagdollShooterSim2d : GolfBallShooterBase
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4000B35")]
+	[FieldOffset(Offset = "0x60")]
+	public float Force;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4000B36")]
+	[FieldOffset(Offset = "0x64")]
+	public Vector2 RandomRange;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4000B37")]
+	[FieldOffset(Offset = "0x70")]
+	public Rigidbody[] rigidbodies;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4000B38")]
+	[FieldOffset(Offset = "0x78")]
+	private int groundLayer;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4000B39")]
+	[FieldOffset(Offset = "0x7C")]
+	private bool grounded;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4000B3A")]
+	[FieldOffset(Offset = "0x80")]
+	public float airMultiplier;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4000B3B")]
+	[FieldOffset(Offset = "0x84")]
+	public float maxXWhileFalling;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4000B3C")]
+	[FieldOffset(Offset = "0x88")]
+	private bool constrainX;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4000B3D")]
+	[FieldOffset(Offset = "0x8C")]
+	public float xCorrectionSpeedMultiplier;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4000B3E")]
+	[FieldOffset(Offset = "0x90")]
+	public float minimumXCorrectionSpeed;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4000B3F")]
+	[FieldOffset(Offset = "0x94")]
+	public float cameraChangeYValue;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4000B40")]
+	[FieldOffset(Offset = "0x98")]
+	public GameObject CMCamera;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4000B41")]
+	[FieldOffset(Offset = "0xA0")]
+	public float allowedZVariance;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4000B42")]
+	[FieldOffset(Offset = "0xA4")]
+	public float zCorrectionSpeedMultiplier;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4000B43")]
+	[FieldOffset(Offset = "0xA8")]
+	public float minimumZCorrectionSpeed;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4000B44")]
+	[FieldOffset(Offset = "0xAC")]
+	private float originZ;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x60009E0")]
+	[Address(RVA = "0x163DCE8", Offset = "0x163DCE8", VA = "0x163DCE8", Slot = "11")]
+	protected override void Awake()
+	{
+	}
 
-	*/
+	[Token(Token = "0x60009E1")]
+	[Address(RVA = "0x163DDBC", Offset = "0x163DDBC", VA = "0x163DDBC", Slot = "12")]
+	protected override void FixedUpdate()
+	{
+	}
+
+	[Token(Token = "0x60009E2")]
+	[Address(RVA = "0x163DFA4", Offset = "0x163DFA4", VA = "0x163DFA4", Slot = "7")]
+	public override void OnShoot(Vector3 boost)
+	{
+	}
+
+	[Token(Token = "0x60009E3")]
+	[Address(RVA = "0x163E164", Offset = "0x163E164", VA = "0x163E164")]
+	private void OnTriggerEnter(Collider other)
+	{
+	}
+
+	[Token(Token = "0x60009E4")]
+	[Address(RVA = "0x163E1B4", Offset = "0x163E1B4", VA = "0x163E1B4")]
+	private void OnTriggerExit(Collider other)
+	{
+	}
+
+	[Token(Token = "0x60009E5")]
+	[Address(RVA = "0x163E200", Offset = "0x163E200", VA = "0x163E200")]
+	public RagdollShooterSim2d()
+	{
+	}
 }

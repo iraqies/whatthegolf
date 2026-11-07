@@ -1,66 +1,245 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace MonitorComponents
 {
+	[Token(Token = "0x200026F")]
+	[ExecuteInEditMode]
 	public class MonitorRigidbody2D : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x2000270")]
+		public enum SampleMode
+		{
+			[Token(Token = "0x4001034")]
+			Update = 0,
+			[Token(Token = "0x4001035")]
+			FixedUpdate = 1
+		}
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4001011")]
+		[FieldOffset(Offset = "0x18")]
+		public SampleMode sampleMode;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4001012")]
+		[FieldOffset(Offset = "0x1C")]
+		public bool showPosition;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4001013")]
+		[FieldOffset(Offset = "0x1D")]
+		public bool showPosition_x;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4001014")]
+		[FieldOffset(Offset = "0x1E")]
+		public bool showPosition_y;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4001015")]
+		[FieldOffset(Offset = "0x20")]
+		public ValueAxisMode positionMode;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4001016")]
+		[FieldOffset(Offset = "0x24")]
+		public float positionMin;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4001017")]
+		[FieldOffset(Offset = "0x28")]
+		public float positionMax;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4001018")]
+		[FieldOffset(Offset = "0x30")]
+		public Monitor monitor_position;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4001019")]
+		[FieldOffset(Offset = "0x38")]
+		private MonitorInput monitorInput_position_x;
 
-		5. Script Content Level 0
+		[Token(Token = "0x400101A")]
+		[FieldOffset(Offset = "0x40")]
+		private MonitorInput monitorInput_position_y;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x400101B")]
+		[FieldOffset(Offset = "0x48")]
+		public bool showRotation;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x400101C")]
+		[FieldOffset(Offset = "0x49")]
+		public bool rotationClamp;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x400101D")]
+		[FieldOffset(Offset = "0x4C")]
+		public ValueAxisMode rotationMode;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x400101E")]
+		[FieldOffset(Offset = "0x50")]
+		public float rotationMin;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x400101F")]
+		[FieldOffset(Offset = "0x54")]
+		public float rotationMax;
 
-		*/
+		[Token(Token = "0x4001020")]
+		[FieldOffset(Offset = "0x58")]
+		public Monitor monitor_rotation;
+
+		[Token(Token = "0x4001021")]
+		[FieldOffset(Offset = "0x60")]
+		private MonitorInput monitorInput_rotation;
+
+		[Token(Token = "0x4001022")]
+		[FieldOffset(Offset = "0x68")]
+		public bool showVelocity;
+
+		[Token(Token = "0x4001023")]
+		[FieldOffset(Offset = "0x69")]
+		public bool showVelocity_x;
+
+		[Token(Token = "0x4001024")]
+		[FieldOffset(Offset = "0x6A")]
+		public bool showVelocity_y;
+
+		[Token(Token = "0x4001025")]
+		[FieldOffset(Offset = "0x6C")]
+		public ValueAxisMode velocityMode;
+
+		[Token(Token = "0x4001026")]
+		[FieldOffset(Offset = "0x70")]
+		public float velocityMin;
+
+		[Token(Token = "0x4001027")]
+		[FieldOffset(Offset = "0x74")]
+		public float velocityMax;
+
+		[Token(Token = "0x4001028")]
+		[FieldOffset(Offset = "0x78")]
+		public Monitor monitor_velocity;
+
+		[Token(Token = "0x4001029")]
+		[FieldOffset(Offset = "0x80")]
+		private MonitorInput monitorInput_velocity_x;
+
+		[Token(Token = "0x400102A")]
+		[FieldOffset(Offset = "0x88")]
+		private MonitorInput monitorInput_velocity_y;
+
+		[Token(Token = "0x400102B")]
+		[FieldOffset(Offset = "0x90")]
+		public bool showAngularVelocity;
+
+		[Token(Token = "0x400102C")]
+		[FieldOffset(Offset = "0x94")]
+		public ValueAxisMode angularVelocityMode;
+
+		[Token(Token = "0x400102D")]
+		[FieldOffset(Offset = "0x98")]
+		public float angularVelocityMin;
+
+		[Token(Token = "0x400102E")]
+		[FieldOffset(Offset = "0x9C")]
+		public float angularVelocityMax;
+
+		[Token(Token = "0x400102F")]
+		[FieldOffset(Offset = "0xA0")]
+		public Monitor monitor_angularVelocity;
+
+		[Token(Token = "0x4001030")]
+		[FieldOffset(Offset = "0xA8")]
+		private MonitorInput monitorInput_angularVelocity;
+
+		[Token(Token = "0x4001031")]
+		[FieldOffset(Offset = "0xB0")]
+		private bool missingRigidbodyWarning;
+
+		[Token(Token = "0x4001032")]
+		[FieldOffset(Offset = "0xB8")]
+		private Rigidbody2D rigidbody2D;
+
+		[Token(Token = "0x6001022")]
+		[Address(RVA = "0x13B2714", Offset = "0x13B2714", VA = "0x13B2714")]
+		private void Awake()
+		{
+		}
+
+		[Token(Token = "0x6001023")]
+		[Address(RVA = "0x13B279C", Offset = "0x13B279C", VA = "0x13B279C")]
+		private void Start()
+		{
+		}
+
+		[Token(Token = "0x6001024")]
+		[Address(RVA = "0x13B28B4", Offset = "0x13B28B4", VA = "0x13B28B4")]
+		public void UpdateMonitors()
+		{
+		}
+
+		[Token(Token = "0x6001025")]
+		[Address(RVA = "0x13B2930", Offset = "0x13B2930", VA = "0x13B2930")]
+		private void UpdatePositionMonitor(bool componentIsActive)
+		{
+		}
+
+		[Token(Token = "0x6001026")]
+		[Address(RVA = "0x13B2C5C", Offset = "0x13B2C5C", VA = "0x13B2C5C")]
+		private void UpdateRotationMonitor(bool componentIsActive)
+		{
+		}
+
+		[Token(Token = "0x6001027")]
+		[Address(RVA = "0x13B2E78", Offset = "0x13B2E78", VA = "0x13B2E78")]
+		private void UpdateVelocityMonitor(bool componentIsActive)
+		{
+		}
+
+		[Token(Token = "0x6001028")]
+		[Address(RVA = "0x13B31A4", Offset = "0x13B31A4", VA = "0x13B31A4")]
+		private void UpdateAngularVelocityMonitor(bool componentIsActive)
+		{
+		}
+
+		[Token(Token = "0x6001029")]
+		[Address(RVA = "0x13B33C8", Offset = "0x13B33C8", VA = "0x13B33C8")]
+		public void FixedUpdate()
+		{
+		}
+
+		[Token(Token = "0x600102A")]
+		[Address(RVA = "0x13B3694", Offset = "0x13B3694", VA = "0x13B3694")]
+		public void Update()
+		{
+		}
+
+		[Token(Token = "0x600102B")]
+		[Address(RVA = "0x13B340C", Offset = "0x13B340C", VA = "0x13B340C")]
+		private void Sample()
+		{
+		}
+
+		[Token(Token = "0x600102C")]
+		[Address(RVA = "0x13B36D4", Offset = "0x13B36D4", VA = "0x13B36D4")]
+		public void OnEnable()
+		{
+		}
+
+		[Token(Token = "0x600102D")]
+		[Address(RVA = "0x13B36D8", Offset = "0x13B36D8", VA = "0x13B36D8")]
+		public void OnDisable()
+		{
+		}
+
+		[Token(Token = "0x600102E")]
+		[Address(RVA = "0x13B36DC", Offset = "0x13B36DC", VA = "0x13B36DC")]
+		public void OnDestroy()
+		{
+		}
+
+		[Token(Token = "0x600102F")]
+		[Address(RVA = "0x13B36E0", Offset = "0x13B36E0", VA = "0x13B36E0")]
+		public void RemoveMonitors()
+		{
+		}
+
+		[Token(Token = "0x6001030")]
+		[Address(RVA = "0x13B383C", Offset = "0x13B383C", VA = "0x13B383C")]
+		public MonitorRigidbody2D()
+		{
+		}
 	}
 }

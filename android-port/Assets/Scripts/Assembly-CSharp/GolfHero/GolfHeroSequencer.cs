@@ -1,66 +1,333 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Audio;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace GolfHero
 {
+	[Token(Token = "0x20010D5")]
 	public class GolfHeroSequencer : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x20010D6")]
+		private class Note
+		{
+			[Token(Token = "0x40058BE")]
+			[FieldOffset(Offset = "0x10")]
+			public int beat;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x40058BF")]
+			[FieldOffset(Offset = "0x18")]
+			public MusicPieceNote noteData;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x40058C0")]
+			[FieldOffset(Offset = "0x20")]
+			public NoteTarget noteTarget;
 
-		2. Incorrect dll files were provided to AssetRipper.
+			[Token(Token = "0x40058C1")]
+			[FieldOffset(Offset = "0x28")]
+			public LineRenderer line;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+			[Token(Token = "0x6004B72")]
+			[Address(RVA = "0x17B5DE0", Offset = "0x17B5DE0", VA = "0x17B5DE0")]
+			public Note()
+			{
+			}
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x20010D7")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x47BA4", Offset = "0x47BA4")]
+		private sealed class _003CStartSequencer_003Ed__28 : IEnumerator<object>, IEnumerator, IDisposable
+		{
+			[Token(Token = "0x40058C2")]
+			[FieldOffset(Offset = "0x10")]
+			private int _003C_003E1__state;
 
-		3. Assembly Reconstruction has not been implemented.
+			[Token(Token = "0x40058C3")]
+			[FieldOffset(Offset = "0x18")]
+			private object _003C_003E2__current;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+			[Token(Token = "0x40058C4")]
+			[FieldOffset(Offset = "0x20")]
+			public GolfHeroSequencer _003C_003E4__this;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+			[Token(Token = "0x40058C5")]
+			[FieldOffset(Offset = "0x28")]
+			private int _003ClastBeat_003E5__2;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+			[Token(Token = "0x170007FA")]
+			private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+			{
+				[Token(Token = "0x6004B76")]
+				[Address(RVA = "0x17B5D90", Offset = "0x17B5D90", VA = "0x17B5D90", Slot = "4")]
+				[DebuggerHidden]
+				get
+				{
+					return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+				}
+			}
 
-		5. Script Content Level 0
+			[Token(Token = "0x170007FB")]
+			private object System_002ECollections_002EIEnumerator_002ECurrent
+			{
+				[Token(Token = "0x6004B78")]
+				[Address(RVA = "0x17B5DD8", Offset = "0x17B5DD8", VA = "0x17B5DD8", Slot = "7")]
+				[DebuggerHidden]
+				get
+				{
+					return System_002ECollections_002EIEnumerator_002Eget_Current();
+				}
+			}
 
-			AssetRipper was set to not load any script information.
+			[Token(Token = "0x6004B73")]
+			[Address(RVA = "0x17B5814", Offset = "0x17B5814", VA = "0x17B5814")]
+			[DebuggerHidden]
+			public _003CStartSequencer_003Ed__28(int _003C_003E1__state)
+			{
+			}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+			[Token(Token = "0x6004B74")]
+			[Address(RVA = "0x17B5840", Offset = "0x17B5840", VA = "0x17B5840", Slot = "5")]
+			[DebuggerHidden]
+			private void System_002EIDisposable_002EDispose()
+			{
+			}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+			[Token(Token = "0x6004B75")]
+			[Address(RVA = "0x17B5844", Offset = "0x17B5844", VA = "0x17B5844", Slot = "6")]
+			private bool MoveNext()
+			{
+				return default;
+			}
 
-		7. An incorrect path was provided to AssetRipper.
+			[Token(Token = "0x6004B76")]
+			[Address(RVA = "0x17B5D90", Offset = "0x17B5D90", VA = "0x17B5D90", Slot = "4")]
+			[DebuggerHidden]
+			private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+			{
+				return null;
+			}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+			[Token(Token = "0x6004B77")]
+			[Address(RVA = "0x17B5D98", Offset = "0x17B5D98", VA = "0x17B5D98", Slot = "8")]
+			[DebuggerHidden]
+			private void System_002ECollections_002EIEnumerator_002EReset()
+			{
+			}
 
-		*/
+			[Token(Token = "0x6004B78")]
+			[Address(RVA = "0x17B5DD8", Offset = "0x17B5DD8", VA = "0x17B5DD8", Slot = "7")]
+			[DebuggerHidden]
+			private object System_002ECollections_002EIEnumerator_002Eget_Current()
+			{
+				return null;
+			}
+		}
+
+		[Token(Token = "0x40058A9")]
+		[FieldOffset(Offset = "0x18")]
+		[SerializeField]
+		private bool playAudioClips;
+
+		[Token(Token = "0x40058AA")]
+		[FieldOffset(Offset = "0x20")]
+		[SerializeField]
+		private MusicPiece piece;
+
+		[Token(Token = "0x40058AB")]
+		[FieldOffset(Offset = "0x28")]
+		[SerializeField]
+		private Transform notesRoot;
+
+		[Token(Token = "0x40058AC")]
+		[FieldOffset(Offset = "0x30")]
+		[SerializeField]
+		private GolfHeroShooter shooter;
+
+		[Token(Token = "0x40058AD")]
+		[FieldOffset(Offset = "0x38")]
+		[SerializeField]
+		private NoteTarget noteTargetPrefab;
+
+		[Token(Token = "0x40058AE")]
+		[FieldOffset(Offset = "0x40")]
+		[SerializeField]
+		private int numberOfAudioSources;
+
+		[Token(Token = "0x40058AF")]
+		[FieldOffset(Offset = "0x48")]
+		[SerializeField]
+		private AudioSource loopAudioSource;
+
+		[Token(Token = "0x40058B0")]
+		[FieldOffset(Offset = "0x50")]
+		[SerializeField]
+		private double timeBeforeStart;
+
+		[Token(Token = "0x40058B1")]
+		[FieldOffset(Offset = "0x58")]
+		[SerializeField]
+		private Camera visualsCamera;
+
+		[Token(Token = "0x40058B2")]
+		[FieldOffset(Offset = "0x60")]
+		[SerializeField]
+		private Color[] colors;
+
+		[Token(Token = "0x40058B3")]
+		[FieldOffset(Offset = "0x68")]
+		[SerializeField]
+		private ClipSettingsCollection sfxOnFail;
+
+		[Token(Token = "0x40058B4")]
+		[FieldOffset(Offset = "0x70")]
+		private List<Note>[] notesOnBeat;
+
+		[Token(Token = "0x40058B5")]
+		[FieldOffset(Offset = "0x78")]
+		private List<Note> notes;
+
+		[Token(Token = "0x40058B6")]
+		[FieldOffset(Offset = "0x80")]
+		private AudioSource[] audioSources;
+
+		[Token(Token = "0x40058B7")]
+		[FieldOffset(Offset = "0x88")]
+		private int audioSourceIndex;
+
+		[Token(Token = "0x40058B8")]
+		[FieldOffset(Offset = "0x90")]
+		private double startTime;
+
+		[Token(Token = "0x40058B9")]
+		[FieldOffset(Offset = "0x98")]
+		private double time;
+
+		[Token(Token = "0x40058BA")]
+		[FieldOffset(Offset = "0xA0")]
+		private double timePerBeat;
+
+		[Token(Token = "0x40058BB")]
+		[FieldOffset(Offset = "0xA8")]
+		private double pausedTime;
+
+		[Token(Token = "0x40058BC")]
+		[FieldOffset(Offset = "0xB0")]
+		private Level level;
+
+		[Token(Token = "0x40058BD")]
+		[FieldOffset(Offset = "0xB8")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x56220", Offset = "0x56220")]
+		private bool IsRunning__BackingField;
+
+		[Token(Token = "0x170007F6")]
+		public bool IsRunning
+		{
+			[Token(Token = "0x6004B64")]
+			[Address(RVA = "0x14A0F60", Offset = "0x14A0F60", VA = "0x14A0F60")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x6F9F4", Offset = "0x6F9F4")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6004B65")]
+			[Address(RVA = "0x14A0F68", Offset = "0x14A0F68", VA = "0x14A0F68")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x6FA04", Offset = "0x6FA04")]
+			private set
+			{
+			}
+		}
+
+		[Token(Token = "0x170007F7")]
+		public float TimePerBeat
+		{
+			[Token(Token = "0x6004B6E")]
+			[Address(RVA = "0x14A1BFC", Offset = "0x14A1BFC", VA = "0x14A1BFC")]
+			get
+			{
+				return default;
+			}
+		}
+
+		[Token(Token = "0x170007F8")]
+		public double Time
+		{
+			[Token(Token = "0x6004B6F")]
+			[Address(RVA = "0x14A1C08", Offset = "0x14A1C08", VA = "0x14A1C08")]
+			get
+			{
+				return default;
+			}
+		}
+
+		[Token(Token = "0x170007F9")]
+		public double BeatTime
+		{
+			[Token(Token = "0x6004B70")]
+			[Address(RVA = "0x14A0ECC", Offset = "0x14A0ECC", VA = "0x14A0ECC")]
+			get
+			{
+				return default;
+			}
+		}
+
+		[Token(Token = "0x6004B66")]
+		[Address(RVA = "0x14A0F70", Offset = "0x14A0F70", VA = "0x14A0F70")]
+		private void Awake()
+		{
+		}
+
+		[Token(Token = "0x6004B67")]
+		[Address(RVA = "0x14A16B0", Offset = "0x14A16B0", VA = "0x14A16B0")]
+		private void OnLevelStart()
+		{
+		}
+
+		[Token(Token = "0x6004B68")]
+		[Address(RVA = "0x14A17C8", Offset = "0x14A17C8", VA = "0x14A17C8")]
+		private void OnFail(GolfBallController arg1, string arg2, Level.State arg3)
+		{
+		}
+
+		[Token(Token = "0x6004B69")]
+		[Address(RVA = "0x14A1094", Offset = "0x14A1094", VA = "0x14A1094")]
+		private void Init()
+		{
+		}
+
+		[Token(Token = "0x6004B6A")]
+		[Address(RVA = "0x14A1754", Offset = "0x14A1754", VA = "0x14A1754")]
+		public IEnumerator StartSequencer()
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6004B6B")]
+		[Address(RVA = "0x14A183C", Offset = "0x14A183C", VA = "0x14A183C")]
+		private bool CheckIfPaused()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6004B6C")]
+		[Address(RVA = "0x14A18DC", Offset = "0x14A18DC", VA = "0x14A18DC")]
+		private void MoveTargets()
+		{
+		}
+
+		[Token(Token = "0x6004B6D")]
+		[Address(RVA = "0x14A1B78", Offset = "0x14A1B78", VA = "0x14A1B78")]
+		private void PlayClip(AudioClip clip)
+		{
+		}
+
+		[Token(Token = "0x6004B71")]
+		[Address(RVA = "0x14A1C14", Offset = "0x14A1C14", VA = "0x14A1C14")]
+		public GolfHeroSequencer()
+		{
+		}
 	}
 }

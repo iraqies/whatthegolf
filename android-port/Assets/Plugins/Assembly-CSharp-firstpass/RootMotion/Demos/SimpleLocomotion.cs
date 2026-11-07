@@ -1,66 +1,142 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace RootMotion.Demos
 {
+	[Token(Token = "0x2000254")]
+	[AttributeAttribute(Name = "RequireComponent", RVA = "0x34100", Offset = "0x34100")]
 	public class SimpleLocomotion : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Serializable]
+		[Token(Token = "0x2000255")]
+		public enum RotationMode
+		{
+			[Token(Token = "0x4000F69")]
+			Smooth = 0,
+			[Token(Token = "0x4000F6A")]
+			Linear = 1
+		}
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000F5B")]
+		[FieldOffset(Offset = "0x18")]
+		public CameraController cameraController;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000F5C")]
+		[FieldOffset(Offset = "0x20")]
+		public float accelerationTime;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4000F5D")]
+		[FieldOffset(Offset = "0x24")]
+		public float turnTime;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4000F5E")]
+		[FieldOffset(Offset = "0x28")]
+		public bool walkByDefault;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000F5F")]
+		[FieldOffset(Offset = "0x2C")]
+		public RotationMode rotationMode;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4000F60")]
+		[FieldOffset(Offset = "0x30")]
+		public float moveSpeed;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4000F61")]
+		[FieldOffset(Offset = "0x34")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x36ED8", Offset = "0x36ED8")]
+		private bool isGrounded__BackingField;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4000F62")]
+		[FieldOffset(Offset = "0x38")]
+		private Animator animator;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4000F63")]
+		[FieldOffset(Offset = "0x40")]
+		private float speed;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4000F64")]
+		[FieldOffset(Offset = "0x44")]
+		private float angleVel;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4000F65")]
+		[FieldOffset(Offset = "0x48")]
+		private float speedVel;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4000F66")]
+		[FieldOffset(Offset = "0x4C")]
+		private Vector3 linearTargetDirection;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x4000F67")]
+		[FieldOffset(Offset = "0x58")]
+		private CharacterController characterController;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x170001E5")]
+		public bool isGrounded
+		{
+			[Token(Token = "0x6000F69")]
+			[Address(RVA = "0x13FA570", Offset = "0x13FA570", VA = "0x13FA570")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3B3CC", Offset = "0x3B3CC")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000F6A")]
+			[Address(RVA = "0x13FA578", Offset = "0x13FA578", VA = "0x13FA578")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3B3DC", Offset = "0x3B3DC")]
+			private set
+			{
+			}
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x6000F6B")]
+		[Address(RVA = "0x13FA580", Offset = "0x13FA580", VA = "0x13FA580")]
+		private void Start()
+		{
+		}
 
-		*/
+		[Token(Token = "0x6000F6C")]
+		[Address(RVA = "0x13FA614", Offset = "0x13FA614", VA = "0x13FA614")]
+		private void Update()
+		{
+		}
+
+		[Token(Token = "0x6000F6D")]
+		[Address(RVA = "0x13FAC18", Offset = "0x13FAC18", VA = "0x13FAC18")]
+		private void LateUpdate()
+		{
+		}
+
+		[Token(Token = "0x6000F6E")]
+		[Address(RVA = "0x13FA66C", Offset = "0x13FA66C", VA = "0x13FA66C")]
+		private void Rotate()
+		{
+		}
+
+		[Token(Token = "0x6000F6F")]
+		[Address(RVA = "0x13FA99C", Offset = "0x13FA99C", VA = "0x13FA99C")]
+		private void Move()
+		{
+		}
+
+		[Token(Token = "0x6000F70")]
+		[Address(RVA = "0x13FAC54", Offset = "0x13FAC54", VA = "0x13FAC54")]
+		private Vector3 GetInputVector()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000F71")]
+		[Address(RVA = "0x13FACFC", Offset = "0x13FACFC", VA = "0x13FACFC")]
+		private Vector3 GetInputVectorRaw()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000F72")]
+		[Address(RVA = "0x13FAD88", Offset = "0x13FAD88", VA = "0x13FAD88")]
+		public SimpleLocomotion()
+		{
+		}
 	}
 }

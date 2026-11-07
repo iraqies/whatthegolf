@@ -1,66 +1,117 @@
+using Il2CppDummyDll;
+using TMPro;
 using UnityEngine;
 
 namespace I2.Loc
 {
-	public class LocalizeTarget_TextMeshPro_Label : MonoBehaviour
+	[Token(Token = "0x200130D")]
+	public class LocalizeTarget_TextMeshPro_Label : LocalizeTarget<TextMeshPro>
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x400666E")]
+		[FieldOffset(Offset = "0x20")]
+		private TextAlignmentOptions mAlignment_RTL;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x400666F")]
+		[FieldOffset(Offset = "0x24")]
+		private TextAlignmentOptions mAlignment_LTR;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4006670")]
+		[FieldOffset(Offset = "0x28")]
+		private bool mAlignmentWasRTL;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4006671")]
+		[FieldOffset(Offset = "0x29")]
+		private bool mInitializeAlignment;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x60058B2")]
+		[Address(RVA = "0x1546C30", Offset = "0x1546C30", VA = "0x1546C30")]
+		static LocalizeTarget_TextMeshPro_Label()
+		{
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x60058B3")]
+		[Address(RVA = "0x1546C34", Offset = "0x1546C34", VA = "0x1546C34")]
+		[Attribute(Name = "RuntimeInitializeOnLoadMethodAttribute", RVA = "0x71F88", Offset = "0x71F88")]
+		private static void AutoRegister()
+		{
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x60058B4")]
+		[Address(RVA = "0x1546D04", Offset = "0x1546D04", VA = "0x1546D04", Slot = "10")]
+		public override eTermType GetPrimaryTermType(Localize cmp)
+		{
+			return default;
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x60058B5")]
+		[Address(RVA = "0x1546D0C", Offset = "0x1546D0C", VA = "0x1546D0C", Slot = "11")]
+		public override eTermType GetSecondaryTermType(Localize cmp)
+		{
+			return default;
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x60058B6")]
+		[Address(RVA = "0x1546D14", Offset = "0x1546D14", VA = "0x1546D14", Slot = "7")]
+		public override bool CanUseSecondaryTerm()
+		{
+			return default;
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x60058B7")]
+		[Address(RVA = "0x1546D1C", Offset = "0x1546D1C", VA = "0x1546D1C", Slot = "8")]
+		public override bool AllowMainTermToBeRTL()
+		{
+			return default;
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x60058B8")]
+		[Address(RVA = "0x1546D24", Offset = "0x1546D24", VA = "0x1546D24", Slot = "9")]
+		public override bool AllowSecondTermToBeRTL()
+		{
+			return default;
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x60058B9")]
+		[Address(RVA = "0x1546D2C", Offset = "0x1546D2C", VA = "0x1546D2C", Slot = "5")]
+		public override void GetFinalTerms(Localize cmp, string Main, string Secondary, out string primaryTerm, out string secondaryTerm)
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x60058BA")]
+		[Address(RVA = "0x1546E64", Offset = "0x1546E64", VA = "0x1546E64", Slot = "6")]
+		public override void DoLocalize(Localize cmp, string mainTranslation, string secondaryTranslation)
+		{
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x60058BB")]
+		[Address(RVA = "0x15474EC", Offset = "0x15474EC", VA = "0x15474EC")]
+		internal static TMP_FontAsset GetTMPFontFromMaterial(Localize cmp, string matName)
+		{
+			return null;
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x60058BC")]
+		[Address(RVA = "0x154779C", Offset = "0x154779C", VA = "0x154779C")]
+		internal static void InitAlignment_TMPro(bool isRTL, TextAlignmentOptions alignment, out TextAlignmentOptions alignLTR, out TextAlignmentOptions alignRTL)
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x60058BD")]
+		[Address(RVA = "0x15473D8", Offset = "0x15473D8", VA = "0x15473D8")]
+		internal static void SetFont(TMP_Text label, TMP_FontAsset newFont)
+		{
+		}
 
-		*/
+		[Token(Token = "0x60058BE")]
+		[Address(RVA = "0x1547670", Offset = "0x1547670", VA = "0x1547670")]
+		internal static void SetMaterial(TMP_Text label, Material newMat)
+		{
+		}
+
+		[Token(Token = "0x60058BF")]
+		[Address(RVA = "0x15479A8", Offset = "0x15479A8", VA = "0x15479A8")]
+		public LocalizeTarget_TextMeshPro_Label()
+		{
+		}
 	}
 }

@@ -1,66 +1,100 @@
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Audio
 {
+	[Token(Token = "0x200133B")]
 	public class MultiplayerLobbyAudio : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x40066DE")]
+		[FieldOffset(Offset = "0x18")]
+		public AudioEventAsset sfxOnPlayerJoin;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40066DF")]
+		[FieldOffset(Offset = "0x20")]
+		public AudioEventAsset sfxOnPlayerDisconnected;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40066E0")]
+		[FieldOffset(Offset = "0x28")]
+		public AudioEventAsset sfxOnPlayerReady;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40066E1")]
+		[FieldOffset(Offset = "0x30")]
+		public AudioEventAsset sfxOnPlayerUnready;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40066E2")]
+		[FieldOffset(Offset = "0x38")]
+		public AudioEventAsset sfxOnStartingEndSequence;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40066E3")]
+		[FieldOffset(Offset = "0x40")]
+		public AudioClipSettings sfxOnCountdownTick;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x40066E4")]
+		[FieldOffset(Offset = "0x48")]
+		public AmbientAudio endSequenceAmbience;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x40066E5")]
+		[FieldOffset(Offset = "0x50")]
+		private MultiplayerLobby lobby;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x40066E6")]
+		[FieldOffset(Offset = "0x58")]
+		private List<AmbientAudio> ambience;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x60059AF")]
+		[Address(RVA = "0x15823E0", Offset = "0x15823E0", VA = "0x15823E0")]
+		private void Awake()
+		{
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x60059B0")]
+		[Address(RVA = "0x1582860", Offset = "0x1582860", VA = "0x1582860")]
+		private void OnStartingEndSequence()
+		{
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x60059B1")]
+		[Address(RVA = "0x15829A4", Offset = "0x15829A4", VA = "0x15829A4")]
+		private void OnMatchEnded(List<MultiplayerConfiguration.PlayerInfo> obj)
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x60059B2")]
+		[Address(RVA = "0x15829E0", Offset = "0x15829E0", VA = "0x15829E0")]
+		private void OnCountdownTick(int id)
+		{
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x60059B3")]
+		[Address(RVA = "0x1582A18", Offset = "0x1582A18", VA = "0x1582A18")]
+		private void OnPlayerJoin(MultiplayerLobby.LobbyPlayer player)
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x60059B4")]
+		[Address(RVA = "0x1582A60", Offset = "0x1582A60", VA = "0x1582A60")]
+		private void OnPlayerDisconnected(MultiplayerLobby.LobbyPlayer player)
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x60059B5")]
+		[Address(RVA = "0x1582AA8", Offset = "0x1582AA8", VA = "0x1582AA8")]
+		private void OnPlayerReady(MultiplayerLobby.LobbyPlayer player)
+		{
+		}
 
-		*/
+		[Token(Token = "0x60059B6")]
+		[Address(RVA = "0x1582AF0", Offset = "0x1582AF0", VA = "0x1582AF0")]
+		private void OnPlayerUnready(MultiplayerLobby.LobbyPlayer player)
+		{
+		}
+
+		[Token(Token = "0x60059B7")]
+		[Address(RVA = "0x1582B38", Offset = "0x1582B38", VA = "0x1582B38")]
+		public MultiplayerLobbyAudio()
+		{
+		}
 	}
 }

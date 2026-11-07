@@ -1,66 +1,71 @@
-using UnityEngine;
+using Il2CppDummyDll;
 
 namespace UnityEngine.UI
 {
-	public class ReflectionMethodsCache : MonoBehaviour
+	[Token(Token = "0x200006E")]
+	internal class ReflectionMethodsCache
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x200006F")]
+		public delegate bool Raycast3DCallback(Ray r, out RaycastHit hit, float f, int i);
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x2000070")]
+		public delegate RaycastHit[] RaycastAllCallback(Ray r, float f, int i);
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x2000071")]
+		public delegate int GetRaycastNonAllocCallback(Ray r, RaycastHit[] results, float f, int i);
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x2000072")]
+		public delegate RaycastHit2D Raycast2DCallback(Vector2 p1, Vector2 p2, float f, int i);
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x2000073")]
+		public delegate RaycastHit2D[] GetRayIntersectionAllCallback(Ray r, float f, int i);
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x2000074")]
+		public delegate int GetRayIntersectionAllNonAllocCallback(Ray r, RaycastHit2D[] results, float f, int i);
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4000232")]
+		[FieldOffset(Offset = "0x10")]
+		public Raycast3DCallback raycast3D;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4000233")]
+		[FieldOffset(Offset = "0x18")]
+		public RaycastAllCallback raycast3DAll;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4000234")]
+		[FieldOffset(Offset = "0x20")]
+		public GetRaycastNonAllocCallback getRaycastNonAlloc;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4000235")]
+		[FieldOffset(Offset = "0x28")]
+		public Raycast2DCallback raycast2D;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4000236")]
+		[FieldOffset(Offset = "0x30")]
+		public GetRayIntersectionAllCallback getRayIntersectionAll;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4000237")]
+		[FieldOffset(Offset = "0x38")]
+		public GetRayIntersectionAllNonAllocCallback getRayIntersectionAllNonAlloc;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4000238")]
+		[FieldOffset(Offset = "0x0")]
+		private static ReflectionMethodsCache s_ReflectionMethodsCache;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x1700014E")]
+		public static ReflectionMethodsCache Singleton
+		{
+			[Token(Token = "0x60004C6")]
+			[Address(RVA = "0x2C31378", Offset = "0x2C31378", VA = "0x2C31378")]
+			get
+			{
+				return null;
+			}
+		}
 
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x60004C5")]
+		[Address(RVA = "0x2C306D8", Offset = "0x2C306D8", VA = "0x2C306D8")]
+		public ReflectionMethodsCache()
+		{
+		}
 	}
 }

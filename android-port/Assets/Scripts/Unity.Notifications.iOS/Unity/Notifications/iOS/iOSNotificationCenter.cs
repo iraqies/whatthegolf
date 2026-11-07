@@ -1,66 +1,121 @@
-using UnityEngine;
+using System;
+using Il2CppDummyDll;
 
 namespace Unity.Notifications.iOS
 {
-	public class iOSNotificationCenter : MonoBehaviour
+	[Token(Token = "0x2000011")]
+	public class iOSNotificationCenter
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x2000012")]
+		public delegate void NotificationReceivedCallback(iOSNotification notification);
 
-		1. No dll files were provided to AssetRipper.
+		[Serializable]
+		[Token(Token = "0x2000013")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x1B4EF8", Offset = "0x1B4EF8")]
+		private sealed class _003C_003Ec
+		{
+			[Token(Token = "0x4000052")]
+			[FieldOffset(Offset = "0x0")]
+			public static readonly _003C_003Ec _003C_003E9;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x600003B")]
+			[Address(RVA = "0x2A46678", Offset = "0x2A46678", VA = "0x2A46678")]
+			public _003C_003Ec()
+			{
+			}
 
-		2. Incorrect dll files were provided to AssetRipper.
+			[Token(Token = "0x600003C")]
+			[Address(RVA = "0x2A46680", Offset = "0x2A46680", VA = "0x2A46680")]
+			internal void _003C_002Ecctor_003Eb__38_0(iOSNotification _003Cp0_003E)
+			{
+			}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+			[Token(Token = "0x600003D")]
+			[Address(RVA = "0x2A46684", Offset = "0x2A46684", VA = "0x2A46684")]
+			internal void _003C_002Ecctor_003Eb__38_1(iOSNotification _003Cp0_003E)
+			{
+			}
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x400004F")]
+		[FieldOffset(Offset = "0x0")]
+		private static bool s_Initialized;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4000050")]
+		[FieldOffset(Offset = "0x8")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x1B4FB8", Offset = "0x1B4FB8")]
+		private static NotificationReceivedCallback s_OnNotificationReceived;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4000051")]
+		[FieldOffset(Offset = "0x10")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x1B4FC8", Offset = "0x1B4FC8")]
+		private static NotificationReceivedCallback s_OnRemoteNotificationReceived;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x17000019")]
+		public static int ApplicationBadge
+		{
+			[Token(Token = "0x600002B")]
+			[Address(RVA = "0x2A43288", Offset = "0x2A43288", VA = "0x2A43288")]
+			set
+			{
+			}
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x600002C")]
+		[Address(RVA = "0x2A43290", Offset = "0x2A43290", VA = "0x2A43290")]
+		private static bool Initialize()
+		{
+			return default;
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x600002D")]
+		[Address(RVA = "0x2A433CC", Offset = "0x2A433CC", VA = "0x2A433CC")]
+		public static void ScheduleNotification(iOSNotification notification)
+		{
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x600002E")]
+		[Address(RVA = "0x2A435C8", Offset = "0x2A435C8", VA = "0x2A435C8")]
+		public static iOSNotification GetLastRespondedNotification()
+		{
+			return null;
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x600002F")]
+		[Address(RVA = "0x2A4396C", Offset = "0x2A4396C", VA = "0x2A4396C")]
+		public static void RemoveDeliveredNotification(string identifier)
+		{
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x6000030")]
+		[Address(RVA = "0x2A43A10", Offset = "0x2A43A10", VA = "0x2A43A10")]
+		public static void RemoveAllScheduledNotifications()
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x6000031")]
+		[Address(RVA = "0x2A43A70", Offset = "0x2A43A70", VA = "0x2A43A70")]
+		public static void RemoveAllDeliveredNotifications()
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x6000032")]
+		[Address(RVA = "0x2A43AD0", Offset = "0x2A43AD0", VA = "0x2A43AD0")]
+		public static iOSNotificationSettings GetNotificationSettings()
+		{
+			return default;
+		}
 
-		*/
+		[Token(Token = "0x6000033")]
+		[Address(RVA = "0x2A43AD8", Offset = "0x2A43AD8", VA = "0x2A43AD8")]
+		internal static void OnReceivedRemoteNotification(iOSNotificationWithUserInfo data)
+		{
+		}
+
+		[Token(Token = "0x6000034")]
+		[Address(RVA = "0x2A43FA0", Offset = "0x2A43FA0", VA = "0x2A43FA0")]
+		internal static void OnSentNotification(iOSNotificationWithUserInfo data)
+		{
+		}
 	}
 }

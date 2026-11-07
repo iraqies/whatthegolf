@@ -1,63 +1,136 @@
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceProviders;
 
+[Token(Token = "0x200008F")]
 public class Bootstrap : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[StructLayout((LayoutKind)3)]
+	[Token(Token = "0x2000090")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x3D688", Offset = "0x3D688")]
+	private struct _003CStart_003Ed__2 : IAsyncStateMachine
+	{
+		[Token(Token = "0x400022C")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x0")]
+		public int _003C_003E1__state;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x400022D")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x8")]
+		public AsyncVoidMethodBuilder _003C_003Et__builder;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x400022E")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
+		public Bootstrap _003C_003E4__this;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x400022F")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x30")]
+		private AsyncOperationHandle<SceneInstance> _003Chandle_003E5__2;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4000230")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x50")]
+		private TaskAwaiter _003C_003Eu__1;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000231")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x58")]
+		private object _003C_003Eu__2;
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6000274")]
+		[Address(RVA = "0x1773EF0", Offset = "0x1773EF0", VA = "0x1773EF0", Slot = "4")]
+		private void MoveNext()
+		{
+		}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6000275")]
+		[Address(RVA = "0x17745C8", Offset = "0x17745C8", VA = "0x17745C8", Slot = "5")]
+		[DebuggerHidden]
+		private void SetStateMachine(IAsyncStateMachine stateMachine)
+		{
+		}
+	}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[StructLayout((LayoutKind)3)]
+	[Token(Token = "0x2000091")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x3D698", Offset = "0x3D698")]
+	private struct _003CAwaitSplash_003Ed__3 : IAsyncStateMachine
+	{
+		[Token(Token = "0x4000232")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x0")]
+		public int _003C_003E1__state;
 
-	4. This script is unnecessary.
+		[Token(Token = "0x4000233")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x8")]
+		public AsyncTaskMethodBuilder _003C_003Et__builder;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4000234")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x20")]
+		public Bootstrap _003C_003E4__this;
 
-	5. Script Content Level 0
+		[Token(Token = "0x4000235")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
+		private object _003C_003Eu__1;
 
-		AssetRipper was set to not load any script information.
+		[Token(Token = "0x6000276")]
+		[Address(RVA = "0x1773C4C", Offset = "0x1773C4C", VA = "0x1773C4C", Slot = "4")]
+		private void MoveNext()
+		{
+		}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x6000277")]
+		[Address(RVA = "0x1773EE4", Offset = "0x1773EE4", VA = "0x1773EE4", Slot = "5")]
+		[DebuggerHidden]
+		private void SetStateMachine(IAsyncStateMachine stateMachine)
+		{
+		}
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x400022A")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x18")]
+	public AASplashScreen arcadeSplashScreen;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x400022B")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x20")]
+	public GameObject SplashScreensContainer;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x600026E")]
+	[Address(RVA = "0x16F9D60", Offset = "0x16F9D60", VA = "0x16F9D60")]
+	private void Start()
+	{
+	}
 
-	*/
+	[Token(Token = "0x600026F")]
+	[Address(RVA = "0x16F9DFC", Offset = "0x16F9DFC", VA = "0x16F9DFC")]
+	private Task AwaitSplash()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6000270")]
+	[Address(RVA = "0x16F9ED8", Offset = "0x16F9ED8", VA = "0x16F9ED8")]
+	private void SetWindowSize()
+	{
+	}
+
+	[Token(Token = "0x6000271")]
+	[Address(RVA = "0x16F9F80", Offset = "0x16F9F80", VA = "0x16F9F80")]
+	private void SetOrientation()
+	{
+	}
+
+	[Token(Token = "0x6000272")]
+	[Address(RVA = "0x16FA16C", Offset = "0x16FA16C", VA = "0x16FA16C")]
+	public Bootstrap()
+	{
+	}
+
+	[Token(Token = "0x6000273")]
+	[Address(RVA = "0x16FA174", Offset = "0x16FA174", VA = "0x16FA174")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x5DAD0", Offset = "0x5DAD0")]
+	private void _003CAwaitSplash_003Eb__3_0()
+	{
+	}
 }

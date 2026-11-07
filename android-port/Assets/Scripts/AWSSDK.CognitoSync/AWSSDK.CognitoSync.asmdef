@@ -1,0 +1,9 @@
+{
+  "name": "AWSSDK.CognitoSync",
+  "references": [
+    "Il2CppDummyDll",
+    "AWSSDK.Core",
+    "AWSSDK.CognitoIdentity"
+  ],
+  "allowUnsafeCode": true
+}

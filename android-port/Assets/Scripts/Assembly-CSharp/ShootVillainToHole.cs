@@ -1,63 +1,193 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Cinemachine;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x20002EA")]
 public class ShootVillainToHole : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x20002EB")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3ED5C", Offset = "0x3ED5C")]
+	private sealed class _003CMakeCartStatic_003Ed__16 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x400101F")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4001020")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4001021")]
+		[FieldOffset(Offset = "0x20")]
+		public ShootVillainToHole _003C_003E4__this;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x1700019A")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x6000D7A")]
+			[Address(RVA = "0x1849C5C", Offset = "0x1849C5C", VA = "0x1849C5C", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x1700019B")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x6000D7C")]
+			[Address(RVA = "0x1849CA4", Offset = "0x1849CA4", VA = "0x1849CA4", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x6000D77")]
+		[Address(RVA = "0x1849B5C", Offset = "0x1849B5C", VA = "0x1849B5C")]
+		[DebuggerHidden]
+		public _003CMakeCartStatic_003Ed__16(int _003C_003E1__state)
+		{
+		}
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6000D78")]
+		[Address(RVA = "0x1849B88", Offset = "0x1849B88", VA = "0x1849B88", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6000D79")]
+		[Address(RVA = "0x1849B8C", Offset = "0x1849B8C", VA = "0x1849B8C", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x6000D7A")]
+		[Address(RVA = "0x1849C5C", Offset = "0x1849C5C", VA = "0x1849C5C", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
 
-	4. This script is unnecessary.
+		[Token(Token = "0x6000D7B")]
+		[Address(RVA = "0x1849C64", Offset = "0x1849C64", VA = "0x1849C64", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6000D7C")]
+		[Address(RVA = "0x1849CA4", Offset = "0x1849CA4", VA = "0x1849CA4", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
 
-	5. Script Content Level 0
+	[Token(Token = "0x4001013")]
+	[FieldOffset(Offset = "0x18")]
+	[SerializeField]
+	private Transform TargetPosition;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4001014")]
+	[FieldOffset(Offset = "0x20")]
+	[SerializeField]
+	private Rigidbody Cart;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4001015")]
+	[FieldOffset(Offset = "0x28")]
+	[SerializeField]
+	private GameObject AttachedRigid;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4001016")]
+	[FieldOffset(Offset = "0x30")]
+	[SerializeField]
+	private float Force;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4001017")]
+	[FieldOffset(Offset = "0x38")]
+	[SerializeField]
+	private GameObject Villain;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x4001018")]
+	[FieldOffset(Offset = "0x40")]
+	[SerializeField]
+	private bool debug;
 
-	*/
+	[Token(Token = "0x4001019")]
+	[FieldOffset(Offset = "0x48")]
+	[SerializeField]
+	private Rigidbody CartWinner;
+
+	[Token(Token = "0x400101A")]
+	[FieldOffset(Offset = "0x50")]
+	[SerializeField]
+	private Transform TargetPositionWin;
+
+	[Token(Token = "0x400101B")]
+	[FieldOffset(Offset = "0x58")]
+	[SerializeField]
+	private float ForceWin;
+
+	[Token(Token = "0x400101C")]
+	[FieldOffset(Offset = "0x5C")]
+	[SerializeField]
+	private float cartFlyTime;
+
+	[Token(Token = "0x400101D")]
+	[FieldOffset(Offset = "0x60")]
+	[SerializeField]
+	private HotdogGolfer hotdogGolfer;
+
+	[Token(Token = "0x400101E")]
+	[FieldOffset(Offset = "0x68")]
+	[SerializeField]
+	private CinemachineVirtualCamera cam;
+
+	[Token(Token = "0x6000D71")]
+	[Address(RVA = "0x16A275C", Offset = "0x16A275C", VA = "0x16A275C")]
+	private void Start()
+	{
+	}
+
+	[Token(Token = "0x6000D72")]
+	[Address(RVA = "0x16A28B8", Offset = "0x16A28B8", VA = "0x16A28B8")]
+	private void OnTriggerEnter(Collider other)
+	{
+	}
+
+	[Token(Token = "0x6000D73")]
+	[Address(RVA = "0x16A2944", Offset = "0x16A2944", VA = "0x16A2944")]
+	public void SwapCarts()
+	{
+	}
+
+	[Token(Token = "0x6000D74")]
+	[Address(RVA = "0x16A2770", Offset = "0x16A2770", VA = "0x16A2770")]
+	private void ShootIntoHole()
+	{
+	}
+
+	[Token(Token = "0x6000D75")]
+	[Address(RVA = "0x16A2B2C", Offset = "0x16A2B2C", VA = "0x16A2B2C")]
+	private IEnumerator MakeCartStatic()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6000D76")]
+	[Address(RVA = "0x16A2BA0", Offset = "0x16A2BA0", VA = "0x16A2BA0")]
+	public ShootVillainToHole()
+	{
+	}
 }

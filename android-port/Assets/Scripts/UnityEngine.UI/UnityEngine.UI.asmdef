@@ -1,5 +1,7 @@
 {
   "name": "UnityEngine.UI",
-  "references": [],
+  "references": [
+    "Il2CppDummyDll"
+  ],
   "allowUnsafeCode": true
 }

@@ -1,66 +1,90 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Buoyancy
 {
+	[Token(Token = "0x20011E4")]
+	[Attribute(Name = "RequireComponent", RVA = "0x482AC", Offset = "0x482AC")]
 	public class RaiseBuoyancyTrigger : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4006016")]
+		[FieldOffset(Offset = "0x18")]
+		[SerializeField]
+		private float minPositionY;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4006017")]
+		[FieldOffset(Offset = "0x1C")]
+		[SerializeField]
+		private float maxPositionY;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4006018")]
+		[FieldOffset(Offset = "0x20")]
+		[SerializeField]
+		private float maxAccumulatedMass;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4006019")]
+		[FieldOffset(Offset = "0x24")]
+		[SerializeField]
+		private float smoothTime;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x400601A")]
+		[FieldOffset(Offset = "0x28")]
+		private float targetSurfacePositionY;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x400601B")]
+		[FieldOffset(Offset = "0x2C")]
+		private float currentRaiseVelocityY;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x400601C")]
+		[FieldOffset(Offset = "0x30")]
+		private BuoyancyTrigger water;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x400601D")]
+		[FieldOffset(Offset = "0x38")]
+		private Transform _transform;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x60051D7")]
+		[Address(RVA = "0x163EEE0", Offset = "0x163EEE0", VA = "0x163EEE0")]
+		private void Awake()
+		{
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x60051D8")]
+		[Address(RVA = "0x163F07C", Offset = "0x163F07C", VA = "0x163F07C")]
+		private void FixedUpdate()
+		{
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x60051D9")]
+		[Address(RVA = "0x163F038", Offset = "0x163F038", VA = "0x163F038")]
+		private void SetNewSurfacePosition()
+		{
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x60051DA")]
+		[Address(RVA = "0x163F10C", Offset = "0x163F10C", VA = "0x163F10C")]
+		private void OnDrawGizmosSelected()
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x60051DB")]
+		[Address(RVA = "0x163F208", Offset = "0x163F208", VA = "0x163F208")]
+		public RaiseBuoyancyTrigger()
+		{
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x60051DC")]
+		[Address(RVA = "0x163F224", Offset = "0x163F224", VA = "0x163F224")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x70638", Offset = "0x70638")]
+		private void _003CAwake_003Eb__8_0(IBuoyant v)
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x60051DD")]
+		[Address(RVA = "0x163F268", Offset = "0x163F268", VA = "0x163F268")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x70648", Offset = "0x70648")]
+		private void _003CAwake_003Eb__8_1(IBuoyant v)
+		{
+		}
 	}
 }

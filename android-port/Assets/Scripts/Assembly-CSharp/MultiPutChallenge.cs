@@ -1,63 +1,113 @@
+using System.Collections.Generic;
+using Audio;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
-public class MultiPutChallenge : MonoBehaviour
+[Token(Token = "0x2000412")]
+public class MultiPutChallenge : Challenge
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4001636")]
+	[FieldOffset(Offset = "0xA4")]
+	public int ballsToWin;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4001637")]
+	[FieldOffset(Offset = "0xA8")]
+	public bool dontUsePlayer;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4001638")]
+	[FieldOffset(Offset = "0xB0")]
+	public GameObject ballDisappearParticles;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4001639")]
+	[FieldOffset(Offset = "0xB8")]
+	public bool isManualSet;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x400163A")]
+	[FieldOffset(Offset = "0xC0")]
+	public List<GameObject> objectsToPut;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x400163B")]
+	[FieldOffset(Offset = "0xC8")]
+	private GolfBallController[] _controllers;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x400163C")]
+	[FieldOffset(Offset = "0xD0")]
+	private MultiBallFlag _multiBallFlag;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x400163D")]
+	[FieldOffset(Offset = "0xD8")]
+	private ObjectDestroyable _objectDestroyTrigger;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x400163E")]
+	[FieldOffset(Offset = "0xE0")]
+	private int _currentPutCount;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x400163F")]
+	[FieldOffset(Offset = "0xE4")]
+	private int _activeBallCount;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4001640")]
+	[FieldOffset(Offset = "0xE8")]
+	private TiltChallengeSFX SFX;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4001641")]
+	[FieldOffset(Offset = "0xF0")]
+	private bool isUnloadingLevel;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x6001325")]
+	[Address(RVA = "0x1579EE0", Offset = "0x1579EE0", VA = "0x1579EE0", Slot = "8")]
+	protected override void Activate()
+	{
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x6001326")]
+	[Address(RVA = "0x157A444", Offset = "0x157A444", VA = "0x157A444")]
+	private void OnLevelWillUnload()
+	{
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x6001327")]
+	[Address(RVA = "0x157A450", Offset = "0x157A450", VA = "0x157A450")]
+	private void OnObjectWillDestroy(GameObject go)
+	{
+	}
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x6001328")]
+	[Address(RVA = "0x157A530", Offset = "0x157A530", VA = "0x157A530")]
+	private void OnDestroy()
+	{
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x6001329")]
+	[Address(RVA = "0x157A664", Offset = "0x157A664", VA = "0x157A664")]
+	private void OnMultiballFlagHit(GameObject go)
+	{
+	}
 
-	*/
+	[Token(Token = "0x600132A")]
+	[Address(RVA = "0x157A910", Offset = "0x157A910", VA = "0x157A910", Slot = "5")]
+	public override string GetDescription()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x600132B")]
+	[Address(RVA = "0x157AA44", Offset = "0x157AA44", VA = "0x157AA44", Slot = "6")]
+	public override string GetWinMessageID()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x600132C")]
+	[Address(RVA = "0x157AAA8", Offset = "0x157AAA8", VA = "0x157AAA8", Slot = "10")]
+	public override void OnLevelComplete(Level.CompletedState completedState)
+	{
+	}
+
+	[Token(Token = "0x600132D")]
+	[Address(RVA = "0x157AAAC", Offset = "0x157AAAC", VA = "0x157AAAC")]
+	public MultiPutChallenge()
+	{
+	}
 }

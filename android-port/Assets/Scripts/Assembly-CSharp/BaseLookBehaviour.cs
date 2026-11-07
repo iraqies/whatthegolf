@@ -1,63 +1,148 @@
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.Events;
 
+[Token(Token = "0x2000D60")]
 public class BaseLookBehaviour : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x40048B5")]
+	[FieldOffset(Offset = "0x18")]
+	[SerializeField]
+	protected Transform[] transformsLookingAt;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x40048B6")]
+	[FieldOffset(Offset = "0x20")]
+	[SerializeField]
+	protected Transform lookAtTargetBehind;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x40048B7")]
+	[FieldOffset(Offset = "0x28")]
+	[SerializeField]
+	protected Transform FOVtransform;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x40048B8")]
+	[FieldOffset(Offset = "0x30")]
+	[SerializeField]
+	protected float lookAtSpeed;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x40048B9")]
+	[FieldOffset(Offset = "0x34")]
+	[SerializeField]
+	protected float lookAwaySpeed;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x40048BA")]
+	[FieldOffset(Offset = "0x38")]
+	[SerializeField]
+	protected bool resetBackToDefault;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x40048BB")]
+	[FieldOffset(Offset = "0x39")]
+	[SerializeField]
+	protected bool detectCollisionOnlyInsideTrigger;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x40048BC")]
+	[FieldOffset(Offset = "0x3A")]
+	[SerializeField]
+	protected bool ignoreY;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x40048BD")]
+	[FieldOffset(Offset = "0x3B")]
+	[SerializeField]
+	protected bool needLineOfSightToDetect;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x40048BE")]
+	[FieldOffset(Offset = "0x40")]
+	public UnityEvent<Transform> OnDetection;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x40048BF")]
+	[FieldOffset(Offset = "0x48")]
+	public UnityEvent<Transform> OnCollision;
 
-	5. Script Content Level 0
+	[Token(Token = "0x40048C0")]
+	[FieldOffset(Offset = "0x50")]
+	public UnityEvent<Transform> OnFollowPlayer;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x40048C1")]
+	[FieldOffset(Offset = "0x58")]
+	public UnityEvent<Vector3> OnLostLineOfSight;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x40048C2")]
+	[FieldOffset(Offset = "0x60")]
+	public UnityEvent<Transform> OnRestoredLineOfSight;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x40048C3")]
+	[FieldOffset(Offset = "0x68")]
+	private Transform player;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x40048C4")]
+	[FieldOffset(Offset = "0x70")]
+	private Quaternion[] defaultRotations;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x40048C5")]
+	[FieldOffset(Offset = "0x78")]
+	private Vector3 lastKnownPlayerPos;
 
-	*/
+	[Token(Token = "0x40048C6")]
+	[FieldOffset(Offset = "0x84")]
+	private bool hadLostLineOfSight;
+
+	[Token(Token = "0x6003EE4")]
+	[Address(RVA = "0x1607214", Offset = "0x1607214", VA = "0x1607214", Slot = "4")]
+	protected virtual void Start()
+	{
+	}
+
+	[Token(Token = "0x6003EE5")]
+	[Address(RVA = "0x1607314", Offset = "0x1607314", VA = "0x1607314", Slot = "5")]
+	protected virtual void OnCollisionEnter(Collision collision)
+	{
+	}
+
+	[Token(Token = "0x6003EE6")]
+	[Address(RVA = "0x1607434", Offset = "0x1607434", VA = "0x1607434", Slot = "6")]
+	protected virtual void OnTriggerEnter(Collider other)
+	{
+	}
+
+	[Token(Token = "0x6003EE7")]
+	[Address(RVA = "0x1607590", Offset = "0x1607590", VA = "0x1607590", Slot = "7")]
+	protected virtual void OnTriggerExit(Collider other)
+	{
+	}
+
+	[Token(Token = "0x6003EE8")]
+	[Address(RVA = "0x1607600", Offset = "0x1607600", VA = "0x1607600", Slot = "8")]
+	protected virtual void Update()
+	{
+	}
+
+	[Token(Token = "0x6003EE9")]
+	[Address(RVA = "0x16076A8", Offset = "0x16076A8", VA = "0x16076A8", Slot = "9")]
+	protected virtual void TryLookingAtPlayer()
+	{
+	}
+
+	[Token(Token = "0x6003EEA")]
+	[Address(RVA = "0x1607C3C", Offset = "0x1607C3C", VA = "0x1607C3C", Slot = "10")]
+	protected virtual void LookAround()
+	{
+	}
+
+	[Token(Token = "0x6003EEB")]
+	[Address(RVA = "0x160796C", Offset = "0x160796C", VA = "0x160796C")]
+	private void MoveFovAround(bool reset = false)
+	{
+	}
+
+	[Token(Token = "0x6003EEC")]
+	[Address(RVA = "0x1607F34", Offset = "0x1607F34", VA = "0x1607F34", Slot = "11")]
+	protected virtual void LookAtPlayer()
+	{
+	}
+
+	[Token(Token = "0x6003EED")]
+	[Address(RVA = "0x16081EC", Offset = "0x16081EC", VA = "0x16081EC")]
+	public BaseLookBehaviour()
+	{
+	}
 }

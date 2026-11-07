@@ -1,63 +1,276 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Il2CppDummyDll;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class InputFieldCharacterCountFeedback : MonoBehaviour
+[Token(Token = "0x200007B")]
+public class InputFieldCharacterCountFeedback : TMP_InputField
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x200007C")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3D5D8", Offset = "0x3D5D8")]
+	private sealed class _003CAnimateImageColor_003Ed__14 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x40001EB")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40001EC")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40001ED")]
+		[FieldOffset(Offset = "0x20")]
+		public InputFieldCharacterCountFeedback _003C_003E4__this;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40001EE")]
+		[FieldOffset(Offset = "0x28")]
+		private float _003CendWaitTime_003E5__2;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x17000055")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x6000213")]
+			[Address(RVA = "0x17C6658", Offset = "0x17C6658", VA = "0x17C6658", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x17000056")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x6000215")]
+			[Address(RVA = "0x17C66A0", Offset = "0x17C66A0", VA = "0x17C66A0", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6000210")]
+		[Address(RVA = "0x17C644C", Offset = "0x17C644C", VA = "0x17C644C")]
+		[DebuggerHidden]
+		public _003CAnimateImageColor_003Ed__14(int _003C_003E1__state)
+		{
+		}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6000211")]
+		[Address(RVA = "0x17C6478", Offset = "0x17C6478", VA = "0x17C6478", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x6000212")]
+		[Address(RVA = "0x17C647C", Offset = "0x17C647C", VA = "0x17C647C", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
 
-	4. This script is unnecessary.
+		[Token(Token = "0x6000213")]
+		[Address(RVA = "0x17C6658", Offset = "0x17C6658", VA = "0x17C6658", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6000214")]
+		[Address(RVA = "0x17C6660", Offset = "0x17C6660", VA = "0x17C6660", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
 
-	5. Script Content Level 0
+		[Token(Token = "0x6000215")]
+		[Address(RVA = "0x17C66A0", Offset = "0x17C66A0", VA = "0x17C66A0", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x200007D")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3D5E8", Offset = "0x3D5E8")]
+	private sealed class _003CAnimateImageColorV2_003Ed__15 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x40001EF")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x40001F0")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x40001F1")]
+		[FieldOffset(Offset = "0x20")]
+		public InputFieldCharacterCountFeedback _003C_003E4__this;
 
-	7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x17000057")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x6000219")]
+			[Address(RVA = "0x17C67C0", Offset = "0x17C67C0", VA = "0x17C67C0", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x17000058")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x600021B")]
+			[Address(RVA = "0x17C6808", Offset = "0x17C6808", VA = "0x17C6808", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
 
-	*/
+		[Token(Token = "0x6000216")]
+		[Address(RVA = "0x17C66A8", Offset = "0x17C66A8", VA = "0x17C66A8")]
+		[DebuggerHidden]
+		public _003CAnimateImageColorV2_003Ed__15(int _003C_003E1__state)
+		{
+		}
+
+		[Token(Token = "0x6000217")]
+		[Address(RVA = "0x17C66D4", Offset = "0x17C66D4", VA = "0x17C66D4", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
+
+		[Token(Token = "0x6000218")]
+		[Address(RVA = "0x17C66D8", Offset = "0x17C66D8", VA = "0x17C66D8", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000219")]
+		[Address(RVA = "0x17C67C0", Offset = "0x17C67C0", VA = "0x17C67C0", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
+
+		[Token(Token = "0x600021A")]
+		[Address(RVA = "0x17C67C8", Offset = "0x17C67C8", VA = "0x17C67C8", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
+
+		[Token(Token = "0x600021B")]
+		[Address(RVA = "0x17C6808", Offset = "0x17C6808", VA = "0x17C6808", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
+
+	[Token(Token = "0x40001E1")]
+	[FieldOffset(Offset = "0x2F0")]
+	[SerializeField]
+	private TextMeshProUGUI countRenderer;
+
+	[Token(Token = "0x40001E2")]
+	[FieldOffset(Offset = "0x2F8")]
+	[SerializeField]
+	private Graphic inputFieldBackground;
+
+	[Token(Token = "0x40001E3")]
+	[FieldOffset(Offset = "0x300")]
+	[SerializeField]
+	private Color inputBackgroundColor;
+
+	[Token(Token = "0x40001E4")]
+	[FieldOffset(Offset = "0x310")]
+	[SerializeField]
+	private Color badInputFeedbackColor;
+
+	[Token(Token = "0x40001E5")]
+	[FieldOffset(Offset = "0x320")]
+	[SerializeField]
+	private float badInputFadeTime;
+
+	[Token(Token = "0x40001E6")]
+	[FieldOffset(Offset = "0x328")]
+	private string lastContent;
+
+	[Token(Token = "0x40001E7")]
+	[FieldOffset(Offset = "0x330")]
+	private Coroutine backgroundFeedbackAnimCo;
+
+	[Token(Token = "0x40001E8")]
+	[FieldOffset(Offset = "0x338")]
+	private Color originalColor;
+
+	[Token(Token = "0x40001E9")]
+	[FieldOffset(Offset = "0x348")]
+	private bool keyPressed;
+
+	[Token(Token = "0x40001EA")]
+	[FieldOffset(Offset = "0x34C")]
+	private float badInputAnimEndTime;
+
+	[Token(Token = "0x6000209")]
+	[Address(RVA = "0x14ED8A0", Offset = "0x14ED8A0", VA = "0x14ED8A0")]
+	private new void Start()
+	{
+	}
+
+	[Token(Token = "0x600020A")]
+	[Address(RVA = "0x14ED9BC", Offset = "0x14ED9BC", VA = "0x14ED9BC", Slot = "64")]
+	protected override bool IsValidChar(char c)
+	{
+		return default;
+	}
+
+	[Token(Token = "0x600020B")]
+	[Address(RVA = "0x14ED9F0", Offset = "0x14ED9F0", VA = "0x14ED9F0")]
+	private void HandleCharacterLimit()
+	{
+	}
+
+	[Token(Token = "0x600020C")]
+	[Address(RVA = "0x14EDB40", Offset = "0x14EDB40", VA = "0x14EDB40")]
+	private void HandleValueChanged(string content)
+	{
+	}
+
+	[Token(Token = "0x600020D")]
+	[Address(RVA = "0x14EDBBC", Offset = "0x14EDBBC", VA = "0x14EDBBC")]
+	private IEnumerator AnimateImageColor()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x600020E")]
+	[Address(RVA = "0x14EDACC", Offset = "0x14EDACC", VA = "0x14EDACC")]
+	private IEnumerator AnimateImageColorV2()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x600020F")]
+	[Address(RVA = "0x14EDC30", Offset = "0x14EDC30", VA = "0x14EDC30")]
+	public InputFieldCharacterCountFeedback()
+	{
+	}
 }

@@ -1,63 +1,91 @@
-using UnityEngine;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using Il2CppDummyDll;
+using Unity.Notifications.iOS;
 
-public class TryAppendOrReplaceRemoteTokenCommand : MonoBehaviour
+[Token(Token = "0x2000956")]
+public class TryAppendOrReplaceRemoteTokenCommand
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[StructLayout((LayoutKind)3)]
+	[Token(Token = "0x2000957")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x42220", Offset = "0x42220")]
+	private struct _003CExecute_003Ed__0 : IAsyncStateMachine
+	{
+		[Token(Token = "0x400335B")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x0")]
+		public int _003C_003E1__state;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x400335C")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x8")]
+		public AsyncTaskMethodBuilder _003C_003Et__builder;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x400335D")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x20")]
+		public TryAppendOrReplaceRemoteTokenCommand _003C_003E4__this;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x6002B89")]
+		[Address(RVA = "0x186D964", Offset = "0x186D964", VA = "0x186D964", Slot = "4")]
+		private void MoveNext()
+		{
+		}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x6002B8A")]
+		[Address(RVA = "0x186DA9C", Offset = "0x186DA9C", VA = "0x186DA9C", Slot = "5")]
+		[DebuggerHidden]
+		private void SetStateMachine(IAsyncStateMachine stateMachine)
+		{
+		}
+	}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[StructLayout((LayoutKind)3)]
+	[Token(Token = "0x2000958")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x42230", Offset = "0x42230")]
+	private struct _003CCheckRemoteToken_003Ed__1 : IAsyncStateMachine
+	{
+		[Token(Token = "0x400335E")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x0")]
+		public int _003C_003E1__state;
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x400335F")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x8")]
+		public AsyncVoidMethodBuilder _003C_003Et__builder;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4003360")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
+		private TaskAwaiter<AuthorizationRequest> _003C_003Eu__1;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x6002B8B")]
+		[Address(RVA = "0x186D54C", Offset = "0x186D54C", VA = "0x186D54C", Slot = "4")]
+		private void MoveNext()
+		{
+		}
 
-	4. This script is unnecessary.
+		[Token(Token = "0x6002B8C")]
+		[Address(RVA = "0x186D958", Offset = "0x186D958", VA = "0x186D958", Slot = "5")]
+		[DebuggerHidden]
+		private void SetStateMachine(IAsyncStateMachine stateMachine)
+		{
+		}
+	}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x6002B86")]
+	[Address(RVA = "0x172F688", Offset = "0x172F688", VA = "0x172F688")]
+	public Task Execute()
+	{
+		return null;
+	}
 
-	5. Script Content Level 0
+	[Token(Token = "0x6002B87")]
+	[Address(RVA = "0x172F764", Offset = "0x172F764", VA = "0x172F764")]
+	private void CheckRemoteToken()
+	{
+	}
 
-		AssetRipper was set to not load any script information.
-
-	6. Cpp2IL failed to decompile Il2Cpp data
-
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x6002B88")]
+	[Address(RVA = "0x172F7EC", Offset = "0x172F7EC", VA = "0x172F7EC")]
+	public TryAppendOrReplaceRemoteTokenCommand()
+	{
+	}
 }

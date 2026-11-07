@@ -1,63 +1,134 @@
+using System;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
-public class RunnerGolfShooter : MonoBehaviour
+[Token(Token = "0x200081B")]
+public class RunnerGolfShooter : GolfBallShooterExperimental
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Serializable]
+	[Token(Token = "0x200081C")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x417D0", Offset = "0x417D0")]
+	private sealed class _003C_003Ec
+	{
+		[Token(Token = "0x4002BA1")]
+		[FieldOffset(Offset = "0x0")]
+		public static readonly _003C_003Ec _003C_003E9;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4002BA2")]
+		[FieldOffset(Offset = "0x8")]
+		public static Action<AudioSource> _003C_003E9__18_0;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x600253E")]
+		[Address(RVA = "0x18368BC", Offset = "0x18368BC", VA = "0x18368BC")]
+		public _003C_003Ec()
+		{
+		}
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x600253F")]
+		[Address(RVA = "0x18368C4", Offset = "0x18368C4", VA = "0x18368C4")]
+		internal void _003COnTriggerEnter_003Eb__18_0(AudioSource s)
+		{
+		}
+	}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4002B94")]
+	[FieldOffset(Offset = "0x88")]
+	public float ForwardSpeed;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4002B95")]
+	[FieldOffset(Offset = "0x8C")]
+	public float SpinSpeed;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4002B96")]
+	[FieldOffset(Offset = "0x90")]
+	public float JumpSpeed;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4002B97")]
+	[FieldOffset(Offset = "0x94")]
+	public float MoveAngleThreshold;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4002B98")]
+	[FieldOffset(Offset = "0x98")]
+	public float MoveLaneSpeed;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4002B99")]
+	[FieldOffset(Offset = "0x9C")]
+	public float LaneWidth;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4002B9A")]
+	[FieldOffset(Offset = "0xA0")]
+	public int NumberOfLanes;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4002B9B")]
+	[FieldOffset(Offset = "0xA4")]
+	public int StartLane;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4002B9C")]
+	[FieldOffset(Offset = "0xA8")]
+	public AudioClip CoinCollectClip;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4002B9D")]
+	[FieldOffset(Offset = "0xB0")]
+	private int currentLane;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4002B9E")]
+	[FieldOffset(Offset = "0xB4")]
+	private int targetLane;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4002B9F")]
+	[FieldOffset(Offset = "0xB8")]
+	private Vector3 startPos;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x4002BA0")]
+	[FieldOffset(Offset = "0xC4")]
+	private bool canJump;
 
-	*/
+	[Token(Token = "0x6002535")]
+	[Address(RVA = "0x1664250", Offset = "0x1664250", VA = "0x1664250", Slot = "11")]
+	protected override void Awake()
+	{
+	}
+
+	[Token(Token = "0x6002536")]
+	[Address(RVA = "0x166427C", Offset = "0x166427C", VA = "0x166427C", Slot = "7")]
+	public override void OnShoot(Vector3 boost)
+	{
+	}
+
+	[Token(Token = "0x6002537")]
+	[Address(RVA = "0x16643F0", Offset = "0x16643F0", VA = "0x16643F0")]
+	private void OnCollisionStay(Collision col)
+	{
+	}
+
+	[Token(Token = "0x6002538")]
+	[Address(RVA = "0x16643FC", Offset = "0x16643FC", VA = "0x16643FC")]
+	protected new void FixedUpdate()
+	{
+	}
+
+	[Token(Token = "0x6002539")]
+	[Address(RVA = "0x16645B4", Offset = "0x16645B4", VA = "0x16645B4", Slot = "15")]
+	protected virtual void Jump()
+	{
+	}
+
+	[Token(Token = "0x600253A")]
+	[Address(RVA = "0x1664610", Offset = "0x1664610", VA = "0x1664610")]
+	private void OnTriggerEnter(Collider other)
+	{
+	}
+
+	[Token(Token = "0x600253B")]
+	[Address(RVA = "0x1664800", Offset = "0x1664800", VA = "0x1664800", Slot = "9")]
+	public override void OnReset()
+	{
+	}
+
+	[Token(Token = "0x600253C")]
+	[Address(RVA = "0x166480C", Offset = "0x166480C", VA = "0x166480C")]
+	public RunnerGolfShooter()
+	{
+	}
 }

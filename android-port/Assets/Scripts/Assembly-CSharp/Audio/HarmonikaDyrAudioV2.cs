@@ -1,66 +1,119 @@
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Audio
 {
+	[Token(Token = "0x2001375")]
 	public class HarmonikaDyrAudioV2 : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4006857")]
+		[FieldOffset(Offset = "0x18")]
+		public HarmonikaDyrShooter harmonika;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4006858")]
+		[FieldOffset(Offset = "0x20")]
+		public ADSREnvelope envelope;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4006859")]
+		[FieldOffset(Offset = "0x28")]
+		public AudioClip clipOut;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x400685A")]
+		[FieldOffset(Offset = "0x30")]
+		public AudioClip clipIn;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x400685B")]
+		[FieldOffset(Offset = "0x38")]
+		public int fullStretchNoteAmount;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x400685C")]
+		[FieldOffset(Offset = "0x3C")]
+		public int baseNote;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x400685D")]
+		[FieldOffset(Offset = "0x40")]
+		public MusicMathUtils.Scale scale;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x400685E")]
+		[FieldOffset(Offset = "0x44")]
+		public float maxNoteDuration;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x400685F")]
+		[FieldOffset(Offset = "0x48")]
+		public float cooldown;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4006860")]
+		[FieldOffset(Offset = "0x4C")]
+		public float maxSpeed;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4006861")]
+		[FieldOffset(Offset = "0x50")]
+		public int queued;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4006862")]
+		[FieldOffset(Offset = "0x58")]
+		private int[] m_notes;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4006863")]
+		[FieldOffset(Offset = "0x60")]
+		private int m_baseNote;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x4006864")]
+		[FieldOffset(Offset = "0x64")]
+		private float maxDistance;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x4006865")]
+		[FieldOffset(Offset = "0x68")]
+		private int randomBase;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x4006866")]
+		[FieldOffset(Offset = "0x6C")]
+		private float currDistance;
 
-		*/
+		[Token(Token = "0x4006867")]
+		[FieldOffset(Offset = "0x70")]
+		private int lastNote;
+
+		[Token(Token = "0x4006868")]
+		[FieldOffset(Offset = "0x74")]
+		private float speed;
+
+		[Token(Token = "0x4006869")]
+		[FieldOffset(Offset = "0x78")]
+		private double length;
+
+		[Token(Token = "0x400686A")]
+		[FieldOffset(Offset = "0x80")]
+		private AudioSource audioSource;
+
+		[Token(Token = "0x400686B")]
+		[FieldOffset(Offset = "0x88")]
+		private float lastDist;
+
+		[Token(Token = "0x6005AE4")]
+		[Address(RVA = "0x14C43FC", Offset = "0x14C43FC", VA = "0x14C43FC")]
+		private void Start()
+		{
+		}
+
+		[Token(Token = "0x6005AE5")]
+		[Address(RVA = "0x14C44B0", Offset = "0x14C44B0", VA = "0x14C44B0")]
+		private int ReturnNote(int index)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6005AE6")]
+		[Address(RVA = "0x14C45A4", Offset = "0x14C45A4", VA = "0x14C45A4")]
+		private void Update()
+		{
+		}
+
+		[Token(Token = "0x6005AE7")]
+		[Address(RVA = "0x14C47F8", Offset = "0x14C47F8", VA = "0x14C47F8")]
+		public HarmonikaDyrAudioV2()
+		{
+		}
 	}
 }

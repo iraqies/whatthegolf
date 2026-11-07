@@ -1,66 +1,106 @@
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Audio
 {
+	[Token(Token = "0x200139E")]
 	public class IntroLoopOutroOnPull : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x400696F")]
+		[FieldOffset(Offset = "0x18")]
+		public IntroLoopOutro loop;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4006970")]
+		[FieldOffset(Offset = "0x20")]
+		public GolfBallController ball;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4006971")]
+		[FieldOffset(Offset = "0x28")]
+		public float stopAfterTimeInactive;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4006972")]
+		[FieldOffset(Offset = "0x2C")]
+		public bool blockStart;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4006973")]
+		[FieldOffset(Offset = "0x2D")]
+		public bool stopOnShoot;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4006974")]
+		[FieldOffset(Offset = "0x2E")]
+		public bool stopOnCancel;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4006975")]
+		[FieldOffset(Offset = "0x30")]
+		public float cooldown;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4006976")]
+		[FieldOffset(Offset = "0x34")]
+		private float lastBoost;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4006977")]
+		[FieldOffset(Offset = "0x38")]
+		private bool lastBlockState;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4006978")]
+		[FieldOffset(Offset = "0x3C")]
+		private float timer;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4006979")]
+		[FieldOffset(Offset = "0x40")]
+		private bool stop;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x400697A")]
+		[FieldOffset(Offset = "0x44")]
+		private float nextStartTime;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x6005B96")]
+		[Address(RVA = "0x14F2F98", Offset = "0x14F2F98", VA = "0x14F2F98")]
+		private void Awake()
+		{
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x6005B97")]
+		[Address(RVA = "0x14F3274", Offset = "0x14F3274", VA = "0x14F3274")]
+		private void Ball_OnAimStart()
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x6005B98")]
+		[Address(RVA = "0x14F32E8", Offset = "0x14F32E8", VA = "0x14F32E8")]
+		private void TryStart()
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x6005B99")]
+		[Address(RVA = "0x14F333C", Offset = "0x14F333C", VA = "0x14F333C")]
+		private void Ball_OnAimUpdate(Vector3 boost, bool arg2)
+		{
+		}
 
-		*/
+		[Token(Token = "0x6005B9A")]
+		[Address(RVA = "0x14F33EC", Offset = "0x14F33EC", VA = "0x14F33EC")]
+		private void Ball_OnPreShoot(Vector3 obj)
+		{
+		}
+
+		[Token(Token = "0x6005B9B")]
+		[Address(RVA = "0x14F3414", Offset = "0x14F3414", VA = "0x14F3414")]
+		private void Ball_OnCancel()
+		{
+		}
+
+		[Token(Token = "0x6005B9C")]
+		[Address(RVA = "0x14F343C", Offset = "0x14F343C", VA = "0x14F343C")]
+		private void Update()
+		{
+		}
+
+		[Token(Token = "0x6005B9D")]
+		[Address(RVA = "0x14F34AC", Offset = "0x14F34AC", VA = "0x14F34AC")]
+		public IntroLoopOutroOnPull()
+		{
+		}
 	}
 }

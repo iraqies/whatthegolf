@@ -1,66 +1,125 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Cinemachine
 {
-	public class CinemachinePath : MonoBehaviour
+	[Token(Token = "0x2000025")]
+	public class CinemachinePath : CinemachinePathBase
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Serializable]
+		[Token(Token = "0x2000026")]
+		public struct Waypoint
+		{
+			[Token(Token = "0x40000CB")]
+			[FieldOffset(Offset = "0x0")]
+			public Vector3 position;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x40000CC")]
+			[FieldOffset(Offset = "0xC")]
+			public Vector3 tangent;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x40000CD")]
+			[FieldOffset(Offset = "0x18")]
+			public float roll;
+		}
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40000C9")]
+		[FieldOffset(Offset = "0x48")]
+		public bool m_Looped;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40000CA")]
+		[FieldOffset(Offset = "0x50")]
+		public Waypoint[] m_Waypoints;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x1700002D")]
+		public override float MinPos
+		{
+			[Token(Token = "0x60000E3")]
+			[Address(RVA = "0x18FC2D0", Offset = "0x18FC2D0", VA = "0x18FC2D0", Slot = "4")]
+			get
+			{
+				return default;
+			}
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x1700002E")]
+		public override float MaxPos
+		{
+			[Token(Token = "0x60000E4")]
+			[Address(RVA = "0x18FC2D8", Offset = "0x18FC2D8", VA = "0x18FC2D8", Slot = "5")]
+			get
+			{
+				return default;
+			}
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x1700002F")]
+		public override bool Looped
+		{
+			[Token(Token = "0x60000E5")]
+			[Address(RVA = "0x18FC318", Offset = "0x18FC318", VA = "0x18FC318", Slot = "6")]
+			get
+			{
+				return default;
+			}
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x17000030")]
+		public override int DistanceCacheSampleStepsPerSegment
+		{
+			[Token(Token = "0x60000E7")]
+			[Address(RVA = "0x18FC40C", Offset = "0x18FC40C", VA = "0x18FC40C", Slot = "13")]
+			get
+			{
+				return default;
+			}
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x60000E6")]
+		[Address(RVA = "0x18FC320", Offset = "0x18FC320", VA = "0x18FC320")]
+		private void Reset()
+		{
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x60000E8")]
+		[Address(RVA = "0x18FC414", Offset = "0x18FC414", VA = "0x18FC414")]
+		private float GetBoundingIndices(float pos, out int indexA, out int indexB)
+		{
+			return default;
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x60000E9")]
+		[Address(RVA = "0x18FC508", Offset = "0x18FC508", VA = "0x18FC508", Slot = "8")]
+		public override Vector3 EvaluatePosition(float pos)
+		{
+			return default;
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x60000EA")]
+		[Address(RVA = "0x18FC660", Offset = "0x18FC660", VA = "0x18FC660", Slot = "9")]
+		public override Vector3 EvaluateTangent(float pos)
+		{
+			return default;
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x60000EB")]
+		[Address(RVA = "0x18FC7F4", Offset = "0x18FC7F4", VA = "0x18FC7F4", Slot = "10")]
+		public override Quaternion EvaluateOrientation(float pos)
+		{
+			return default;
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x60000EC")]
+		[Address(RVA = "0x18FCA80", Offset = "0x18FCA80", VA = "0x18FCA80")]
+		private void OnValidate()
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x60000ED")]
+		[Address(RVA = "0x18FCA90", Offset = "0x18FCA90", VA = "0x18FCA90")]
+		public CinemachinePath()
+		{
+		}
 	}
 }

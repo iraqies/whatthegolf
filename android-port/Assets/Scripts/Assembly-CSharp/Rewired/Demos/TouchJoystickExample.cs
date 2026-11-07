@@ -1,66 +1,130 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Rewired.Demos
 {
-	public class TouchJoystickExample : MonoBehaviour
+	[Token(Token = "0x2001163")]
+	[AttributeAttribute(Name = "RequireComponent", RVA = "0x47E04", Offset = "0x47E04")]
+	public class TouchJoystickExample : MonoBehaviour, IPointerDownHandler, IEventSystemHandler, IPointerUpHandler, IDragHandler
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4005BE7")]
+		[FieldOffset(Offset = "0x18")]
+		public bool allowMouseControl;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4005BE8")]
+		[FieldOffset(Offset = "0x1C")]
+		public int radius;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4005BE9")]
+		[FieldOffset(Offset = "0x20")]
+		private Vector2 origAnchoredPosition;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4005BEA")]
+		[FieldOffset(Offset = "0x28")]
+		private Vector3 origWorldPosition;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4005BEB")]
+		[FieldOffset(Offset = "0x34")]
+		private Vector2 origScreenResolution;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4005BEC")]
+		[FieldOffset(Offset = "0x3C")]
+		private ScreenOrientation origScreenOrientation;
 
-		3. Assembly Reconstruction has not been implemented.
+		[NonSerialized]
+		[Token(Token = "0x4005BED")]
+		[FieldOffset(Offset = "0x40")]
+		private bool hasFinger;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[NonSerialized]
+		[Token(Token = "0x4005BEE")]
+		[FieldOffset(Offset = "0x44")]
+		private int lastFingerId;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4005BEF")]
+		[FieldOffset(Offset = "0x48")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x571EC", Offset = "0x571EC")]
+		private Vector2 position__BackingField;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x1700088C")]
+		public Vector2 position
+		{
+			[Token(Token = "0x6004F5C")]
+			[Address(RVA = "0x171EF1C", Offset = "0x171EF1C", VA = "0x171EF1C")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x700A8", Offset = "0x700A8")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6004F5D")]
+			[Address(RVA = "0x171EF24", Offset = "0x171EF24", VA = "0x171EF24")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x700B8", Offset = "0x700B8")]
+			private set
+			{
+			}
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x6004F5E")]
+		[Address(RVA = "0x171EF2C", Offset = "0x171EF2C", VA = "0x171EF2C")]
+		private void Start()
+		{
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x6004F5F")]
+		[Address(RVA = "0x171F020", Offset = "0x171F020", VA = "0x171F020")]
+		private void Update()
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x6004F60")]
+		[Address(RVA = "0x171F098", Offset = "0x171F098", VA = "0x171F098")]
+		private void Restart()
+		{
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x6004F61")]
+		[Address(RVA = "0x171EF60", Offset = "0x171EF60", VA = "0x171EF60")]
+		private void StoreOrigValues()
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x6004F62")]
+		[Address(RVA = "0x171F11C", Offset = "0x171F11C", VA = "0x171F11C")]
+		private void UpdateValue(Vector3 value)
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x6004F63")]
+		[Address(RVA = "0x171F148", Offset = "0x171F148", VA = "0x171F148", Slot = "4")]
+		private void UnityEngine_002EEventSystems_002EIPointerDownHandler_002EOnPointerDown(PointerEventData eventData)
+		{
+		}
 
-		*/
+		[Token(Token = "0x6004F64")]
+		[Address(RVA = "0x171F19C", Offset = "0x171F19C", VA = "0x171F19C", Slot = "5")]
+		private void UnityEngine_002EEventSystems_002EIPointerUpHandler_002EOnPointerUp(PointerEventData eventData)
+		{
+		}
+
+		[Token(Token = "0x6004F65")]
+		[Address(RVA = "0x171F1D4", Offset = "0x171F1D4", VA = "0x171F1D4", Slot = "6")]
+		private void UnityEngine_002EEventSystems_002EIDragHandler_002EOnDrag(PointerEventData eventData)
+		{
+		}
+
+		[Token(Token = "0x6004F66")]
+		[Address(RVA = "0x171F190", Offset = "0x171F190", VA = "0x171F190")]
+		private static bool IsMousePointerId(int id)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6004F67")]
+		[Address(RVA = "0x171F2C0", Offset = "0x171F2C0", VA = "0x171F2C0")]
+		public TouchJoystickExample()
+		{
+		}
 	}
 }

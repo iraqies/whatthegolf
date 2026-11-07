@@ -1,66 +1,218 @@
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityStandardAssets.Utility;
 
 namespace UnityStandardAssets.Characters.FirstPerson
 {
+	[Token(Token = "0x200007B")]
+	[Attribute(Name = "RequireComponent", RVA = "0x33344", Offset = "0x33344")]
+	[Attribute(Name = "RequireComponent", RVA = "0x33344", Offset = "0x33344")]
 	public class FirstPersonController : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x40001F8")]
+		[FieldOffset(Offset = "0x18")]
+		[SerializeField]
+		private bool m_IsWalking;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40001F9")]
+		[FieldOffset(Offset = "0x1C")]
+		[SerializeField]
+		private float m_WalkSpeed;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40001FA")]
+		[FieldOffset(Offset = "0x20")]
+		[SerializeField]
+		private float m_RunSpeed;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40001FB")]
+		[FieldOffset(Offset = "0x24")]
+		[Attribute(Name = "RangeAttribute", RVA = "0x34820", Offset = "0x34820")]
+		[SerializeField]
+		private float m_RunstepLenghten;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40001FC")]
+		[FieldOffset(Offset = "0x28")]
+		[SerializeField]
+		private float m_JumpSpeed;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40001FD")]
+		[FieldOffset(Offset = "0x2C")]
+		[SerializeField]
+		private float m_StickToGroundForce;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x40001FE")]
+		[FieldOffset(Offset = "0x30")]
+		[SerializeField]
+		private float m_GravityMultiplier;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x40001FF")]
+		[FieldOffset(Offset = "0x38")]
+		[SerializeField]
+		private MouseLook m_MouseLook;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4000200")]
+		[FieldOffset(Offset = "0x40")]
+		[SerializeField]
+		private bool m_UseFovKick;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4000201")]
+		[FieldOffset(Offset = "0x48")]
+		[SerializeField]
+		private FOVKick m_FovKick;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4000202")]
+		[FieldOffset(Offset = "0x50")]
+		[SerializeField]
+		private bool m_UseHeadBob;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4000203")]
+		[FieldOffset(Offset = "0x58")]
+		[SerializeField]
+		private CurveControlledBob m_HeadBob;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4000204")]
+		[FieldOffset(Offset = "0x60")]
+		[SerializeField]
+		private LerpControlledBob m_JumpBob;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x4000205")]
+		[FieldOffset(Offset = "0x68")]
+		[SerializeField]
+		private float m_StepInterval;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x4000206")]
+		[FieldOffset(Offset = "0x70")]
+		[SerializeField]
+		private AudioClip[] m_FootstepSounds;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x4000207")]
+		[FieldOffset(Offset = "0x78")]
+		[SerializeField]
+		private AudioClip m_JumpSound;
 
-		*/
+		[Token(Token = "0x4000208")]
+		[FieldOffset(Offset = "0x80")]
+		[SerializeField]
+		private AudioClip m_LandSound;
+
+		[Token(Token = "0x4000209")]
+		[FieldOffset(Offset = "0x88")]
+		private Camera m_Camera;
+
+		[Token(Token = "0x400020A")]
+		[FieldOffset(Offset = "0x90")]
+		private bool m_Jump;
+
+		[Token(Token = "0x400020B")]
+		[FieldOffset(Offset = "0x94")]
+		private Vector2 m_Input;
+
+		[Token(Token = "0x400020C")]
+		[FieldOffset(Offset = "0x9C")]
+		private Vector3 m_MoveDir;
+
+		[Token(Token = "0x400020D")]
+		[FieldOffset(Offset = "0xA8")]
+		private CharacterController m_CharacterController;
+
+		[Token(Token = "0x400020E")]
+		[FieldOffset(Offset = "0xB0")]
+		private CollisionFlags m_CollisionFlags;
+
+		[Token(Token = "0x400020F")]
+		[FieldOffset(Offset = "0xB4")]
+		private bool m_PreviouslyGrounded;
+
+		[Token(Token = "0x4000210")]
+		[FieldOffset(Offset = "0xB8")]
+		private Vector3 m_OriginalCameraPosition;
+
+		[Token(Token = "0x4000211")]
+		[FieldOffset(Offset = "0xC4")]
+		private float m_StepCycle;
+
+		[Token(Token = "0x4000212")]
+		[FieldOffset(Offset = "0xC8")]
+		private float m_NextStep;
+
+		[Token(Token = "0x4000213")]
+		[FieldOffset(Offset = "0xCC")]
+		private bool m_Jumping;
+
+		[Token(Token = "0x4000214")]
+		[FieldOffset(Offset = "0xD0")]
+		private AudioSource m_AudioSource;
+
+		[Token(Token = "0x6000216")]
+		[Address(RVA = "0x137266C", Offset = "0x137266C", VA = "0x137266C")]
+		private void Start()
+		{
+		}
+
+		[Token(Token = "0x6000217")]
+		[Address(RVA = "0x13727A4", Offset = "0x13727A4", VA = "0x13727A4")]
+		private void Update()
+		{
+		}
+
+		[Token(Token = "0x6000218")]
+		[Address(RVA = "0x137295C", Offset = "0x137295C", VA = "0x137295C")]
+		private void PlayLandingSound()
+		{
+		}
+
+		[Token(Token = "0x6000219")]
+		[Address(RVA = "0x13729B0", Offset = "0x13729B0", VA = "0x13729B0")]
+		private void FixedUpdate()
+		{
+		}
+
+		[Token(Token = "0x600021A")]
+		[Address(RVA = "0x1372E94", Offset = "0x1372E94", VA = "0x1372E94")]
+		private void PlayJumpSound()
+		{
+		}
+
+		[Token(Token = "0x600021B")]
+		[Address(RVA = "0x1372ED4", Offset = "0x1372ED4", VA = "0x1372ED4")]
+		private void ProgressStepCycle(float speed)
+		{
+		}
+
+		[Token(Token = "0x600021C")]
+		[Address(RVA = "0x13731F0", Offset = "0x13731F0", VA = "0x13731F0")]
+		private void PlayFootStepAudio()
+		{
+		}
+
+		[Token(Token = "0x600021D")]
+		[Address(RVA = "0x1373008", Offset = "0x1373008", VA = "0x1373008")]
+		private void UpdateCameraPosition(float speed)
+		{
+		}
+
+		[Token(Token = "0x600021E")]
+		[Address(RVA = "0x1372C7C", Offset = "0x1372C7C", VA = "0x1372C7C")]
+		private void GetInput(out float speed)
+		{
+		}
+
+		[Token(Token = "0x600021F")]
+		[Address(RVA = "0x1372900", Offset = "0x1372900", VA = "0x1372900")]
+		private void RotateView()
+		{
+		}
+
+		[Token(Token = "0x6000220")]
+		[Address(RVA = "0x137333C", Offset = "0x137333C", VA = "0x137333C")]
+		private void OnControllerColliderHit(ControllerColliderHit hit)
+		{
+		}
+
+		[Token(Token = "0x6000221")]
+		[Address(RVA = "0x137347C", Offset = "0x137347C", VA = "0x137347C")]
+		public FirstPersonController()
+		{
+		}
 	}
 }

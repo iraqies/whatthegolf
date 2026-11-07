@@ -1,66 +1,160 @@
+using System.Collections.Generic;
+using Audio;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Core
 {
-	public class Bike2DShooter : MonoBehaviour
+	[Token(Token = "0x2001446")]
+	public class Bike2DShooter : GolfBall2DShooterBase
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4006DFA")]
+		[FieldOffset(Offset = "0x48")]
+		[SerializeField]
+		public float minShootVelocity;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4006DFB")]
+		[FieldOffset(Offset = "0x4C")]
+		[SerializeField]
+		public float fullShootVelocity;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4006DFC")]
+		[FieldOffset(Offset = "0x50")]
+		[SerializeField]
+		public LayerMask groundLayers;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4006DFD")]
+		[FieldOffset(Offset = "0x54")]
+		[SerializeField]
+		private float motorSpeed;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4006DFE")]
+		[FieldOffset(Offset = "0x58")]
+		[SerializeField]
+		private float motorTorque;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4006DFF")]
+		[FieldOffset(Offset = "0x5C")]
+		[SerializeField]
+		private float airControlForce;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4006E00")]
+		[FieldOffset(Offset = "0x60")]
+		[SerializeField]
+		private float flipAngleCorrectionForce;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4006E01")]
+		[FieldOffset(Offset = "0x64")]
+		[SerializeField]
+		private float airCorrectForce;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4006E02")]
+		[FieldOffset(Offset = "0x68")]
+		[SerializeField]
+		public List<WheelJoint2D> wheels;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4006E03")]
+		[FieldOffset(Offset = "0x70")]
+		[SerializeField]
+		private float groundDistance;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4006E04")]
+		[FieldOffset(Offset = "0x74")]
+		[SerializeField]
+		private float isGroundedInAirThreshold;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4006E05")]
+		[FieldOffset(Offset = "0x78")]
+		[SerializeField]
+		private ClipSettingsCollection sfxOnJump;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4006E06")]
+		[FieldOffset(Offset = "0x80")]
+		[SerializeField]
+		private RotateAxis2D pedals;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x4006E07")]
+		[FieldOffset(Offset = "0x88")]
+		[SerializeField]
+		private float pedalsSpeedMod;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x4006E08")]
+		[FieldOffset(Offset = "0x8C")]
+		private float dir;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x4006E09")]
+		[FieldOffset(Offset = "0x90")]
+		private float currentDir;
 
-		*/
+		[Token(Token = "0x4006E0A")]
+		[FieldOffset(Offset = "0x94")]
+		private float up;
+
+		[Token(Token = "0x4006E0B")]
+		[FieldOffset(Offset = "0x98")]
+		private JointMotor2D motor;
+
+		[Token(Token = "0x4006E0C")]
+		[FieldOffset(Offset = "0xA0")]
+		private bool isGrounded;
+
+		[Token(Token = "0x4006E0D")]
+		[FieldOffset(Offset = "0xA4")]
+		private float lastIsGroundedTime;
+
+		[Token(Token = "0x6005ECA")]
+		[Address(RVA = "0x160DFCC", Offset = "0x160DFCC", VA = "0x160DFCC", Slot = "4")]
+		public override void OnActivate()
+		{
+		}
+
+		[Token(Token = "0x6005ECB")]
+		[Address(RVA = "0x160E004", Offset = "0x160E004", VA = "0x160E004")]
+		private void OnEnable()
+		{
+		}
+
+		[Token(Token = "0x6005ECC")]
+		[Address(RVA = "0x160E00C", Offset = "0x160E00C", VA = "0x160E00C", Slot = "6")]
+		public override void OnAimUpdate(Vector3 boost, bool onlyAimArrow)
+		{
+		}
+
+		[Token(Token = "0x6005ECD")]
+		[Address(RVA = "0x160E47C", Offset = "0x160E47C", VA = "0x160E47C")]
+		private void Update()
+		{
+		}
+
+		[Token(Token = "0x6005ECE")]
+		[Address(RVA = "0x160E4B4", Offset = "0x160E4B4", VA = "0x160E4B4", Slot = "12")]
+		protected override void FixedUpdate()
+		{
+		}
+
+		[Token(Token = "0x6005ECF")]
+		[Address(RVA = "0x160E9BC", Offset = "0x160E9BC", VA = "0x160E9BC", Slot = "8")]
+		public override void OnCancel()
+		{
+		}
+
+		[Token(Token = "0x6005ED0")]
+		[Address(RVA = "0x160E9C8", Offset = "0x160E9C8", VA = "0x160E9C8", Slot = "13")]
+		protected override bool IsBlocking()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6005ED1")]
+		[Address(RVA = "0x160EA00", Offset = "0x160EA00", VA = "0x160EA00", Slot = "7")]
+		public override void OnShoot(Vector3 boost)
+		{
+		}
+
+		[Token(Token = "0x6005ED2")]
+		[Address(RVA = "0x160EBA8", Offset = "0x160EBA8", VA = "0x160EBA8")]
+		public Bike2DShooter()
+		{
+		}
 	}
 }

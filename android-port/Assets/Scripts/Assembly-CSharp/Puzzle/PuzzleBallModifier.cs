@@ -1,66 +1,74 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Puzzle
 {
+	[Token(Token = "0x2001039")]
+	[Attribute(Name = "RequireComponent", RVA = "0x47604", Offset = "0x47604")]
 	public class PuzzleBallModifier : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4005585")]
+		[FieldOffset(Offset = "0x18")]
+		public float speedChange;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4005586")]
+		[FieldOffset(Offset = "0x20")]
+		public SpriteRenderer shadowSprite;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4005587")]
+		[FieldOffset(Offset = "0x28")]
+		public Transform iconParent;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4005588")]
+		[FieldOffset(Offset = "0x30")]
+		private Collider2D col;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4005589")]
+		[FieldOffset(Offset = "0x38")]
+		private PuzzleBall puzzleBall;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x400558A")]
+		[FieldOffset(Offset = "0x40")]
+		private bool hasInitializedBall;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x400558B")]
+		[FieldOffset(Offset = "0x41")]
+		private bool hit;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x60048B3")]
+		[Address(RVA = "0x162E284", Offset = "0x162E284", VA = "0x162E284")]
+		private void Awake()
+		{
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x60048B4")]
+		[Address(RVA = "0x162E2F0", Offset = "0x162E2F0", VA = "0x162E2F0")]
+		private void OnTriggerEnter2D(Collider2D collision)
+		{
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x60048B5")]
+		[Address(RVA = "0x162E504", Offset = "0x162E504", VA = "0x162E504")]
+		private void HandlePower(PuzzleBall ball)
+		{
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x60048B6")]
+		[Address(RVA = "0x162E438", Offset = "0x162E438", VA = "0x162E438")]
+		private void SubscribeToBall(PuzzleBall ball)
+		{
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x60048B7")]
+		[Address(RVA = "0x162E554", Offset = "0x162E554", VA = "0x162E554")]
+		private void ResetPowerup()
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
-
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x60048B8")]
+		[Address(RVA = "0x162E5AC", Offset = "0x162E5AC", VA = "0x162E5AC")]
+		public PuzzleBallModifier()
+		{
+		}
 	}
 }

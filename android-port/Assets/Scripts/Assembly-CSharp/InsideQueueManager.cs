@@ -1,63 +1,118 @@
+using System.Collections.Generic;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x200079C")]
 public class InsideQueueManager : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x400282B")]
+	[FieldOffset(Offset = "0x18")]
+	public List<Rigidbody> QueueMembers;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x400282C")]
+	[FieldOffset(Offset = "0x20")]
+	public Vector3 QueueDirection;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x400282D")]
+	[FieldOffset(Offset = "0x2C")]
+	public float StopInterval;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x400282E")]
+	[FieldOffset(Offset = "0x30")]
+	public float StopDuration;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x400282F")]
+	[FieldOffset(Offset = "0x34")]
+	public float MoveForce;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4002830")]
+	[FieldOffset(Offset = "0x38")]
+	public float StartDelay;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4002831")]
+	[FieldOffset(Offset = "0x3C")]
+	public float JumpForce;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4002832")]
+	[FieldOffset(Offset = "0x40")]
+	public float AlertRange;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4002833")]
+	[FieldOffset(Offset = "0x44")]
+	public float KillDistance;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4002834")]
+	[FieldOffset(Offset = "0x48")]
+	public BoxCollider ActivityCollider;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4002835")]
+	[FieldOffset(Offset = "0x50")]
+	public Transform QueueTarget;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4002836")]
+	[FieldOffset(Offset = "0x58")]
+	public Transform Player;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4002837")]
+	[FieldOffset(Offset = "0x60")]
+	public InsideObserver Observer;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4002838")]
+	[FieldOffset(Offset = "0x68")]
+	public List<SpiderLegs> Spiders;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4002839")]
+	[FieldOffset(Offset = "0x70")]
+	public float SpiderMoveSpeed;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x400283A")]
+	[FieldOffset(Offset = "0x78")]
+	public GolfBallController PlayerController;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x400283B")]
+	[FieldOffset(Offset = "0x80")]
+	public Transform StopFollowPoint;
 
-	*/
+	[Token(Token = "0x400283C")]
+	[FieldOffset(Offset = "0x88")]
+	private float stopTimer;
+
+	[Token(Token = "0x400283D")]
+	[FieldOffset(Offset = "0x8C")]
+	private float startDelayTimer;
+
+	[Token(Token = "0x400283E")]
+	[FieldOffset(Offset = "0x90")]
+	private float alertTime;
+
+	[Token(Token = "0x60022E5")]
+	[Address(RVA = "0x14F0880", Offset = "0x14F0880", VA = "0x14F0880")]
+	private void Start()
+	{
+	}
+
+	[Token(Token = "0x60022E6")]
+	[Address(RVA = "0x14F0930", Offset = "0x14F0930", VA = "0x14F0930")]
+	private void PlayerOnShoot(Vector3 vector3)
+	{
+	}
+
+	[Token(Token = "0x60022E7")]
+	[Address(RVA = "0x14F09A0", Offset = "0x14F09A0", VA = "0x14F09A0")]
+	private void FixedUpdate()
+	{
+	}
+
+	[Token(Token = "0x60022E8")]
+	[Address(RVA = "0x14F0FD4", Offset = "0x14F0FD4", VA = "0x14F0FD4")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x60022E9")]
+	[Address(RVA = "0x14F1450", Offset = "0x14F1450", VA = "0x14F1450")]
+	public InsideQueueManager()
+	{
+	}
 }

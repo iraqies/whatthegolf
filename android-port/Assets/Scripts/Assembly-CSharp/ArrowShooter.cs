@@ -1,63 +1,236 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
+using Utility;
 
-public class ArrowShooter : MonoBehaviour
+[Token(Token = "0x20001CE")]
+public class ArrowShooter : GolfBallShooterBase
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x20001CF")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3E268", Offset = "0x3E268")]
+	private sealed class _003CShootArrows_003Ed__19 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x4000863")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000864")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000865")]
+		[FieldOffset(Offset = "0x20")]
+		public ArrowShooter _003C_003E4__this;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4000866")]
+		[FieldOffset(Offset = "0x28")]
+		public Vector3 boost;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4000867")]
+		[FieldOffset(Offset = "0x34")]
+		private int _003Ci_003E5__2;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000868")]
+		[FieldOffset(Offset = "0x38")]
+		private int _003Cc_003E5__3;
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x1700010F")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x600081D")]
+			[Address(RVA = "0x176F484", Offset = "0x176F484", VA = "0x176F484", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x17000110")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x600081F")]
+			[Address(RVA = "0x176F4CC", Offset = "0x176F4CC", VA = "0x176F4CC", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x600081A")]
+		[Address(RVA = "0x176F1A0", Offset = "0x176F1A0", VA = "0x176F1A0")]
+		[DebuggerHidden]
+		public _003CShootArrows_003Ed__19(int _003C_003E1__state)
+		{
+		}
 
-	4. This script is unnecessary.
+		[Token(Token = "0x600081B")]
+		[Address(RVA = "0x176F1CC", Offset = "0x176F1CC", VA = "0x176F1CC", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x600081C")]
+		[Address(RVA = "0x176F1D0", Offset = "0x176F1D0", VA = "0x176F1D0", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
 
-	5. Script Content Level 0
+		[Token(Token = "0x600081D")]
+		[Address(RVA = "0x176F484", Offset = "0x176F484", VA = "0x176F484", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
 
-		AssetRipper was set to not load any script information.
+		[Token(Token = "0x600081E")]
+		[Address(RVA = "0x176F48C", Offset = "0x176F48C", VA = "0x176F48C", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x600081F")]
+		[Address(RVA = "0x176F4CC", Offset = "0x176F4CC", VA = "0x176F4CC", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4000856")]
+	[FieldOffset(Offset = "0x60")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x4A42C", Offset = "0x4A42C")]
+	private Action<Arrow3D> m_OnShootArrow;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4000857")]
+	[FieldOffset(Offset = "0x68")]
+	public Animator Animator;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x4000858")]
+	[FieldOffset(Offset = "0x70")]
+	public Transform ArcherTorso;
 
-	*/
+	[Token(Token = "0x4000859")]
+	[FieldOffset(Offset = "0x78")]
+	public float ShootForce;
+
+	[Token(Token = "0x400085A")]
+	[FieldOffset(Offset = "0x80")]
+	public Transform ArrowStart;
+
+	[Token(Token = "0x400085B")]
+	[FieldOffset(Offset = "0x88")]
+	public Arrow3D ArrowTemplate;
+
+	[Token(Token = "0x400085C")]
+	[FieldOffset(Offset = "0x90")]
+	public int ArrowCount;
+
+	[Token(Token = "0x400085D")]
+	[FieldOffset(Offset = "0x94")]
+	public bool isUsingRandomOffset;
+
+	[Token(Token = "0x400085E")]
+	[FieldOffset(Offset = "0x98")]
+	private ObjectPool<Arrow3D> arrowPool;
+
+	[Token(Token = "0x400085F")]
+	[FieldOffset(Offset = "0xA0")]
+	public List<Collider> ignoredColliders;
+
+	[Token(Token = "0x4000860")]
+	[FieldOffset(Offset = "0xA8")]
+	private Collider[] ownColliders;
+
+	[Token(Token = "0x4000861")]
+	[FieldOffset(Offset = "0xB0")]
+	private string aimAnimParamName;
+
+	[Token(Token = "0x4000862")]
+	[FieldOffset(Offset = "0xB8")]
+	private string shootAnimParamName;
+
+	[Token(Token = "0x14000001")]
+	public event Action<Arrow3D> OnShootArrow
+	{
+		[Token(Token = "0x600080F")]
+		[Address(RVA = "0x1428A28", Offset = "0x1428A28", VA = "0x1428A28")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x5F39C", Offset = "0x5F39C")]
+		add
+		{
+		}
+		[Token(Token = "0x6000810")]
+		[Address(RVA = "0x1428ACC", Offset = "0x1428ACC", VA = "0x1428ACC")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x5F3AC", Offset = "0x5F3AC")]
+		remove
+		{
+		}
+	}
+
+	[Token(Token = "0x6000811")]
+	[Address(RVA = "0x1428B70", Offset = "0x1428B70", VA = "0x1428B70")]
+	private void Start()
+	{
+	}
+
+	[Token(Token = "0x6000812")]
+	[Address(RVA = "0x1428C98", Offset = "0x1428C98", VA = "0x1428C98")]
+	private void OnHitGoal()
+	{
+	}
+
+	[Token(Token = "0x6000813")]
+	[Address(RVA = "0x1428CEC", Offset = "0x1428CEC", VA = "0x1428CEC", Slot = "6")]
+	public override void OnAimUpdate(Vector3 boost, bool onlyAimArrow)
+	{
+	}
+
+	[Token(Token = "0x6000814")]
+	[Address(RVA = "0x1428E68", Offset = "0x1428E68", VA = "0x1428E68", Slot = "7")]
+	public override void OnShoot(Vector3 boost)
+	{
+	}
+
+	[Token(Token = "0x6000815")]
+	[Address(RVA = "0x1428FD4", Offset = "0x1428FD4", VA = "0x1428FD4")]
+	private IEnumerator ShootArrows(Vector3 boost)
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6000816")]
+	[Address(RVA = "0x142906C", Offset = "0x142906C", VA = "0x142906C")]
+	private Arrow3D SpawnNewArrow()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x6000817")]
+	[Address(RVA = "0x1429124", Offset = "0x1429124", VA = "0x1429124")]
+	private void InitializeArrow(Arrow3D newArrow)
+	{
+	}
+
+	[Token(Token = "0x6000818")]
+	[Address(RVA = "0x1429474", Offset = "0x1429474", VA = "0x1429474")]
+	public ArrowShooter()
+	{
+	}
+
+	[Token(Token = "0x6000819")]
+	[Address(RVA = "0x1429500", Offset = "0x1429500", VA = "0x1429500")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x5F3BC", Offset = "0x5F3BC")]
+	private void _003CStart_003Eb__15_0(GameObject a)
+	{
+	}
 }

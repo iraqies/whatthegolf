@@ -1,66 +1,73 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace GolfGames.Pinball
 {
+	[Token(Token = "0x20010B5")]
 	public class PinballStartShooter : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x40057FF")]
+		[FieldOffset(Offset = "0x18")]
+		[SerializeField]
+		private GameObject peg;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4005800")]
+		[FieldOffset(Offset = "0x20")]
+		[SerializeField]
+		private Pinball ball;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4005801")]
+		[FieldOffset(Offset = "0x28")]
+		[SerializeField]
+		private GameObject ballToSpawn;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4005802")]
+		[FieldOffset(Offset = "0x30")]
+		[SerializeField]
+		private PinballShooter shooter;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4005803")]
+		[FieldOffset(Offset = "0x38")]
+		[SerializeField]
+		private Transform arrowPositionTransform;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4005804")]
+		[FieldOffset(Offset = "0x40")]
+		[SerializeField]
+		private Transform arrowPositionAfterShotTransform;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4005805")]
+		[FieldOffset(Offset = "0x48")]
+		private int balls;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6004AE2")]
+		[Address(RVA = "0x15E30E0", Offset = "0x15E30E0", VA = "0x15E30E0")]
+		private void Start()
+		{
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x6004AE3")]
+		[Address(RVA = "0x15E3100", Offset = "0x15E3100", VA = "0x15E3100")]
+		private void OnTriggerExit2D(Collider2D other)
+		{
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6004AE4")]
+		[Address(RVA = "0x15E321C", Offset = "0x15E321C", VA = "0x15E321C")]
+		private void OnTriggerStay2D(Collider2D other)
+		{
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x6004AE5")]
+		[Address(RVA = "0x15E31B4", Offset = "0x15E31B4", VA = "0x15E31B4")]
+		private void CloseShooterPeg()
+		{
+		}
 
-			AssetRipper was set to not load any script information.
-
-		6. Cpp2IL failed to decompile Il2Cpp data
-
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x6004AE6")]
+		[Address(RVA = "0x15E32A8", Offset = "0x15E32A8", VA = "0x15E32A8")]
+		public PinballStartShooter()
+		{
+		}
 	}
 }

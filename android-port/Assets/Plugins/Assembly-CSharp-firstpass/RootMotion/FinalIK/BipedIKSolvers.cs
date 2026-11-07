@@ -1,66 +1,73 @@
-using UnityEngine;
+using System;
+using Il2CppDummyDll;
 
 namespace RootMotion.FinalIK
 {
-	public class BipedIKSolvers : MonoBehaviour
+	[Serializable]
+	[Token(Token = "0x200013D")]
+	public class BipedIKSolvers
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4000794")]
+		[FieldOffset(Offset = "0x10")]
+		public IKSolverLimb leftFoot;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000795")]
+		[FieldOffset(Offset = "0x18")]
+		public IKSolverLimb rightFoot;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000796")]
+		[FieldOffset(Offset = "0x20")]
+		public IKSolverLimb leftHand;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4000797")]
+		[FieldOffset(Offset = "0x28")]
+		public IKSolverLimb rightHand;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4000798")]
+		[FieldOffset(Offset = "0x30")]
+		public IKSolverFABRIK spine;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000799")]
+		[FieldOffset(Offset = "0x38")]
+		public IKSolverLookAt lookAt;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x400079A")]
+		[FieldOffset(Offset = "0x40")]
+		public IKSolverAim aim;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x400079B")]
+		[FieldOffset(Offset = "0x48")]
+		public Constraints pelvis;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x400079C")]
+		[FieldOffset(Offset = "0x50")]
+		private IKSolverLimb[] _limbs;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x400079D")]
+		[FieldOffset(Offset = "0x58")]
+		private IKSolver[] _ikSolvers;
 
-		5. Script Content Level 0
+		[Token(Token = "0x17000122")]
+		public IKSolverLimb[] limbs
+		{
+			[Token(Token = "0x600089E")]
+			[Address(RVA = "0x1301774", Offset = "0x1301774", VA = "0x1301774")]
+			get
+			{
+				return null;
+			}
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x600089F")]
+		[Address(RVA = "0x1301C30", Offset = "0x1301C30", VA = "0x1301C30")]
+		public void AssignReferences(BipedReferences references)
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
-
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x60008A0")]
+		[Address(RVA = "0x130206C", Offset = "0x130206C", VA = "0x130206C")]
+		public BipedIKSolvers()
+		{
+		}
 	}
 }

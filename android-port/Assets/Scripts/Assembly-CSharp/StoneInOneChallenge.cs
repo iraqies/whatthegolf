@@ -1,63 +1,91 @@
+using System.Collections.Generic;
+using Core;
+using GolfCourse;
+using Il2CppDummyDll;
 using UnityEngine;
 
-public class StoneInOneChallenge : MonoBehaviour
+[Token(Token = "0x200041D")]
+public class StoneInOneChallenge : Challenge
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4001681")]
+	[FieldOffset(Offset = "0xA1")]
+	public bool failOnHitFlagBeforeMaxSwallow;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4001682")]
+	[FieldOffset(Offset = "0xA4")]
+	public float stoneScaleSpeed;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4001683")]
+	[FieldOffset(Offset = "0xA8")]
+	private ChallengeHoleAbsorber _absorber;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4001684")]
+	[FieldOffset(Offset = "0xB0")]
+	private GolfBallController _controller;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4001685")]
+	[FieldOffset(Offset = "0xB8")]
+	private int _swallowCount;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4001686")]
+	[FieldOffset(Offset = "0xBC")]
+	public int swallowsToWin;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4001687")]
+	[FieldOffset(Offset = "0xC0")]
+	public bool completeOnSwallowCount;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4001688")]
+	[FieldOffset(Offset = "0xC1")]
+	[SerializeField]
+	private bool clampSize;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4001689")]
+	[FieldOffset(Offset = "0xC4")]
+	[SerializeField]
+	private float maxSize;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x400168A")]
+	[FieldOffset(Offset = "0xC8")]
+	private GolfCoursePinGoal golfGoal;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x400168B")]
+	[FieldOffset(Offset = "0xD0")]
+	private readonly List<GameObject> _collectedStones;
 
-	5. Script Content Level 0
+	[Token(Token = "0x600135C")]
+	[Address(RVA = "0x16E1B00", Offset = "0x16E1B00", VA = "0x16E1B00", Slot = "8")]
+	protected override void Activate()
+	{
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x600135D")]
+	[Address(RVA = "0x16E1D44", Offset = "0x16E1D44", VA = "0x16E1D44")]
+	private void OnStoneSwallow(GameObject obj)
+	{
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x600135E")]
+	[Address(RVA = "0x16E1E78", Offset = "0x16E1E78", VA = "0x16E1E78", Slot = "9")]
+	protected override void ChallengeUpdate()
+	{
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x600135F")]
+	[Address(RVA = "0x16E21B4", Offset = "0x16E21B4", VA = "0x16E21B4", Slot = "10")]
+	public override void OnLevelComplete(Level.CompletedState completedState)
+	{
+	}
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x6001360")]
+	[Address(RVA = "0x16E21E0", Offset = "0x16E21E0", VA = "0x16E21E0", Slot = "7")]
+	public override void OnLevelFail(GolfBallController arg1, string arg2, Level.State arg3)
+	{
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x6001361")]
+	[Address(RVA = "0x16E21E8", Offset = "0x16E21E8", VA = "0x16E21E8")]
+	public StoneInOneChallenge()
+	{
+	}
 }

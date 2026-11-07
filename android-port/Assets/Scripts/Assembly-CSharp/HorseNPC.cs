@@ -1,63 +1,69 @@
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.AI;
 
+[Token(Token = "0x2000794")]
 public class HorseNPC : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x40027FF")]
+	[FieldOffset(Offset = "0x18")]
+	public HorseLaps Waypoints;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4002800")]
+	[FieldOffset(Offset = "0x20")]
+	private NavMeshAgent agent;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4002801")]
+	[FieldOffset(Offset = "0x28")]
+	private int currentWaypoint;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4002802")]
+	[FieldOffset(Offset = "0x2C")]
+	private bool hasPath;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4002803")]
+	[FieldOffset(Offset = "0x2D")]
+	private bool hasStarted;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x60022BF")]
+	[Address(RVA = "0x14D56D0", Offset = "0x14D56D0", VA = "0x14D56D0")]
+	private void Awake()
+	{
+	}
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x60022C0")]
+	[Address(RVA = "0x14D5794", Offset = "0x14D5794", VA = "0x14D5794")]
+	private void Start()
+	{
+	}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x60022C1")]
+	[Address(RVA = "0x14D5858", Offset = "0x14D5858", VA = "0x14D5858")]
+	private void Ball_OnShoot(Vector3 boost)
+	{
+	}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x60022C2")]
+	[Address(RVA = "0x14D5B10", Offset = "0x14D5B10", VA = "0x14D5B10")]
+	private void Update()
+	{
+	}
 
-	4. This script is unnecessary.
+	[Token(Token = "0x60022C3")]
+	[Address(RVA = "0x14D5888", Offset = "0x14D5888", VA = "0x14D5888")]
+	private void SetNewDestination()
+	{
+	}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x60022C4")]
+	[Address(RVA = "0x14D5B98", Offset = "0x14D5B98", VA = "0x14D5B98")]
+	private void OnTriggerEnter(Collider other)
+	{
+	}
 
-	5. Script Content Level 0
-
-		AssetRipper was set to not load any script information.
-
-	6. Cpp2IL failed to decompile Il2Cpp data
-
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x60022C5")]
+	[Address(RVA = "0x14D5CC0", Offset = "0x14D5CC0", VA = "0x14D5CC0")]
+	public HorseNPC()
+	{
+	}
 }

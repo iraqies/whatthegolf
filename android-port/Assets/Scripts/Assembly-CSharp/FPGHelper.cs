@@ -1,63 +1,60 @@
+using CameraStack;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x20006F5")]
 public class FPGHelper : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4002485")]
+	[FieldOffset(Offset = "0x18")]
+	[SerializeField]
+	private string downHelp;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4002486")]
+	[FieldOffset(Offset = "0x20")]
+	[SerializeField]
+	[Attribute(Name = "RangeAttribute", RVA = "0x4E6B4", Offset = "0x4E6B4")]
+	private float threshold;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4002487")]
+	[FieldOffset(Offset = "0x28")]
+	private CBPerspecitveGyroscope gyro;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4002488")]
+	[FieldOffset(Offset = "0x30")]
+	private GolfBallController controller;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4002489")]
+	[FieldOffset(Offset = "0x38")]
+	private bool levelWon;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x400248A")]
+	[FieldOffset(Offset = "0x3C")]
+	private float warmup;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x6002019")]
+	[Address(RVA = "0x14590E4", Offset = "0x14590E4", VA = "0x14590E4")]
+	public void Init(CBPerspecitveGyroscope camBehaviour, GolfBallController controller)
+	{
+	}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x600201A")]
+	[Address(RVA = "0x1459228", Offset = "0x1459228", VA = "0x1459228")]
+	private void Update()
+	{
+	}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x600201B")]
+	[Address(RVA = "0x14593CC", Offset = "0x14593CC", VA = "0x14593CC")]
+	public FPGHelper()
+	{
+	}
 
-	4. This script is unnecessary.
-
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
-
-	5. Script Content Level 0
-
-		AssetRipper was set to not load any script information.
-
-	6. Cpp2IL failed to decompile Il2Cpp data
-
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x600201C")]
+	[Address(RVA = "0x14593DC", Offset = "0x14593DC", VA = "0x14593DC")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x658B8", Offset = "0x658B8")]
+	private void _003CInit_003Eb__6_0(Level.CompletedState s)
+	{
+	}
 }

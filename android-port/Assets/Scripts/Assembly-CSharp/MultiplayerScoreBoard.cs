@@ -1,63 +1,257 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x200013A")]
 public class MultiplayerScoreBoard : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x200013B")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3DBF0", Offset = "0x3DBF0")]
+	private sealed class _003C_003Ec__DisplayClass14_0
+	{
+		[Token(Token = "0x4000583")]
+		[FieldOffset(Offset = "0x10")]
+		public int i1;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000584")]
+		[FieldOffset(Offset = "0x18")]
+		public MultiplayerScoreBoard _003C_003E4__this;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x600055D")]
+		[Address(RVA = "0x18034BC", Offset = "0x18034BC", VA = "0x18034BC")]
+		public _003C_003Ec__DisplayClass14_0()
+		{
+		}
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x600055E")]
+		[Address(RVA = "0x18034C4", Offset = "0x18034C4", VA = "0x18034C4")]
+		internal void _003CShowScores_003Eb__0(float t)
+		{
+		}
+	}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x200013C")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3DC00", Offset = "0x3DC00")]
+	private sealed class _003C_003Ec__DisplayClass14_1
+	{
+		[Token(Token = "0x4000585")]
+		[FieldOffset(Offset = "0x10")]
+		public int j1;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000586")]
+		[FieldOffset(Offset = "0x18")]
+		public MultiplayerScoreBoard _003C_003E4__this;
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x600055F")]
+		[Address(RVA = "0x18035BC", Offset = "0x18035BC", VA = "0x18035BC")]
+		public _003C_003Ec__DisplayClass14_1()
+		{
+		}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6000560")]
+		[Address(RVA = "0x18035C4", Offset = "0x18035C4", VA = "0x18035C4")]
+		internal void _003CShowScores_003Eb__1(float t)
+		{
+		}
+	}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x200013D")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3DC10", Offset = "0x3DC10")]
+	private sealed class _003C_003Ec__DisplayClass14_2
+	{
+		[Token(Token = "0x4000587")]
+		[FieldOffset(Offset = "0x10")]
+		public int i1;
 
-	4. This script is unnecessary.
+		[Token(Token = "0x4000588")]
+		[FieldOffset(Offset = "0x18")]
+		public MultiplayerScoreBoard _003C_003E4__this;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6000561")]
+		[Address(RVA = "0x1803718", Offset = "0x1803718", VA = "0x1803718")]
+		public _003C_003Ec__DisplayClass14_2()
+		{
+		}
 
-	5. Script Content Level 0
+		[Token(Token = "0x6000562")]
+		[Address(RVA = "0x1803720", Offset = "0x1803720", VA = "0x1803720")]
+		internal void _003CShowScores_003Eb__2(float t)
+		{
+		}
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x200013E")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3DC20", Offset = "0x3DC20")]
+	private sealed class _003CShowScores_003Ed__14 : IEnumerator<object>, IEnumerator, IDisposable
+	{
+		[Token(Token = "0x4000589")]
+		[FieldOffset(Offset = "0x10")]
+		private int _003C_003E1__state;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x400058A")]
+		[FieldOffset(Offset = "0x18")]
+		private object _003C_003E2__current;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x400058B")]
+		[FieldOffset(Offset = "0x20")]
+		public MultiplayerScoreBoard _003C_003E4__this;
 
-	7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x400058C")]
+		[FieldOffset(Offset = "0x28")]
+		private int _003Ci_003E5__2;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x170000B3")]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002ECurrent
+		{
+			[Token(Token = "0x6000566")]
+			[Address(RVA = "0x1803DC8", Offset = "0x1803DC8", VA = "0x1803DC8", Slot = "4")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current();
+			}
+		}
 
-	*/
+		[Token(Token = "0x170000B4")]
+		private object System_002ECollections_002EIEnumerator_002ECurrent
+		{
+			[Token(Token = "0x6000568")]
+			[Address(RVA = "0x1803E10", Offset = "0x1803E10", VA = "0x1803E10", Slot = "7")]
+			[DebuggerHidden]
+			get
+			{
+				return System_002ECollections_002EIEnumerator_002Eget_Current();
+			}
+		}
+
+		[Token(Token = "0x6000563")]
+		[Address(RVA = "0x1803818", Offset = "0x1803818", VA = "0x1803818")]
+		[DebuggerHidden]
+		public _003CShowScores_003Ed__14(int _003C_003E1__state)
+		{
+		}
+
+		[Token(Token = "0x6000564")]
+		[Address(RVA = "0x1803844", Offset = "0x1803844", VA = "0x1803844", Slot = "5")]
+		[DebuggerHidden]
+		private void System_002EIDisposable_002EDispose()
+		{
+		}
+
+		[Token(Token = "0x6000565")]
+		[Address(RVA = "0x1803848", Offset = "0x1803848", VA = "0x1803848", Slot = "6")]
+		private bool MoveNext()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6000566")]
+		[Address(RVA = "0x1803DC8", Offset = "0x1803DC8", VA = "0x1803DC8", Slot = "4")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EGeneric_002EIEnumerator_003CSystem_002EObject_003E_002Eget_Current()
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6000567")]
+		[Address(RVA = "0x1803DD0", Offset = "0x1803DD0", VA = "0x1803DD0", Slot = "8")]
+		[DebuggerHidden]
+		private void System_002ECollections_002EIEnumerator_002EReset()
+		{
+		}
+
+		[Token(Token = "0x6000568")]
+		[Address(RVA = "0x1803E10", Offset = "0x1803E10", VA = "0x1803E10", Slot = "7")]
+		[DebuggerHidden]
+		private object System_002ECollections_002EIEnumerator_002Eget_Current()
+		{
+			return null;
+		}
+	}
+
+	[Token(Token = "0x400057C")]
+	[FieldOffset(Offset = "0x18")]
+	public MultiplayerScoreBoardEntry EntryTemplate;
+
+	[Token(Token = "0x400057D")]
+	[FieldOffset(Offset = "0x20")]
+	public Canvas Canvas;
+
+	[Token(Token = "0x400057E")]
+	[FieldOffset(Offset = "0x28")]
+	private MultiplayerScoreBoardEntry[] entries;
+
+	[Token(Token = "0x400057F")]
+	private const int MAXPLAYERS = 4;
+
+	[Token(Token = "0x4000580")]
+	[FieldOffset(Offset = "0x30")]
+	private Dictionary<int, int> totalScores;
+
+	[Token(Token = "0x4000581")]
+	[FieldOffset(Offset = "0x38")]
+	private Dictionary<int, int> scoresThisLevel;
+
+	[Token(Token = "0x4000582")]
+	[FieldOffset(Offset = "0x40")]
+	public bool LastLevelCompleted;
+
+	[Token(Token = "0x6000554")]
+	[Address(RVA = "0x15836C4", Offset = "0x15836C4", VA = "0x15836C4")]
+	private void Start()
+	{
+	}
+
+	[Token(Token = "0x6000555")]
+	[Address(RVA = "0x1583A30", Offset = "0x1583A30", VA = "0x1583A30")]
+	private void OnLastLevelCompleted()
+	{
+	}
+
+	[Token(Token = "0x6000556")]
+	[Address(RVA = "0x1583A3C", Offset = "0x1583A3C", VA = "0x1583A3C")]
+	private void OnReturnToMainMenuExit()
+	{
+	}
+
+	[Token(Token = "0x6000557")]
+	[Address(RVA = "0x1583E50", Offset = "0x1583E50", VA = "0x1583E50")]
+	private void OnLevelWillUnload()
+	{
+	}
+
+	[Token(Token = "0x6000558")]
+	[Address(RVA = "0x1584038", Offset = "0x1584038", VA = "0x1584038")]
+	private void OnLevelLoaded(LevelData levelData)
+	{
+	}
+
+	[Token(Token = "0x6000559")]
+	[Address(RVA = "0x1584358", Offset = "0x1584358", VA = "0x1584358")]
+	private void OnGoal(Level.CompletedState s)
+	{
+	}
+
+	[Token(Token = "0x600055A")]
+	[Address(RVA = "0x1584724", Offset = "0x1584724", VA = "0x1584724")]
+	private void OnGoalProgress(int playerIndex, string s)
+	{
+	}
+
+	[Token(Token = "0x600055B")]
+	[Address(RVA = "0x15846B0", Offset = "0x15846B0", VA = "0x15846B0")]
+	private IEnumerator ShowScores()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x600055C")]
+	[Address(RVA = "0x15847C8", Offset = "0x15847C8", VA = "0x15847C8")]
+	public MultiplayerScoreBoard()
+	{
+	}
 }

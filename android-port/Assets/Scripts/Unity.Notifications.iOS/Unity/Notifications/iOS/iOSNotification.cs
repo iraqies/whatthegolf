@@ -1,66 +1,160 @@
-using UnityEngine;
+using System.Collections.Generic;
+using Il2CppDummyDll;
 
 namespace Unity.Notifications.iOS
 {
-	public class iOSNotification : MonoBehaviour
+	[Token(Token = "0x200000B")]
+	public class iOSNotification
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4000035")]
+		[FieldOffset(Offset = "0x10")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x1B4F08", Offset = "0x1B4F08")]
+		private float? SoundVolume__BackingField;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000036")]
+		[FieldOffset(Offset = "0x18")]
+		[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x1B4F18", Offset = "0x1B4F18")]
+		private List<iOSNotificationAttachment> Attachments__BackingField;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000037")]
+		[FieldOffset(Offset = "0x20")]
+		private iOSNotificationData data;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4000038")]
+		[FieldOffset(Offset = "0xA0")]
+		private Dictionary<string, string> userInfo;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x17000005")]
+		public string Identifier
+		{
+			[Token(Token = "0x600000E")]
+			[Address(RVA = "0x2A41F88", Offset = "0x2A41F88", VA = "0x2A41F88")]
+			get
+			{
+				return null;
+			}
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x17000006")]
+		public string Title
+		{
+			[Token(Token = "0x600000F")]
+			[Address(RVA = "0x2A41F90", Offset = "0x2A41F90", VA = "0x2A41F90")]
+			set
+			{
+			}
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x17000007")]
+		public string Body
+		{
+			[Token(Token = "0x6000010")]
+			[Address(RVA = "0x2A41F98", Offset = "0x2A41F98", VA = "0x2A41F98")]
+			set
+			{
+			}
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x17000008")]
+		public bool ShowInForeground
+		{
+			[Token(Token = "0x6000011")]
+			[Address(RVA = "0x2A41FA0", Offset = "0x2A41FA0", VA = "0x2A41FA0")]
+			set
+			{
+			}
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x17000009")]
+		public PresentationOption ForegroundPresentationOption
+		{
+			[Token(Token = "0x6000012")]
+			[Address(RVA = "0x2A4204C", Offset = "0x2A4204C", VA = "0x2A4204C")]
+			set
+			{
+			}
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x1700000A")]
+		public float? SoundVolume
+		{
+			[Token(Token = "0x6000013")]
+			[Address(RVA = "0x2A420E8", Offset = "0x2A420E8", VA = "0x2A420E8")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x1B50C8", Offset = "0x1B50C8")]
+			get
+			{
+				return null;
+			}
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x1700000B")]
+		public string Data
+		{
+			[Token(Token = "0x6000014")]
+			[Address(RVA = "0x2A420F0", Offset = "0x2A420F0", VA = "0x2A420F0")]
+			get
+			{
+				return null;
+			}
+			[Token(Token = "0x6000015")]
+			[Address(RVA = "0x2A42174", Offset = "0x2A42174", VA = "0x2A42174")]
+			set
+			{
+			}
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x1700000C")]
+		public List<iOSNotificationAttachment> Attachments
+		{
+			[Token(Token = "0x6000016")]
+			[Address(RVA = "0x2A421F0", Offset = "0x2A421F0", VA = "0x2A421F0")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x1B50D8", Offset = "0x1B50D8")]
+			get
+			{
+				return null;
+			}
+			[Token(Token = "0x6000017")]
+			[Address(RVA = "0x2A421F8", Offset = "0x2A421F8", VA = "0x2A421F8")]
+			[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x1B50E8", Offset = "0x1B50E8")]
+			set
+			{
+			}
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x1700000D")]
+		public iOSNotificationTrigger Trigger
+		{
+			[Token(Token = "0x6000018")]
+			[Address(RVA = "0x2A42200", Offset = "0x2A42200", VA = "0x2A42200")]
+			set
+			{
+			}
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x6000019")]
+		[Address(RVA = "0x2A428AC", Offset = "0x2A428AC", VA = "0x2A428AC")]
+		private static string GenerateUniqueID()
+		{
+			return null;
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x600001A")]
+		[Address(RVA = "0x2A429A8", Offset = "0x2A429A8", VA = "0x2A429A8")]
+		public iOSNotification(string identifier)
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x600001B")]
+		[Address(RVA = "0x2A42B7C", Offset = "0x2A42B7C", VA = "0x2A42B7C")]
+		internal iOSNotification(iOSNotificationWithUserInfo data)
+		{
+		}
 
-		*/
+		[Token(Token = "0x600001C")]
+		[Address(RVA = "0x2A42BD0", Offset = "0x2A42BD0", VA = "0x2A42BD0")]
+		internal iOSNotificationWithUserInfo GetDataForSending()
+		{
+			return default;
+		}
 	}
 }

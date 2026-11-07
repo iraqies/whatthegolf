@@ -1,66 +1,107 @@
-using UnityEngine;
+using System.Collections.Generic;
+using Il2CppDummyDll;
+using WhatTheGolf.LevelDesigner.Events;
 
 namespace WhatTheGolf.LevelDesigner
 {
-	public class UndoSystem : MonoBehaviour
+	[Token(Token = "0x200125C")]
+	internal sealed class UndoSystem : BaseSystem, IRequireEvents<GUIEvent>, IRequireEvents, IRequireEvents<InputEvent>
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x40062D8")]
+		[FieldOffset(Offset = "0x0")]
+		private static Stack<LevelContentData> m_UndoStack;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40062D9")]
+		[FieldOffset(Offset = "0x8")]
+		private static Stack<LevelContentData> m_RedoStack;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x1700098F")]
+		public static bool HasUndo
+		{
+			[Token(Token = "0x60054BB")]
+			[Address(RVA = "0x173AB50", Offset = "0x173AB50", VA = "0x173AB50")]
+			get
+			{
+				return default;
+			}
+		}
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x17000990")]
+		public static bool HasRedo
+		{
+			[Token(Token = "0x60054BC")]
+			[Address(RVA = "0x173ABBC", Offset = "0x173ABBC", VA = "0x173ABBC")]
+			get
+			{
+				return default;
+			}
+		}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x60054BD")]
+		[Address(RVA = "0x173AC28", Offset = "0x173AC28", VA = "0x173AC28")]
+		[Attribute(Name = "RuntimeInitializeOnLoadMethodAttribute", RVA = "0x713FC", Offset = "0x713FC")]
+		private static void InitOnLoad()
+		{
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x60054BE")]
+		[Address(RVA = "0x173ACD8", Offset = "0x173ACD8", VA = "0x173ACD8")]
+		public static void RegisterUndo(bool clearRedoStack = true)
+		{
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x60054BF")]
+		[Address(RVA = "0x173ADD8", Offset = "0x173ADD8", VA = "0x173ADD8")]
+		public static void ClearStacks()
+		{
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x60054C0")]
+		[Address(RVA = "0x173AE5C", Offset = "0x173AE5C", VA = "0x173AE5C", Slot = "4")]
+		public override void Init()
+		{
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x60054C1")]
+		[Address(RVA = "0x173AE84", Offset = "0x173AE84", VA = "0x173AE84", Slot = "5")]
+		public override void Update()
+		{
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x60054C2")]
+		[Address(RVA = "0x173AE88", Offset = "0x173AE88", VA = "0x173AE88", Slot = "6")]
+		public override void Dispose()
+		{
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x60054C3")]
+		[Address(RVA = "0x173AE8C", Offset = "0x173AE8C", VA = "0x173AE8C")]
+		private static void PerformUndo()
+		{
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x60054C4")]
+		[Address(RVA = "0x173AFE8", Offset = "0x173AFE8", VA = "0x173AFE8")]
+		private static void PerformRedo()
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x60054C5")]
+		[Address(RVA = "0x173B0D8", Offset = "0x173B0D8", VA = "0x173B0D8", Slot = "7")]
+		public void OnEvent(GUIEvent evt)
+		{
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x60054C6")]
+		[Address(RVA = "0x173B148", Offset = "0x173B148", VA = "0x173B148", Slot = "8")]
+		public void OnEvent(InputEvent evt)
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x60054C7")]
+		[Address(RVA = "0x173B290", Offset = "0x173B290", VA = "0x173B290")]
+		public UndoSystem()
+		{
+		}
 	}
 }

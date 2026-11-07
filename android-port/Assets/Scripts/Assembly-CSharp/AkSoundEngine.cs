@@ -1,63 +1,68 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000D24")]
 public class AkSoundEngine : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x6003DFD")]
+	[Address(RVA = "0x140CDBC", Offset = "0x140CDBC", VA = "0x140CDBC")]
+	public static void PostTrigger(uint triggerID, GameObject gameObject)
+	{
+	}
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x6003DFE")]
+	[Address(RVA = "0x140CE24", Offset = "0x140CE24", VA = "0x140CE24")]
+	public static void SetRTPCValue(uint id, float value, GameObject gameObject)
+	{
+	}
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x6003DFF")]
+	[Address(RVA = "0x140CE9C", Offset = "0x140CE9C", VA = "0x140CE9C")]
+	public static void SetRTPCValue(uint id, float value, GameObject gameObject, int timeInMs)
+	{
+	}
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x6003E00")]
+	[Address(RVA = "0x140CF1C", Offset = "0x140CF1C", VA = "0x140CF1C")]
+	public static void GetRTPCValue(uint rtcp, GameObject gameObject, uint playingId, out float rtpc, ref int type)
+	{
+	}
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x6003E01")]
+	[Address(RVA = "0x140CF90", Offset = "0x140CF90", VA = "0x140CF90")]
+	public static void StopAll()
+	{
+	}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x6003E02")]
+	[Address(RVA = "0x140CF94", Offset = "0x140CF94", VA = "0x140CF94")]
+	public static uint PostEvent(uint pLAY_INGAMEMUSIC, GameObject gameObject)
+	{
+		return default;
+	}
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x6003E03")]
+	[Address(RVA = "0x140CF9C", Offset = "0x140CF9C", VA = "0x140CF9C")]
+	public static void SeekOnEvent(uint pLAY_INGAMEMUSIC, GameObject gameObject, float percent, bool v, uint playingId)
+	{
+	}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x6003E04")]
+	[Address(RVA = "0x140CFA0", Offset = "0x140CFA0", VA = "0x140CFA0")]
+	public static void SetState(uint group, uint wwiseState, bool fromLoading, Action onLoaded, bool ignoreTransition = false)
+	{
+	}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x6003E05")]
+	[Address(RVA = "0x140D028", Offset = "0x140D028", VA = "0x140D028")]
+	public static void ResetRTPCValue(uint rtpc, GameObject gameObject, int timeInMs)
+	{
+	}
 
-	4. This script is unnecessary.
-
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
-
-	5. Script Content Level 0
-
-		AssetRipper was set to not load any script information.
-
-	6. Cpp2IL failed to decompile Il2Cpp data
-
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x6003E06")]
+	[Address(RVA = "0x140D098", Offset = "0x140D098", VA = "0x140D098")]
+	public AkSoundEngine()
+	{
+	}
 }

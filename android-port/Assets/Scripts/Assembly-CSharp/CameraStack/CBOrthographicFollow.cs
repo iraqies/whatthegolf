@@ -1,66 +1,122 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace CameraStack
 {
-	public class CBOrthographicFollow : MonoBehaviour
+	[Token(Token = "0x2001109")]
+	public class CBOrthographicFollow : CameraBehaviorOrthographic, ICameraBehaviourFollowing
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4005A11")]
+		[FieldOffset(Offset = "0x40")]
+		[SerializeField]
+		private Transform followOverride;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4005A12")]
+		[FieldOffset(Offset = "0x48")]
+		[SerializeField]
+		private Vector3 rotation;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4005A13")]
+		[FieldOffset(Offset = "0x54")]
+		[SerializeField]
+		private float distance;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4005A14")]
+		[FieldOffset(Offset = "0x58")]
+		[SerializeField]
+		private float leftSideTrackPadding;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4005A15")]
+		[FieldOffset(Offset = "0x5C")]
+		[SerializeField]
+		private float rightSideTrackPadding;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4005A16")]
+		[FieldOffset(Offset = "0x60")]
+		[SerializeField]
+		private float upperTrackPadding;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4005A17")]
+		[FieldOffset(Offset = "0x64")]
+		[SerializeField]
+		private float lowerTrackPadding;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4005A18")]
+		[FieldOffset(Offset = "0x68")]
+		[SerializeField]
+		private bool lockVerticalAxis;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4005A19")]
+		[FieldOffset(Offset = "0x69")]
+		[SerializeField]
+		private bool lockHorizontalAxis;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4005A1A")]
+		[FieldOffset(Offset = "0x6A")]
+		[SerializeField]
+		private bool shouldCenterOnStart;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4005A1B")]
+		[FieldOffset(Offset = "0x6C")]
+		[SerializeField]
+		private float desktopOrthographicSize;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4005A1C")]
+		[FieldOffset(Offset = "0x70")]
+		[SerializeField]
+		private Vector3 desktopRotation;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4005A1D")]
+		[FieldOffset(Offset = "0x80")]
+		private Transform follow;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x4005A1E")]
+		[FieldOffset(Offset = "0x88")]
+		private Vector2 adjustedScreenPosition;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x6004C7C")]
+		[Address(RVA = "0x17DFCBC", Offset = "0x17DFCBC", VA = "0x17DFCBC", Slot = "4")]
+		public override void Init()
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x6004C7D")]
+		[Address(RVA = "0x17E0044", Offset = "0x17E0044", VA = "0x17E0044", Slot = "6")]
+		public override void PreUpdate()
+		{
+		}
 
-		*/
+		[Token(Token = "0x6004C7E")]
+		[Address(RVA = "0x17E004C", Offset = "0x17E004C", VA = "0x17E004C", Slot = "7")]
+		public override Quaternion CalculateRotation()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6004C7F")]
+		[Address(RVA = "0x17E0104", Offset = "0x17E0104", VA = "0x17E0104", Slot = "8")]
+		protected override Vector3 CalculatePosition()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6004C80")]
+		[Address(RVA = "0x17E02E0", Offset = "0x17E02E0", VA = "0x17E02E0", Slot = "11")]
+		public void SetFollowTarget(Transform target)
+		{
+		}
+
+		[Token(Token = "0x6004C81")]
+		[Address(RVA = "0x17E02E8", Offset = "0x17E02E8", VA = "0x17E02E8", Slot = "12")]
+		public Transform GetFollowTarget()
+		{
+			return null;
+		}
+
+		[Token(Token = "0x6004C82")]
+		[Address(RVA = "0x17E037C", Offset = "0x17E037C", VA = "0x17E037C")]
+		public CBOrthographicFollow()
+		{
+		}
 	}
 }

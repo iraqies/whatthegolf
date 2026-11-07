@@ -1,63 +1,78 @@
+using System;
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
+using WwiseData;
 
+[Token(Token = "0x2000D3B")]
 public class Wwise : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x2000D3C")]
+	public enum exitType
+	{
+		[Token(Token = "0x4004814")]
+		Immediate = 0,
+		[Token(Token = "0x4004815")]
+		NextBar = 1,
+		[Token(Token = "0x4004816")]
+		NextBeat = 2,
+		[Token(Token = "0x4004817")]
+		ExitCue = 3
+	}
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x400480A")]
+	[FieldOffset(Offset = "0x18")]
+	public TextAsset wwiseProjectFile;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[NonSerialized]
+	[Token(Token = "0x400480B")]
+	[FieldOffset(Offset = "0x20")]
+	public WwiseDocument document;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x400480C")]
+	[FieldOffset(Offset = "0x0")]
+	public static bool verbose;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x400480D")]
+	[FieldOffset(Offset = "0x28")]
+	public List<MusicState> musicStates;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x400480E")]
+	[FieldOffset(Offset = "0x30")]
+	public List<MusicTransition> musicTransitions;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x400480F")]
+	[FieldOffset(Offset = "0x38")]
+	public WwiseRTPC rtpc;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4004810")]
+	[FieldOffset(Offset = "0x40")]
+	public WwiseAudioSources sourcesMusic;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4004811")]
+	[FieldOffset(Offset = "0x48")]
+	public WwiseAudioSources sourcesTransition;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4004812")]
+	[FieldOffset(Offset = "0x50")]
+	public WwiseAudioSources sourcesTrigger;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x6003E6F")]
+	[Address(RVA = "0x175C8E8", Offset = "0x175C8E8", VA = "0x175C8E8")]
+	[AttributeAttribute(Name = "RuntimeInitializeOnLoadMethodAttribute", RVA = "0x6C508", Offset = "0x6C508")]
+	private static void Init()
+	{
+	}
 
-	5. Script Content Level 0
+	[Token(Token = "0x6003E70")]
+	[Address(RVA = "0x175C950", Offset = "0x175C950", VA = "0x175C950")]
+	public static void Log(object message)
+	{
+	}
 
-		AssetRipper was set to not load any script information.
-
-	6. Cpp2IL failed to decompile Il2Cpp data
-
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x6003E71")]
+	[Address(RVA = "0x175C9B0", Offset = "0x175C9B0", VA = "0x175C9B0")]
+	public Wwise()
+	{
+	}
 }

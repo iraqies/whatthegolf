@@ -1,66 +1,137 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.TextCore;
 
 namespace TMPro
 {
-	public class TMP_TextElement : MonoBehaviour
+	[Serializable]
+	[Token(Token = "0x200006E")]
+	public class TMP_TextElement
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x400046B")]
+		[FieldOffset(Offset = "0x10")]
+		[SerializeField]
+		protected TextElementType m_ElementType;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x400046C")]
+		[FieldOffset(Offset = "0x14")]
+		[SerializeField]
+		internal uint m_Unicode;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x400046D")]
+		[FieldOffset(Offset = "0x18")]
+		internal TMP_Asset m_TextAsset;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x400046E")]
+		[FieldOffset(Offset = "0x20")]
+		internal Glyph m_Glyph;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x400046F")]
+		[FieldOffset(Offset = "0x28")]
+		[SerializeField]
+		internal uint m_GlyphIndex;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000470")]
+		[FieldOffset(Offset = "0x2C")]
+		[SerializeField]
+		internal float m_Scale;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x17000134")]
+		public TextElementType elementType
+		{
+			[Token(Token = "0x6000449")]
+			[Address(RVA = "0x2AB9230", Offset = "0x2AB9230", VA = "0x2AB9230")]
+			get
+			{
+				return default;
+			}
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x17000135")]
+		public uint unicode
+		{
+			[Token(Token = "0x600044A")]
+			[Address(RVA = "0x2AB9238", Offset = "0x2AB9238", VA = "0x2AB9238")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x600044B")]
+			[Address(RVA = "0x2AB9240", Offset = "0x2AB9240", VA = "0x2AB9240")]
+			set
+			{
+			}
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x17000136")]
+		public TMP_Asset textAsset
+		{
+			[Token(Token = "0x600044C")]
+			[Address(RVA = "0x2AB9248", Offset = "0x2AB9248", VA = "0x2AB9248")]
+			get
+			{
+				return null;
+			}
+			[Token(Token = "0x600044D")]
+			[Address(RVA = "0x2AB9250", Offset = "0x2AB9250", VA = "0x2AB9250")]
+			set
+			{
+			}
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x17000137")]
+		public Glyph glyph
+		{
+			[Token(Token = "0x600044E")]
+			[Address(RVA = "0x2AB9258", Offset = "0x2AB9258", VA = "0x2AB9258")]
+			get
+			{
+				return null;
+			}
+			[Token(Token = "0x600044F")]
+			[Address(RVA = "0x2AB9260", Offset = "0x2AB9260", VA = "0x2AB9260")]
+			set
+			{
+			}
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x17000138")]
+		public uint glyphIndex
+		{
+			[Token(Token = "0x6000450")]
+			[Address(RVA = "0x2AB9268", Offset = "0x2AB9268", VA = "0x2AB9268")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000451")]
+			[Address(RVA = "0x2AB9270", Offset = "0x2AB9270", VA = "0x2AB9270")]
+			set
+			{
+			}
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x17000139")]
+		public float scale
+		{
+			[Token(Token = "0x6000452")]
+			[Address(RVA = "0x2AB9278", Offset = "0x2AB9278", VA = "0x2AB9278")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000453")]
+			[Address(RVA = "0x2AB9280", Offset = "0x2AB9280", VA = "0x2AB9280")]
+			set
+			{
+			}
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
-
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x6000454")]
+		[Address(RVA = "0x2AB9288", Offset = "0x2AB9288", VA = "0x2AB9288")]
+		public TMP_TextElement()
+		{
+		}
 	}
 }

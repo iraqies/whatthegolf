@@ -1,66 +1,203 @@
+using System;
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Cinemachine
 {
+	[Token(Token = "0x200007C")]
 	public class CinemachineTriggerAction : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Serializable]
+		[Token(Token = "0x200007D")]
+		public struct ActionSettings
+		{
+			[Token(Token = "0x200007E")]
+			public enum Mode
+			{
+				[Token(Token = "0x40002C7")]
+				Custom = 0,
+				[Token(Token = "0x40002C8")]
+				PriorityBoost = 1,
+				[Token(Token = "0x40002C9")]
+				Activate = 2,
+				[Token(Token = "0x40002CA")]
+				Deactivate = 3,
+				[Token(Token = "0x40002CB")]
+				Enable = 4,
+				[Token(Token = "0x40002CC")]
+				Disable = 5,
+				[Token(Token = "0x40002CD")]
+				Play = 6,
+				[Token(Token = "0x40002CE")]
+				Stop = 7
+			}
 
-		1. No dll files were provided to AssetRipper.
+			[Serializable]
+			[Token(Token = "0x200007F")]
+			public class TriggerEvent : UnityEvent
+			{
+				[Token(Token = "0x600030A")]
+				[Address(RVA = "0x1911A6C", Offset = "0x1911A6C", VA = "0x1911A6C")]
+				public TriggerEvent()
+				{
+				}
+			}
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x2000080")]
+			public enum TimeMode
+			{
+				[Token(Token = "0x40002D0")]
+				FromStart = 0,
+				[Token(Token = "0x40002D1")]
+				FromEnd = 1,
+				[Token(Token = "0x40002D2")]
+				BeforeNow = 2,
+				[Token(Token = "0x40002D3")]
+				AfterNow = 3
+			}
 
-		2. Incorrect dll files were provided to AssetRipper.
+			[Token(Token = "0x40002C0")]
+			[FieldOffset(Offset = "0x0")]
+			public Mode m_Action;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+			[Token(Token = "0x40002C1")]
+			[FieldOffset(Offset = "0x8")]
+			public UnityEngine.Object m_Target;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+			[Token(Token = "0x40002C2")]
+			[FieldOffset(Offset = "0x10")]
+			public int m_BoostAmount;
 
-		3. Assembly Reconstruction has not been implemented.
+			[Token(Token = "0x40002C3")]
+			[FieldOffset(Offset = "0x14")]
+			public float m_StartTime;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+			[Token(Token = "0x40002C4")]
+			[FieldOffset(Offset = "0x18")]
+			public TimeMode m_Mode;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+			[Token(Token = "0x40002C5")]
+			[FieldOffset(Offset = "0x20")]
+			public TriggerEvent m_Event;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+			[Token(Token = "0x6000308")]
+			[Address(RVA = "0x1906460", Offset = "0x1906460", VA = "0x1906460")]
+			public ActionSettings(Mode action)
+			{
+			}
 
-		5. Script Content Level 0
+			[Token(Token = "0x6000309")]
+			[Address(RVA = "0x1905A58", Offset = "0x1905A58", VA = "0x1905A58")]
+			public void Invoke()
+			{
+			}
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x40002B8")]
+		[FieldOffset(Offset = "0x18")]
+		public LayerMask m_LayerMask;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x40002B9")]
+		[FieldOffset(Offset = "0x20")]
+		public string m_WithTag;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x40002BA")]
+		[FieldOffset(Offset = "0x28")]
+		public string m_WithoutTag;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x40002BB")]
+		[FieldOffset(Offset = "0x30")]
+		public int m_SkipFirst;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x40002BC")]
+		[FieldOffset(Offset = "0x34")]
+		public bool m_Repeating;
 
-		*/
+		[Token(Token = "0x40002BD")]
+		[FieldOffset(Offset = "0x38")]
+		public ActionSettings m_OnObjectEnter;
+
+		[Token(Token = "0x40002BE")]
+		[FieldOffset(Offset = "0x60")]
+		public ActionSettings m_OnObjectExit;
+
+		[Token(Token = "0x40002BF")]
+		[FieldOffset(Offset = "0x88")]
+		private HashSet<GameObject> m_ActiveTriggerObjects;
+
+		[Token(Token = "0x60002FC")]
+		[Address(RVA = "0x1905904", Offset = "0x1905904", VA = "0x1905904")]
+		private bool Filter(GameObject other)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60002FD")]
+		[Address(RVA = "0x19059B0", Offset = "0x19059B0", VA = "0x19059B0")]
+		private void InternalDoTriggerEnter(GameObject other)
+		{
+		}
+
+		[Token(Token = "0x60002FE")]
+		[Address(RVA = "0x1906028", Offset = "0x1906028", VA = "0x1906028")]
+		private void InternalDoTriggerExit(GameObject other)
+		{
+		}
+
+		[Token(Token = "0x60002FF")]
+		[Address(RVA = "0x19060E0", Offset = "0x19060E0", VA = "0x19060E0")]
+		private void OnTriggerEnter(Collider other)
+		{
+		}
+
+		[Token(Token = "0x6000300")]
+		[Address(RVA = "0x1906118", Offset = "0x1906118", VA = "0x1906118")]
+		private void OnTriggerExit(Collider other)
+		{
+		}
+
+		[Token(Token = "0x6000301")]
+		[Address(RVA = "0x1906150", Offset = "0x1906150", VA = "0x1906150")]
+		private void OnCollisionEnter(Collision other)
+		{
+		}
+
+		[Token(Token = "0x6000302")]
+		[Address(RVA = "0x1906188", Offset = "0x1906188", VA = "0x1906188")]
+		private void OnCollisionExit(Collision other)
+		{
+		}
+
+		[Token(Token = "0x6000303")]
+		[Address(RVA = "0x19061C0", Offset = "0x19061C0", VA = "0x19061C0")]
+		private void OnTriggerEnter2D(Collider2D other)
+		{
+		}
+
+		[Token(Token = "0x6000304")]
+		[Address(RVA = "0x19061F8", Offset = "0x19061F8", VA = "0x19061F8")]
+		private void OnTriggerExit2D(Collider2D other)
+		{
+		}
+
+		[Token(Token = "0x6000305")]
+		[Address(RVA = "0x1906230", Offset = "0x1906230", VA = "0x1906230")]
+		private void OnCollisionEnter2D(Collision2D other)
+		{
+		}
+
+		[Token(Token = "0x6000306")]
+		[Address(RVA = "0x1906268", Offset = "0x1906268", VA = "0x1906268")]
+		private void OnCollisionExit2D(Collision2D other)
+		{
+		}
+
+		[Token(Token = "0x6000307")]
+		[Address(RVA = "0x19062A0", Offset = "0x19062A0", VA = "0x19062A0")]
+		public CinemachineTriggerAction()
+		{
+		}
 	}
 }

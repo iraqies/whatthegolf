@@ -1,66 +1,63 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace TMPro
 {
-	public class TMPro_EventManager : MonoBehaviour
+	[Token(Token = "0x2000077")]
+	public static class TMPro_EventManager
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x40004B1")]
+		[FieldOffset(Offset = "0x0")]
+		public static readonly FastAction<object, Compute_DT_EventArgs> COMPUTE_DT_EVENT;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40004B2")]
+		[FieldOffset(Offset = "0x8")]
+		public static readonly FastAction<bool, Material> MATERIAL_PROPERTY_EVENT;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40004B3")]
+		[FieldOffset(Offset = "0x10")]
+		public static readonly FastAction<bool, Object> FONT_PROPERTY_EVENT;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40004B4")]
+		[FieldOffset(Offset = "0x18")]
+		public static readonly FastAction<bool, Object> SPRITE_ASSET_PROPERTY_EVENT;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40004B5")]
+		[FieldOffset(Offset = "0x20")]
+		public static readonly FastAction<bool, Object> TEXTMESHPRO_PROPERTY_EVENT;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40004B6")]
+		[FieldOffset(Offset = "0x28")]
+		public static readonly FastAction<GameObject, Material, Material> DRAG_AND_DROP_MATERIAL_EVENT;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x40004B7")]
+		[FieldOffset(Offset = "0x30")]
+		public static readonly FastAction<bool> TEXT_STYLE_PROPERTY_EVENT;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x40004B8")]
+		[FieldOffset(Offset = "0x38")]
+		public static readonly FastAction<Object> COLOR_GRADIENT_PROPERTY_EVENT;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x40004B9")]
+		[FieldOffset(Offset = "0x40")]
+		public static readonly FastAction TMP_SETTINGS_PROPERTY_EVENT;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x40004BA")]
+		[FieldOffset(Offset = "0x48")]
+		public static readonly FastAction RESOURCE_LOAD_EVENT;
 
-		5. Script Content Level 0
+		[Token(Token = "0x40004BB")]
+		[FieldOffset(Offset = "0x50")]
+		public static readonly FastAction<bool, Object> TEXTMESHPRO_UGUI_PROPERTY_EVENT;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x40004BC")]
+		[FieldOffset(Offset = "0x58")]
+		public static readonly FastAction<Object> TEXT_CHANGED_EVENT;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
-
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x6000494")]
+		[Address(RVA = "0x2ABC6A4", Offset = "0x2ABC6A4", VA = "0x2ABC6A4")]
+		public static void ON_TEXT_CHANGED(Object obj)
+		{
+		}
 	}
 }

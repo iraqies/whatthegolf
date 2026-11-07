@@ -1,63 +1,67 @@
+using System.Collections.Generic;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
+using VFX;
 
+[Token(Token = "0x2000881")]
 public class FreezeOnHittingFallingObject : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4002E9C")]
+	[FieldOffset(Offset = "0x18")]
+	private Rigidbody rigidbody;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4002E9D")]
+	[FieldOffset(Offset = "0x20")]
+	private FixedJoint joint;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4002E9E")]
+	[FieldOffset(Offset = "0x28")]
+	private Collider collider;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4002E9F")]
+	[FieldOffset(Offset = "0x30")]
+	private List<Collider> ignoreColliders;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4002EA0")]
+	[FieldOffset(Offset = "0x38")]
+	private TrajectoryProjector trajectory;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4002EA1")]
+	[FieldOffset(Offset = "0x40")]
+	private GolfBallShooterBase shooter;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4002EA2")]
+	[FieldOffset(Offset = "0x48")]
+	private float origShootingThreshold;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x6002742")]
+	[Address(RVA = "0x147287C", Offset = "0x147287C", VA = "0x147287C")]
+	private void Awake()
+	{
+	}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x6002743")]
+	[Address(RVA = "0x1472A80", Offset = "0x1472A80", VA = "0x1472A80")]
+	private void InstanceOnOnOutOfBounds()
+	{
+	}
 
-	4. This script is unnecessary.
+	[Token(Token = "0x6002744")]
+	[Address(RVA = "0x1472C64", Offset = "0x1472C64", VA = "0x1472C64")]
+	private void BallOnOnShoot(Vector3 vector3)
+	{
+	}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x6002745")]
+	[Address(RVA = "0x1472CF8", Offset = "0x1472CF8", VA = "0x1472CF8")]
+	private void OnCollisionEnter(Collision other)
+	{
+	}
 
-	5. Script Content Level 0
-
-		AssetRipper was set to not load any script information.
-
-	6. Cpp2IL failed to decompile Il2Cpp data
-
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x6002746")]
+	[Address(RVA = "0x147300C", Offset = "0x147300C", VA = "0x147300C")]
+	public FreezeOnHittingFallingObject()
+	{
+	}
 }

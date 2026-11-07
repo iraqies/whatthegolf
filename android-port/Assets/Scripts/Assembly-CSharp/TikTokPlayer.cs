@@ -1,63 +1,194 @@
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.Video;
 
+[Token(Token = "0x20001BF")]
 public class TikTokPlayer : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[StructLayout((LayoutKind)3)]
+	[Token(Token = "0x20001C0")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x3E020", Offset = "0x3E020")]
+	private struct _003CStart_003Ed__10 : IAsyncStateMachine
+	{
+		[Token(Token = "0x40007E1")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x0")]
+		public int _003C_003E1__state;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40007E2")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x8")]
+		public AsyncVoidMethodBuilder _003C_003Et__builder;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40007E3")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
+		public TikTokPlayer _003C_003E4__this;
 
-	2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40007E4")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x30")]
+		private TaskAwaiter _003C_003Eu__1;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x60007CF")]
+		[Address(RVA = "0x1866C6C", Offset = "0x1866C6C", VA = "0x1866C6C", Slot = "4")]
+		private void MoveNext()
+		{
+		}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x60007D0")]
+		[Address(RVA = "0x1866E24", Offset = "0x1866E24", VA = "0x1866E24", Slot = "5")]
+		[DebuggerHidden]
+		private void SetStateMachine(IAsyncStateMachine stateMachine)
+		{
+		}
+	}
 
-	3. Assembly Reconstruction has not been implemented.
+	[StructLayout((LayoutKind)3)]
+	[Token(Token = "0x20001C1")]
+	[Attribute(Name = "CompilerGeneratedAttribute", RVA = "0x3E030", Offset = "0x3E030")]
+	private struct _003CInitVideoPlayer_003Ed__11 : IAsyncStateMachine
+	{
+		[Token(Token = "0x40007E5")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x0")]
+		public int _003C_003E1__state;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x40007E6")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x8")]
+		public AsyncTaskMethodBuilder _003C_003Et__builder;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x40007E7")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x20")]
+		public TikTokPlayer _003C_003E4__this;
 
-	4. This script is unnecessary.
+		[Token(Token = "0x40007E8")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
+		private int _003Cindex_003E5__2;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x40007E9")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x30")]
+		private TaskAwaiter<ODRDownloadResult> _003C_003Eu__1;
 
-	5. Script Content Level 0
+		[Token(Token = "0x40007EA")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x38")]
+		private object _003C_003Eu__2;
 
-		AssetRipper was set to not load any script information.
+		[Token(Token = "0x60007D1")]
+		[Address(RVA = "0x18662F4", Offset = "0x18662F4", VA = "0x18662F4", Slot = "4")]
+		private void MoveNext()
+		{
+		}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x60007D2")]
+		[Address(RVA = "0x1866C60", Offset = "0x1866C60", VA = "0x1866C60", Slot = "5")]
+		[DebuggerHidden]
+		private void SetStateMachine(IAsyncStateMachine stateMachine)
+		{
+		}
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x40007D7")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x18")]
+	[SerializeField]
+	private SVGImage playImage;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x40007D8")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x20")]
+	[SerializeField]
+	private float distanceTolerance;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x40007D9")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
+	[SerializeField]
+	private VideoPlayer videoPlayer;
 
-	*/
+	[Token(Token = "0x40007DA")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x30")]
+	[SerializeField]
+	private GameObject loading;
+
+	[Token(Token = "0x40007DB")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x38")]
+	[SerializeField]
+	private AssetReference[] videoClips;
+
+	[Token(Token = "0x40007DC")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x40")]
+	[SerializeField]
+	private Camera camera;
+
+	[Token(Token = "0x40007DD")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x48")]
+	[SerializeField]
+	private AudioSource audioSource;
+
+	[Token(Token = "0x40007DE")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x50")]
+	private bool _isInitiated;
+
+	[Token(Token = "0x40007DF")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x51")]
+	private bool _isCentered;
+
+	[Token(Token = "0x40007E0")]
+	[Il2CppDummyDll.FieldOffset(Offset = "0x52")]
+	private bool _wasCentered;
+
+	[Token(Token = "0x60007C6")]
+	[Address(RVA = "0x171392C", Offset = "0x171392C", VA = "0x171392C")]
+	private void Start()
+	{
+	}
+
+	[Token(Token = "0x60007C7")]
+	[Address(RVA = "0x17139C4", Offset = "0x17139C4", VA = "0x17139C4")]
+	private Task InitVideoPlayer()
+	{
+		return null;
+	}
+
+	[Token(Token = "0x60007C8")]
+	[Address(RVA = "0x1713AA0", Offset = "0x1713AA0", VA = "0x1713AA0")]
+	private int GetVideoIndex()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x60007C9")]
+	[Address(RVA = "0x1713BE4", Offset = "0x1713BE4", VA = "0x1713BE4")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x60007CA")]
+	[Address(RVA = "0x1713CC4", Offset = "0x1713CC4", VA = "0x1713CC4")]
+	private bool IsCentered()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x60007CB")]
+	[Address(RVA = "0x1713DF0", Offset = "0x1713DF0", VA = "0x1713DF0")]
+	public void OnPlayClicked()
+	{
+	}
+
+	[Token(Token = "0x60007CC")]
+	[Address(RVA = "0x1713D80", Offset = "0x1713D80", VA = "0x1713D80")]
+	private void PauseOrPlay(bool shouldPlay)
+	{
+	}
+
+	[Token(Token = "0x60007CD")]
+	[Address(RVA = "0x1713E28", Offset = "0x1713E28", VA = "0x1713E28")]
+	public void OnGoToTikTokClicked()
+	{
+	}
+
+	[Token(Token = "0x60007CE")]
+	[Address(RVA = "0x1713E70", Offset = "0x1713E70", VA = "0x1713E70")]
+	public TikTokPlayer()
+	{
+	}
 }

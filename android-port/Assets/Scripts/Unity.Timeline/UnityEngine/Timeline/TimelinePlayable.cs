@@ -1,66 +1,108 @@
-using UnityEngine;
+using System.Collections.Generic;
+using Il2CppDummyDll;
+using UnityEngine.Animations;
+using UnityEngine.Playables;
 
 namespace UnityEngine.Timeline
 {
-	public class TimelinePlayable : MonoBehaviour
+	[Token(Token = "0x2000038")]
+	public class TimelinePlayable : PlayableBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x40000E4")]
+		[FieldOffset(Offset = "0x10")]
+		private IntervalTree<RuntimeElement> m_IntervalTree;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40000E5")]
+		[FieldOffset(Offset = "0x18")]
+		private List<RuntimeElement> m_ActiveClips;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40000E6")]
+		[FieldOffset(Offset = "0x20")]
+		private List<RuntimeElement> m_CurrentListOfActiveClips;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40000E7")]
+		[FieldOffset(Offset = "0x28")]
+		private int m_ActiveBit;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40000E8")]
+		[FieldOffset(Offset = "0x30")]
+		private List<ITimelineEvaluateCallback> m_EvaluateCallbacks;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40000E9")]
+		[FieldOffset(Offset = "0x38")]
+		private Dictionary<TrackAsset, Playable> m_PlayableCache;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x40000EA")]
+		[FieldOffset(Offset = "0x0")]
+		internal static bool muteAudioScrubbing;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x60001F7")]
+		[Address(RVA = "0x2AEE018", Offset = "0x2AEE018", VA = "0x2AEE018")]
+		public static ScriptPlayable<TimelinePlayable> Create(PlayableGraph graph, IEnumerable<TrackAsset> tracks, GameObject go, bool autoRebalance, bool createOutputs)
+		{
+			return default;
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x60001F8")]
+		[Address(RVA = "0x2AF17DC", Offset = "0x2AF17DC", VA = "0x2AF17DC")]
+		public void Compile(PlayableGraph graph, Playable timelinePlayable, IEnumerable<TrackAsset> tracks, GameObject go, bool autoRebalance, bool createOutputs)
+		{
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x60001F9")]
+		[Address(RVA = "0x2AF1A58", Offset = "0x2AF1A58", VA = "0x2AF1A58")]
+		private void CompileTrackList(PlayableGraph graph, Playable timelinePlayable, IEnumerable<TrackAsset> tracks, GameObject go, bool createOutputs)
+		{
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x60001FA")]
+		[Address(RVA = "0x2AF2850", Offset = "0x2AF2850", VA = "0x2AF2850")]
+		private void CreateTrackOutput(PlayableGraph graph, TrackAsset track, GameObject go, Playable playable, int port)
+		{
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x60001FB")]
+		[Address(RVA = "0x2AF2F60", Offset = "0x2AF2F60", VA = "0x2AF2F60")]
+		private void EvaluateWeightsForAnimationPlayableOutput(TrackAsset track, AnimationPlayableOutput animOutput)
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x60001FC")]
+		[Address(RVA = "0x2AF3000", Offset = "0x2AF3000", VA = "0x2AF3000")]
+		private static Playable CreatePlayableGraph(PlayableGraph graph, TrackAsset asset, GameObject go, IntervalTree<RuntimeElement> tree, Playable timelinePlayable)
+		{
+			return default;
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x60001FD")]
+		[Address(RVA = "0x2AF238C", Offset = "0x2AF238C", VA = "0x2AF238C")]
+		private Playable CreateTrackPlayable(PlayableGraph graph, Playable timelinePlayable, TrackAsset track, GameObject go, bool createOutputs)
+		{
+			return default;
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x60001FE")]
+		[Address(RVA = "0x2AF33AC", Offset = "0x2AF33AC", VA = "0x2AF33AC", Slot = "19")]
+		public override void PrepareFrame(Playable playable, FrameData info)
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x60001FF")]
+		[Address(RVA = "0x2AF33DC", Offset = "0x2AF33DC", VA = "0x2AF33DC")]
+		private void Evaluate(Playable playable, FrameData frameData)
+		{
+		}
 
-		*/
+		[Token(Token = "0x6000200")]
+		[Address(RVA = "0x2AF3330", Offset = "0x2AF3330", VA = "0x2AF3330")]
+		private void CacheTrack(TrackAsset track, Playable playable, int port, Playable parent)
+		{
+		}
+
+		[Token(Token = "0x6000201")]
+		[Address(RVA = "0x2AF3A84", Offset = "0x2AF3A84", VA = "0x2AF3A84")]
+		public TimelinePlayable()
+		{
+		}
 	}
 }

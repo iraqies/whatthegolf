@@ -1,66 +1,251 @@
-using UnityEngine;
+using System;
+using System.Runtime.InteropServices;
+using Il2CppDummyDll;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceProviders;
+using UnityEngine.SceneManagement;
 
 namespace UnityEngine.AddressableAssets
 {
-	public class AssetReference : MonoBehaviour
+	[Serializable]
+	[Token(Token = "0x2000039")]
+	public class AssetReference : IKeyEvaluator
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4000094")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x10")]
+		[AttributeAttribute(Name = "FormerlySerializedAsAttribute", RVA = "0x1B1318", Offset = "0x1B1318")]
+		[SerializeField]
+		protected internal string m_AssetGUID;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000095")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x18")]
+		[SerializeField]
+		private string m_SubObjectName;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000096")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x20")]
+		[SerializeField]
+		private string m_SubObjectType;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4000097")]
+		[Il2CppDummyDll.FieldOffset(Offset = "0x28")]
+		private AsyncOperationHandle m_Operation;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x1700002D")]
+		public AsyncOperationHandle OperationHandle
+		{
+			[Token(Token = "0x600019D")]
+			[Address(RVA = "0x2A27DB4", Offset = "0x2A27DB4", VA = "0x2A27DB4")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x600019E")]
+			[Address(RVA = "0x2A27DC8", Offset = "0x2A27DC8", VA = "0x2A27DC8")]
+			internal set
+			{
+			}
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x1700002E")]
+		public virtual object RuntimeKey
+		{
+			[Token(Token = "0x600019F")]
+			[Address(RVA = "0x2A27DDC", Offset = "0x2A27DDC", VA = "0x2A27DDC", Slot = "6")]
+			get
+			{
+				return null;
+			}
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x1700002F")]
+		public virtual string AssetGUID
+		{
+			[Token(Token = "0x60001A0")]
+			[Address(RVA = "0x2A27E7C", Offset = "0x2A27E7C", VA = "0x2A27E7C", Slot = "7")]
+			get
+			{
+				return null;
+			}
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x17000030")]
+		public virtual string SubObjectName
+		{
+			[Token(Token = "0x60001A1")]
+			[Address(RVA = "0x2A27E84", Offset = "0x2A27E84", VA = "0x2A27E84", Slot = "8")]
+			get
+			{
+				return null;
+			}
+			[Token(Token = "0x60001A2")]
+			[Address(RVA = "0x2A27E8C", Offset = "0x2A27E8C", VA = "0x2A27E8C", Slot = "9")]
+			set
+			{
+			}
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x17000031")]
+		internal virtual Type SubOjbectType
+		{
+			[Token(Token = "0x60001A3")]
+			[Address(RVA = "0x2A27E94", Offset = "0x2A27E94", VA = "0x2A27E94", Slot = "10")]
+			get
+			{
+				return null;
+			}
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x17000032")]
+		public bool IsDone
+		{
+			[Token(Token = "0x60001A5")]
+			[Address(RVA = "0x2A27F5C", Offset = "0x2A27F5C", VA = "0x2A27F5C")]
+			get
+			{
+				return default;
+			}
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x17000033")]
+		public virtual Object Asset
+		{
+			[Token(Token = "0x60001A8")]
+			[Address(RVA = "0x2A28030", Offset = "0x2A28030", VA = "0x2A28030", Slot = "11")]
+			get
+			{
+				return null;
+			}
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x60001A4")]
+		[Address(RVA = "0x2A27F50", Offset = "0x2A27F50", VA = "0x2A27F50")]
+		public bool IsValid()
+		{
+			return default;
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x60001A6")]
+		[Address(RVA = "0x2A27F68", Offset = "0x2A27F68", VA = "0x2A27F68")]
+		public AssetReference()
+		{
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x60001A7")]
+		[Address(RVA = "0x2A27FC8", Offset = "0x2A27FC8", VA = "0x2A27FC8")]
+		public AssetReference(string guid)
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x60001A9")]
+		[Address(RVA = "0x2A280C8", Offset = "0x2A280C8", VA = "0x2A280C8", Slot = "3")]
+		public override string ToString()
+		{
+			return null;
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x60001AA")]
+		private static AsyncOperationHandle<T> CreateFailedOperation<T>()
+		{
+			return default;
+		}
 
-		*/
+		[Token(Token = "0x60001AB")]
+		[AttributeAttribute(Name = "ObsoleteAttribute", RVA = "0x1B1E24", Offset = "0x1B1E24")]
+		public AsyncOperationHandle<TObject> LoadAsset<TObject>()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60001AC")]
+		[Address(RVA = "0x2A28138", Offset = "0x2A28138", VA = "0x2A28138")]
+		[AttributeAttribute(Name = "ObsoleteAttribute", RVA = "0x1B1E34", Offset = "0x1B1E34")]
+		public AsyncOperationHandle<SceneInstance> LoadScene()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60001AD")]
+		[Address(RVA = "0x2A28154", Offset = "0x2A28154", VA = "0x2A28154")]
+		[AttributeAttribute(Name = "ObsoleteAttribute", RVA = "0x1B1E44", Offset = "0x1B1E44")]
+		public AsyncOperationHandle<GameObject> Instantiate(Vector3 position, Quaternion rotation, [Optional] Transform parent)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60001AE")]
+		[Address(RVA = "0x2A28164", Offset = "0x2A28164", VA = "0x2A28164")]
+		[AttributeAttribute(Name = "ObsoleteAttribute", RVA = "0x1B1E54", Offset = "0x1B1E54")]
+		public AsyncOperationHandle<GameObject> Instantiate([Optional] Transform parent, bool instantiateInWorldSpace = false)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60001AF")]
+		public virtual AsyncOperationHandle<TObject> LoadAssetAsync<TObject>()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60001B0")]
+		[Address(RVA = "0x2A28174", Offset = "0x2A28174", VA = "0x2A28174", Slot = "13")]
+		public virtual AsyncOperationHandle<SceneInstance> LoadSceneAsync(LoadSceneMode loadMode = LoadSceneMode.Single, bool activateOnLoad = true, int priority = 100)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60001B1")]
+		[Address(RVA = "0x2A282DC", Offset = "0x2A282DC", VA = "0x2A282DC", Slot = "14")]
+		public virtual AsyncOperationHandle<SceneInstance> UnLoadScene()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60001B2")]
+		[Address(RVA = "0x2A28374", Offset = "0x2A28374", VA = "0x2A28374", Slot = "15")]
+		public virtual AsyncOperationHandle<GameObject> InstantiateAsync(Vector3 position, Quaternion rotation, [Optional] Transform parent)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60001B3")]
+		[Address(RVA = "0x2A2846C", Offset = "0x2A2846C", VA = "0x2A2846C", Slot = "16")]
+		public virtual AsyncOperationHandle<GameObject> InstantiateAsync([Optional] Transform parent, bool instantiateInWorldSpace = false)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60001B4")]
+		[Address(RVA = "0x2A28514", Offset = "0x2A28514", VA = "0x2A28514", Slot = "17")]
+		public virtual bool RuntimeKeyIsValid()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60001B5")]
+		[Address(RVA = "0x2A285F4", Offset = "0x2A285F4", VA = "0x2A285F4", Slot = "18")]
+		public virtual void ReleaseAsset()
+		{
+		}
+
+		[Token(Token = "0x60001B6")]
+		[Address(RVA = "0x2A286E0", Offset = "0x2A286E0", VA = "0x2A286E0", Slot = "19")]
+		public virtual void ReleaseInstance(GameObject obj)
+		{
+		}
+
+		[Token(Token = "0x60001B7")]
+		[Address(RVA = "0x2A28748", Offset = "0x2A28748", VA = "0x2A28748", Slot = "20")]
+		public virtual bool ValidateAsset(Object obj)
+		{
+			return default;
+		}
+
+		[Token(Token = "0x60001B8")]
+		[Address(RVA = "0x2A28750", Offset = "0x2A28750", VA = "0x2A28750", Slot = "21")]
+		public virtual bool ValidateAsset(string path)
+		{
+			return default;
+		}
 	}
 }

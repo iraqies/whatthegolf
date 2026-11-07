@@ -1,66 +1,83 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace TMPro
 {
-	public class TMP_TextUtilities : MonoBehaviour
+	[Token(Token = "0x2000075")]
+	public static class TMP_TextUtilities
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x40004A2")]
+		[FieldOffset(Offset = "0x0")]
+		private static Vector3[] m_rectWorldCorners;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x6000478")]
+		[Address(RVA = "0x2AB9CF8", Offset = "0x2AB9CF8", VA = "0x2AB9CF8")]
+		public static int GetCursorIndexFromPosition(TMP_Text textComponent, Vector3 position, Camera camera, out CaretPosition cursor)
+		{
+			return default;
+		}
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x6000479")]
+		[Address(RVA = "0x2AB9EEC", Offset = "0x2AB9EEC", VA = "0x2AB9EEC")]
+		public static int FindNearestLine(TMP_Text text, Vector3 position, Camera camera)
+		{
+			return default;
+		}
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x600047A")]
+		[Address(RVA = "0x2ABA080", Offset = "0x2ABA080", VA = "0x2ABA080")]
+		public static int FindNearestCharacterOnLine(TMP_Text text, Vector3 position, int line, Camera camera, bool visibleOnly)
+		{
+			return default;
+		}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x600047B")]
+		[Address(RVA = "0x2ABAA3C", Offset = "0x2ABAA3C", VA = "0x2ABAA3C")]
+		public static int FindIntersectingWord(TMP_Text text, Vector3 position, Camera camera)
+		{
+			return default;
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x600047C")]
+		[Address(RVA = "0x2ABB1A0", Offset = "0x2ABB1A0", VA = "0x2ABB1A0")]
+		public static int FindIntersectingLink(TMP_Text text, Vector3 position, Camera camera)
+		{
+			return default;
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x600047D")]
+		[Address(RVA = "0x2ABA8B8", Offset = "0x2ABA8B8", VA = "0x2ABA8B8")]
+		private static bool PointIntersectRectangle(Vector3 m, Vector3 a, Vector3 b, Vector3 c, Vector3 d)
+		{
+			return default;
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x600047E")]
+		[Address(RVA = "0x2ABA6FC", Offset = "0x2ABA6FC", VA = "0x2ABA6FC")]
+		public static bool ScreenPointToWorldPointInRectangle(Transform transform, Vector2 screenPoint, Camera cam, out Vector3 worldPoint)
+		{
+			return default;
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x600047F")]
+		[Address(RVA = "0x2ABA970", Offset = "0x2ABA970", VA = "0x2ABA970")]
+		public static float DistanceToLine(Vector3 a, Vector3 b, Vector3 point)
+		{
+			return default;
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x6000480")]
+		[Address(RVA = "0x2ABB6E4", Offset = "0x2ABB6E4", VA = "0x2ABB6E4")]
+		internal static uint ToUpperASCIIFast(uint c)
+		{
+			return default;
+		}
 
-		5. Script Content Level 0
-
-			AssetRipper was set to not load any script information.
-
-		6. Cpp2IL failed to decompile Il2Cpp data
-
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x6000481")]
+		[Address(RVA = "0x2ABB764", Offset = "0x2ABB764", VA = "0x2ABB764")]
+		public static int GetSimpleHashCode(string s)
+		{
+			return default;
+		}
 	}
 }

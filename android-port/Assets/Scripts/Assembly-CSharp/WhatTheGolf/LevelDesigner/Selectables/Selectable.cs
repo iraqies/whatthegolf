@@ -1,66 +1,171 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace WhatTheGolf.LevelDesigner.Selectables
 {
-	public class Selectable : MonoBehaviour
+	[Token(Token = "0x2001274")]
+	public abstract class Selectable : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x400632C")]
+		[FieldOffset(Offset = "0x18")]
+		[SerializeField]
+		private Rigidbody m_RigidBody;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x400632D")]
+		[FieldOffset(Offset = "0x20")]
+		[SerializeField]
+		private Renderer[] m_Renderers;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x400632E")]
+		[FieldOffset(Offset = "0x28")]
+		[SerializeField]
+		private SelectableUnityEvents m_UnityEvents;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x400632F")]
+		[FieldOffset(Offset = "0x30")]
+		private Guid m_Guid;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4006330")]
+		[FieldOffset(Offset = "0x40")]
+		[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x58B6C", Offset = "0x58B6C")]
+		private float currentYOffset__BackingField;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4006331")]
+		[FieldOffset(Offset = "0x48")]
+		public Coroutine liftDropCoroutine;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4006332")]
+		[FieldOffset(Offset = "0x50")]
+		public Coroutine scaleCoroutine;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x170009AC")]
+		public Rigidbody rBody
+		{
+			[Token(Token = "0x6005541")]
+			[Address(RVA = "0x1685314", Offset = "0x1685314", VA = "0x1685314")]
+			get
+			{
+				return null;
+			}
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x170009AD")]
+		public Guid guid
+		{
+			[Token(Token = "0x6005542")]
+			[Address(RVA = "0x16853C0", Offset = "0x16853C0", VA = "0x16853C0")]
+			get
+			{
+				return default;
+			}
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x170009AE")]
+		public Renderer[] renderers
+		{
+			[Token(Token = "0x6005543")]
+			[Address(RVA = "0x16853CC", Offset = "0x16853CC", VA = "0x16853CC")]
+			get
+			{
+				return null;
+			}
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x170009AF")]
+		public virtual Transform rootObject
+		{
+			[Token(Token = "0x6005544")]
+			[Address(RVA = "0x16853D4", Offset = "0x16853D4", VA = "0x16853D4", Slot = "4")]
+			get
+			{
+				return null;
+			}
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x170009B0")]
+		public SelectableUnityEvents UnityEvents
+		{
+			[Token(Token = "0x6005545")]
+			[Address(RVA = "0x16853DC", Offset = "0x16853DC", VA = "0x16853DC")]
+			get
+			{
+				return null;
+			}
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x170009B1")]
+		public abstract SelectableDefinition baseDefinition
+		{
+			[Token(Token = "0x6005546")]
+			get;
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x170009B2")]
+		public float currentYOffset
+		{
+			[Token(Token = "0x6005547")]
+			[Address(RVA = "0x16853E4", Offset = "0x16853E4", VA = "0x16853E4")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x71670", Offset = "0x71670")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6005548")]
+			[Address(RVA = "0x16853EC", Offset = "0x16853EC", VA = "0x16853EC")]
+			[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x71680", Offset = "0x71680")]
+			set
+			{
+			}
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x6005549")]
+		[Address(RVA = "0x16853F4", Offset = "0x16853F4", VA = "0x16853F4")]
+		public void Init(Guid guid)
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x600554A")]
+		[Address(RVA = "0x16853FC", Offset = "0x16853FC", VA = "0x16853FC")]
+		protected Selectable()
+		{
+		}
+	}
+	[Token(Token = "0x2001275")]
+	public abstract class Selectable<T> : Selectable where T : SelectableDefinition
+	{
+		[Token(Token = "0x4006333")]
+		[FieldOffset(Offset = "0x0")]
+		[SerializeField]
+		private T m_Definition;
 
-		*/
+		[Token(Token = "0x170009B3")]
+		public override SelectableDefinition baseDefinition
+		{
+			[Token(Token = "0x600554C")]
+			get
+			{
+				return null;
+			}
+		}
+
+		[Token(Token = "0x170009B4")]
+		public T definition
+		{
+			[Token(Token = "0x600554D")]
+			get
+			{
+				return null;
+			}
+			[Token(Token = "0x600554E")]
+			set
+			{
+			}
+		}
+
+		[Token(Token = "0x600554B")]
+		public Selectable()
+		{
+		}
 	}
 }

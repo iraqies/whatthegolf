@@ -1,66 +1,49 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace WhatTheGolf.LevelDesigner.Managers
 {
-	public class SkyManager : MonoBehaviour
+	[Token(Token = "0x20012D3")]
+	public sealed class SkyManager : BaseManager, IRequireRender
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x400656C")]
+		[FieldOffset(Offset = "0x20")]
+		[SerializeField]
+		private Material m_Material;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x400656D")]
+		[FieldOffset(Offset = "0x28")]
+		[SerializeField]
+		private GameObject cloudPrefab;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x400656E")]
+		[FieldOffset(Offset = "0x30")]
+		private bool m_Initialized;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x400656F")]
+		[FieldOffset(Offset = "0x38")]
+		private Mesh m_Mesh;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4006570")]
+		[FieldOffset(Offset = "0x40")]
+		private Matrix4x4 m_Matrix;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x600574D")]
+		[Address(RVA = "0x16B5EF4", Offset = "0x16B5EF4", VA = "0x16B5EF4", Slot = "4")]
+		public override void Init()
+		{
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x600574E")]
+		[Address(RVA = "0x16B60A0", Offset = "0x16B60A0", VA = "0x16B60A0", Slot = "5")]
+		public void QueueDraws(bool isScreenshot)
+		{
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
-
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
-
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
-
-		5. Script Content Level 0
-
-			AssetRipper was set to not load any script information.
-
-		6. Cpp2IL failed to decompile Il2Cpp data
-
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-		7. An incorrect path was provided to AssetRipper.
-
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x600574F")]
+		[Address(RVA = "0x16B61B8", Offset = "0x16B61B8", VA = "0x16B61B8")]
+		public SkyManager()
+		{
+		}
 	}
 }

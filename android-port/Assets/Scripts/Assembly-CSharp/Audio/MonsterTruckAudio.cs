@@ -1,66 +1,148 @@
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Audio
 {
+	[Token(Token = "0x200138F")]
 	public class MonsterTruckAudio : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x2001390")]
+		private enum CarState
+		{
+			[Token(Token = "0x4006904")]
+			Grounded = 0,
+			[Token(Token = "0x4006905")]
+			NonGrounded = 1
+		}
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40068EF")]
+		[FieldOffset(Offset = "0x18")]
+		public WheelCollider[] wheels;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40068F0")]
+		[FieldOffset(Offset = "0x20")]
+		public GolfBallController controller;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40068F1")]
+		[FieldOffset(Offset = "0x28")]
+		public float minRPM;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x40068F2")]
+		[FieldOffset(Offset = "0x2C")]
+		public float maxRPM;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x40068F3")]
+		[FieldOffset(Offset = "0x30")]
+		public int decreaseVolumeOverShots;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x40068F4")]
+		[FieldOffset(Offset = "0x38")]
+		public RandomAudioClips RevClips;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x40068F5")]
+		[FieldOffset(Offset = "0x40")]
+		public RandomAudioClips DirtClips;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x40068F6")]
+		[FieldOffset(Offset = "0x48")]
+		public RandomAudioClips FailExhaustClips;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x40068F7")]
+		[FieldOffset(Offset = "0x50")]
+		public float steerDirtThreshold;
 
-		5. Script Content Level 0
+		[Token(Token = "0x40068F8")]
+		[FieldOffset(Offset = "0x58")]
+		public AudioSource RevAudiosource;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x40068F9")]
+		[FieldOffset(Offset = "0x60")]
+		public AudioSource DirtAudiosource;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x40068FA")]
+		[FieldOffset(Offset = "0x68")]
+		public float RPM;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x40068FB")]
+		[FieldOffset(Offset = "0x6C")]
+		private float shootClipGain;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x40068FC")]
+		[FieldOffset(Offset = "0x70")]
+		private float lastSteering;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x40068FD")]
+		[FieldOffset(Offset = "0x74")]
+		private int shots;
 
-		*/
+		[Token(Token = "0x40068FE")]
+		[FieldOffset(Offset = "0x78")]
+		private float shotTimer;
+
+		[Token(Token = "0x40068FF")]
+		[FieldOffset(Offset = "0x7C")]
+		private float shotTimeCooldown;
+
+		[Token(Token = "0x4006900")]
+		[FieldOffset(Offset = "0x80")]
+		private float nextSoundTime;
+
+		[Token(Token = "0x4006901")]
+		[FieldOffset(Offset = "0x84")]
+		private int wheelsGrounded;
+
+		[Token(Token = "0x4006902")]
+		[FieldOffset(Offset = "0x88")]
+		private CarState state;
+
+		[Token(Token = "0x6005B48")]
+		[Address(RVA = "0x156CA24", Offset = "0x156CA24", VA = "0x156CA24")]
+		private int WheelsGrounded()
+		{
+			return default;
+		}
+
+		[Token(Token = "0x6005B49")]
+		[Address(RVA = "0x156CAA4", Offset = "0x156CAA4", VA = "0x156CAA4")]
+		private void Start()
+		{
+		}
+
+		[Token(Token = "0x6005B4A")]
+		[Address(RVA = "0x156CBFC", Offset = "0x156CBFC", VA = "0x156CBFC")]
+		private void OnShoot(Vector3 boost)
+		{
+		}
+
+		[Token(Token = "0x6005B4B")]
+		[Address(RVA = "0x156CE50", Offset = "0x156CE50", VA = "0x156CE50")]
+		private void OnShootWhileBlocked(Vector3 boost)
+		{
+		}
+
+		[Token(Token = "0x6005B4C")]
+		[Address(RVA = "0x156CC64", Offset = "0x156CC64", VA = "0x156CC64")]
+		private void PlayRev()
+		{
+		}
+
+		[Token(Token = "0x6005B4D")]
+		[Address(RVA = "0x156CDA8", Offset = "0x156CDA8", VA = "0x156CDA8")]
+		private void PlayPuff()
+		{
+		}
+
+		[Token(Token = "0x6005B4E")]
+		[Address(RVA = "0x156CEA4", Offset = "0x156CEA4", VA = "0x156CEA4")]
+		private void Update()
+		{
+		}
+
+		[Token(Token = "0x6005B4F")]
+		[Address(RVA = "0x156D004", Offset = "0x156D004", VA = "0x156D004")]
+		public MonsterTruckAudio()
+		{
+		}
 	}
 }

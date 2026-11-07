@@ -1,66 +1,311 @@
+using System;
+using Il2CppDummyDll;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
 namespace Rewired.ComponentControls
 {
-	public class TouchRegion : MonoBehaviour
+	[Serializable]
+	[Token(Token = "0x2000302")]
+	[DisallowMultipleComponent]
+	public sealed class TouchRegion : TouchInteractable
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Serializable]
+		[Token(Token = "0x2000303")]
+		private class ghVKEZJBJYQJvvstwXJnrgnXfsDt : UnityEvent<PointerEventData>
+		{
+			[Token(Token = "0x6001729")]
+			[Address(RVA = "0x2399B20", Offset = "0x2399B20", VA = "0x2399B20")]
+			public ghVKEZJBJYQJvvstwXJnrgnXfsDt()
+			{
+			}
+		}
 
-		1. No dll files were provided to AssetRipper.
+		[Serializable]
+		[Token(Token = "0x2000304")]
+		private class lTQAltguQayUUSZjuRqVFyuoqtzBA : UnityEvent<PointerEventData>
+		{
+			[Token(Token = "0x600172A")]
+			[Address(RVA = "0x2399B78", Offset = "0x2399B78", VA = "0x2399B78")]
+			public lTQAltguQayUUSZjuRqVFyuoqtzBA()
+			{
+			}
+		}
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Serializable]
+		[Token(Token = "0x2000305")]
+		private class INFDjiJnyNyrBINFJecsvtYIqrPeA : UnityEvent<PointerEventData>
+		{
+			[Token(Token = "0x600172B")]
+			[Address(RVA = "0x2399968", Offset = "0x2399968", VA = "0x2399968")]
+			public INFDjiJnyNyrBINFJecsvtYIqrPeA()
+			{
+			}
+		}
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Serializable]
+		[Token(Token = "0x2000306")]
+		private class clhedBWPziouPAAOAIrdSYmUdssL : UnityEvent<PointerEventData>
+		{
+			[Token(Token = "0x600172C")]
+			[Address(RVA = "0x2399AC8", Offset = "0x2399AC8", VA = "0x2399AC8")]
+			public clhedBWPziouPAAOAIrdSYmUdssL()
+			{
+			}
+		}
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Serializable]
+		[Token(Token = "0x2000307")]
+		private class bMdkKDfmBnVLDeOqapsCIEZDnLIq : UnityEvent<PointerEventData>
+		{
+			[Token(Token = "0x600172D")]
+			[Address(RVA = "0x2399A70", Offset = "0x2399A70", VA = "0x2399A70")]
+			public bMdkKDfmBnVLDeOqapsCIEZDnLIq()
+			{
+			}
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Serializable]
+		[Token(Token = "0x2000308")]
+		private class XFhydDPwQZlOXNQvZDlvktxFlUpT : UnityEvent<PointerEventData>
+		{
+			[Token(Token = "0x600172E")]
+			[Address(RVA = "0x2399A18", Offset = "0x2399A18", VA = "0x2399A18")]
+			public XFhydDPwQZlOXNQvZDlvktxFlUpT()
+			{
+			}
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Serializable]
+		[Token(Token = "0x2000309")]
+		private class ItJCBvpQxToTdxKYPgpoCjgfAhxHA : UnityEvent<PointerEventData>
+		{
+			[Token(Token = "0x600172F")]
+			[Address(RVA = "0x23999C0", Offset = "0x23999C0", VA = "0x23999C0")]
+			public ItJCBvpQxToTdxKYPgpoCjgfAhxHA()
+			{
+			}
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4000FF1")]
+		[FieldOffset(Offset = "0x128")]
+		[SerializeField]
+		private bool _hideAtRuntime;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4000FF2")]
+		[FieldOffset(Offset = "0x130")]
+		private ghVKEZJBJYQJvvstwXJnrgnXfsDt _onPointerDown;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4000FF3")]
+		[FieldOffset(Offset = "0x138")]
+		private lTQAltguQayUUSZjuRqVFyuoqtzBA _onPointerUp;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4000FF4")]
+		[FieldOffset(Offset = "0x140")]
+		private INFDjiJnyNyrBINFJecsvtYIqrPeA _onPointerEnter;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x4000FF5")]
+		[FieldOffset(Offset = "0x148")]
+		private clhedBWPziouPAAOAIrdSYmUdssL _onPointerExit;
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x4000FF6")]
+		[FieldOffset(Offset = "0x150")]
+		private bMdkKDfmBnVLDeOqapsCIEZDnLIq _onBeginDrag;
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x4000FF7")]
+		[FieldOffset(Offset = "0x158")]
+		private XFhydDPwQZlOXNQvZDlvktxFlUpT _onDrag;
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x4000FF8")]
+		[FieldOffset(Offset = "0x160")]
+		private ItJCBvpQxToTdxKYPgpoCjgfAhxHA _onEndDrag;
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x1700062A")]
+		public bool hideAtRuntime
+		{
+			[Token(Token = "0x600170E")]
+			[Address(RVA = "0x2432CFC", Offset = "0x2432CFC", VA = "0x2432CFC")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x600170F")]
+			[Address(RVA = "0x2432D04", Offset = "0x2432D04", VA = "0x2432D04")]
+			set
+			{
+			}
+		}
 
-		*/
+		[Token(Token = "0x1400003A")]
+		public event UnityAction<PointerEventData> PointerDownEvent
+		{
+			[Token(Token = "0x6001710")]
+			[Address(RVA = "0x2432D28", Offset = "0x2432D28", VA = "0x2432D28")]
+			add
+			{
+			}
+			[Token(Token = "0x6001711")]
+			[Address(RVA = "0x2432D8C", Offset = "0x2432D8C", VA = "0x2432D8C")]
+			remove
+			{
+			}
+		}
+
+		[Token(Token = "0x1400003B")]
+		public event UnityAction<PointerEventData> PointerUpEvent
+		{
+			[Token(Token = "0x6001712")]
+			[Address(RVA = "0x2432DF0", Offset = "0x2432DF0", VA = "0x2432DF0")]
+			add
+			{
+			}
+			[Token(Token = "0x6001713")]
+			[Address(RVA = "0x2432E54", Offset = "0x2432E54", VA = "0x2432E54")]
+			remove
+			{
+			}
+		}
+
+		[Token(Token = "0x1400003C")]
+		public event UnityAction<PointerEventData> PointerEnterEvent
+		{
+			[Token(Token = "0x6001714")]
+			[Address(RVA = "0x2432EB8", Offset = "0x2432EB8", VA = "0x2432EB8")]
+			add
+			{
+			}
+			[Token(Token = "0x6001715")]
+			[Address(RVA = "0x2432F1C", Offset = "0x2432F1C", VA = "0x2432F1C")]
+			remove
+			{
+			}
+		}
+
+		[Token(Token = "0x1400003D")]
+		public event UnityAction<PointerEventData> PointerExitEvent
+		{
+			[Token(Token = "0x6001716")]
+			[Address(RVA = "0x2432F80", Offset = "0x2432F80", VA = "0x2432F80")]
+			add
+			{
+			}
+			[Token(Token = "0x6001717")]
+			[Address(RVA = "0x2432FE4", Offset = "0x2432FE4", VA = "0x2432FE4")]
+			remove
+			{
+			}
+		}
+
+		[Token(Token = "0x1400003E")]
+		public event UnityAction<PointerEventData> BeginDragEvent
+		{
+			[Token(Token = "0x6001718")]
+			[Address(RVA = "0x2433048", Offset = "0x2433048", VA = "0x2433048")]
+			add
+			{
+			}
+			[Token(Token = "0x6001719")]
+			[Address(RVA = "0x24330AC", Offset = "0x24330AC", VA = "0x24330AC")]
+			remove
+			{
+			}
+		}
+
+		[Token(Token = "0x1400003F")]
+		public event UnityAction<PointerEventData> DragEvent
+		{
+			[Token(Token = "0x600171A")]
+			[Address(RVA = "0x2433110", Offset = "0x2433110", VA = "0x2433110")]
+			add
+			{
+			}
+			[Token(Token = "0x600171B")]
+			[Address(RVA = "0x2433174", Offset = "0x2433174", VA = "0x2433174")]
+			remove
+			{
+			}
+		}
+
+		[Token(Token = "0x14000040")]
+		public event UnityAction<PointerEventData> EndDragEvent
+		{
+			[Token(Token = "0x600171C")]
+			[Address(RVA = "0x24331D8", Offset = "0x24331D8", VA = "0x24331D8")]
+			add
+			{
+			}
+			[Token(Token = "0x600171D")]
+			[Address(RVA = "0x243323C", Offset = "0x243323C", VA = "0x243323C")]
+			remove
+			{
+			}
+		}
+
+		[Token(Token = "0x600171E")]
+		[Address(RVA = "0x24332A0", Offset = "0x24332A0", VA = "0x24332A0")]
+		private TouchRegion()
+		{
+		}
+
+		[Token(Token = "0x600171F")]
+		[Address(RVA = "0x2433460", Offset = "0x2433460", VA = "0x2433460", Slot = "8")]
+		internal override void Awake()
+		{
+		}
+
+		[Token(Token = "0x6001720")]
+		[Address(RVA = "0x24334B4", Offset = "0x24334B4", VA = "0x24334B4", Slot = "7")]
+		public override void ClearValue()
+		{
+		}
+
+		[Token(Token = "0x6001721")]
+		[Address(RVA = "0x24334B8", Offset = "0x24334B8", VA = "0x24334B8", Slot = "26")]
+		internal override void xhHhPOcavYUrBJGXQmMDzQMMGISaA()
+		{
+		}
+
+		[Token(Token = "0x6001722")]
+		[Address(RVA = "0x24334BC", Offset = "0x24334BC", VA = "0x24334BC", Slot = "36")]
+		internal void jdTaWudIAtigvcgWdtrrcBEKJLcPB(PointerEventData P_0)
+		{
+		}
+
+		[Token(Token = "0x6001723")]
+		[Address(RVA = "0x24335C8", Offset = "0x24335C8", VA = "0x24335C8", Slot = "37")]
+		internal void MbXbjtguZaBfbfqmjlBSCyVMORejB(PointerEventData P_0)
+		{
+		}
+
+		[Token(Token = "0x6001724")]
+		[Address(RVA = "0x24336D4", Offset = "0x24336D4", VA = "0x24336D4", Slot = "38")]
+		internal void vpQLxEpNsNjHEQUMTNafaJqaWgfe(PointerEventData P_0)
+		{
+		}
+
+		[Token(Token = "0x6001725")]
+		[Address(RVA = "0x24337E0", Offset = "0x24337E0", VA = "0x24337E0", Slot = "39")]
+		internal void OCiTmGENfjrRiUQnHUcKDaHRzTDj(PointerEventData P_0)
+		{
+		}
+
+		[Token(Token = "0x6001726")]
+		[Address(RVA = "0x24338EC", Offset = "0x24338EC", VA = "0x24338EC", Slot = "40")]
+		internal void CeCjfxfrPRDIAfCVrQPnmMvELNpzA(PointerEventData P_0)
+		{
+		}
+
+		[Token(Token = "0x6001727")]
+		[Address(RVA = "0x24339F8", Offset = "0x24339F8", VA = "0x24339F8", Slot = "41")]
+		internal void JuzlkzmoAOuJMYLEkFxWgiAjnolW(PointerEventData P_0)
+		{
+		}
+
+		[Token(Token = "0x6001728")]
+		[Address(RVA = "0x2433B04", Offset = "0x2433B04", VA = "0x2433B04", Slot = "42")]
+		internal void LgBQosPAyBTzQOLHtYNFjeRHthOd(PointerEventData P_0)
+		{
+		}
 	}
 }

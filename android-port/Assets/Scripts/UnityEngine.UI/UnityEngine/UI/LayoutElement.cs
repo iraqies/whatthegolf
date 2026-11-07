@@ -1,66 +1,233 @@
-using UnityEngine;
+using Il2CppDummyDll;
+using UnityEngine.EventSystems;
 
 namespace UnityEngine.UI
 {
-	public class LayoutElement : MonoBehaviour
+	[Token(Token = "0x200003F")]
+	[ExecuteAlways]
+	[Attribute(Name = "RequireComponent", RVA = "0x1F649C", Offset = "0x1F649C")]
+	public class LayoutElement : UIBehaviour, ILayoutElement, ILayoutIgnorer
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x4000143")]
+		[FieldOffset(Offset = "0x18")]
+		[SerializeField]
+		private bool m_IgnoreLayout;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x4000144")]
+		[FieldOffset(Offset = "0x1C")]
+		[SerializeField]
+		private float m_MinWidth;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000145")]
+		[FieldOffset(Offset = "0x20")]
+		[SerializeField]
+		private float m_MinHeight;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4000146")]
+		[FieldOffset(Offset = "0x24")]
+		[SerializeField]
+		private float m_PreferredWidth;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4000147")]
+		[FieldOffset(Offset = "0x28")]
+		[SerializeField]
+		private float m_PreferredHeight;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000148")]
+		[FieldOffset(Offset = "0x2C")]
+		[SerializeField]
+		private float m_FlexibleWidth;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4000149")]
+		[FieldOffset(Offset = "0x30")]
+		[SerializeField]
+		private float m_FlexibleHeight;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x400014A")]
+		[FieldOffset(Offset = "0x34")]
+		[SerializeField]
+		private int m_LayoutPriority;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x170000BA")]
+		public virtual bool ignoreLayout
+		{
+			[Token(Token = "0x6000289")]
+			[Address(RVA = "0x2C237A0", Offset = "0x2C237A0", VA = "0x2C237A0", Slot = "27")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x600028A")]
+			[Address(RVA = "0x2C237A8", Offset = "0x2C237A8", VA = "0x2C237A8", Slot = "28")]
+			set
+			{
+			}
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x170000BB")]
+		public virtual float minWidth
+		{
+			[Token(Token = "0x600028D")]
+			[Address(RVA = "0x2C238E4", Offset = "0x2C238E4", VA = "0x2C238E4", Slot = "31")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x600028E")]
+			[Address(RVA = "0x2C238EC", Offset = "0x2C238EC", VA = "0x2C238EC", Slot = "32")]
+			set
+			{
+			}
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x170000BC")]
+		public virtual float minHeight
+		{
+			[Token(Token = "0x600028F")]
+			[Address(RVA = "0x2C23970", Offset = "0x2C23970", VA = "0x2C23970", Slot = "33")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000290")]
+			[Address(RVA = "0x2C23978", Offset = "0x2C23978", VA = "0x2C23978", Slot = "34")]
+			set
+			{
+			}
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x170000BD")]
+		public virtual float preferredWidth
+		{
+			[Token(Token = "0x6000291")]
+			[Address(RVA = "0x2C239FC", Offset = "0x2C239FC", VA = "0x2C239FC", Slot = "35")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000292")]
+			[Address(RVA = "0x2C23A04", Offset = "0x2C23A04", VA = "0x2C23A04", Slot = "36")]
+			set
+			{
+			}
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x170000BE")]
+		public virtual float preferredHeight
+		{
+			[Token(Token = "0x6000293")]
+			[Address(RVA = "0x2C23A88", Offset = "0x2C23A88", VA = "0x2C23A88", Slot = "37")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000294")]
+			[Address(RVA = "0x2C23A90", Offset = "0x2C23A90", VA = "0x2C23A90", Slot = "38")]
+			set
+			{
+			}
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x170000BF")]
+		public virtual float flexibleWidth
+		{
+			[Token(Token = "0x6000295")]
+			[Address(RVA = "0x2C23B14", Offset = "0x2C23B14", VA = "0x2C23B14", Slot = "39")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000296")]
+			[Address(RVA = "0x2C23B1C", Offset = "0x2C23B1C", VA = "0x2C23B1C", Slot = "40")]
+			set
+			{
+			}
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x170000C0")]
+		public virtual float flexibleHeight
+		{
+			[Token(Token = "0x6000297")]
+			[Address(RVA = "0x2C23BA0", Offset = "0x2C23BA0", VA = "0x2C23BA0", Slot = "41")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000298")]
+			[Address(RVA = "0x2C23BA8", Offset = "0x2C23BA8", VA = "0x2C23BA8", Slot = "42")]
+			set
+			{
+			}
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x170000C1")]
+		public virtual int layoutPriority
+		{
+			[Token(Token = "0x6000299")]
+			[Address(RVA = "0x2C23C2C", Offset = "0x2C23C2C", VA = "0x2C23C2C", Slot = "43")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x600029A")]
+			[Address(RVA = "0x2C23C34", Offset = "0x2C23C34", VA = "0x2C23C34", Slot = "44")]
+			set
+			{
+			}
+		}
 
-		*/
+		[Token(Token = "0x600028B")]
+		[Address(RVA = "0x2C238DC", Offset = "0x2C238DC", VA = "0x2C238DC", Slot = "29")]
+		public virtual void CalculateLayoutInputHorizontal()
+		{
+		}
+
+		[Token(Token = "0x600028C")]
+		[Address(RVA = "0x2C238E0", Offset = "0x2C238E0", VA = "0x2C238E0", Slot = "30")]
+		public virtual void CalculateLayoutInputVertical()
+		{
+		}
+
+		[Token(Token = "0x600029B")]
+		[Address(RVA = "0x2C23CAC", Offset = "0x2C23CAC", VA = "0x2C23CAC")]
+		protected LayoutElement()
+		{
+		}
+
+		[Token(Token = "0x600029C")]
+		[Address(RVA = "0x2C23CD0", Offset = "0x2C23CD0", VA = "0x2C23CD0", Slot = "5")]
+		protected override void OnEnable()
+		{
+		}
+
+		[Token(Token = "0x600029D")]
+		[Address(RVA = "0x2C23CF8", Offset = "0x2C23CF8", VA = "0x2C23CF8", Slot = "12")]
+		protected override void OnTransformParentChanged()
+		{
+		}
+
+		[Token(Token = "0x600029E")]
+		[Address(RVA = "0x2C23CFC", Offset = "0x2C23CFC", VA = "0x2C23CFC", Slot = "7")]
+		protected override void OnDisable()
+		{
+		}
+
+		[Token(Token = "0x600029F")]
+		[Address(RVA = "0x2C23D24", Offset = "0x2C23D24", VA = "0x2C23D24", Slot = "13")]
+		protected override void OnDidApplyAnimationProperties()
+		{
+		}
+
+		[Token(Token = "0x60002A0")]
+		[Address(RVA = "0x2C23D28", Offset = "0x2C23D28", VA = "0x2C23D28", Slot = "11")]
+		protected override void OnBeforeTransformParentChanged()
+		{
+		}
+
+		[Token(Token = "0x60002A1")]
+		[Address(RVA = "0x2C23820", Offset = "0x2C23820", VA = "0x2C23820")]
+		protected void SetDirty()
+		{
+		}
 	}
 }

@@ -1,63 +1,123 @@
+using System.Collections.Generic;
+using Chronos;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
-public class GenericTimelineShooter : MonoBehaviour
+[Token(Token = "0x2000132")]
+public class GenericTimelineShooter : GolfBallShooterBase
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x400054B")]
+	[FieldOffset(Offset = "0x60")]
+	[SerializeField]
+	private Timeline timeline;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x400054C")]
+	[FieldOffset(Offset = "0x68")]
+	[SerializeField]
+	private List<Clock> clocks;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x400054D")]
+	[FieldOffset(Offset = "0x70")]
+	[SerializeField]
+	private float aimTimeScale;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x400054E")]
+	[FieldOffset(Offset = "0x74")]
+	[SerializeField]
+	private float upSpeed;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x400054F")]
+	[FieldOffset(Offset = "0x78")]
+	[SerializeField]
+	private float downSpeed;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4000550")]
+	[FieldOffset(Offset = "0x7C")]
+	[SerializeField]
+	public float minShootVelocity;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4000551")]
+	[FieldOffset(Offset = "0x80")]
+	[SerializeField]
+	public float fullShootVelocity;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4000552")]
+	[FieldOffset(Offset = "0x84")]
+	[SerializeField]
+	public float pitch;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4000553")]
+	[FieldOffset(Offset = "0x88")]
+	[SerializeField]
+	public AnimationCurve powerToPitchWeightCurve;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4000554")]
+	[FieldOffset(Offset = "0x90")]
+	[SerializeField]
+	public float spin;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4000555")]
+	[FieldOffset(Offset = "0x94")]
+	[SerializeField]
+	protected bool lookInShotDirection;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4000556")]
+	[FieldOffset(Offset = "0x95")]
+	public bool lookInAimDirection;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4000557")]
+	[FieldOffset(Offset = "0x98")]
+	public float LookInAimDirectionSpeed;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4000558")]
+	[FieldOffset(Offset = "0x9C")]
+	[SerializeField]
+	protected bool dontLookInAimDirectionWhenBlocked;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4000559")]
+	[FieldOffset(Offset = "0x9D")]
+	[SerializeField]
+	protected bool useLocalUp;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x400055A")]
+	[FieldOffset(Offset = "0x9E")]
+	[SerializeField]
+	public bool zeroPitchIfNotGrouneded;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x600053D")]
+	[Address(RVA = "0x1484C04", Offset = "0x1484C04", VA = "0x1484C04", Slot = "4")]
+	public override void OnActivate()
+	{
+	}
 
-	*/
+	[Token(Token = "0x600053E")]
+	[Address(RVA = "0x1484C40", Offset = "0x1484C40", VA = "0x1484C40", Slot = "12")]
+	protected override void FixedUpdate()
+	{
+	}
+
+	[Token(Token = "0x600053F")]
+	[Address(RVA = "0x1484DD8", Offset = "0x1484DD8", VA = "0x1484DD8", Slot = "6")]
+	public override void OnAimUpdate(Vector3 boost, bool onlyAimArrow)
+	{
+	}
+
+	[Token(Token = "0x6000540")]
+	[Address(RVA = "0x1484F8C", Offset = "0x1484F8C", VA = "0x1484F8C", Slot = "7")]
+	public override void OnShoot(Vector3 boost)
+	{
+	}
+
+	[Token(Token = "0x6000541")]
+	[Address(RVA = "0x14854F8", Offset = "0x14854F8", VA = "0x14854F8", Slot = "14")]
+	protected override void StandardShoot(Vector3 boost, float pitch, float minShootVelocity, float fullShootVelocity, float spin)
+	{
+	}
+
+	[Token(Token = "0x6000542")]
+	[Address(RVA = "0x1485718", Offset = "0x1485718", VA = "0x1485718")]
+	public GenericTimelineShooter()
+	{
+	}
 }

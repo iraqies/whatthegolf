@@ -1,63 +1,79 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000855")]
 public class PlayableSoccerBall : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4002D28")]
+	[FieldOffset(Offset = "0x18")]
+	public float pickupCooldown;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4002D29")]
+	[FieldOffset(Offset = "0x20")]
+	public Rigidbody Rigidbody;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4002D2A")]
+	[FieldOffset(Offset = "0x28")]
+	public Collider BallCollider;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4002D2B")]
+	[FieldOffset(Offset = "0x30")]
+	private PlayerSoccerInfo isHeldBy;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4002D2C")]
+	[FieldOffset(Offset = "0x38")]
+	private PlayerSoccerInfo lastHeldBy;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4002D2D")]
+	[FieldOffset(Offset = "0x40")]
+	private float previousPlayerNextPickupTime;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x600266B")]
+	[Address(RVA = "0x15F6878", Offset = "0x15F6878", VA = "0x15F6878")]
+	public PlayerSoccerInfo GetIsHeldBy()
+	{
+		return null;
+	}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x600266C")]
+	[Address(RVA = "0x15F6880", Offset = "0x15F6880", VA = "0x15F6880")]
+	private void Awake()
+	{
+	}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x600266D")]
+	[Address(RVA = "0x15F68DC", Offset = "0x15F68DC", VA = "0x15F68DC")]
+	private void OnTriggerEnter(Collider other)
+	{
+	}
 
-	4. This script is unnecessary.
+	[Token(Token = "0x600266E")]
+	[Address(RVA = "0x15F6D9C", Offset = "0x15F6D9C", VA = "0x15F6D9C")]
+	private void FixedUpdate()
+	{
+	}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x600266F")]
+	[Address(RVA = "0x15F6AE0", Offset = "0x15F6AE0", VA = "0x15F6AE0")]
+	private void SetNewOwner(PlayerSoccerInfo newOwner)
+	{
+	}
 
-	5. Script Content Level 0
+	[Token(Token = "0x6002670")]
+	[Address(RVA = "0x15F6C38", Offset = "0x15F6C38", VA = "0x15F6C38")]
+	private void Disengage()
+	{
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x6002671")]
+	[Address(RVA = "0x15F6ED4", Offset = "0x15F6ED4", VA = "0x15F6ED4")]
+	public void BallShot(Vector3 vel)
+	{
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
-
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x6002672")]
+	[Address(RVA = "0x15F6F2C", Offset = "0x15F6F2C", VA = "0x15F6F2C")]
+	public PlayableSoccerBall()
+	{
+	}
 }

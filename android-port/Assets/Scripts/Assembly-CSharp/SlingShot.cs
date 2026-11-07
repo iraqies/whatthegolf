@@ -1,63 +1,104 @@
+using System.Collections.Generic;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x20005E8")]
 public class SlingShot : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4001E23")]
+	[FieldOffset(Offset = "0x18")]
+	public List<LineRope> Lines;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4001E24")]
+	[FieldOffset(Offset = "0x20")]
+	public Transform LineEnds;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4001E25")]
+	[FieldOffset(Offset = "0x28")]
+	public Transform ObjectInSling;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4001E26")]
+	[FieldOffset(Offset = "0x30")]
+	public Vector3 LineOffset;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4001E27")]
+	[FieldOffset(Offset = "0x40")]
+	public GolfBallController Controller;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4001E28")]
+	[FieldOffset(Offset = "0x48")]
+	public float ReleaseDistance;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4001E29")]
+	[FieldOffset(Offset = "0x4C")]
+	public float SpringStrength;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4001E2A")]
+	[FieldOffset(Offset = "0x50")]
+	public float Damping;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4001E2B")]
+	[FieldOffset(Offset = "0x58")]
+	public Transform ArrowPosition;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4001E2C")]
+	[FieldOffset(Offset = "0x60")]
+	public float ArrowOffset;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4001E2D")]
+	[FieldOffset(Offset = "0x64")]
+	private Vector3 startPos;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4001E2E")]
+	[FieldOffset(Offset = "0x70")]
+	private Rigidbody rigidbody;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4001E2F")]
+	[FieldOffset(Offset = "0x78")]
+	private Rigidbody2D rigidbody2D;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4001E30")]
+	[FieldOffset(Offset = "0x80")]
+	private bool hasShot;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4001E31")]
+	[FieldOffset(Offset = "0x84")]
+	private Vector3 velocity;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x6001AE5")]
+	[Address(RVA = "0x16B6F78", Offset = "0x16B6F78", VA = "0x16B6F78")]
+	private void Start()
+	{
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x6001AE6")]
+	[Address(RVA = "0x16B7200", Offset = "0x16B7200", VA = "0x16B7200")]
+	private void ControllerOnOnReset()
+	{
+	}
 
-	*/
+	[Token(Token = "0x6001AE7")]
+	[Address(RVA = "0x16B7208", Offset = "0x16B7208", VA = "0x16B7208")]
+	private void ControllerOnOnShoot(Vector3 vector3)
+	{
+	}
+
+	[Token(Token = "0x6001AE8")]
+	[Address(RVA = "0x16B7254", Offset = "0x16B7254", VA = "0x16B7254")]
+	private void BallController_OnAimUpdate(Vector3 boost, bool arg2)
+	{
+	}
+
+	[Token(Token = "0x6001AE9")]
+	[Address(RVA = "0x16B72EC", Offset = "0x16B72EC", VA = "0x16B72EC")]
+	private void LateUpdate()
+	{
+	}
+
+	[Token(Token = "0x6001AEA")]
+	[Address(RVA = "0x16B73EC", Offset = "0x16B73EC", VA = "0x16B73EC")]
+	public SlingShot()
+	{
+	}
 }

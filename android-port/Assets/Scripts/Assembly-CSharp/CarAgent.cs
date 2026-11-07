@@ -1,63 +1,168 @@
+using System;
+using System.Collections.Generic;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000B8B")]
 public class CarAgent : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x400403A")]
+	[FieldOffset(Offset = "0x18")]
+	public float Speed;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x400403B")]
+	[FieldOffset(Offset = "0x1C")]
+	public float Gravity;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x400403C")]
+	[FieldOffset(Offset = "0x20")]
+	public float RotateSpeed;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x400403D")]
+	[FieldOffset(Offset = "0x24")]
+	public LayerMask IgnoreLayers;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x400403E")]
+	[FieldOffset(Offset = "0x28")]
+	public LayerMask GroundLayer;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x400403F")]
+	[FieldOffset(Offset = "0x2C")]
+	public float unlockedForce;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4004040")]
+	[FieldOffset(Offset = "0x30")]
+	public float groundDist;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4004041")]
+	[FieldOffset(Offset = "0x34")]
+	public bool startUnlocked;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x4004042")]
+	[FieldOffset(Offset = "0x38")]
+	public List<string> ResetTags;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4004043")]
+	[FieldOffset(Offset = "0x40")]
+	protected Rigidbody rigid;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4004044")]
+	[FieldOffset(Offset = "0x48")]
+	protected TrafficController.TrafficPoint _currentPath;
 
-	5. Script Content Level 0
+	[Token(Token = "0x4004045")]
+	[FieldOffset(Offset = "0x50")]
+	private TrafficController trafficController;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x4004046")]
+	[FieldOffset(Offset = "0x58")]
+	private TrafficController.TrafficPoint trafficPoint;
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x4004047")]
+	[FieldOffset(Offset = "0x60")]
+	public Action _onOutOfBounds;
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x4004048")]
+	[FieldOffset(Offset = "0x68")]
+	public Action _onCarFallingOffSide;
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x4004049")]
+	[FieldOffset(Offset = "0x70")]
+	protected Action _onCarCrashed;
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x400404A")]
+	[FieldOffset(Offset = "0x78")]
+	public Action _onCarSpeeding;
 
-	*/
+	[Token(Token = "0x400404B")]
+	[FieldOffset(Offset = "0x80")]
+	protected Transform _currentGoal;
+
+	[Token(Token = "0x400404C")]
+	[FieldOffset(Offset = "0x88")]
+	protected bool isLocked;
+
+	[Token(Token = "0x400404D")]
+	[FieldOffset(Offset = "0x8C")]
+	protected Vector3 smoothedNormal;
+
+	[Token(Token = "0x400404E")]
+	[FieldOffset(Offset = "0x98")]
+	protected float nonGroundTime;
+
+	[Token(Token = "0x400404F")]
+	[FieldOffset(Offset = "0x9C")]
+	protected bool hasBeenFlat;
+
+	[Token(Token = "0x4004050")]
+	[FieldOffset(Offset = "0xA0")]
+	protected Vector3 smoothedFlatForward;
+
+	[Token(Token = "0x4004051")]
+	[FieldOffset(Offset = "0xAC")]
+	protected bool isFalling;
+
+	[Token(Token = "0x4004052")]
+	[FieldOffset(Offset = "0xB0")]
+	protected float startLockTime;
+
+	[Token(Token = "0x4004053")]
+	[FieldOffset(Offset = "0xB4")]
+	private bool isSpeedingUp;
+
+	[Token(Token = "0x60037B1")]
+	[Address(RVA = "0x1887D38", Offset = "0x1887D38", VA = "0x1887D38")]
+	private void Awake()
+	{
+	}
+
+	[Token(Token = "0x60037B2")]
+	[Address(RVA = "0x1887DDC", Offset = "0x1887DDC", VA = "0x1887DDC")]
+	private void OnTriggerEnter(Collider other)
+	{
+	}
+
+	[Token(Token = "0x60037B3")]
+	[Address(RVA = "0x1887F18", Offset = "0x1887F18", VA = "0x1887F18")]
+	public void Iniitialize(Vector3 position, Vector3 forward, TrafficController aTrafficController, TrafficController.TrafficPoint point)
+	{
+	}
+
+	[Token(Token = "0x60037B4")]
+	[Address(RVA = "0x1888100", Offset = "0x1888100", VA = "0x1888100")]
+	protected Vector3 GetNormal()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x60037B5")]
+	[Address(RVA = "0x18881FC", Offset = "0x18881FC", VA = "0x18881FC", Slot = "4")]
+	protected virtual void Unlock()
+	{
+	}
+
+	[Token(Token = "0x60037B6")]
+	[Address(RVA = "0x188826C", Offset = "0x188826C", VA = "0x188826C")]
+	protected bool IsGrounded()
+	{
+		return default;
+	}
+
+	[Token(Token = "0x60037B7")]
+	[Address(RVA = "0x1888344", Offset = "0x1888344", VA = "0x1888344")]
+	private void OnCollisionEnter(Collision collision)
+	{
+	}
+
+	[Token(Token = "0x60037B8")]
+	[Address(RVA = "0x1888478", Offset = "0x1888478", VA = "0x1888478", Slot = "5")]
+	protected virtual void FixedUpdate()
+	{
+	}
+
+	[Token(Token = "0x60037B9")]
+	[Address(RVA = "0x1888974", Offset = "0x1888974", VA = "0x1888974")]
+	public CarAgent()
+	{
+	}
 }

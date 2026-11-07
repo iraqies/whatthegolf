@@ -1,63 +1,70 @@
+using System;
+using System.Collections.Generic;
+using Core;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x20000AC")]
 public class ChangeScaleBasedOnPlayerSide : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Serializable]
+	[Token(Token = "0x20000AD")]
+	public class ScaleChange
+	{
+		[Token(Token = "0x40002AD")]
+		[FieldOffset(Offset = "0x10")]
+		public LobbySpawnPoint.SpawnPointPositions Side;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40002AE")]
+		[FieldOffset(Offset = "0x14")]
+		public Vector3 ScaleMod;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x6000300")]
+		[Address(RVA = "0x17833D8", Offset = "0x17833D8", VA = "0x17833D8")]
+		public ScaleChange()
+		{
+		}
+	}
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x20000AE")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3D800", Offset = "0x3D800")]
+	private sealed class _003C_003Ec__DisplayClass3_0
+	{
+		[Token(Token = "0x40002AF")]
+		[FieldOffset(Offset = "0x10")]
+		public MultiplayerConfiguration.PlayerInfo player;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x6000301")]
+		[Address(RVA = "0x17833A0", Offset = "0x17833A0", VA = "0x17833A0")]
+		public _003C_003Ec__DisplayClass3_0()
+		{
+		}
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x6000302")]
+		[Address(RVA = "0x17833A8", Offset = "0x17833A8", VA = "0x17833A8")]
+		internal bool _003CStart_003Eb__0(ScaleChange s)
+		{
+			return default;
+		}
+	}
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x40002AB")]
+	[FieldOffset(Offset = "0x18")]
+	public List<ScaleChange> ScaleChanges;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x40002AC")]
+	[FieldOffset(Offset = "0x20")]
+	public GolfBallController Controller;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x60002FE")]
+	[Address(RVA = "0x18983D4", Offset = "0x18983D4", VA = "0x18983D4")]
+	private void Start()
+	{
+	}
 
-	4. This script is unnecessary.
-
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
-
-	5. Script Content Level 0
-
-		AssetRipper was set to not load any script information.
-
-	6. Cpp2IL failed to decompile Il2Cpp data
-
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x60002FF")]
+	[Address(RVA = "0x18985BC", Offset = "0x18985BC", VA = "0x18985BC")]
+	public ChangeScaleBasedOnPlayerSide()
+	{
+	}
 }

@@ -1,63 +1,142 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x200038D")]
 public class AudioSpectrum : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x200038E")]
+	public enum BandType
+	{
+		[Token(Token = "0x400138F")]
+		FourBand = 0,
+		[Token(Token = "0x4001390")]
+		FourBandVisual = 1,
+		[Token(Token = "0x4001391")]
+		EightBand = 2,
+		[Token(Token = "0x4001392")]
+		TenBand = 3,
+		[Token(Token = "0x4001393")]
+		TwentySixBand = 4,
+		[Token(Token = "0x4001394")]
+		ThirtyOneBand = 5
+	}
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4001383")]
+	[FieldOffset(Offset = "0x0")]
+	private static float[][] middleFrequenciesForBands;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4001384")]
+	[FieldOffset(Offset = "0x8")]
+	private static float[] bandwidthForBands;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4001385")]
+	[FieldOffset(Offset = "0x18")]
+	public AudioSource source;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4001386")]
+	[FieldOffset(Offset = "0x20")]
+	public int numberOfSamples;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4001387")]
+	[FieldOffset(Offset = "0x24")]
+	public BandType bandType;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x4001388")]
+	[FieldOffset(Offset = "0x28")]
+	public float fallSpeed;
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x4001389")]
+	[FieldOffset(Offset = "0x2C")]
+	public float sensibility;
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x400138A")]
+	[FieldOffset(Offset = "0x30")]
+	private float[] rawSpectrum;
 
-	4. This script is unnecessary.
+	[Token(Token = "0x400138B")]
+	[FieldOffset(Offset = "0x38")]
+	private float[] levels;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x400138C")]
+	[FieldOffset(Offset = "0x40")]
+	private float[] peakLevels;
 
-	5. Script Content Level 0
+	[Token(Token = "0x400138D")]
+	[FieldOffset(Offset = "0x48")]
+	private float[] meanLevels;
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x170001FD")]
+	public float[] Levels
+	{
+		[Token(Token = "0x60010D1")]
+		[Address(RVA = "0x150D88C", Offset = "0x150D88C", VA = "0x150D88C")]
+		get
+		{
+			return null;
+		}
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
+	[Token(Token = "0x170001FE")]
+	public float[] PeakLevels
+	{
+		[Token(Token = "0x60010D2")]
+		[Address(RVA = "0x150D894", Offset = "0x150D894", VA = "0x150D894")]
+		get
+		{
+			return null;
+		}
+	}
 
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+	[Token(Token = "0x170001FF")]
+	public float[] MeanLevels
+	{
+		[Token(Token = "0x60010D3")]
+		[Address(RVA = "0x150D89C", Offset = "0x150D89C", VA = "0x150D89C")]
+		get
+		{
+			return null;
+		}
+	}
 
-	7. An incorrect path was provided to AssetRipper.
+	[Token(Token = "0x17000200")]
+	public int BandCount
+	{
+		[Token(Token = "0x60010D4")]
+		[Address(RVA = "0x150D8A4", Offset = "0x150D8A4", VA = "0x150D8A4")]
+		get
+		{
+			return default;
+		}
+	}
 
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
+	[Token(Token = "0x60010D5")]
+	[Address(RVA = "0x150D948", Offset = "0x150D948", VA = "0x150D948")]
+	private void CheckBuffers()
+	{
+	}
 
-	*/
+	[Token(Token = "0x60010D6")]
+	[Address(RVA = "0x150DA6C", Offset = "0x150DA6C", VA = "0x150DA6C")]
+	private int FrequencyToSpectrumIndex(float f)
+	{
+		return default;
+	}
+
+	[Token(Token = "0x60010D7")]
+	[Address(RVA = "0x150DAE0", Offset = "0x150DAE0", VA = "0x150DAE0")]
+	private void Awake()
+	{
+	}
+
+	[Token(Token = "0x60010D8")]
+	[Address(RVA = "0x150DAE4", Offset = "0x150DAE4", VA = "0x150DAE4")]
+	private void Update()
+	{
+	}
+
+	[Token(Token = "0x60010D9")]
+	[Address(RVA = "0x150DDBC", Offset = "0x150DDBC", VA = "0x150DDBC")]
+	public AudioSpectrum()
+	{
+	}
 }

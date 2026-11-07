@@ -1,66 +1,97 @@
+using System;
+using Il2CppDummyDll;
+using RootMotion.FinalIK;
 using UnityEngine;
 
 namespace RootMotion.Demos
 {
-	public class AnimationWarping : MonoBehaviour
+	[Token(Token = "0x20001ED")]
+	public class AnimationWarping : OffsetModifier
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Serializable]
+		[Token(Token = "0x20001EE")]
+		public struct Warp
+		{
+			[Token(Token = "0x4000D09")]
+			[FieldOffset(Offset = "0x0")]
+			public int animationLayer;
 
-		1. No dll files were provided to AssetRipper.
+			[Token(Token = "0x4000D0A")]
+			[FieldOffset(Offset = "0x8")]
+			public string animationState;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+			[Token(Token = "0x4000D0B")]
+			[FieldOffset(Offset = "0x10")]
+			public AnimationCurve weightCurve;
 
-		2. Incorrect dll files were provided to AssetRipper.
+			[Token(Token = "0x4000D0C")]
+			[FieldOffset(Offset = "0x18")]
+			public Transform warpFrom;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+			[Token(Token = "0x4000D0D")]
+			[FieldOffset(Offset = "0x20")]
+			public Transform warpTo;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+			[Token(Token = "0x4000D0E")]
+			[FieldOffset(Offset = "0x28")]
+			public FullBodyBipedEffector effector;
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Serializable]
+		[Token(Token = "0x20001EF")]
+		public enum EffectorMode
+		{
+			[Token(Token = "0x4000D10")]
+			PositionOffset = 0,
+			[Token(Token = "0x4000D11")]
+			Position = 1
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4000D05")]
+		[FieldOffset(Offset = "0x30")]
+		public Animator animator;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x4000D06")]
+		[FieldOffset(Offset = "0x38")]
+		public EffectorMode effectorMode;
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x4000D07")]
+		[FieldOffset(Offset = "0x40")]
+		public Warp[] warps;
 
-		5. Script Content Level 0
+		[Token(Token = "0x4000D08")]
+		[FieldOffset(Offset = "0x48")]
+		private EffectorMode lastMode;
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x6000DC7")]
+		[Address(RVA = "0x12EE4AC", Offset = "0x12EE4AC", VA = "0x12EE4AC", Slot = "5")]
+		protected override void Start()
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x6000DC8")]
+		[Address(RVA = "0x12EE4D8", Offset = "0x12EE4D8", VA = "0x12EE4D8")]
+		public float GetWarpWeight(int warpIndex)
+		{
+			return default;
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x6000DC9")]
+		[Address(RVA = "0x12EE71C", Offset = "0x12EE71C", VA = "0x12EE71C", Slot = "4")]
+		protected override void OnModifyOffset()
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x6000DCA")]
+		[Address(RVA = "0x12EE9E0", Offset = "0x12EE9E0", VA = "0x12EE9E0")]
+		private void OnDisable()
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
-
-		*/
+		[Token(Token = "0x6000DCB")]
+		[Address(RVA = "0x12EEA7C", Offset = "0x12EEA7C", VA = "0x12EEA7C")]
+		public AnimationWarping()
+		{
+		}
 	}
 }

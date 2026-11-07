@@ -1,63 +1,73 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000348")]
+[Attribute(Name = "RequireComponent", RVA = "0x3F148", Offset = "0x3F148")]
 public class FollowTransformUtility : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x4001221")]
+	[FieldOffset(Offset = "0x18")]
+	[SerializeField]
+	public Transform Target;
 
-	1. No dll files were provided to AssetRipper.
+	[Token(Token = "0x4001222")]
+	[FieldOffset(Offset = "0x20")]
+	[SerializeField]
+	private bool ignoreY;
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+	[Token(Token = "0x4001223")]
+	[FieldOffset(Offset = "0x21")]
+	[SerializeField]
+	private bool moveRigidWithVelocity;
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Token(Token = "0x4001224")]
+	[FieldOffset(Offset = "0x24")]
+	[SerializeField]
+	private float FollowSpeed;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+	[Token(Token = "0x4001225")]
+	[FieldOffset(Offset = "0x28")]
+	[SerializeField]
+	private float FollowDistance;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+	[Token(Token = "0x4001226")]
+	[FieldOffset(Offset = "0x30")]
+	private Rigidbody rigid;
 
-	3. Assembly Reconstruction has not been implemented.
+	[Token(Token = "0x6000F38")]
+	[Address(RVA = "0x1470CE8", Offset = "0x1470CE8", VA = "0x1470CE8")]
+	public void SetFollowDistance(int d)
+	{
+	}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+	[Token(Token = "0x6000F39")]
+	[Address(RVA = "0x1470CF4", Offset = "0x1470CF4", VA = "0x1470CF4")]
+	public void SetFollowTransform(Transform t)
+	{
+	}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+	[Token(Token = "0x6000F3A")]
+	[Address(RVA = "0x1470CFC", Offset = "0x1470CFC", VA = "0x1470CFC")]
+	private void Awake()
+	{
+	}
 
-	4. This script is unnecessary.
+	[Token(Token = "0x6000F3B")]
+	[Address(RVA = "0x1470D58", Offset = "0x1470D58", VA = "0x1470D58")]
+	private void FixedUpdate()
+	{
+	}
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x6000F3C")]
+	[Address(RVA = "0x1470EE0", Offset = "0x1470EE0", VA = "0x1470EE0")]
+	private Vector3 GetPosition()
+	{
+		return default;
+	}
 
-	5. Script Content Level 0
-
-		AssetRipper was set to not load any script information.
-
-	6. Cpp2IL failed to decompile Il2Cpp data
-
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x6000F3D")]
+	[Address(RVA = "0x1471014", Offset = "0x1471014", VA = "0x1471014")]
+	public FollowTransformUtility()
+	{
+	}
 }

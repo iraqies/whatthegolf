@@ -1,66 +1,188 @@
+using Il2CppDummyDll;
 using UnityEngine;
 
 namespace Rewired.ComponentControls.Effects
 {
+	[Token(Token = "0x200030A")]
 	public class RotateAroundAxis : MonoBehaviour
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x200030B")]
+		public enum Speed
+		{
+			[Token(Token = "0x4001000")]
+			Stopped = 0,
+			[Token(Token = "0x4001001")]
+			Slow = 1,
+			[Token(Token = "0x4001002")]
+			Fast = 2
+		}
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x200030C")]
+		public enum RotationAxis
+		{
+			[Token(Token = "0x4001004")]
+			X = 0,
+			[Token(Token = "0x4001005")]
+			Y = 1,
+			[Token(Token = "0x4001006")]
+			Z = 2
+		}
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x4000FF9")]
+		[FieldOffset(Offset = "0x18")]
+		[SerializeField]
+		private Speed _speed;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x4000FFA")]
+		[FieldOffset(Offset = "0x1C")]
+		[SerializeField]
+		private float _slowRotationSpeed;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4000FFB")]
+		[FieldOffset(Offset = "0x20")]
+		[SerializeField]
+		private float _fastRotationSpeed;
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000FFC")]
+		[FieldOffset(Offset = "0x24")]
+		[SerializeField]
+		private RotationAxis _rotateAroundAxis;
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x4000FFD")]
+		[FieldOffset(Offset = "0x28")]
+		[SerializeField]
+		private Space _relativeTo;
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x4000FFE")]
+		[FieldOffset(Offset = "0x2C")]
+		[SerializeField]
+		private bool _reverse;
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x1700062B")]
+		public Speed speed
+		{
+			[Token(Token = "0x6001730")]
+			[Address(RVA = "0x2408DE4", Offset = "0x2408DE4", VA = "0x2408DE4")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6001731")]
+			[Address(RVA = "0x2408DEC", Offset = "0x2408DEC", VA = "0x2408DEC")]
+			set
+			{
+			}
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x1700062C")]
+		public float slowRotationSpeed
+		{
+			[Token(Token = "0x6001732")]
+			[Address(RVA = "0x2408DF4", Offset = "0x2408DF4", VA = "0x2408DF4")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6001733")]
+			[Address(RVA = "0x2408DFC", Offset = "0x2408DFC", VA = "0x2408DFC")]
+			set
+			{
+			}
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x1700062D")]
+		public float fastRotationSpeed
+		{
+			[Token(Token = "0x6001734")]
+			[Address(RVA = "0x2408E04", Offset = "0x2408E04", VA = "0x2408E04")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6001735")]
+			[Address(RVA = "0x2408E0C", Offset = "0x2408E0C", VA = "0x2408E0C")]
+			set
+			{
+			}
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x1700062E")]
+		public RotationAxis rotateAroundAxis
+		{
+			[Token(Token = "0x6001736")]
+			[Address(RVA = "0x2408E14", Offset = "0x2408E14", VA = "0x2408E14")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6001737")]
+			[Address(RVA = "0x2408E1C", Offset = "0x2408E1C", VA = "0x2408E1C")]
+			set
+			{
+			}
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x1700062F")]
+		public Space relativeTo
+		{
+			[Token(Token = "0x6001738")]
+			[Address(RVA = "0x2408E24", Offset = "0x2408E24", VA = "0x2408E24")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6001739")]
+			[Address(RVA = "0x2408E2C", Offset = "0x2408E2C", VA = "0x2408E2C")]
+			set
+			{
+			}
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x17000630")]
+		public bool reverse
+		{
+			[Token(Token = "0x600173A")]
+			[Address(RVA = "0x2408E34", Offset = "0x2408E34", VA = "0x2408E34")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x600173B")]
+			[Address(RVA = "0x2408E3C", Offset = "0x2408E3C", VA = "0x2408E3C")]
+			set
+			{
+			}
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x600173C")]
+		[Address(RVA = "0x2408E44", Offset = "0x2408E44", VA = "0x2408E44")]
+		private void Update()
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x600173D")]
+		[Address(RVA = "0x2408F08", Offset = "0x2408F08", VA = "0x2408F08")]
+		private static Vector3 UBTdCMgMmDUkfQSXMUxOcULfkPYFA(RotationAxis P_0)
+		{
+			return default;
+		}
 
-		*/
+		[Token(Token = "0x600173E")]
+		[Address(RVA = "0x2408F98", Offset = "0x2408F98", VA = "0x2408F98")]
+		public void SetSpeed(Speed speed)
+		{
+		}
+
+		[Token(Token = "0x600173F")]
+		[Address(RVA = "0x2408FA0", Offset = "0x2408FA0", VA = "0x2408FA0")]
+		public void SetSpeed(int speed)
+		{
+		}
+
+		[Token(Token = "0x6001740")]
+		[Address(RVA = "0x24090B4", Offset = "0x24090B4", VA = "0x24090B4")]
+		public RotateAroundAxis()
+		{
+		}
 	}
 }

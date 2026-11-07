@@ -1,66 +1,130 @@
-using UnityEngine;
+using Il2CppDummyDll;
 
 namespace UnityEngine.EventSystems
 {
-	public class TouchInputModule : MonoBehaviour
+	[Token(Token = "0x20000AC")]
+	[Attribute(Name = "ObsoleteAttribute", RVA = "0x1F6B20", Offset = "0x1F6B20")]
+	public class TouchInputModule : PointerInputModule
 	{
-		/*
-		Dummy class. This could have happened for several reasons:
+		[Token(Token = "0x40002DB")]
+		[FieldOffset(Offset = "0x58")]
+		private Vector2 m_LastMousePosition;
 
-		1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x40002DC")]
+		[FieldOffset(Offset = "0x60")]
+		private Vector2 m_MousePosition;
 
-			Unity asset bundles and serialized files do not contain script information to decompile.
-				* For Mono games, that information is contained in .NET dll files.
-				* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-				
-			AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-			A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x40002DD")]
+		[FieldOffset(Offset = "0x68")]
+		private PointerEventData m_InputPointerEvent;
 
-		2. Incorrect dll files were provided to AssetRipper.
+		[Token(Token = "0x40002DE")]
+		[FieldOffset(Offset = "0x70")]
+		[Attribute(Name = "FormerlySerializedAsAttribute", RVA = "0x1F86E0", Offset = "0x1F86E0")]
+		[SerializeField]
+		private bool m_ForceModuleActive;
 
-			Any of the following could cause this:
-				* Il2CppInterop assemblies
-				* Deobfuscated assemblies
-				* Older assemblies (compared to when the bundle was built)
-				* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x170001B1")]
+		[Attribute(Name = "ObsoleteAttribute", RVA = "0x1F8F58", Offset = "0x1F8F58")]
+		public bool allowActivationOnStandalone
+		{
+			[Token(Token = "0x6000658")]
+			[Address(RVA = "0x2C42694", Offset = "0x2C42694", VA = "0x2C42694")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x6000659")]
+			[Address(RVA = "0x2C4269C", Offset = "0x2C4269C", VA = "0x2C4269C")]
+			set
+			{
+			}
+		}
 
-			Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x170001B2")]
+		public bool forceModuleActive
+		{
+			[Token(Token = "0x600065A")]
+			[Address(RVA = "0x2C426A4", Offset = "0x2C426A4", VA = "0x2C426A4")]
+			get
+			{
+				return default;
+			}
+			[Token(Token = "0x600065B")]
+			[Address(RVA = "0x2C426AC", Offset = "0x2C426AC", VA = "0x2C426AC")]
+			set
+			{
+			}
+		}
 
-		3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6000657")]
+		[Address(RVA = "0x2C4268C", Offset = "0x2C4268C", VA = "0x2C4268C")]
+		protected TouchInputModule()
+		{
+		}
 
-			Asset bundles contain a small amount of information about the script content.
-			This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x600065C")]
+		[Address(RVA = "0x2C426B4", Offset = "0x2C426B4", VA = "0x2C426B4", Slot = "24")]
+		public override void UpdateModule()
+		{
+		}
 
-			See: https://github.com/AssetRipper/AssetRipper/issues/655
-	
-		4. This script is unnecessary.
+		[Token(Token = "0x600065D")]
+		[Address(RVA = "0x2C42838", Offset = "0x2C42838", VA = "0x2C42838", Slot = "25")]
+		public override bool IsModuleSupported()
+		{
+			return default;
+		}
 
-			If this script has no asset or script references, it can be deleted.
-			Be sure to resolve any compile errors before deleting because they can hide references.
+		[Token(Token = "0x600065E")]
+		[Address(RVA = "0x2C42878", Offset = "0x2C42878", VA = "0x2C42878", Slot = "21")]
+		public override bool ShouldActivateModule()
+		{
+			return default;
+		}
 
-		5. Script Content Level 0
+		[Token(Token = "0x600065F")]
+		[Address(RVA = "0x2C42958", Offset = "0x2C42958", VA = "0x2C42958")]
+		private bool UseFakeInput()
+		{
+			return default;
+		}
 
-			AssetRipper was set to not load any script information.
+		[Token(Token = "0x6000660")]
+		[Address(RVA = "0x2C4298C", Offset = "0x2C4298C", VA = "0x2C4298C", Slot = "17")]
+		public override void Process()
+		{
+		}
 
-		6. Cpp2IL failed to decompile Il2Cpp data
+		[Token(Token = "0x6000661")]
+		[Address(RVA = "0x2C429E0", Offset = "0x2C429E0", VA = "0x2C429E0")]
+		private void FakeTouches()
+		{
+		}
 
-			If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-			This is an upstream problem, and the AssetRipper developer has very little control over it.
-			Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
+		[Token(Token = "0x6000662")]
+		[Address(RVA = "0x2C42AF8", Offset = "0x2C42AF8", VA = "0x2C42AF8")]
+		private void ProcessTouchEvents()
+		{
+		}
 
-		7. An incorrect path was provided to AssetRipper.
+		[Token(Token = "0x6000663")]
+		[Address(RVA = "0x2C42C64", Offset = "0x2C42C64", VA = "0x2C42C64")]
+		protected void ProcessTouchPress(PointerEventData pointerEvent, bool pressed, bool released)
+		{
+		}
 
-			This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-			AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-			An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-			Generally, AssetRipper expects users to provide the root folder of the game. For example:
-				* Windows: the folder containing the game's .exe file
-				* Mac: the .app file/folder
-				* Linux: the folder containing the game's executable file
-				* Android: the apk file
-				* iOS: the ipa file
-				* Switch: the folder containing exefs and romfs
+		[Token(Token = "0x6000664")]
+		[Address(RVA = "0x2C433D4", Offset = "0x2C433D4", VA = "0x2C433D4", Slot = "22")]
+		public override void DeactivateModule()
+		{
+		}
 
-		*/
+		[Token(Token = "0x6000665")]
+		[Address(RVA = "0x2C43400", Offset = "0x2C43400", VA = "0x2C43400", Slot = "3")]
+		public override string ToString()
+		{
+			return null;
+		}
 	}
 }

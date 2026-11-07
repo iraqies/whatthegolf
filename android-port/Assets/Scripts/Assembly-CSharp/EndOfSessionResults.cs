@@ -1,63 +1,95 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Il2CppDummyDll;
 using UnityEngine;
 
+[Token(Token = "0x2000125")]
 public class EndOfSessionResults : MonoBehaviour
 {
-	/*
-	Dummy class. This could have happened for several reasons:
+	[Token(Token = "0x2000126")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3DB90", Offset = "0x3DB90")]
+	private sealed class _003C_003Ec__DisplayClass3_0
+	{
+		[Token(Token = "0x4000523")]
+		[FieldOffset(Offset = "0x10")]
+		public IOrderedEnumerable<MultiplayerConfiguration.PlayerInfo> sortedPlayerList;
 
-	1. No dll files were provided to AssetRipper.
+		[Token(Token = "0x6000511")]
+		[Address(RVA = "0x179EF88", Offset = "0x179EF88", VA = "0x179EF88")]
+		public _003C_003Ec__DisplayClass3_0()
+		{
+		}
 
-		Unity asset bundles and serialized files do not contain script information to decompile.
-			* For Mono games, that information is contained in .NET dll files.
-			* For Il2Cpp games, that information is contained in compiled C++ assemblies and the global metadata.
-			
-		AssetRipper usually expects games to conform to a normal file structure for Unity games of that platform.
-		A unexpected file structure could cause AssetRipper to not find the required files.
+		[Token(Token = "0x6000512")]
+		[Address(RVA = "0x179EF90", Offset = "0x179EF90", VA = "0x179EF90")]
+		internal bool _003CAnnounceWinner_003Eb__1(MultiplayerConfiguration.PlayerInfo p)
+		{
+			return default;
+		}
+	}
 
-	2. Incorrect dll files were provided to AssetRipper.
+	[Serializable]
+	[Token(Token = "0x2000127")]
+	[AttributeAttribute(Name = "CompilerGeneratedAttribute", RVA = "0x3DBA0", Offset = "0x3DBA0")]
+	private sealed class _003C_003Ec
+	{
+		[Token(Token = "0x4000524")]
+		[FieldOffset(Offset = "0x0")]
+		public static readonly _003C_003Ec _003C_003E9;
 
-		Any of the following could cause this:
-			* Il2CppInterop assemblies
-			* Deobfuscated assemblies
-			* Older assemblies (compared to when the bundle was built)
-			* Newer assemblies (compared to when the bundle was built)
+		[Token(Token = "0x4000525")]
+		[FieldOffset(Offset = "0x8")]
+		public static Func<MultiplayerConfiguration.PlayerInfo, int> _003C_003E9__3_0;
 
-		Note: Although assembly publicizing is bad, it alone cannot cause empty scripts. See: https://github.com/AssetRipper/AssetRipper/issues/653
+		[Token(Token = "0x4000526")]
+		[FieldOffset(Offset = "0x10")]
+		public static Func<MultiplayerConfiguration.PlayerInfo, MultiplayerConfiguration.PlayerInfo> _003C_003E9__3_2;
 
-	3. Assembly Reconstruction has not been implemented.
+		[Token(Token = "0x6000514")]
+		[Address(RVA = "0x179EF60", Offset = "0x179EF60", VA = "0x179EF60")]
+		public _003C_003Ec()
+		{
+		}
 
-		Asset bundles contain a small amount of information about the script content.
-		This information can be used to recover the serializable fields of a script.
+		[Token(Token = "0x6000515")]
+		[Address(RVA = "0x179EF68", Offset = "0x179EF68", VA = "0x179EF68")]
+		internal int _003CAnnounceWinner_003Eb__3_0(MultiplayerConfiguration.PlayerInfo p)
+		{
+			return default;
+		}
 
-		See: https://github.com/AssetRipper/AssetRipper/issues/655
+		[Token(Token = "0x6000516")]
+		[Address(RVA = "0x179EF80", Offset = "0x179EF80", VA = "0x179EF80")]
+		internal MultiplayerConfiguration.PlayerInfo _003CAnnounceWinner_003Eb__3_2(MultiplayerConfiguration.PlayerInfo p)
+		{
+			return null;
+		}
+	}
 
-	4. This script is unnecessary.
+	[Token(Token = "0x4000521")]
+	[FieldOffset(Offset = "0x18")]
+	public TextMeshProLocalized WinnerLabel;
 
-		If this script has no asset or script references, it can be deleted.
-		Be sure to resolve any compile errors before deleting because they can hide references.
+	[Token(Token = "0x4000522")]
+	[FieldOffset(Offset = "0x20")]
+	public List<TextMeshProLocalized> WinnerScore;
 
-	5. Script Content Level 0
+	[Token(Token = "0x600050E")]
+	[Address(RVA = "0x144412C", Offset = "0x144412C", VA = "0x144412C")]
+	private void Awake()
+	{
+	}
 
-		AssetRipper was set to not load any script information.
+	[Token(Token = "0x600050F")]
+	[Address(RVA = "0x14441E4", Offset = "0x14441E4", VA = "0x14441E4")]
+	private void AnnounceWinner(MultiplayerLevelInfo info)
+	{
+	}
 
-	6. Cpp2IL failed to decompile Il2Cpp data
-
-		If this happened, there will be errors in the AssetRipper.log indicating that it happened.
-		This is an upstream problem, and the AssetRipper developer has very little control over it.
-		Please post a GitHub issue at: https://github.com/SamboyCoding/Cpp2IL/issues
-
-	7. An incorrect path was provided to AssetRipper.
-
-		This is characterized by "Mixed game structure has been found at" in the AssetRipper.log file.
-		AssetRipper expects games to conform to a normal file structure for Unity games of that platform.
-		An unexpected file structure could cause AssetRipper to not find the required files for script decompilation.
-		Generally, AssetRipper expects users to provide the root folder of the game. For example:
-			* Windows: the folder containing the game's .exe file
-			* Mac: the .app file/folder
-			* Linux: the folder containing the game's executable file
-			* Android: the apk file
-			* iOS: the ipa file
-			* Switch: the folder containing exefs and romfs
-
-	*/
+	[Token(Token = "0x6000510")]
+	[Address(RVA = "0x1444750", Offset = "0x1444750", VA = "0x1444750")]
+	public EndOfSessionResults()
+	{
+	}
 }
