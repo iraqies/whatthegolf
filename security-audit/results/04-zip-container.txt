@@ -1,0 +1,11 @@
+size 202021743  entries 230  first local header @ 0  EOCD @ 202021721
+prepended bytes: 0   appended bytes after EOCD+comment: 0   comment length: 0
+duplicate names: none
+top-level items under Payload/: {'GOLF.app': 229}
+entries outside Payload/: none
+absolute / traversal / backslash paths: none
+symlink entries: none
+local vs central header disagreements: none
+CRC test of every entry: all OK
+unreferenced byte ranges between entries: none
+RESULT: container is clean

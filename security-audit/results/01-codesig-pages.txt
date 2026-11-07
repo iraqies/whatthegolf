@@ -1,0 +1,153 @@
+file: GOLF
+file size: 88736  signature @ 0x103b0 size 0x56f0 superblob len 0x21c2 blobs 6
+  blob type 0x00000 (CodeDirectory) magic 0xfade0c02 len 950
+  blob type 0x00002 (Requirements) magic 0xfade0c01 len 104
+  blob type 0x00005 (Entitlements) magic 0xfade7171 len 1081
+  blob type 0x00007 (DER-Entitlements) magic 0xfade7172 len 613
+  blob type 0x01000 (AlternateCodeDirectory0) magic 0xfade0c02 len 1442
+  blob type 0x10000 (CMS-Signature) magic 0xfade0b01 len 4392
+
+CodeDirectory slot 0x0: version 0x20500 hash sha1 pages 17 x 4096 codeLimit 0x103b0
+  identifier: com.thelabelgames.golf   team: YXKAU4DAAQ   platform: 0
+  flags: 0x0 ['none']
+  execSeg base 0x0 limit 0x8000 flags 0x1
+  cdhash (sha1): a35500cdf9c686010199ff2fb89aa44977b8a7e0  (first 20 bytes: a35500cdf9c686010199ff2fb89aa44977b8a7e0)
+  pre-encrypt hash slots present @ 0x82
+  special 1 InfoSlot: OK  stored ece870b14508a45947f9a3f5340a01013580a537  actual ece870b14508a45947f9a3f5340a01013580a537
+  special 2 Requirements: OK  stored 28bdafa7e2b932c5dc92d87bccad257dd473054a  actual 28bdafa7e2b932c5dc92d87bccad257dd473054a
+  special 3 ResourceDir: OK  stored 9c3756a3d1285cf233a2a8798a88f8b2d13d5a59  actual 9c3756a3d1285cf233a2a8798a88f8b2d13d5a59
+  special 4 Application: (empty)
+  special 5 Entitlements: OK  stored 27e3ce92c41d7b486e6e0b40df49b23bb08bff85  actual 27e3ce92c41d7b486e6e0b40df49b23bb08bff85
+  special 6 slot6: (empty)
+  special 7 DER-Entitlements: OK  stored 0e4ddd3d83802d6ebed14dff172afd92b2cb2bd8  actual 0e4ddd3d83802d6ebed14dff172afd92b2cb2bd8
+  code pages: 17 checked, 5 mismatching
+    pages 0-0  bytes 0x0-0x1000
+    pages 4-7  bytes 0x4000-0x8000
+  of those, 0 also mismatch the pre-encrypt hashes
+
+CodeDirectory slot 0x1000: version 0x20500 hash sha256 pages 17 x 4096 codeLimit 0x103b0
+  identifier: com.thelabelgames.golf   team: YXKAU4DAAQ   platform: 0
+  flags: 0x0 ['none']
+  execSeg base 0x0 limit 0x8000 flags 0x1
+  cdhash (sha256): f6b6368a1545f6cc006b4c5b6ca489d8264109d338a06a3cfec6fe33b37070f2  (first 20 bytes: f6b6368a1545f6cc006b4c5b6ca489d8264109d3)
+  pre-encrypt hash slots present @ 0x82
+  special 1 InfoSlot: OK  stored be1f5f4135b8ea88801566333b6c35062e2980056d3498512a34c3056cc9478c  actual be1f5f4135b8ea88801566333b6c35062e2980056d3498512a34c3056cc9478c
+  special 2 Requirements: OK  stored c81595276bcae0b25aeba4a0e965c5eec38191b6018b4dff4e55ae8a3e96ec16  actual c81595276bcae0b25aeba4a0e965c5eec38191b6018b4dff4e55ae8a3e96ec16
+  special 3 ResourceDir: OK  stored 39b0bf8a8f9091bfb46c3f25bf18c3a0b931babd3bffd977efef5d1ed319e6aa  actual 39b0bf8a8f9091bfb46c3f25bf18c3a0b931babd3bffd977efef5d1ed319e6aa
+  special 4 Application: (empty)
+  special 5 Entitlements: OK  stored 8735bf773e1e5a113153a62f8e15d1f4a0afd3313c7d0afc9a3b97c7e001f536  actual 8735bf773e1e5a113153a62f8e15d1f4a0afd3313c7d0afc9a3b97c7e001f536
+  special 6 slot6: (empty)
+  special 7 DER-Entitlements: OK  stored 259a403cf423ce37323cb2b0c14d465507bcb2cfa52c0f8e045676b494d8d185  actual 259a403cf423ce37323cb2b0c14d465507bcb2cfa52c0f8e045676b494d8d185
+  code pages: 17 checked, 5 mismatching
+    pages 0-0  bytes 0x0-0x1000
+    pages 4-7  bytes 0x4000-0x8000
+  of those, 0 also mismatch the pre-encrypt hashes
+
+Entitlements (XML):
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>com.apple.developer.icloud-container-environment</key>
+	<string>Production</string>
+	<key>com.apple.developer.icloud-services</key>
+	<array>
+		<string>CloudKit</string>
+	</array>
+	<key>com.apple.developer.icloud-container-identifiers</key>
+	<array>
+		<string>iCloud.com.thelabelgames.golf.cloud</string>
+	</array>
+	<key>com.apple.developer.arcade-operations</key>
+	<true/>
+	<key>application-identifier</key>
+	<string>YXKAU4DAAQ.com.thelabelgames.golf</string>
+	<key>com.apple.developer.ubiquity-kvstore-identifier</key>
+	<string>JNNN6PVJL5.com.thelabelgames.golf</string>
+	<key>aps-environment</key>
+	<string>production</string>
+	<key>com.apple.developer.game-center</key>
+	<true/>
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:static.whatthegolf.com</string>
+	</array>
+	<key>com.apple.developer.team-identifier</key>
+	<string>YXKAU4DAAQ</string>
+</dict>
+</plist>
+CMS signature blob: 4384 bytes
+file: Frameworks/UnityFramework.framework/UnityFramework
+file size: 62201472  signature @ 0x39d5700 size 0x17c780 superblob len 0x17924a blobs 4
+  blob type 0x00000 (CodeDirectory) magic 0xfade0c02 len 592429
+  blob type 0x00002 (Requirements) magic 0xfade0c01 len 104
+  blob type 0x01000 (AlternateCodeDirectory0) magic 0xfade0c02 len 947809
+  blob type 0x10000 (CMS-Signature) magic 0xfade0b01 len 4392
+
+CodeDirectory slot 0x0: version 0x20500 hash sha1 pages 14806 x 4096 codeLimit 0x39d5700
+  identifier: com.unity3d.framework   team: YXKAU4DAAQ   platform: 0
+  flags: 0x0 ['none']
+  execSeg base 0x0 limit 0x351c000 flags 0x0
+  cdhash (sha1): c4a642ee69aedfd71cfc8aafaf644dd08ae56fc5  (first 20 bytes: c4a642ee69aedfd71cfc8aafaf644dd08ae56fc5)
+  pre-encrypt hash slots present @ 0x81
+  special 1 InfoSlot: OK  stored ea3090c5f8c0a80342713348c497cb651a128a71  actual ea3090c5f8c0a80342713348c497cb651a128a71
+  special 2 Requirements: OK  stored 57a38b55e4120a25329f976b59a73e49ff79f969  actual 57a38b55e4120a25329f976b59a73e49ff79f969
+  special 3 ResourceDir: OK  stored 5e5443027ddc198c767f63d531ce774a26e97eba  actual 5e5443027ddc198c767f63d531ce774a26e97eba
+  code pages: 14806 checked, 13593 mismatching
+    pages 0-0  bytes 0x0-0x1000
+    pages 4-13595  bytes 0x4000-0x351c000
+  of those, 0 also mismatch the pre-encrypt hashes
+
+CodeDirectory slot 0x1000: version 0x20500 hash sha256 pages 14806 x 4096 codeLimit 0x39d5700
+  identifier: com.unity3d.framework   team: YXKAU4DAAQ   platform: 0
+  flags: 0x0 ['none']
+  execSeg base 0x0 limit 0x351c000 flags 0x0
+  cdhash (sha256): 546b25ba92de250e1f7469727b26e7f1d3d404b89aad8fc3b8fddfed59d72c4b  (first 20 bytes: 546b25ba92de250e1f7469727b26e7f1d3d404b8)
+  pre-encrypt hash slots present @ 0x81
+  special 1 InfoSlot: OK  stored 600d5cb89aafc2f51272d57791e5bca94ed8dd3ca47e205b1244569622d0e91b  actual 600d5cb89aafc2f51272d57791e5bca94ed8dd3ca47e205b1244569622d0e91b
+  special 2 Requirements: OK  stored fb6eb57db610ffaf7eea0c0cf17882d3652af1a00542567a089dcd307163957e  actual fb6eb57db610ffaf7eea0c0cf17882d3652af1a00542567a089dcd307163957e
+  special 3 ResourceDir: OK  stored 405d87d3d4ab5f7a4cb966fd29f3e47eadccb87c1446bbeca703da84bbf921fe  actual 405d87d3d4ab5f7a4cb966fd29f3e47eadccb87c1446bbeca703da84bbf921fe
+  code pages: 14806 checked, 13593 mismatching
+    pages 0-0  bytes 0x0-0x1000
+    pages 4-13595  bytes 0x4000-0x351c000
+  of those, 0 also mismatch the pre-encrypt hashes
+
+Entitlements: none embedded
+CMS signature blob: 4384 bytes
+file: Frameworks/GameKitWrapper.framework/GameKitWrapper
+file size: 525328  signature @ 0x78a30 size 0x79e0 superblob len 0x44ac blobs 4
+  blob type 0x00000 (CodeDirectory) magic 0xfade0c02 len 5044
+  blob type 0x00002 (Requirements) magic 0xfade0c01 len 116
+  blob type 0x01000 (AlternateCodeDirectory0) magic 0xfade0c02 len 7984
+  blob type 0x10000 (CMS-Signature) magic 0xfade0b01 len 4392
+
+CodeDirectory slot 0x0: version 0x20500 hash sha1 pages 121 x 4096 codeLimit 0x78a30
+  identifier: com.redgamesco.arcade.GameKitWrapper   team: YXKAU4DAAQ   platform: 0
+  flags: 0x0 ['none']
+  execSeg base 0x0 limit 0x48000 flags 0x0
+  cdhash (sha1): bac6e658ef6348a80051382eef2d7dee79aeecc5  (first 20 bytes: bac6e658ef6348a80051382eef2d7dee79aeecc5)
+  pre-encrypt hash slots present @ 0x90
+  special 1 InfoSlot: OK  stored 1bcadf85572d92713f5050572d98b067b3ab1b4c  actual 1bcadf85572d92713f5050572d98b067b3ab1b4c
+  special 2 Requirements: OK  stored 1f048b733da492e5b95fb3321bab0b831f588345  actual 1f048b733da492e5b95fb3321bab0b831f588345
+  special 3 ResourceDir: OK  stored 9e03fe476292efad0945ddec537e6faf15a368ff  actual 9e03fe476292efad0945ddec537e6faf15a368ff
+  code pages: 121 checked, 69 mismatching
+    pages 0-0  bytes 0x0-0x1000
+    pages 4-71  bytes 0x4000-0x48000
+  of those, 0 also mismatch the pre-encrypt hashes
+
+CodeDirectory slot 0x1000: version 0x20500 hash sha256 pages 121 x 4096 codeLimit 0x78a30
+  identifier: com.redgamesco.arcade.GameKitWrapper   team: YXKAU4DAAQ   platform: 0
+  flags: 0x0 ['none']
+  execSeg base 0x0 limit 0x48000 flags 0x0
+  cdhash (sha256): 6c5d96c078d3f0f8c1a24357450180c7c935b5b8f842c5604d387b8e4f5208c4  (first 20 bytes: 6c5d96c078d3f0f8c1a24357450180c7c935b5b8)
+  pre-encrypt hash slots present @ 0x90
+  special 1 InfoSlot: OK  stored 91c514cc7bd15f6c56046ebfa1ce9966ce97368b6c9f166d5a2887052accdf97  actual 91c514cc7bd15f6c56046ebfa1ce9966ce97368b6c9f166d5a2887052accdf97
+  special 2 Requirements: OK  stored 58522704f4ed8259741df7e12e9f0600ba5fb87730a4c3b097db7a040ea3ec6e  actual 58522704f4ed8259741df7e12e9f0600ba5fb87730a4c3b097db7a040ea3ec6e
+  special 3 ResourceDir: OK  stored fcda722ee9437cb6de9267a17e4b26127aad13d0805f15b3430f73d4bd86ed6e  actual fcda722ee9437cb6de9267a17e4b26127aad13d0805f15b3430f73d4bd86ed6e
+  code pages: 121 checked, 69 mismatching
+    pages 0-0  bytes 0x0-0x1000
+    pages 4-71  bytes 0x4000-0x48000
+  of those, 0 also mismatch the pre-encrypt hashes
+
+Entitlements: none embedded
+CMS signature blob: 4384 bytes

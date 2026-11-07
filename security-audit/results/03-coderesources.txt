@@ -1,0 +1,31 @@
+bundle: /home/ubuntu/c112work/x/Payload/GOLF.app
+executable: GOLF   sealed entries (files2): 190   rules2: 13
+  MISMATCH Frameworks/GameKitWrapper.framework/GameKitWrapper: sealed d961b0d53d27340401f76916221f0beebd6c3e051d3186c3cf5928afb35cebc8 actual 17d40ac205dc4e0d54669a463a481c758b546ffe982bd4d60f353c9f924a8d53
+  MISSING Frameworks/GameKitWrapper.framework/SC_Info/GameKitWrapper.v4.supp
+  MISSING Frameworks/GameKitWrapper.framework/SC_Info/GameKitWrapper.v5.supf
+  MISSING Frameworks/UnityFramework.framework/SC_Info/UnityFramework.v4.supp
+  MISSING Frameworks/UnityFramework.framework/SC_Info/UnityFramework.v5.supf
+  MISMATCH Frameworks/UnityFramework.framework/UnityFramework: sealed c0888e7737ffb88f5acb154eaee344abf30da794c2d6e202f00e06240bfa63de actual 8da3fec75be7e5ef6a00f49200da9d5b8ee5656059b32aab62c28ee41d3dbb22
+  MISSING SC_Info/GOLF.v4.supp
+  MISSING SC_Info/GOLF.v5.supf
+  MISSING SC_Info/Manifest.plist
+  not sealed by design (rule '^Info\\.plist$' omit): Info.plist
+  not sealed by design (rule '^PkgInfo$' omit): PkgInfo
+summary: 181 files match, 2 mismatch, 7 missing, 0 nested OK, 0 nested mismatch, 0 unsealed extra files
+exit=1
+
+bundle: /home/ubuntu/c112work/x/Payload/GOLF.app/Frameworks/UnityFramework.framework
+executable: UnityFramework   sealed entries (files2): 2   rules2: 11
+  MISSING SC_Info/UnityFramework.v4.supp
+  MISSING SC_Info/UnityFramework.v5.supf
+  not sealed by design (rule '^Info\\.plist$' omit): Info.plist
+summary: 0 files match, 0 mismatch, 2 missing, 0 nested OK, 0 nested mismatch, 0 unsealed extra files
+exit=1
+
+bundle: /home/ubuntu/c112work/x/Payload/GOLF.app/Frameworks/GameKitWrapper.framework
+executable: GameKitWrapper   sealed entries (files2): 2   rules2: 11
+  MISSING SC_Info/GameKitWrapper.v4.supp
+  MISSING SC_Info/GameKitWrapper.v5.supf
+  not sealed by design (rule '^Info\\.plist$' omit): Info.plist
+summary: 0 files match, 0 mismatch, 2 missing, 0 nested OK, 0 nested mismatch, 0 unsealed extra files
+exit=1

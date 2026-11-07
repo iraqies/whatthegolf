@@ -1,0 +1,30 @@
+GOLF: openssl cms -verify (content = CodeDirectory slot 0, CA = Apple Root CA) -> OK: CMS Verification successful
+  cert: Common Name: Apple iPhone OS Application Signing, Organizational Unit: iPhone, Organization: Apple Inc., Country: US  |  issuer: Common Name: Apple iPhone Certification Authority, Organizational Unit: Certification Authority, Organization: Apple Inc., Country: US  |  valid 2025-03-26 .. 2027-04-21
+  cert: Common Name: Apple iPhone Certification Authority, Organizational Unit: Certification Authority, Organization: Apple Inc., Country: US  |  issuer: Common Name: Apple Root CA, Organizational Unit: Apple Certification Authority, Organization: Apple Inc., Country: US  |  valid 2017-05-10 .. 2030-12-31
+  cert: Common Name: Apple Root CA, Organizational Unit: Apple Certification Authority, Organization: Apple Inc., Country: US  |  issuer: Common Name: Apple Root CA, Organizational Unit: Apple Certification Authority, Organization: Apple Inc., Country: US  |  valid 2006-04-25 .. 2035-02-09
+  signed cdhashes plist (100.9.1): ['a35500cdf9c686010199ff2fb89aa44977b8a7e0', 'f6b6368a1545f6cc006b4c5b6ca489d8264109d3']
+  signed full cdhashes (100.9.2): ['a35500cdf9c686010199ff2fb89aa44977b8a7e0', 'f6b6368a1545f6cc006b4c5b6ca489d8264109d338a06a3cfec6fe33b37070f2']
+  CodeDirectory 0x0 (sha1) cdhash a35500cdf9c686010199ff2fb89aa44977b8a7e0 signed: True
+  CodeDirectory 0x1000 (sha256) cdhash f6b6368a1545f6cc006b4c5b6ca489d8264109d338a06a3cfec6fe33b37070f2 signed: True
+  RESULT: signature valid, every CodeDirectory is signed by Apple
+exit=0
+Frameworks/UnityFramework.framework/UnityFramework: openssl cms -verify (content = CodeDirectory slot 0, CA = Apple Root CA) -> OK: CMS Verification successful
+  cert: Common Name: Apple iPhone OS Application Signing, Organizational Unit: iPhone, Organization: Apple Inc., Country: US  |  issuer: Common Name: Apple iPhone Certification Authority, Organizational Unit: Certification Authority, Organization: Apple Inc., Country: US  |  valid 2025-03-26 .. 2027-04-21
+  cert: Common Name: Apple iPhone Certification Authority, Organizational Unit: Certification Authority, Organization: Apple Inc., Country: US  |  issuer: Common Name: Apple Root CA, Organizational Unit: Apple Certification Authority, Organization: Apple Inc., Country: US  |  valid 2017-05-10 .. 2030-12-31
+  cert: Common Name: Apple Root CA, Organizational Unit: Apple Certification Authority, Organization: Apple Inc., Country: US  |  issuer: Common Name: Apple Root CA, Organizational Unit: Apple Certification Authority, Organization: Apple Inc., Country: US  |  valid 2006-04-25 .. 2035-02-09
+  signed cdhashes plist (100.9.1): ['c4a642ee69aedfd71cfc8aafaf644dd08ae56fc5', '546b25ba92de250e1f7469727b26e7f1d3d404b8']
+  signed full cdhashes (100.9.2): ['c4a642ee69aedfd71cfc8aafaf644dd08ae56fc5', '546b25ba92de250e1f7469727b26e7f1d3d404b89aad8fc3b8fddfed59d72c4b']
+  CodeDirectory 0x0 (sha1) cdhash c4a642ee69aedfd71cfc8aafaf644dd08ae56fc5 signed: True
+  CodeDirectory 0x1000 (sha256) cdhash 546b25ba92de250e1f7469727b26e7f1d3d404b89aad8fc3b8fddfed59d72c4b signed: True
+  RESULT: signature valid, every CodeDirectory is signed by Apple
+exit=0
+Frameworks/GameKitWrapper.framework/GameKitWrapper: openssl cms -verify (content = CodeDirectory slot 0, CA = Apple Root CA) -> OK: CMS Verification successful
+  cert: Common Name: Apple iPhone OS Application Signing, Organizational Unit: iPhone, Organization: Apple Inc., Country: US  |  issuer: Common Name: Apple iPhone Certification Authority, Organizational Unit: Certification Authority, Organization: Apple Inc., Country: US  |  valid 2025-03-26 .. 2027-04-21
+  cert: Common Name: Apple iPhone Certification Authority, Organizational Unit: Certification Authority, Organization: Apple Inc., Country: US  |  issuer: Common Name: Apple Root CA, Organizational Unit: Apple Certification Authority, Organization: Apple Inc., Country: US  |  valid 2017-05-10 .. 2030-12-31
+  cert: Common Name: Apple Root CA, Organizational Unit: Apple Certification Authority, Organization: Apple Inc., Country: US  |  issuer: Common Name: Apple Root CA, Organizational Unit: Apple Certification Authority, Organization: Apple Inc., Country: US  |  valid 2006-04-25 .. 2035-02-09
+  signed cdhashes plist (100.9.1): ['bac6e658ef6348a80051382eef2d7dee79aeecc5', '6c5d96c078d3f0f8c1a24357450180c7c935b5b8']
+  signed full cdhashes (100.9.2): ['bac6e658ef6348a80051382eef2d7dee79aeecc5', '6c5d96c078d3f0f8c1a24357450180c7c935b5b8f842c5604d387b8e4f5208c4']
+  CodeDirectory 0x0 (sha1) cdhash bac6e658ef6348a80051382eef2d7dee79aeecc5 signed: True
+  CodeDirectory 0x1000 (sha256) cdhash 6c5d96c078d3f0f8c1a24357450180c7c935b5b8f842c5604d387b8e4f5208c4 signed: True
+  RESULT: signature valid, every CodeDirectory is signed by Apple
+exit=0
