@@ -1,0 +1,5 @@
+{
+  "name": "Triband.BuildPipeline.Runtime",
+  "references": [],
+  "allowUnsafeCode": true
+}

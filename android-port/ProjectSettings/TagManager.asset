@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - CarAgent
+  - OutOfBounds
+  - AdditionalGolfThing
+  - Collectible
+  - GolfGoal
+  - ShootArrow
+  - TimeControl
+  - NPC
+  - Note
+  - OutOfBoundsReset
+  - Exploder
+  - UseObject
+  - Portal
+  - GolfClub
+  - Ground
+  - ShieldWeakness
+  - CameraOrbitArea
+  - Bat
+  - Barrier
+  - Truck
+  - OutOfBoundsReload
+  - Particle
+  - Stone
+  - RaceSheep
+  - PropSnowball
+  - Toy
+  - ToyRoad
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - OnlyNPCAndGround
+  - Car (OW Low)
+  - Gate (OW High)
+  - ShootArrow
+  - NPC
+  - Particles
+  - GolfBall
+  - Tree
+  - BG
+  - Only ground
+  - Overworld
+  - multiarrowp2 (OW Tall)
+  - multiarrowp1
+  - Ground
+  - Screensaver
+  - Decoration_unimportant
+  - Projectile
+  - Debris
+  - IgnoreGolfBall
+  - OnlyWithGolfBall
+  - UI_MAP
+  - Wire
+  - IgnoreGround
+  - Transition
+  - Only ball
+  m_SortingLayers:
+  - name: Background
+    uniqueID: 360025811
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Foreground
+    uniqueID: 2349390949
+    locked: 0
+  - name: Horse
+    uniqueID: 3699586529
+    locked: 0
+  - name: Equestrian
+    uniqueID: 3016691299
+    locked: 0
+  - name: Archer
+    uniqueID: 2957730723
+    locked: 0
+  - name: Swimmer
+    uniqueID: 2591331671
+    locked: 0
