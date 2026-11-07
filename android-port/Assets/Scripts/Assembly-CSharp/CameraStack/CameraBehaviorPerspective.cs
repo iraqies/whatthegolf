@@ -4,17 +4,21 @@ namespace CameraStack
 {
 	public abstract class CameraBehaviorPerspective : CameraBehavior
 	{
-		[SerializeField]
-		private float fieldOfView;
-
-		public virtual float FOV => 0f;
+		[SerializeField] private float fieldOfView = 60f;
+		public virtual float FOV => fieldOfView > 0f ? fieldOfView : 60f;
 
 		public override void Init()
 		{
+			if (Cameras != null)
+			{
+				foreach (var c in Cameras)
+				{
+					if (c != null && !c.orthographic && fieldOfView > 0f)
+						c.fieldOfView = fieldOfView;
+				}
+			}
 		}
 
-		public override void PreUpdate()
-		{
-		}
+		public override void PreUpdate() { }
 	}
 }
