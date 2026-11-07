@@ -155,49 +155,58 @@ public class LevelManager : AddressableSingleton<LevelManager>
 		bool loaded = false;
 		if (levelData.Scene != null && levelData.Scene.sceneReference != null && levelData.Scene.sceneReference.RuntimeKeyIsValid())
 		{
+			addressableLoadHandle = default;
 			try
 			{
 				addressableLoadHandle = Addressables.LoadSceneAsync(levelData.Scene.sceneReference, mode, true);
-				if (addressableLoadHandle.IsValid())
-				{
-					while (!addressableLoadHandle.IsDone)
-						yield return null;
-					if (addressableLoadHandle.Status == AsyncOperationStatus.Succeeded)
-					{
-						SceneManager.SetActiveScene(addressableLoadHandle.Result.Scene);
-						loaded = true;
-					}
-				}
 			}
 			catch (Exception)
 			{
+			}
+			if (addressableLoadHandle.IsValid())
+			{
+				while (!addressableLoadHandle.IsDone)
+					yield return null;
+				if (addressableLoadHandle.Status == AsyncOperationStatus.Succeeded)
+				{
+					SceneManager.SetActiveScene(addressableLoadHandle.Result.Scene);
+					loaded = true;
+				}
 			}
 		}
 
 		if (!loaded && !string.IsNullOrEmpty(sceneName))
 		{
+			addressableLoadHandle = default;
 			try
 			{
 				addressableLoadHandle = Addressables.LoadSceneAsync(sceneName, mode, true);
-				if (addressableLoadHandle.IsValid())
-				{
-					while (!addressableLoadHandle.IsDone)
-						yield return null;
-					if (addressableLoadHandle.Status == AsyncOperationStatus.Succeeded)
-					{
-						SceneManager.SetActiveScene(addressableLoadHandle.Result.Scene);
-						loaded = true;
-					}
-				}
 			}
 			catch (Exception)
 			{
 			}
+			if (addressableLoadHandle.IsValid())
+			{
+				while (!addressableLoadHandle.IsDone)
+					yield return null;
+				if (addressableLoadHandle.Status == AsyncOperationStatus.Succeeded)
+				{
+					SceneManager.SetActiveScene(addressableLoadHandle.Result.Scene);
+					loaded = true;
+				}
+			}
 		}
 
-		if (!loaded && !string.IsNullOrEmpty(sceneName) && Application.CanStreamedLevelBeLoaded(sceneName))
+		if (!loaded && !string.IsNullOrEmpty(sceneName))
 		{
-			var op = SceneManager.LoadSceneAsync(sceneName, mode);
+			AsyncOperation op = null;
+			try
+			{
+				op = SceneManager.LoadSceneAsync(sceneName, mode);
+			}
+			catch (Exception)
+			{
+			}
 			if (op != null)
 			{
 				while (!op.isDone)
@@ -213,7 +222,6 @@ public class LevelManager : AddressableSingleton<LevelManager>
 		if (lvl == null && loaded)
 		{
 			var go = new GameObject("AutoLevel");
-			SceneManager.MoveGameObjectToScene(go, SceneManager.GetActiveScene());
 			lvl = go.AddComponent<Level>();
 		}
 		if (lvl != null)

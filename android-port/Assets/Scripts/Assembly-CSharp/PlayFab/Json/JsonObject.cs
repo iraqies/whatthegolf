@@ -13,14 +13,10 @@ namespace PlayFab.Json
 
 		public ICollection<object> Values => null;
 
-		// C# has no syntax for parameterized property 'Item'.
-		public object get_Item(string key)
+		public object this[string key]
 		{
-			return null;
-		}
-
-		public void set_Item(string key, object value)
-		{
+			get => _members != null && _members.TryGetValue(key, out var v) ? v : null;
+			set { if (_members != null) _members[key] = value; }
 		}
 
 		public int Count => 0;

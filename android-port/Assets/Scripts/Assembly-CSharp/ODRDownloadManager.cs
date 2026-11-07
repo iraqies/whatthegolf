@@ -33,12 +33,12 @@ public class ODRDownloadManager
 
 	public Task<ODRDownloadResult> DownloadBundles(List<string> resourceNames, bool showProgressBar = false)
 	{
-		return Task.FromResult(ODRDownloadResult.Downloaded);
+		return Task.FromResult(ODRDownloadResult.Success);
 	}
 
 	public Task<ODRDownloadResult> DownloadBundle(string resourceName, bool showProgressBar = false, int downloadNumber = 1, int downloadCount = 1)
 	{
-		return Task.FromResult(ODRDownloadResult.Downloaded);
+		return Task.FromResult(ODRDownloadResult.Success);
 	}
 
 	public static void DeleteGroup(string resourceName)

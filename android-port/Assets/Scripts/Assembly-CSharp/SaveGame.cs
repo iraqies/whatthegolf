@@ -6,8 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Core;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 public class SaveGame
@@ -129,7 +128,7 @@ public class SaveGame
 
 		public byte[] ToBytes(bool compress = true)
 		{
-			string json = JsonConvert.SerializeObject(this);
+			string json = MegacoolThirdParty_MiniJSON.Json.Serialize(this) ?? "{}";
 			byte[] raw = Encoding.UTF8.GetBytes(json);
 			return compress ? Compress(raw) : raw;
 		}
@@ -144,9 +143,19 @@ public class SaveGame
 				if (bytes.Length > 2 && bytes[0] == 0x1F && bytes[1] == 0x8B)
 					raw = Decompress(bytes);
 				string json = Encoding.UTF8.GetString(raw);
-				var data = JsonConvert.DeserializeObject<SaveData>(json);
-				if (data != null)
+				var dict = MegacoolThirdParty_MiniJSON.Json.Deserialize(json) as Dictionary<string, object>;
+				var data = new SaveData();
+				if (dict != null)
 				{
+					foreach (var kv in dict)
+					{
+						if (int.TryParse(kv.Key, out int slotIdx) && kv.Value is Dictionary<string, object> slotDict)
+						{
+							var slot = new SaveSlot();
+							foreach (var skv in slotDict) slot[skv.Key] = skv.Value;
+							data[slotIdx] = slot;
+						}
+					}
 					success = true;
 					return data;
 				}
@@ -247,7 +256,7 @@ public class SaveGame
 		get
 		{
 			EnsureCampaignDatas();
-			var t = currentCampaignDef != null ? currentCampaignDef.campaignType : ECampaignType.Main;
+			var t = currentCampaignDef != null ? currentCampaignDef.type : ECampaignType.Main;
 			if (!campaignDatas.TryGetValue(t, out var ow))
 			{
 				ow = new OverWorldData(t.ToString());
@@ -420,7 +429,7 @@ public class SaveGame
 			}
 		}
 		if (currentCampaignDef == null)
-			currentCampaignDef = new CampaignDef { campaignType = ECampaignType.Main };
+			currentCampaignDef = new CampaignDef { type = ECampaignType.Main };
 	}
 
 	public static string GetLocalSaveFilePath(string saveFilename)
@@ -447,7 +456,7 @@ public class SaveGame
 	public static void SetOverworld(ECampaignType type)
 	{
 		EnsureCampaignDatas();
-		currentCampaignDef = new CampaignDef { campaignType = type };
+		currentCampaignDef = new CampaignDef { type = type };
 		LastPlayedCampaignType = type;
 	}
 
@@ -662,11 +671,6 @@ public class SaveGame
 				value = tVal;
 				return true;
 			}
-			if (raw is JToken jtok)
-			{
-				value = jtok.ToObject<T>();
-				return true;
-			}
 			if (typeof(T).IsEnum)
 			{
 				value = (T)Enum.ToObject(typeof(T), Convert.ToInt32(raw));
@@ -783,5 +787,5 @@ public class SaveGame
 	}
 
 	public static void IncrementConsentRequestCooldown() { }
-	public static SnoozeData GetConsentRequestCooldown() => new SnoozeData();
+	public static SnoozeData GetConsentRequestCooldown() => new SnoozeData(0, DateTime.UtcNow);
 }

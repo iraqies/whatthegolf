@@ -1,3 +1,1 @@
-using System.Reflection;
-
-[assembly: AssemblyVersion("3.3.0.0")]
+// Managed by Unity Assembly Definition

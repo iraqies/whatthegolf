@@ -67,7 +67,6 @@ public class OverworldBallManager : MonoBehaviour
 
 	private void Ball_OnDeath(OverworldBall2D obj) => m_OnDeath?.Invoke(obj);
 	public int GetCurrentShapeAsInt() => (int)currentShape;
-	private void Transmogriffable_OnTransmogriffed(Transmogrifable ball, Transmogrif grif) { }
 	private void Transmogriffable_OnTransmogriffed(Transmogriffable ball, Transmogrif grif) => m_OnTransmoGriffed?.Invoke(grif);
 
 	private IEnumerator TransmogrifRoutine(Transmogriffable ball, Transmogrif grif)

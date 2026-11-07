@@ -27,14 +27,10 @@ namespace PlayFab.Json
 
 			public ICollection<TValue> Values => null;
 
-			// C# has no syntax for parameterized property 'Item'.
-			public TValue get_Item(TKey key)
+			public TValue this[TKey key]
 			{
-				return default;
-			}
-
-			public void set_Item(TKey key, TValue value)
-			{
+				get => Get(key);
+				set { if (_dictionary != null) _dictionary[key] = value; }
 			}
 
 			public int Count => 0;

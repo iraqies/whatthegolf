@@ -5,7 +5,7 @@ using UnityEngine;
 public class BossGoal : GolfGoal
 {
 	[CompilerGenerated]
-	private new Action<string> m_OnGoal;
+	private Action<string> m_OnGoal;
 
 	public Animator RobotFaceAnimator;
 

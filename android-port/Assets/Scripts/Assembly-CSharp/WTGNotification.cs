@@ -153,7 +153,12 @@ public struct WTGNotification
 
 	public static bool operator ==(WTGNotification lhs, WTGNotification rhs)
 	{
-		return false;
+		return lhs.Equals(rhs);
+	}
+
+	public static bool operator !=(WTGNotification lhs, WTGNotification rhs)
+	{
+		return !lhs.Equals(rhs);
 	}
 
 	public override int GetHashCode()

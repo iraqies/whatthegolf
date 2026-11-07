@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace Core
 {
-	[CreateAssetMenu(fileName = "WTGPortCatalog", menuName = "WhatTheGolf/PortCatalog")]
 	public class WTGPortCatalog : ScriptableObject
 	{
 		[Serializable]

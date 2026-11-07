@@ -104,9 +104,9 @@ namespace Core
 		private void RotateArrow(Vector3 vec)
 		{
 			if (vec.sqrMagnitude < 1e-5f) return;
-			if (ball != null && (ball.AimPlane == AimPlanes.Camera || ball.AimPlane == AimPlanes.LocalXY))
+			if (ball != null && (ball.AimPlane == AimPlanes.Camera || ball.AimPlane == AimPlanes.TwoD))
 			{
-				float angle = Mathf.Atan2(vec.y, vec.x) * Mathf.Rad2Deg;
+				float angle = Mathf.Atan2(vec.y, vec.x) * 57.29578f;
 				transform.rotation = Quaternion.Euler(0f, 0f, angle - 90f);
 			}
 			else

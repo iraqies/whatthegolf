@@ -38,7 +38,7 @@ namespace Core
 			_instance = this;
 			DontDestroyOnLoad(gameObject);
 			Application.targetFrameRate = 60;
-			Screen.sleepTimeout = SleepTimeout.NeverSleep;
+			Screen.sleepTimeout = -1;
 			SceneManager.sceneLoaded += OnSceneLoaded;
 		}
 
@@ -167,7 +167,7 @@ namespace Core
 			float w = Mathf.Min(Screen.width - 40f * scale, 920f * scale);
 			float h = Mathf.Min(Screen.height - 90f * scale, 580f * scale);
 			Rect boxRect = new Rect((Screen.width - w) * 0.5f, 72f * scale, w, h);
-			GUI.Box(boxRect, "WHAT THE GOLF? — Episodes & Level Browser (v20.5.34 Android Port)");
+			GUI.Box(boxRect, "WHAT THE GOLF? — Episodes & Level Browser (v20.5.34 Android Port)", GUI.skin.box);
 
 			GUILayout.BeginArea(new Rect(boxRect.x + 16f * scale, boxRect.y + 36f * scale, boxRect.width - 32f * scale, boxRect.height - 48f * scale));
 
@@ -216,16 +216,16 @@ namespace Core
 			}
 			else
 			{
-				int count = SceneManager.sceneCountInBuildSettings;
 				_scrollPos = GUILayout.BeginScrollView(_scrollPos);
-				for (int i = 0; i < count; i++)
+				if (catalog != null && catalog.allSceneNames != null)
 				{
-					string path = SceneUtility.GetScenePathByBuildIndex(i);
-					string name = System.IO.Path.GetFileNameWithoutExtension(path);
-					if (GUILayout.Button($"{i}: {name}", btnStyle, GUILayout.Height(36f * scale)))
+					foreach (var sName in catalog.allSceneNames)
 					{
-						_showMenu = false;
-						SceneManager.LoadScene(i);
+						if (GUILayout.Button(sName, btnStyle, GUILayout.Height(36f * scale)))
+						{
+							_showMenu = false;
+							LoadSceneByName(sName);
+						}
 					}
 				}
 				GUILayout.EndScrollView();
@@ -255,8 +255,7 @@ namespace Core
 				if (handle.IsValid()) return;
 			}
 			catch { }
-			if (Application.CanStreamedLevelBeLoaded(sceneName))
-				SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+			try { SceneManager.LoadScene(sceneName, LoadSceneMode.Single); } catch { }
 		}
 	}
 }

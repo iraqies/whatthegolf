@@ -101,37 +101,35 @@ public class Loading : MonoBehaviour
 	private IEnumerator LoadHubRoutine()
 	{
 		bool loaded = false;
+		AsyncOperationHandle<SceneInstance> handle = default;
 		try
 		{
-			var handle = Addressables.LoadSceneAsync("Hub_Overworld", LoadSceneMode.Single, true);
-			if (handle.IsValid())
-			{
-				while (!handle.IsDone)
-					yield return null;
-				if (handle.Status == AsyncOperationStatus.Succeeded)
-					loaded = true;
-			}
+			handle = Addressables.LoadSceneAsync("Hub_Overworld", LoadSceneMode.Single, true);
 		}
 		catch (Exception)
 		{
 		}
 
+		if (handle.IsValid())
+		{
+			while (!handle.IsDone)
+				yield return null;
+			if (handle.Status == AsyncOperationStatus.Succeeded)
+				loaded = true;
+		}
+
 		if (!loaded)
 		{
-			if (Application.CanStreamedLevelBeLoaded("Hub_Overworld"))
+			AsyncOperation op = null;
+			try
 			{
-				var op = SceneManager.LoadSceneAsync("Hub_Overworld", LoadSceneMode.Single);
-				while (op != null && !op.isDone)
-					yield return null;
-				loaded = true;
+				op = SceneManager.LoadSceneAsync("Hub_Overworld", LoadSceneMode.Single);
 			}
-			else if (Application.CanStreamedLevelBeLoaded("main overworld new"))
+			catch (Exception)
 			{
-				var op = SceneManager.LoadSceneAsync("main overworld new", LoadSceneMode.Single);
-				while (op != null && !op.isDone)
-					yield return null;
-				loaded = true;
 			}
+			while (op != null && !op.isDone)
+				yield return null;
 		}
 	}
 

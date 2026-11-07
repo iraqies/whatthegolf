@@ -2,7 +2,7 @@ using System;
 
 namespace Rewired
 {
-	public sealed class SixDofControllerTemplate : ControllerTemplate, ISixDofControllerTemplate, IControllerTemplate
+	public sealed class SixDofControllerTemplate : ControllerTemplate, ISixDofControllerTemplate
 	{
 		public static readonly Guid typeGuid;
 
@@ -10,5 +10,7 @@ namespace Rewired
 			: base(null)
 		{
 		}
+
+		IControllerTemplateElement IControllerTemplate.GetElement(int id) => GetElement(id);
 	}
 }

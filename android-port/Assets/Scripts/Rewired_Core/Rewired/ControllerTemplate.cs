@@ -478,7 +478,7 @@ namespace Rewired
 		{
 		}
 
-		protected IControllerTemplateElement GetElement(int id)
+		public IControllerTemplateElement GetElement(int id)
 		{
 			return null;
 		}

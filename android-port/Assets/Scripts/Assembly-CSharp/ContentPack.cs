@@ -21,7 +21,7 @@ public class ContentPack : ScriptableObject, IPackWithData
 	public bool HasDownloadableMusic;
 
 	public bool IsNew => IsConsideredNew();
-	public bool hasLeaderboard => leaderboard != LeaderboardBoard.NONE;
+	public bool hasLeaderboard => leaderboard != LeaderboardBoard.None;
 	public string TitleID => titleID;
 	public string ContentID => !string.IsNullOrEmpty(contentPackOverrideID) ? contentPackOverrideID : contentPackID;
 	public string PackID => contentPackID;

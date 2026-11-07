@@ -2,7 +2,7 @@ using System;
 
 namespace Rewired
 {
-	public sealed class FlightPedalsTemplate : ControllerTemplate, IFlightPedalsTemplate, IControllerTemplate
+	public sealed class FlightPedalsTemplate : ControllerTemplate, IFlightPedalsTemplate
 	{
 		public static readonly Guid typeGuid;
 
@@ -10,5 +10,7 @@ namespace Rewired
 			: base(null)
 		{
 		}
+
+		IControllerTemplateElement IControllerTemplate.GetElement(int id) => GetElement(id);
 	}
 }

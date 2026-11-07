@@ -387,7 +387,7 @@ namespace Core
 				float screenDiag = Mathf.Max(300f, Mathf.Min(Screen.width, Screen.height) * Mathf.Max(0.15f, maxDragLength));
 				Vector2 norm2D = Vector2.ClampMagnitude(deltaScreen / screenDiag, 1f);
 
-				if (AimPlane == AimPlanes.Camera || AimPlane == AimPlanes.LocalXY || GetComponent<Rigidbody2D>() != null)
+				if (AimPlane == AimPlanes.Camera || AimPlane == AimPlanes.TwoD || GetComponent<Rigidbody2D>() != null)
 				{
 					aimVector = new Vector3(norm2D.x, norm2D.y, 0f);
 				}
@@ -550,9 +550,9 @@ namespace Core
 				case AimPlanes.Camera:
 					var cam = GetCam();
 					return new Plane(cam != null ? -cam.transform.forward : Vector3.back, position);
-				case AimPlanes.LocalXY:
+				case AimPlanes.TwoD:
 					return new Plane(transform.forward, position);
-				case AimPlanes.Custom:
+				case AimPlanes.CustomVector:
 					return new Plane(customAimPlane.sqrMagnitude > 1e-4f ? customAimPlane.normalized : Vector3.up, position);
 				default:
 					return new Plane(Vector3.up, position);

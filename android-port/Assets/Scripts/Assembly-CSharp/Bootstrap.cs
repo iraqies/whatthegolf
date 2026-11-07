@@ -55,15 +55,16 @@ public class Bootstrap : MonoBehaviour
 
 		if (!loadedViaAddressables)
 		{
-			if (Application.CanStreamedLevelBeLoaded("Loading"))
+			AsyncOperation op = null;
+			try
 			{
-				var op = SceneManager.LoadSceneAsync("Loading", LoadSceneMode.Single);
-				if (op != null)
-				{
-					while (!op.isDone)
-						yield return null;
-				}
+				op = SceneManager.LoadSceneAsync("Loading", LoadSceneMode.Single);
 			}
+			catch (Exception)
+			{
+			}
+			while (op != null && !op.isDone)
+				yield return null;
 		}
 
 		yield return null;
@@ -82,7 +83,7 @@ public class Bootstrap : MonoBehaviour
 
 	private void SetOrientation()
 	{
-		Screen.sleepTimeout = SleepTimeout.NeverSleep;
+		Screen.sleepTimeout = -1;
 		Screen.autorotateToPortrait = false;
 		Screen.autorotateToPortraitUpsideDown = false;
 		Screen.autorotateToLandscapeLeft = true;

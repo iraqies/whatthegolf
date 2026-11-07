@@ -195,6 +195,8 @@ namespace Rewired.Demos
 
 			protected static int nextId => 0;
 
+			protected QueueEntry() { }
+
 			public QueueEntry(QueueActionType queueActionType)
 			{
 			}

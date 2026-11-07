@@ -23,13 +23,20 @@ public class HubSceneLoader : AddressableSingleton<HubSceneLoader>
 		_busyLoading = true;
 		try
 		{
-			var handle = Addressables.LoadSceneAsync("Hub_Overworld", loadSceneMode, true);
+			AsyncOperationHandle<SceneInstance> handle = default;
+			try
+			{
+				handle = Addressables.LoadSceneAsync("Hub_Overworld", loadSceneMode, true);
+			}
+			catch (Exception)
+			{
+			}
 			if (handle.IsValid())
 			{
 				while (!handle.IsDone)
 					await Task.Yield();
 			}
-			else if (Application.CanStreamedLevelBeLoaded("Hub_Overworld"))
+			else
 			{
 				var op = SceneManager.LoadSceneAsync("Hub_Overworld", loadSceneMode);
 				while (op != null && !op.isDone)
