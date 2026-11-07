@@ -7,18 +7,16 @@ namespace Triband.Splines
 	public class QuadShapeGeneratorData : IShapeGeneratorData
 	{
 		[SerializeField]
-		private float width;
+		private float width = 1f;
 
 		[SerializeField]
-		private float pivot;
+		private float pivot = 0.5f;
 
 		[SerializeField]
 		private bool twoSided;
 
-		public float Width => 0f;
-
-		public float Pivot => 0f;
-
-		public bool TwoSided => false;
+		public float Width => width;
+		public float Pivot => pivot;
+		public bool TwoSided => twoSided;
 	}
 }

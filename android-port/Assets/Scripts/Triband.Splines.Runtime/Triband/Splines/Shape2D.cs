@@ -5,27 +5,16 @@ namespace Triband.Splines
 {
 	public class Shape2D : IEnumerable<Vertex2D>, IEnumerable
 	{
-		private readonly List<Vertex2D> vertices;
+		private readonly List<Vertex2D> vertices = new List<Vertex2D>();
 
-		public int VertexCount => 0;
+		public int VertexCount => vertices.Count;
 
-		public void AddVertex(Vertex2D vertex)
-		{
-		}
+		public void AddVertex(Vertex2D vertex) => vertices.Add(vertex);
 
-		public Vertex2D GetVertex(int index)
-		{
-			return default;
-		}
+		public Vertex2D GetVertex(int index) => vertices[index];
 
-		public IEnumerator<Vertex2D> GetEnumerator()
-		{
-			return null;
-		}
+		public IEnumerator<Vertex2D> GetEnumerator() => vertices.GetEnumerator();
 
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return null;
-		}
+		IEnumerator IEnumerable.GetEnumerator() => vertices.GetEnumerator();
 	}
 }

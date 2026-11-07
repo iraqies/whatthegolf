@@ -21,9 +21,6 @@ namespace Triband.BuildPipeline
 		[SerializeField]
 		private string _commit;
 
-		public override string ToString()
-		{
-			return null;
-		}
+		public override string ToString() => $"{_bundleVersion} ({_buildNumber})";
 	}
 }

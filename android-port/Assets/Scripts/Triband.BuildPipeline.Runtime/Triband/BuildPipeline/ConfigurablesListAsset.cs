@@ -7,6 +7,6 @@ namespace Triband.BuildPipeline
 		[SerializeField]
 		private ConfigurablesList _configurables;
 
-		public ConfigurablesList configurables => null;
+		public ConfigurablesList configurables => _configurables;
 	}
 }

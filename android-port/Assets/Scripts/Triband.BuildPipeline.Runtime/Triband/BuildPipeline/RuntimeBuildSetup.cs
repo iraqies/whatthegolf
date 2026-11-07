@@ -12,13 +12,16 @@ namespace Triband.BuildPipeline
 		[SerializeField]
 		private BuildInfo _buildInfo;
 
-		public ConfigurablesList configurables => null;
+		public ConfigurablesList configurables => _configurables;
 
-		public BuildInfo buildInfo => null;
+		public BuildInfo buildInfo => _buildInfo;
 
 		public static T LoadRuntimeBuildSetup<T>() where T : RuntimeBuildSetup
 		{
-			return null;
+			var r = Resources.Load<T>("RuntimeBuildSetup");
+			if (r == null)
+				r = ScriptableObject.CreateInstance<T>();
+			return r;
 		}
 	}
 }

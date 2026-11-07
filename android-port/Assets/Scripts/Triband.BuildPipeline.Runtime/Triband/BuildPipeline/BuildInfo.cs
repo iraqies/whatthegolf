@@ -15,15 +15,12 @@ namespace Triband.BuildPipeline
 		[SerializeField]
 		private string _buildConfigAssetName;
 
-		public BuildType buildType => BuildType.Unknown;
+		public BuildType buildType => _buildType;
 
-		public VersionInfo versionInfo => default;
+		public VersionInfo versionInfo => _versionInfo;
 
-		public string buildConfigAssetName => null;
+		public string buildConfigAssetName => _buildConfigAssetName;
 
-		public override string ToString()
-		{
-			return null;
-		}
+		public override string ToString() => $"{_buildConfigAssetName} ({_buildType}) {_versionInfo}";
 	}
 }

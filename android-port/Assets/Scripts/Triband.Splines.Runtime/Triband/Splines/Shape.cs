@@ -4,12 +4,10 @@ namespace Triband.Splines
 {
 	public class Shape
 	{
-		private readonly List<Vertex> vertices;
+		private readonly List<Vertex> vertices = new List<Vertex>();
+		private readonly List<int> triangles = new List<int>();
 
-		private readonly List<int> triangles;
-
-		public List<Vertex> Vertices => null;
-
-		public List<int> Triangles => null;
+		public List<Vertex> Vertices => vertices;
+		public List<int> Triangles => triangles;
 	}
 }

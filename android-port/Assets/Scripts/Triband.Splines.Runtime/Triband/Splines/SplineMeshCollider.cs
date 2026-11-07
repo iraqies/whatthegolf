@@ -9,14 +9,16 @@ namespace Triband.Splines
 
 		private void Reset()
 		{
+			if (meshCollider == null) meshCollider = GetComponent<MeshCollider>();
 		}
 
-		private void OnValidate()
-		{
-		}
+		private void OnValidate() { }
 
 		public void UpdateCollider(Mesh mesh)
 		{
+			if (meshCollider == null) meshCollider = GetComponent<MeshCollider>();
+			if (meshCollider != null && mesh != null)
+				meshCollider.sharedMesh = mesh;
 		}
 	}
 }

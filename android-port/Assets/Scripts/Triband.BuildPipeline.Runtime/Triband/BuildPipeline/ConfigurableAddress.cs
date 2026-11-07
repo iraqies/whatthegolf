@@ -24,10 +24,10 @@ namespace Triband.BuildPipeline
 		[SerializeField]
 		private string _objectType;
 
-		internal EType valueType => EType.OBJECT;
+		internal EType valueType => _type;
 
-		internal string objectValueType => null;
+		internal string objectValueType => _objectType;
 
-		public string address => null;
+		public string address => !string.IsNullOrEmpty(_customAddress) ? _customAddress : guid;
 	}
 }

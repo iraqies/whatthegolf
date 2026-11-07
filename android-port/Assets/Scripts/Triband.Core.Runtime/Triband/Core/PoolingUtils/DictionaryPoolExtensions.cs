@@ -6,6 +6,7 @@ namespace Triband.Core.PoolingUtils
 	{
 		public static void ReturnToPool<K, V>(this Dictionary<K, V> dictionary)
 		{
+			DictionaryPool<K, V>.Return(ref dictionary);
 		}
 	}
 }

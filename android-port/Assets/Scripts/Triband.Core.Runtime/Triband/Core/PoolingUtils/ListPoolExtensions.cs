@@ -6,6 +6,7 @@ namespace Triband.Core.PoolingUtils
 	{
 		public static void ReturnToPool<T>(this List<T> list)
 		{
+			ListPool<T>.Return(ref list);
 		}
 	}
 }
