@@ -25,168 +25,100 @@ public class iOSOnlineServices : MonoBehaviour
 
 	private static iOSOnlineServices k_Instance;
 
-	[SerializeField]
-	private DialogBase m_ICloudUnavailableAlert;
+	[SerializeField] private DialogBase m_ICloudUnavailableAlert;
+	[SerializeField] private DialogBase m_GameCenterUnavailableAlert;
+	[SerializeField] private ReconciliationDialog m_ReconciliationDialog;
+	[SerializeField] private GameObject statusText;
 
-	[SerializeField]
-	private DialogBase m_GameCenterUnavailableAlert;
-
-	[SerializeField]
-	private ReconciliationDialog m_ReconciliationDialog;
-
-	[SerializeField]
-	private GameObject statusText;
-
-	[CompilerGenerated]
 	private Action<ReloadState> m_OnShouldReload;
-
-	private Coroutine reloadWhenInASceneThatAllowsReloadCoroutine;
-
-	private GCState _gcState;
-
+	private GCState _gcState = GCState.NoGameCenter;
 	private ReloadState LastReloadState;
-
 	private bool isWaitingForIcloud;
-
 	private bool m_ResumeRoutine;
 
-	public static iOSOnlineServices Instance => null;
-
-	public static bool IsReady { get; set; }
-
-	private GCState GameCenterState
+	public static iOSOnlineServices Instance
 	{
 		get
 		{
-			return GCState.None;
+			if (k_Instance == null)
+			{
+				k_Instance = FindObjectOfType<iOSOnlineServices>();
+				if (k_Instance == null)
+				{
+					var go = new GameObject("iOSOnlineServices");
+					k_Instance = go.AddComponent<iOSOnlineServices>();
+					DontDestroyOnLoad(go);
+				}
+			}
+			return k_Instance;
 		}
-		set
-		{
-		}
+	}
+
+	public static bool IsReady { get; set; } = true;
+
+	private GCState GameCenterState
+	{
+		get => _gcState;
+		set => _gcState = value;
 	}
 
 	public event Action<ReloadState> OnShouldReload
 	{
-		[CompilerGenerated]
-		add
-		{
-		}
-		[CompilerGenerated]
-		remove
-		{
-		}
+		add => m_OnShouldReload = (Action<ReloadState>)Delegate.Combine(m_OnShouldReload, value);
+		remove => m_OnShouldReload = (Action<ReloadState>)Delegate.Remove(m_OnShouldReload, value);
 	}
 
 	[RuntimeInitializeOnLoadMethod]
 	private static void Init()
 	{
+		IsReady = true;
 	}
 
-	public void SetupCallbacks()
-	{
-	}
-
-	private void OnSaveDoICloud(SaveGame.SaveSlot slot)
-	{
-	}
-
-	private void UnsetCallbacks()
-	{
-	}
-
-	private void OnDisable()
-	{
-	}
+	public void SetupCallbacks() { }
+	private void OnSaveDoICloud(SaveGame.SaveSlot slot) { }
+	private void UnsetCallbacks() { }
+	private void OnDisable() { }
 
 	private void Awake()
 	{
+		if (k_Instance == null)
+		{
+			k_Instance = this;
+			DontDestroyOnLoad(gameObject);
+		}
+		IsReady = true;
 	}
 
-	private IEnumerator ReloadWhenInASceneThatAllowsReloadRoutine(ReloadState shouldReload)
-	{
-		return null;
-	}
-
-	public void IOSOnlineServices_OnShouldReload(ReloadState shouldReload)
-	{
-	}
+	public void IOSOnlineServices_OnShouldReload(ReloadState shouldReload) { }
 
 	public IEnumerator PreloadSaveCR(string filename, Action<CloudSave.CloudSaveResult> OnDone)
 	{
-		return null;
+		OnDone?.Invoke(new CloudSave.CloudSaveResult { save = SaveGame.CurrentSave, iCloudData = new CloudSave.ICloudResult { success = false } });
+		yield break;
 	}
 
-	private void OnLoadedSaveCacheSaveGame(SaveGame.SaveSlot slot)
-	{
-	}
-
-	public void SetReadyForGameCenterLogin()
-	{
-	}
-
-	private SaveGame.SaveData MergeSaves(SaveGame.SaveData a, SaveGame.SaveData b)
-	{
-		return null;
-	}
+	public void SetReadyForGameCenterLogin() => IsReady = true;
 
 	public IEnumerator MegaMergeAllSaveFilesCR()
 	{
-		return null;
+		IsReady = true;
+		yield break;
 	}
 
 	public void Initialize(Action OnReady, Action OnSaveFilenameDetermined)
 	{
-	}
-
-	private void SynchronizeSaves(bool force = false)
-	{
-	}
-
-	private IEnumerator SynchronizeSavesCR(CloudSave.CloudSaveResult cachedCloudResult, Action<ReloadState> onDone)
-	{
-		return null;
+		IsReady = true;
+		OnSaveFilenameDetermined?.Invoke();
+		OnReady?.Invoke();
 	}
 
 	public void TriggerReload(ReloadState reloadState)
 	{
-	}
-
-	private IEnumerator DetermineGCUserAsync(Action<bool> onDone)
-	{
-		return null;
-	}
-
-	private void InitializeRoutine(Action OnReady, Action OnSaveFilenameDetermined)
-	{
-	}
-
-	private void OnApplicationPause(bool pauseStatus)
-	{
-	}
-
-	private void OnApplicationFocus(bool hasFocus)
-	{
-	}
-
-	private void TrySynchronizeOnStateChange(bool gameCenterOnly = false)
-	{
-	}
-
-	private void SynchronizeGCUserAndSavesCR(bool gameCenterOnly = false)
-	{
-	}
-
-	private void OnApplicationQuit()
-	{
-	}
-
-	private IEnumerator RestartApp()
-	{
-		return null;
+		m_OnShouldReload?.Invoke(reloadState);
 	}
 
 	public IEnumerator DisplayGameCenterUnavailableDialog()
 	{
-		return null;
+		yield break;
 	}
 }

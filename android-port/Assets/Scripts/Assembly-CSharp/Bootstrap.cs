@@ -1,20 +1,80 @@
+using System;
+using System.Collections;
 using System.Threading.Tasks;
+using Core;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceProviders;
+using UnityEngine.SceneManagement;
 
 public class Bootstrap : MonoBehaviour
 {
 	public AASplashScreen arcadeSplashScreen;
-
 	public GameObject SplashScreensContainer;
 
 	private void Start()
 	{
+		StartCoroutine(BootstrapRoutine());
 	}
 
-	private Task AwaitSplash()
+	private IEnumerator BootstrapRoutine()
 	{
-		return null;
+		SetWindowSize();
+		SetOrientation();
+
+		if (arcadeSplashScreen != null)
+			arcadeSplashScreen.gameObject.SetActive(false);
+		if (SplashScreensContainer != null)
+			SplashScreensContainer.SetActive(false);
+		if (StartupLoadingScreen.Instance != null)
+			StartupLoadingScreen.Instance.Hide();
+
+		SceneInstance loadedScene = default;
+		bool loadedViaAddressables = false;
+
+		AsyncOperationHandle<SceneInstance> handle = default;
+		try
+		{
+			handle = Addressables.LoadSceneAsync("Loading", LoadSceneMode.Single, true);
+		}
+		catch (Exception)
+		{
+		}
+
+		if (handle.IsValid())
+		{
+			while (!handle.IsDone)
+				yield return null;
+			if (handle.Status == AsyncOperationStatus.Succeeded)
+			{
+				loadedScene = handle.Result;
+				loadedViaAddressables = true;
+			}
+		}
+
+		if (!loadedViaAddressables)
+		{
+			if (Application.CanStreamedLevelBeLoaded("Loading"))
+			{
+				var op = SceneManager.LoadSceneAsync("Loading", LoadSceneMode.Single);
+				if (op != null)
+				{
+					while (!op.isDone)
+						yield return null;
+				}
+			}
+		}
+
+		yield return null;
+		var loading = FindObjectOfType<Loading>();
+		if (loading != null)
+		{
+			loading.Init(loadedScene);
+		}
 	}
+
+	private Task AwaitSplash() => Task.CompletedTask;
 
 	private void SetWindowSize()
 	{
@@ -22,5 +82,11 @@ public class Bootstrap : MonoBehaviour
 
 	private void SetOrientation()
 	{
+		Screen.sleepTimeout = SleepTimeout.NeverSleep;
+		Screen.autorotateToPortrait = false;
+		Screen.autorotateToPortraitUpsideDown = false;
+		Screen.autorotateToLandscapeLeft = true;
+		Screen.autorotateToLandscapeRight = true;
+		Screen.orientation = ScreenOrientation.AutoRotation;
 	}
 }
