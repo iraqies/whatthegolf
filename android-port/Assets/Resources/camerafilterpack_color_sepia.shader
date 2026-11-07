@@ -1,59 +1,26 @@
 Shader "CameraFilterPack/Color_Sepia" {
 	Properties {
+
 		_MainTex ("Base (RGB)", 2D) = "white" {}
 		_TimeX ("Time", Range(0, 1)) = 1
 		_Distortion ("_Distortion", Range(0, 1)) = 1
 		_ScreenResolution ("_ScreenResolution", Vector) = (0,0,0,0)
 	}
-	//DummyShaderTextExporter
-	SubShader{
-		Tags { "RenderType"="Opaque" }
-		LOD 200
-
-		Pass
-		{
-			HLSLPROGRAM
-			#pragma vertex vert
+	SubShader {
+		Cull Off ZWrite Off ZTest Always
+		Pass {
+			CGPROGRAM
+			#pragma vertex vert_img
 			#pragma fragment frag
-
-			float4x4 unity_ObjectToWorld;
-			float4x4 unity_MatrixVP;
-			float4 _MainTex_ST;
-
-			struct Vertex_Stage_Input
-			{
-				float4 pos : POSITION;
-				float2 uv : TEXCOORD0;
-			};
-
-			struct Vertex_Stage_Output
-			{
-				float2 uv : TEXCOORD0;
-				float4 pos : SV_POSITION;
-			};
-
-			Vertex_Stage_Output vert(Vertex_Stage_Input input)
-			{
-				Vertex_Stage_Output output;
-				output.uv = (input.uv.xy * _MainTex_ST.xy) + _MainTex_ST.zw;
-				output.pos = mul(unity_MatrixVP, mul(unity_ObjectToWorld, input.pos));
-				return output;
+			#include "UnityCG.cginc"
+			sampler2D _MainTex;
+			
+			fixed4 frag(v2f_img i) : SV_Target {
+				fixed4 col = tex2D(_MainTex, i.uv);
+				float3 s = float3(dot(col.rgb, float3(0.393, 0.769, 0.189)), dot(col.rgb, float3(0.349, 0.686, 0.168)), dot(col.rgb, float3(0.272, 0.534, 0.131)));
+				return fixed4(saturate(s), col.a);
 			}
-
-			Texture2D<float4> _MainTex;
-			SamplerState sampler_MainTex;
-
-			struct Fragment_Stage_Input
-			{
-				float2 uv : TEXCOORD0;
-			};
-
-			float4 frag(Fragment_Stage_Input input) : SV_TARGET
-			{
-				return _MainTex.Sample(sampler_MainTex, input.uv.xy);
-			}
-
-			ENDHLSL
+			ENDCG
 		}
 	}
 }

@@ -1,5 +1,6 @@
 Shader "Custom/SurfaceDepthTextureColorized" {
 	Properties {
+
 		_Color ("Color", Vector) = (1,1,1,1)
 		_BlendColor ("Blend Color", Vector) = (1,1,1,1)
 		_MainTex ("Albedo (RGB)", 2D) = "white" {}
@@ -8,56 +9,42 @@ Shader "Custom/SurfaceDepthTextureColorized" {
 		_InvFade ("Soft Factor", Range(0.01, 3)) = 1
 		_FadeLimit ("Fade Limit", Range(0, 1)) = 0.3
 	}
-	//DummyShaderTextExporter
-	SubShader{
-		Tags { "RenderType"="Opaque" }
+	SubShader {
+		Tags { "RenderType"="Opaque" "Queue"="Geometry" }
 		LOD 200
-
-		Pass
-		{
-			HLSLPROGRAM
+		Pass {
+			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
+			#include "UnityCG.cginc"
 
-			float4x4 unity_ObjectToWorld;
-			float4x4 unity_MatrixVP;
-			float4 _MainTex_ST;
-
-			struct Vertex_Stage_Input
-			{
-				float4 pos : POSITION;
-				float2 uv : TEXCOORD0;
-			};
-
-			struct Vertex_Stage_Output
-			{
-				float2 uv : TEXCOORD0;
-				float4 pos : SV_POSITION;
-			};
-
-			Vertex_Stage_Output vert(Vertex_Stage_Input input)
-			{
-				Vertex_Stage_Output output;
-				output.uv = (input.uv.xy * _MainTex_ST.xy) + _MainTex_ST.zw;
-				output.pos = mul(unity_MatrixVP, mul(unity_ObjectToWorld, input.pos));
-				return output;
-			}
-
-			Texture2D<float4> _MainTex;
-			SamplerState sampler_MainTex;
 			float4 _Color;
+			float4 _BlendColor;
 
-			struct Fragment_Stage_Input
-			{
+			struct appdata {
+				float4 vertex : POSITION;
 				float2 uv : TEXCOORD0;
 			};
 
-			float4 frag(Fragment_Stage_Input input) : SV_TARGET
-			{
-				return _MainTex.Sample(sampler_MainTex, input.uv.xy) * _Color;
+			struct v2f {
+				float4 pos : SV_POSITION;
+				float3 wpos : TEXCOORD0;
+			};
+
+			v2f vert(appdata v) {
+				v2f o;
+				o.pos = UnityObjectToClipPos(v.vertex);
+				o.wpos = mul(unity_ObjectToWorld, v.vertex).xyz;
+				return o;
 			}
 
-			ENDHLSL
+			fixed4 frag(v2f i) : SV_Target {
+				float wave = sin(i.wpos.x * 0.6 + _Time.y * 1.5) * cos(i.wpos.z * 0.6 + _Time.y * 1.2) * 0.5 + 0.5;
+				float3 rgb = lerp(_Color.rgb, _BlendColor.rgb, wave * 0.35);
+				return fixed4(rgb, 1.0);
+			}
+			ENDCG
 		}
 	}
+	FallBack "Diffuse"
 }

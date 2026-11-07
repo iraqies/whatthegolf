@@ -1,47 +1,58 @@
 Shader "Custom/Unlit Color (with shadow)" {
 	Properties {
+
 		_Color ("Albedo Color", Vector) = (1,1,1,1)
 		_ShadowAmount ("Shadow Amount", Float) = 1
 	}
-	//DummyShaderTextExporter
-	SubShader{
-		Tags { "RenderType"="Opaque" }
+	SubShader {
+		Tags { "Queue"="Geometry" "RenderType"="Opaque" }
 		LOD 200
-
-		Pass
-		{
-			HLSLPROGRAM
+		Cull Back
+		Blend Off
+		ZWrite On
+		Pass {
+			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
-
-			float4x4 unity_ObjectToWorld;
-			float4x4 unity_MatrixVP;
-
-			struct Vertex_Stage_Input
-			{
-				float4 pos : POSITION;
-			};
-
-			struct Vertex_Stage_Output
-			{
-				float4 pos : SV_POSITION;
-			};
-
-			Vertex_Stage_Output vert(Vertex_Stage_Input input)
-			{
-				Vertex_Stage_Output output;
-				output.pos = mul(unity_MatrixVP, mul(unity_ObjectToWorld, input.pos));
-				return output;
-			}
+			#include "UnityCG.cginc"
 
 			float4 _Color;
 
-			float4 frag(Vertex_Stage_Output input) : SV_TARGET
-			{
-				return _Color; // RGBA
+			struct appdata {
+				float4 vertex : POSITION;
+				float3 normal : NORMAL;
+				float2 uv : TEXCOORD0;
+				float4 color : COLOR;
+			};
+
+			struct v2f {
+				float4 pos : SV_POSITION;
+				float3 wnorm : TEXCOORD0;
+				float3 wpos : TEXCOORD1;
+				float2 uv : TEXCOORD2;
+				float4 color : COLOR;
+			};
+
+			v2f vert(appdata v) {
+				v2f o;
+				o.pos = UnityObjectToClipPos(v.vertex);
+				o.wnorm = UnityObjectToWorldNormal(v.normal);
+				o.wpos = mul(unity_ObjectToWorld, v.vertex).xyz;
+				o.uv = v.uv;
+				o.color = v.color;
+				return o;
 			}
 
-			ENDHLSL
+			fixed4 frag(v2f i) : SV_Target {
+				float4 col = float4(1, 1, 1, 1);
+				col *= _Color;
+				float3 n = normalize(i.wnorm);
+				float3 l = normalize(float3(0.35, 0.85, -0.4));
+				col.rgb *= (0.65 + 0.35 * saturate(dot(n, l)));
+				return col;
+			}
+			ENDCG
 		}
 	}
+	FallBack "Diffuse"
 }

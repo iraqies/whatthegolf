@@ -1,5 +1,6 @@
 Shader "Custom/GolfLambert (with texture)" {
 	Properties {
+
 		_HighlightColor ("Highlight Color", Vector) = (1,1,1,1)
 		_Color ("Albedo Color", Vector) = (1,1,1,1)
 		_MainTex ("Albedo Texture", 2D) = "white" {}
@@ -7,56 +8,63 @@ Shader "Custom/GolfLambert (with texture)" {
 		_HighlightAmount ("Highlight Amount", Range(0, 2)) = 0
 		_HighlightAngle ("Highlight Width", Range(0, 1)) = 1
 	}
-	//DummyShaderTextExporter
-	SubShader{
-		Tags { "RenderType"="Opaque" }
+	SubShader {
+		Tags { "RenderType"="Opaque" "Queue"="Geometry" }
 		LOD 200
-
-		Pass
-		{
-			HLSLPROGRAM
+		Cull Back
+		Pass {
+			Tags { "LightMode"="ForwardBase" }
+			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
+			#include "UnityCG.cginc"
 
-			float4x4 unity_ObjectToWorld;
-			float4x4 unity_MatrixVP;
-			float4 _MainTex_ST;
-
-			struct Vertex_Stage_Input
-			{
-				float4 pos : POSITION;
-				float2 uv : TEXCOORD0;
-			};
-
-			struct Vertex_Stage_Output
-			{
-				float2 uv : TEXCOORD0;
-				float4 pos : SV_POSITION;
-			};
-
-			Vertex_Stage_Output vert(Vertex_Stage_Input input)
-			{
-				Vertex_Stage_Output output;
-				output.uv = (input.uv.xy * _MainTex_ST.xy) + _MainTex_ST.zw;
-				output.pos = mul(unity_MatrixVP, mul(unity_ObjectToWorld, input.pos));
-				return output;
-			}
-
-			Texture2D<float4> _MainTex;
-			SamplerState sampler_MainTex;
 			float4 _Color;
+			float4 _HighlightColor;
+			float4 _ShadowColor;
+			float _HighlightAmount;
+			float _HighlightAngle;
+			sampler2D _MainTex; float4 _MainTex_ST;
+			
 
-			struct Fragment_Stage_Input
-			{
+			struct appdata {
+				float4 vertex : POSITION;
+				float3 normal : NORMAL;
 				float2 uv : TEXCOORD0;
+				float4 color : COLOR;
 			};
 
-			float4 frag(Fragment_Stage_Input input) : SV_TARGET
-			{
-				return _MainTex.Sample(sampler_MainTex, input.uv.xy) * _Color;
+			struct v2f {
+				float4 pos : SV_POSITION;
+				float3 wnorm : TEXCOORD0;
+				float2 uv : TEXCOORD1;
+				float4 color : COLOR;
+			};
+
+			v2f vert(appdata v) {
+				v2f o;
+				
+				o.pos = UnityObjectToClipPos(v.vertex);
+				o.wnorm = UnityObjectToWorldNormal(v.normal);
+				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+				o.color = v.color;
+				return o;
 			}
 
-			ENDHLSL
+			fixed4 frag(v2f i) : SV_Target {
+				float4 albedo = _Color;
+				
+				albedo *= tex2D(_MainTex, i.uv);
+				float3 n = normalize(i.wnorm);
+				float3 l = any(_WorldSpaceLightPos0.xyz) ? normalize(_WorldSpaceLightPos0.xyz) : normalize(float3(0.35, 0.85, -0.4));
+				float ndotl = dot(n, l) * 0.5 + 0.5;
+				float3 shaded = lerp(albedo.rgb * (1.0 - saturate(_ShadowColor.a) * 0.45) + _ShadowColor.rgb * 0.25, albedo.rgb, saturate(ndotl));
+				float hl = smoothstep(1.0 - max(_HighlightAngle, 0.05), 1.0, ndotl) * _HighlightAmount * 0.25;
+				shaded = saturate(shaded + _HighlightColor.rgb * hl);
+				return fixed4(shaded, albedo.a);
+			}
+			ENDCG
 		}
 	}
+	FallBack "Diffuse"
 }

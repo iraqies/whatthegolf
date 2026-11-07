@@ -1,43 +1,56 @@
 Shader "ProBuilder/UnlitVertexColor" {
 	Properties {
-	}
-	//DummyShaderTextExporter
-	SubShader{
-		Tags { "RenderType" = "Opaque" }
-		LOD 200
 
-		Pass
-		{
-			HLSLPROGRAM
+	}
+	SubShader {
+		Tags { "Queue"="Geometry" "RenderType"="Opaque" }
+		LOD 200
+		Cull Back
+		Blend Off
+		ZWrite On
+		Pass {
+			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
+			#include "UnityCG.cginc"
 
-			float4x4 unity_ObjectToWorld;
-			float4x4 unity_MatrixVP;
+			
 
-			struct Vertex_Stage_Input
-			{
-				float4 pos : POSITION;
+			struct appdata {
+				float4 vertex : POSITION;
+				float3 normal : NORMAL;
+				float2 uv : TEXCOORD0;
+				float4 color : COLOR;
 			};
 
-			struct Vertex_Stage_Output
-			{
+			struct v2f {
 				float4 pos : SV_POSITION;
+				float3 wnorm : TEXCOORD0;
+				float3 wpos : TEXCOORD1;
+				float2 uv : TEXCOORD2;
+				float4 color : COLOR;
 			};
 
-			Vertex_Stage_Output vert(Vertex_Stage_Input input)
-			{
-				Vertex_Stage_Output output;
-				output.pos = mul(unity_MatrixVP, mul(unity_ObjectToWorld, input.pos));
-				return output;
+			v2f vert(appdata v) {
+				v2f o;
+				o.pos = UnityObjectToClipPos(v.vertex);
+				o.wnorm = UnityObjectToWorldNormal(v.normal);
+				o.wpos = mul(unity_ObjectToWorld, v.vertex).xyz;
+				o.uv = v.uv;
+				o.color = v.color;
+				return o;
 			}
 
-			float4 frag(Vertex_Stage_Output input) : SV_TARGET
-			{
-				return float4(1.0, 1.0, 1.0, 1.0); // RGBA
+			fixed4 frag(v2f i) : SV_Target {
+				float4 col = float4(1, 1, 1, 1);
+				col *= i.color;
+				float3 n = normalize(i.wnorm);
+				float3 l = normalize(float3(0.35, 0.85, -0.4));
+				col.rgb *= (0.65 + 0.35 * saturate(dot(n, l)));
+				return col;
 			}
-
-			ENDHLSL
+			ENDCG
 		}
 	}
+	FallBack "Diffuse"
 }
