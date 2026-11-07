@@ -2,7 +2,7 @@
 set -euo pipefail
 cd /home/ubuntu/c113work/tools/assetripper
 
-echo "[1/3] Preparing Mono-style layout with DummyDll, stub assemblies, and StreamingAssets..."
+echo "[1/3] Preparing Mono-style layout with DummyDll and StreamingAssets..."
 layout="/home/ubuntu/c113work/ar_in"
 rm -rf "$layout"
 mkdir -p "$layout/GOLF_Data/Managed"
@@ -14,19 +14,6 @@ for f in /home/ubuntu/c112work/x/Payload/GOLF.app/Data/*; do
   esac
 done
 cp /home/ubuntu/c112work/il2cpp_out/DummyDll/*.dll "$layout/GOLF_Data/Managed/"
-
-# Create empty valid .NET assemblies for any stripped assemblies referenced in ScriptingAssemblies.json
-python3 -c '
-import json, os, shutil
-sa = json.load(open("/home/ubuntu/c112work/x/Payload/GOLF.app/Data/ScriptingAssemblies.json"))
-managed = "/home/ubuntu/c113work/ar_in/GOLF_Data/Managed"
-template = os.path.join(managed, "Il2CppDummyDll.dll")
-for name in sa.get("names", []):
-    dst = os.path.join(managed, name)
-    if not os.path.exists(dst):
-        shutil.copy2(template, dst)
-'
-
 printf '\x7fELF' > "$layout/GOLF.x86_64"
 
 echo "[2/3] Exporting Unity project via AssetRipper 2.0.0 with DefaultVersion=2020.3.49f1..."
