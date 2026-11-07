@@ -1,90 +1,58 @@
 using System;
 using System.Collections.Generic;
+using I2.Loc;
 using UnityEngine;
 
 public class Localization
 {
-	private Dictionary<string, LocalizationFont> fonts;
-
+	private Dictionary<string, LocalizationFont> fonts = new Dictionary<string, LocalizationFont>();
 	private const string TAG = "Localization";
-
-	private static readonly pLogger dbg;
-
-	private static readonly pLogger dbg_details;
-
 	public static Action OnLanguageChangedEvent;
-
 	private static Localization instance;
+	private string _currentLang = "English";
 
-	public static Localization Instance => null;
+	public static Localization Instance => instance ?? (instance = new Localization());
 
 	[RuntimeInitializeOnLoadMethod]
 	private static void Init()
 	{
-	}
-
-	static Localization()
-	{
+		_ = Instance;
 	}
 
 	public void ChangeLanguage(string languageId)
 	{
+		if (!string.IsNullOrEmpty(languageId))
+		{
+			_currentLang = languageId;
+			OnLanguageChangedEvent?.Invoke();
+		}
 	}
 
-	public string GetCurrentLanguage()
-	{
-		return null;
-	}
-
-	public bool IsEnglish()
-	{
-		return false;
-	}
-
-	public string ReverseCustomTextIfNecessary(string text)
-	{
-		return null;
-	}
-
-	public string GetNextLanguage()
-	{
-		return null;
-	}
-
-	public bool HasTerm(string id)
-	{
-		return false;
-	}
+	public string GetCurrentLanguage() => _currentLang;
+	public bool IsEnglish() => string.IsNullOrEmpty(_currentLang) || _currentLang.StartsWith("en", StringComparison.OrdinalIgnoreCase);
+	public string ReverseCustomTextIfNecessary(string text) => text ?? string.Empty;
+	public string GetNextLanguage() => _currentLang;
+	public bool HasTerm(string id) => !string.IsNullOrEmpty(id);
 
 	public string GetStringWithFormat(string id, params object[] values)
 	{
-		return null;
+		string raw = GetString(id);
+		try { return values != null && values.Length > 0 ? string.Format(raw, values) : raw; }
+		catch { return raw; }
 	}
 
-	public string GetEnglishString(string id)
-	{
-		return null;
-	}
+	public string GetEnglishString(string id) => GetString(id);
 
 	public string GetString(string id, bool suppressWarnings = false, string overrideLanguage = null)
 	{
-		return null;
+		if (string.IsNullOrEmpty(id)) return string.Empty;
+		if (id.StartsWith("ID_"))
+			return id.Substring(3).Replace("__", ": ").Replace("_", " ");
+		return id;
 	}
 
-	public LocalizationFont GetFont(LocalizationFontStyle style)
-	{
-		return null;
-	}
-
-	private void RegisterForLanguageChanges()
-	{
-	}
-
-	private void OnLanguageChanged()
-	{
-	}
-
-	private void LoadFontCollection(string fontCollectionName)
-	{
-	}
+	public LocalizationFont GetFont(LocalizationFontStyle style) => null;
+	private void RegisterForLanguageChanges() { }
+	private void OnLanguageChanged() => OnLanguageChangedEvent?.Invoke();
+	private void LoadFontCollection(string fontCollectionName) { }
 }

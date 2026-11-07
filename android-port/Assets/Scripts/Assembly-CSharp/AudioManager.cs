@@ -9,138 +9,105 @@ using UnityEngine.Audio;
 public class AudioManager : MonoBehaviour
 {
 	private static AudioManager instance;
-
 	public AudioSources shortEffects;
-
 	public AudioSources impactEffects;
-
 	public AudioSources uiEffects;
-
 	public AudioSources overworldSpatial;
-
 	public AudioSources ambientEffects;
-
 	public RumbleManager rumbleManager;
-
 	public GolfAudioManager golfAudioManager;
-
 	public AudioSources voices;
-
 	public AudioMixer musicMixer;
-
 	public AudioMixer sfxMixer;
-
 	public AudioMixerSnapshot snapshot3D;
-
 	public AudioMixerSnapshot snapshot2D;
-
 	private AmbientAudioPlayer ambient;
-
 	private GolfAudioManager golfAudio;
-
 	public MusicManager music;
-
 	public AmbientAudioPlayer AmbientPlayer;
-
 	private AudioMixerSnapshot lastMixerSnapshot;
-
-	private Dictionary<int, AudioMaterialSettings> audioMatCache;
-
+	private Dictionary<int, AudioMaterialSettings> audioMatCache = new Dictionary<int, AudioMaterialSettings>();
 	public int matCacheCount;
-
 	public uint[] downloadMusicStates;
-
 	public const string SFX_Volume = "SFX_Volume";
-
 	public const string Music_Volume = "Music_Volume";
-
 	private float enableListenersTimer;
-
 	private Coroutine fadeRoutine;
 
-	public static AudioManager Instance => null;
+	public static AudioManager Instance
+	{
+		get
+		{
+			if (instance == null)
+			{
+				instance = FindObjectOfType<AudioManager>();
+				if (instance == null)
+				{
+					var go = new GameObject("AudioManager");
+					instance = go.AddComponent<AudioManager>();
+					instance.music = go.AddComponent<MusicManager>();
+					DontDestroyOnLoad(go);
+				}
+			}
+			return instance;
+		}
+	}
 
-	public Dictionary<int, AudioMaterialSettings> AudioMatCache => null;
+	public Dictionary<int, AudioMaterialSettings> AudioMatCache => audioMatCache;
 
 	public void Init()
 	{
+		instance = this;
+		if (music == null) music = GetComponentInChildren<MusicManager>() ?? gameObject.AddComponent<MusicManager>();
 	}
 
 	[RuntimeInitializeOnLoadMethod]
 	public static void ResetOneshotAssets()
 	{
+		instance = null;
 	}
 
-	private void Start()
+	private void Awake()
 	{
+		if (instance == null)
+		{
+			instance = this;
+			DontDestroyOnLoad(gameObject);
+		}
+		if (music == null) music = GetComponentInChildren<MusicManager>() ?? gameObject.AddComponent<MusicManager>();
 	}
 
-	private void Instance_OnLevelWillUnload()
-	{
-	}
+	private void Start() => Init();
+	private void Instance_OnLevelWillUnload() => music?.OnLevelWillUnload();
+	private void Instance_OnLevelLoaded(LevelData data) => music?.OnLevelLoaded();
+	public void OnLevelDesignerPlayStart(Camera cam, Transform listenerFollowTarget) { }
+	public void OnLevelDesignerReset(Camera cam, Transform listenerFollowTarget) { }
 
-	private void Instance_OnLevelLoaded(LevelData data)
-	{
-	}
-
-	public void OnLevelDesignerPlayStart(Camera cam, Transform listenerFollowTarget)
-	{
-	}
-
-	public void OnLevelDesignerReset(Camera cam, Transform listenerFollowTarget)
-	{
-	}
-
-	public bool CheckMaterial(GameObject go, List<AudioMaterial> include, List<AudioMaterial> exclude, bool includeEmpty = false)
-	{
-		return false;
-	}
+	public bool CheckMaterial(GameObject go, List<AudioMaterial> include, List<AudioMaterial> exclude, bool includeEmpty = false) => includeEmpty;
 
 	public bool CheckMaterial(out AudioMaterialSettings setting, GameObject go, List<AudioMaterial> include, List<AudioMaterial> exclude, bool includeEmpty = false)
 	{
 		setting = null;
-		return false;
+		return includeEmpty;
 	}
 
-	private void UpdateMixerSettings(LevelData leveldata)
-	{
-	}
-
-	public void FadeAllOut(float time)
-	{
-	}
-
-	public void FadeAllIn(float time)
-	{
-	}
+	private void UpdateMixerSettings(LevelData leveldata) { }
+	public void FadeAllOut(float time) { }
+	public void FadeAllIn(float time) { }
 
 	private IEnumerator FadeRoutine(float sfxVolume, float musicVolume, float time)
 	{
-		return null;
+		yield break;
 	}
 
-	public static void SetMusicGain(float volume)
-	{
-	}
-
-	public static void SetSoundGain(float volume)
-	{
-	}
-
-	public void SetMixerSnapshot(AudioMixerSnapshot snapshot, float time = 0.4f)
-	{
-	}
-
-	public void ResetMixerSnapshot(float time = 0.4f)
-	{
-	}
-
-	public void AudioSourceFollowTransform(AudioSource src, Transform trans, float time)
-	{
-	}
+	public static void SetMusicGain(float volume) { }
+	public static void SetSoundGain(float volume) { }
+	public void SetMixerSnapshot(AudioMixerSnapshot snapshot, float time = 0.4f) { }
+	public void ResetMixerSnapshot(float time = 0.4f) { }
+	public void AudioSourceFollowTransform(AudioSource src, Transform trans, float time) { }
 
 	public IEnumerator Follow(AudioSource src, Transform trans, float time)
 	{
-		return null;
+		yield break;
 	}
 }
