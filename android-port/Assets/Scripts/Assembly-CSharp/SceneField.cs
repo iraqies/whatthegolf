@@ -16,7 +16,17 @@ public class SceneField : ISerializationCallbackReceiver
 
 	public IResourceLocation ResourceLocation;
 
-	public string SceneName => null;
+	public string SceneName
+	{
+		get
+		{
+			if (sceneReference != null && !string.IsNullOrEmpty(sceneReference.SceneName))
+				return sceneReference.SceneName;
+			if (!string.IsNullOrEmpty(deprecated_SceneName))
+				return deprecated_SceneName;
+			return sceneAsset != null ? sceneAsset.name : string.Empty;
+		}
+	}
 
 	public void OnAfterDeserialize()
 	{

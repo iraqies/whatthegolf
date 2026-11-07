@@ -9,78 +9,61 @@ namespace Malee
 	public abstract class ReorderableArray<T> : ICloneable, IList<T>, ICollection<T>, IEnumerable<T>, IEnumerable
 	{
 		[SerializeField]
-		private List<T> array;
+		private List<T> array = new List<T>();
 
-		// C# has no syntax for parameterized property 'Item'.
-		public T get_Item(int index)
+		public T this[int index]
 		{
-			return default;
-		}
-
-		public void set_Item(int index, T value)
-		{
+			get => array[index];
+			set => array[index] = value;
 		}
 
 		public bool IsReadOnly => false;
 
-		public int Count => 0;
+		public int Count => array != null ? array.Count : 0;
 
 		public ReorderableArray()
 		{
+			array = new List<T>();
 		}
 
 		public ReorderableArray(int length)
 		{
+			array = new List<T>(length);
 		}
 
 		public object Clone()
 		{
-			return null;
+			var copy = (ReorderableArray<T>)MemberwiseClone();
+			copy.array = array != null ? new List<T>(array) : new List<T>();
+			return copy;
 		}
 
-		public bool Contains(T value)
-		{
-			return false;
-		}
+		public bool Contains(T value) => array != null && array.Contains(value);
 
-		public int IndexOf(T value)
-		{
-			return 0;
-		}
+		public int IndexOf(T value) => array != null ? array.IndexOf(value) : -1;
 
 		public void Insert(int index, T item)
 		{
+			if (array == null) array = new List<T>();
+			array.Insert(index, item);
 		}
 
-		public void RemoveAt(int index)
-		{
-		}
+		public void RemoveAt(int index) => array?.RemoveAt(index);
 
 		public void Add(T item)
 		{
+			if (array == null) array = new List<T>();
+			array.Add(item);
 		}
 
-		public void Clear()
-		{
-		}
+		public void Clear() => array?.Clear();
 
-		public void CopyTo(T[] array, int arrayIndex)
-		{
-		}
+		public void CopyTo(T[] target, int arrayIndex) => array?.CopyTo(target, arrayIndex);
 
-		public bool Remove(T item)
-		{
-			return false;
-		}
+		public bool Remove(T item) => array != null && array.Remove(item);
 
-		public IEnumerator<T> GetEnumerator()
-		{
-			return null;
-		}
+		public IEnumerator<T> GetEnumerator() => (array ?? (array = new List<T>())).GetEnumerator();
 
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return null;
-		}
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
 }

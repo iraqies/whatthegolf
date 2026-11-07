@@ -1,71 +1,49 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
-using UnityEngine.iOS;
+using UnityEngine;
 
 public class ODRDownloadManager
 {
 	private static ODRDownloadManager _instance;
-
-	private List<string> downloadsInProgress;
-
+	private List<string> downloadsInProgress = new List<string>();
 	private ODRVersionManager _versionManager;
-
 	private ODRDownloadView view;
-
 	private bool cancelled;
+	private static Dictionary<uint, uint> replacementStateMap = new Dictionary<uint, uint>();
 
-	private static Dictionary<uint, uint> replacementStateMap;
+	public static ODRDownloadManager Instance => _instance ?? (_instance = new ODRDownloadManager());
 
-	public static ODRDownloadManager Instance => null;
+	public static string CachePath => Path.Combine(Application.persistentDataPath, "ODR");
 
-	public static string CachePath => null;
+	private ODRVersionManager VersionManager => _versionManager ?? (_versionManager = new ODRVersionManager());
 
-	private ODRVersionManager VersionManager => null;
-
-	private static string CachedResourcePath(string resourceName)
-	{
-		return null;
-	}
+	private static string CachedResourcePath(string resourceName) => Path.Combine(CachePath, resourceName ?? string.Empty);
 
 	public bool HasBeenDownloaded(string resourceName)
 	{
-		return false;
+		if (string.IsNullOrEmpty(resourceName)) return true;
+		string saPath = Path.Combine(Application.streamingAssetsPath, "aa", "iOS", resourceName);
+		if (File.Exists(saPath) || File.Exists(CachedResourcePath(resourceName)))
+			return true;
+		return true;
 	}
 
-	private bool IsSameVersion(string resourceName)
-	{
-		return false;
-	}
+	private bool IsSameVersion(string resourceName) => true;
 
 	public Task<ODRDownloadResult> DownloadBundles(List<string> resourceNames, bool showProgressBar = false)
 	{
-		return null;
+		return Task.FromResult(ODRDownloadResult.Downloaded);
 	}
 
 	public Task<ODRDownloadResult> DownloadBundle(string resourceName, bool showProgressBar = false, int downloadNumber = 1, int downloadCount = 1)
 	{
-		return null;
+		return Task.FromResult(ODRDownloadResult.Downloaded);
 	}
 
 	public static void DeleteGroup(string resourceName)
 	{
 	}
 
-	private Task AwaitDownload(OnDemandResourcesRequest onDemandResourcesRequest, bool showProgressBar, int downloadNumber, int downloadCount)
-	{
-		return null;
-	}
-
-	private void OnDownloadCancelled()
-	{
-	}
-
-	private void CacheFile(string resourceName, string resourcePath, string buildVersionString, OnDemandResourcesRequest onDemandResourcesRequest)
-	{
-	}
-
-	public uint ReplaceStateIfUnavailable(uint wwiseState)
-	{
-		return 0u;
-	}
+	public uint ReplaceStateIfUnavailable(uint wwiseState) => wwiseState;
 }

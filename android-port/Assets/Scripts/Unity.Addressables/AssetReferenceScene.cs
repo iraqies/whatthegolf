@@ -8,15 +8,13 @@ public class AssetReferenceScene : AssetReferenceT<SceneReference>
 	[SerializeField]
 	private string sceneName;
 
-	public string SceneName => null;
+	public string SceneName => sceneName;
 
 	public AssetReferenceScene(string guid, string sceneName)
-		: base((string)null)
+		: base(guid)
 	{
+		this.sceneName = sceneName;
 	}
 
-	public override bool ValidateAsset(string path)
-	{
-		return false;
-	}
+	public override bool ValidateAsset(string path) => !string.IsNullOrEmpty(path) && path.EndsWith(".unity");
 }

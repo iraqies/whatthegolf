@@ -9,9 +9,11 @@ namespace UnityAsyncAwaitUtil
 
 		public static SynchronizationContext UnitySynchronizationContext { get; private set; }
 
-		[RuntimeInitializeOnLoadMethod]
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 		private static void Install()
 		{
+			UnitySynchronizationContext = SynchronizationContext.Current;
+			UnityThreadId = Thread.CurrentThread.ManagedThreadId;
 		}
 	}
 }

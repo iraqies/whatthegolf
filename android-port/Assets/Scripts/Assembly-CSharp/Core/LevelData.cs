@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Core
@@ -19,7 +20,6 @@ namespace Core
 			}
 
 			public AngleOptions currentAngle;
-
 			public float distance;
 		}
 
@@ -33,7 +33,6 @@ namespace Core
 		public class LevelCollectable
 		{
 			public Collectable Collectable;
-
 			public List<string> IDs;
 		}
 
@@ -41,196 +40,100 @@ namespace Core
 		public class ChallengeData
 		{
 			public string ID;
-
 			public string LocalizationID;
-
 			public Sprite Icon;
 		}
 
-		[SerializeField]
-		public bool skipPopup;
-
-		[SerializeField]
-		public string ID;
-
-		[SerializeField]
-		private MapPositionData mapPosition;
-
+		[SerializeField] public bool skipPopup;
+		[SerializeField] public string ID;
+		[SerializeField] private MapPositionData mapPosition;
 		public MusicData showcaseMusic;
-
 		public LevelMusicSettings music;
-
-		[SerializeField]
-		public int StrokesToPar;
-
-		[SerializeField]
-		public string Pun;
-
-		[SerializeField]
-		public string completionID;
-
-		[SerializeField]
-		public string CompletionText;
-
-		[SerializeField]
-		public SceneField Scene;
-
-		[SerializeField]
-		private WindowType window;
-
-		public static string bestScoreID;
-
-		public static string levelEventsID;
-
-		[SerializeField]
-		public List<LevelCollectable> levelCollectables;
-
-		[SerializeField]
-		public List<ChallengeData> levelChallenges;
-
+		[SerializeField] public int StrokesToPar = 3;
+		[SerializeField] public string Pun;
+		[SerializeField] public string completionID;
+		[SerializeField] public string CompletionText;
+		[SerializeField] public SceneField Scene;
+		[SerializeField] private WindowType window;
+		public static string bestScoreID = "_BEST_SCORE";
+		public static string levelEventsID = "_EVENTS";
+		[SerializeField] public List<LevelCollectable> levelCollectables = new List<LevelCollectable>();
+		[SerializeField] public List<ChallengeData> levelChallenges = new List<ChallengeData>();
 		private List<string> _levelChallengeIds;
-
-		[SerializeField]
-		public bool isShowingFlipText;
-
-		[SerializeField]
-		public bool isBossBattle;
-
-		[SerializeField]
-		public bool usedInDailyChallenges;
-
-		[SerializeField]
-		public bool userCustomTransitionColor;
-
-		[SerializeField]
-		public Color customTransitionColor;
-
-		[SerializeField]
-		public bool useCustomTransitionEffect;
-
-		[SerializeField]
-		public Transition.TransitionEffect customTransitionEffectIndex;
-
-		[SerializeField]
-		private int WeightInt;
-
+		[SerializeField] public bool isShowingFlipText;
+		[SerializeField] public bool isBossBattle;
+		[SerializeField] public bool usedInDailyChallenges;
+		[SerializeField] public bool userCustomTransitionColor;
+		[SerializeField] public Color customTransitionColor = Color.white;
+		[SerializeField] public bool useCustomTransitionEffect;
+		[SerializeField] public Transition.TransitionEffect customTransitionEffectIndex;
+		[SerializeField] private int WeightInt = 1;
 		private string convertedLevelId;
 
 		public MapPositionData MapPosition
 		{
-			get
-			{
-				return null;
-			}
-			set
-			{
-			}
+			get => mapPosition;
+			set => mapPosition = value;
 		}
 
-		public WindowType LevelWindowType => WindowType.Normal;
+		public WindowType LevelWindowType => window;
 
 		public int BestScore
 		{
-			get
-			{
-				return 0;
-			}
-			set
-			{
-			}
+			get => SaveGame.GetValue(GetID() + bestScoreID, 0);
+			set => SaveGame.SetValue(GetID() + bestScoreID, value, true);
 		}
 
 		public List<string> CompletedChallenges
 		{
-			get
-			{
-				return null;
-			}
+			get => SaveGame.GetCompletedChallenges(LevelChallengeIds());
 			set
 			{
+				if (value != null)
+					SaveGame.AddCompletedChallenges(value);
 			}
 		}
 
 		public bool IsCompletedInSaveGame
 		{
-			get
-			{
-				return false;
-			}
+			get => SaveGame.GetIsLevelCompleted(GetID());
 			set
 			{
+				if (value) SaveGame.SetLevelCompleted(GetID());
 			}
 		}
 
-		public string SceneName => null;
+		public string SceneName => Scene != null && !string.IsNullOrEmpty(Scene.SceneName) ? Scene.SceneName : name;
 
 		public List<string> LevelChallengeIds()
 		{
-			return null;
+			if (_levelChallengeIds == null)
+			{
+				_levelChallengeIds = levelChallenges != null
+					? levelChallenges.Where(c => c != null && !string.IsNullOrEmpty(c.ID)).Select(c => c.ID).ToList()
+					: new List<string>();
+			}
+			return _levelChallengeIds;
 		}
 
-		public void HandleSceneDataUpdate(Dictionary<string, float> data)
-		{
-		}
-
-		public void DeleteData()
-		{
-		}
-
-		public WindowType GetWindowType()
-		{
-			return WindowType.Normal;
-		}
-
-		public string GetID()
-		{
-			return null;
-		}
-
-		public string GetCompletionTextID()
-		{
-			return null;
-		}
-
-		public string GetWeightID()
-		{
-			return null;
-		}
-
-		public List<string> GetChallengeLocalizationIDs()
-		{
-			return null;
-		}
-
+		public void HandleSceneDataUpdate(Dictionary<string, float> data) { }
+		public void DeleteData() { }
+		public WindowType GetWindowType() => window;
+		public string GetID() => !string.IsNullOrEmpty(ID) ? ID : name;
+		public string GetCompletionTextID() => !string.IsNullOrEmpty(completionID) ? completionID : CompletionText;
+		public string GetWeightID() => GetID() + "_WEIGHT";
+		public List<string> GetChallengeLocalizationIDs() => levelChallenges != null ? levelChallenges.Select(c => c.LocalizationID).ToList() : new List<string>();
 		public bool HasCompletedAllChallenges()
 		{
-			return false;
+			var ids = LevelChallengeIds();
+			if (ids.Count == 0) return IsCompletedInSaveGame;
+			return CompletedChallenges.Count >= ids.Count;
 		}
-
-		public int GetCurrentChallengeIndex()
-		{
-			return 0;
-		}
-
-		public void ZeroWeight()
-		{
-		}
-
-		public void IncrementWeight()
-		{
-		}
-
-		public void DeleteWeight()
-		{
-		}
-
-		public void ResetWeight()
-		{
-		}
-
-		public int GetActualWeight()
-		{
-			return 0;
-		}
+		public int GetCurrentChallengeIndex() => CompletedChallenges.Count;
+		public void ZeroWeight() { }
+		public void IncrementWeight() { }
+		public void DeleteWeight() { }
+		public void ResetWeight() { }
+		public int GetActualWeight() => Mathf.Max(1, WeightInt);
 	}
 }
