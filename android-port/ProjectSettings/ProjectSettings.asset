@@ -160,8 +160,8 @@ PlayerSettings:
   applicationIdentifier: {}
   buildNumber: {}
   overrideDefaultApplicationIdentifier: 0
-  AndroidBundleVersionCode: 0
-  AndroidMinSdkVersion: 0
+  AndroidBundleVersionCode: 200534
+  AndroidMinSdkVersion: 24
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 0
   aotOptions:
@@ -247,7 +247,7 @@ PlayerSettings:
   useCustomBaseGradleTemplate: 0
   useCustomGradlePropertiesTemplate: 0
   useCustomProguardFile: 0
-  AndroidTargetArchitectures: 0
+  AndroidTargetArchitectures: 2
   AndroidTargetDevices: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
