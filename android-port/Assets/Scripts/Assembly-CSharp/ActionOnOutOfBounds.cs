@@ -8,5 +8,10 @@ public class ActionOnOutOfBounds : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
+		if (other == null) return;
+		if (other.CompareTag("OutOfBoundsReload") || other.CompareTag("OutOfBoundsReset") || other.CompareTag("OutOfBounds"))
+		{
+			OnOutOfBounds?.Invoke();
+		}
 	}
 }

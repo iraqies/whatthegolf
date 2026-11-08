@@ -104,6 +104,7 @@ namespace GolfCourse
 			if (rigidbodies != null)
 			{
 				Collider clubCol = GolfClub != null ? GolfClub.GetComponent<Collider>() : null;
+				GolfBallController gbc = GolfBallController != null ? GolfBallController : GetComponentInParent<GolfBallController>();
 				for (int i = 0; i < rigidbodies.Length; i++)
 				{
 					Rigidbody rb = rigidbodies[i];
@@ -116,6 +117,12 @@ namespace GolfCourse
 						Collider c = rb.GetComponent<Collider>();
 						if (c != null)
 							Physics.IgnoreCollision(c, clubCol, true);
+					}
+					if (gbc != null && rb.gameObject != gbc.gameObject)
+					{
+						var fwd = rb.gameObject.GetComponent<ChildOutOfBoundsForwarder>();
+						if (fwd == null) fwd = rb.gameObject.AddComponent<ChildOutOfBoundsForwarder>();
+						fwd.controller = gbc;
 					}
 				}
 			}
@@ -264,7 +271,7 @@ namespace GolfCourse
 			{
 				for (int i = 0; i < rigidbodies.Length; i++)
 				{
-					if (rigidbodies[i] != null)
+					if (rigidbodies[i] != null && !rigidbodies[i].isKinematic)
 					{
 						rigidbodies[i].velocity = Vector3.zero;
 						rigidbodies[i].angularVelocity = Vector3.zero;
@@ -289,6 +296,11 @@ namespace GolfCourse
 					if (golfAnimator != null)
 						golfAnimator.SetFloat("Blend", 0f);
 					targetBlend = Vector3.zero;
+				}
+				else if (hips != null && GetComponentInChildren<RagdollReset>() == null)
+				{
+					hips.transform.position = oldPosition;
+					hips.transform.rotation = oldRotation;
 				}
 			}
 		}

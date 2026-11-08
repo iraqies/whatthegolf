@@ -11,13 +11,13 @@ public class SpawnNewManballAfterShot : MonoBehaviour
 
 	private int NumBallsSpawned;
 
-	public float maxWaitTime;
+	public float maxWaitTime = 1f;
 
 	public float destroyAfter;
 
-	public int maxAmount;
+	public int maxAmount = 3;
 
-	private List<GameObject> doughnuts;
+	private List<GameObject> doughnuts = new List<GameObject>();
 
 	private float shootTime;
 
@@ -35,21 +35,80 @@ public class SpawnNewManballAfterShot : MonoBehaviour
 
 	public void Complete()
 	{
+		isWon = true;
 	}
 
 	private void Start()
 	{
+		SpawnNew();
 	}
 
 	private void SpawnNew()
 	{
+		if (maxAmount != -1 && NumBallsSpawned >= maxAmount)
+			return;
+
+		GolfBallController oldCtrl = null;
+		if (ball != null)
+		{
+			oldCtrl = ball.GetComponentInChildren<GolfBallController>();
+			if (oldCtrl != null)
+			{
+				oldCtrl.StopAiming();
+				oldCtrl.enabled = false;
+			}
+		}
+
+		if (m_ball == null || m_ball.Count == 0) return;
+		GameObject prefab = m_ball[Random.Range(0, m_ball.Count)];
+		if (prefab == null) return;
+		ball = Instantiate(prefab, transform);
+		ball.SetActive(true);
+		ball.transform.position = transform.position;
+		ball.transform.localPosition = Vector3.zero;
+		controller = ball.GetComponentInChildren<GolfBallController>();
+		if (controller != null)
+		{
+			controller.OnSpawnController(oldCtrl);
+			controller.OnShoot += StartCheck;
+		}
+		if (OnAppear != null)
+			OnAppear.Play(transform.position, 1f, 1f);
+		NumBallsSpawned++;
 	}
 
 	private void StartCheck(Vector3 boost)
 	{
+		checkForZeroVel = true;
+		if (controller != null)
+			controller.OnShoot -= StartCheck;
+		shootTime = Time.time;
 	}
 
 	private void Update()
 	{
+		if (!checkForZeroVel || isWon) return;
+		if (Time.time - shootTime <= maxWaitTime) return;
+
+		if (ball != null)
+		{
+			GolfBallController c = ball.GetComponentInChildren<GolfBallController>();
+			if (c != null)
+			{
+				c.StopAiming();
+				c.enabled = false;
+			}
+			doughnuts.Add(ball);
+		}
+
+		if (maxAmount != -1 && doughnuts.Count > maxAmount && doughnuts.Count > 0)
+		{
+			if (doughnuts[0] != null)
+				Destroy(doughnuts[0]);
+			doughnuts.RemoveAt(0);
+		}
+
+		checkForZeroVel = false;
+		SpawnNew();
 	}
 }

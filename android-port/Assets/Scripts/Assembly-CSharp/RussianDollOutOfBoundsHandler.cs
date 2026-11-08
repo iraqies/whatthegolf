@@ -6,5 +6,7 @@ public class RussianDollOutOfBoundsHandler : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
+		if (Controller != null && other != null)
+			Controller.NotifyChildTriggerEnter(other);
 	}
 }

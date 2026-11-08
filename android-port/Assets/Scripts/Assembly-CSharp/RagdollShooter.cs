@@ -27,6 +27,20 @@ public class RagdollShooter : GolfBallShooterBase
 		rigidbodies = GetComponentsInChildren<Rigidbody>();
 		if (blacklist != null && blacklist.Length > 0)
 			rigidbodies = rigidbodies.Where(r => !blacklist.Contains(r)).ToArray();
+		GolfBallController gbc = GolfBallController != null ? GolfBallController : GetComponentInParent<GolfBallController>();
+		if (gbc != null && rigidbodies != null)
+		{
+			for (int i = 0; i < rigidbodies.Length; i++)
+			{
+				Rigidbody rb = rigidbodies[i];
+				if (rb != null && rb.gameObject != gbc.gameObject)
+				{
+					var fwd = rb.gameObject.GetComponent<ChildOutOfBoundsForwarder>();
+					if (fwd == null) fwd = rb.gameObject.AddComponent<ChildOutOfBoundsForwarder>();
+					fwd.controller = gbc;
+				}
+			}
+		}
 	}
 
 	public override void OnShoot(Vector3 boost)

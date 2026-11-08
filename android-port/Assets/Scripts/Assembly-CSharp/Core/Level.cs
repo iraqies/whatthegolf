@@ -269,17 +269,12 @@ namespace Core
 
 		public void Fail(bool doReload = true, bool showTransition = true, GolfBallController controller = null, float delay = 0f, bool playFailSFX = true, string message = "")
 		{
-			if (state != State.Playing)
+			if (IsMultiplayer && multiplayerLevelInfo != null && controller != null)
 			{
-				if (controller != null) controller.Reset(0f);
+				controller.Reset(0f);
 				return;
 			}
-			if (!doReload && controller != null)
-			{
-				controller.Reset(delay);
-				m_OnOutOfBounds?.Invoke();
-				return;
-			}
+			if (state is FailState) return;
 			var fs = new FailState(doReload, showTransition, delay, playFailSFX, GetHighestAmountOfStrokes(controller), message);
 			state = fs;
 		}

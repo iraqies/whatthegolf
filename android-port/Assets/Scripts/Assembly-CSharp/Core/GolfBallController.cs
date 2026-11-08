@@ -358,6 +358,13 @@ namespace Core
 			if (shootCoolTimer > 0f) shootCoolTimer -= Time.unscaledDeltaTime;
 			if (ignoreBlocking > 0f) ignoreBlocking -= Time.unscaledDeltaTime;
 
+			Vector3 posToCheck = ArrowPosition != null ? ArrowPosition.position : transform.position;
+			if (posToCheck.y < -40f)
+			{
+				CheckOutOfBounds("OutOfBoundsReload");
+				return;
+			}
+
 			if (BlockShotIfPaused && timeControl != null && timeControl.IsPaused)
 				return;
 
@@ -571,31 +578,102 @@ namespace Core
 			if (other != null) CheckOutOfBounds(other.tag);
 		}
 
-		protected virtual void CheckOutOfBounds(string tag)
+		public void NotifyChildTriggerEnter(Collider other)
 		{
-			if (tag == "OutOfBounds" || tag == "KillZone")
-				OutOfBounds("OUT OF BOUNDS", 0f);
+			if (other != null) CheckOutOfBounds(other.tag);
 		}
 
-		public void RaiseOnOutOfBoundsEvent() => m_OnOutOfBoundsEvent?.Invoke();
+		public void NotifyChildTriggerEnter2D(Collider2D other)
+		{
+			if (other != null) CheckOutOfBounds(other.tag);
+		}
+
+		protected virtual void CheckOutOfBounds(string tag)
+		{
+			if (tag == "OutOfBounds" || tag == "BoundsFail" || tag == "KillZone")
+			{
+				_ballVelocity = Vector3.zero;
+				HideShootArrow();
+				FailLevel(false);
+			}
+			else if (tag == "OutOfBoundsReset" || tag == "BoundsReset")
+			{
+				_ballVelocity = Vector3.zero;
+				HideShootArrow();
+				Reset(0f);
+			}
+			else if (tag == "OutOfBoundsReload" || tag == "BoundsReload")
+			{
+				_ballVelocity = Vector3.zero;
+				HideShootArrow();
+				FailLevel(true);
+			}
+			else if (tag == "BoundsTrigger" || tag == "OutOfBoundsTrigger")
+			{
+				_ballVelocity = Vector3.zero;
+				HideShootArrow();
+				m_OnOutOfBoundsEvent?.Invoke();
+			}
+		}
+
+		public void RaiseOnOutOfBoundsEvent()
+		{
+			_ballVelocity = Vector3.zero;
+			HideShootArrow();
+			m_OnOutOfBoundsEvent?.Invoke();
+		}
 
 		private void FailLevel(bool doReload = true)
 		{
 			if (Level.HasInstance)
-				Level.Instance.Fail(doReload, ShowTransitionOnOutOfBounds, this);
+				Level.Instance.Fail(doReload, ShowTransitionOnOutOfBounds, this, 0f, true, "OUT OF BOUNDS");
 		}
 
 		private void HideShootArrow() => shootArrow?.Hide();
 
 		public void OutOfBounds(string txt = "OUT OF BOUNDS", float delayedReset = 0f)
 		{
+			_ballVelocity = Vector3.zero;
+			HideShootArrow();
 			RaiseOnOutOfBoundsEvent();
-			Reset(delayedReset);
+			FailLevel(true);
 		}
 
 		public void Reset(float delayedReset = 0f)
 		{
+			if (delayedReset > 0f && gameObject.activeInHierarchy)
+			{
+				StartCoroutine(pTween.To(delayedReset, 0f, 1f, _ => { }).Then(ResetValues));
+			}
+			else
+			{
+				ResetValues();
+			}
+		}
+
+		private void Reload(string title) { }
+
+		public void StopAiming()
+		{
+			if (!IsAiming) return;
+			IsAiming = false;
+			IsAimingWithOutline = false;
+			if (affectTime && timeControl != null)
+				timeControl.ResetTimeScale();
+			HideShootArrow();
+		}
+
+		private void OnComplete(Level.CompletedState state)
+		{
+			if (isDestroyed) return;
 			StopAiming();
+			enabled = false;
+		}
+
+		private void ResetValues()
+		{
+			IsAiming = false;
+			IsAimingWithOutline = false;
 			transform.position = _startPos;
 			transform.rotation = _startRot;
 			var rb = GetComponent<Rigidbody>();
@@ -610,24 +688,12 @@ namespace Core
 				rb2d.velocity = Vector2.zero;
 				rb2d.angularVelocity = 0f;
 			}
-			shooter?.OnReset();
-			m_OnReset?.Invoke();
-		}
-
-		private void Reload(string title) => Reset(0f);
-
-		public void StopAiming()
-		{
-			if (!IsAiming) return;
-			IsAiming = false;
-			IsAimingWithOutline = false;
 			if (affectTime && timeControl != null)
 				timeControl.ResetTimeScale();
 			HideShootArrow();
+			shooter?.OnReset();
+			m_OnReset?.Invoke();
 		}
-
-		private void OnComplete(Level.CompletedState state) => StopAiming();
-		private void ResetValues() { }
 		private void OnEnable() { }
 		private void OnDisable() => StopAiming();
 
@@ -638,6 +704,23 @@ namespace Core
 				Level.Instance.RemoveGolfballController(this);
 			if (shootArrow != null)
 				Destroy(shootArrow.gameObject);
+		}
+	}
+
+	public class ChildOutOfBoundsForwarder : MonoBehaviour
+	{
+		public GolfBallController controller;
+
+		private void OnTriggerEnter(Collider other)
+		{
+			if (controller != null && other != null)
+				controller.NotifyChildTriggerEnter(other);
+		}
+
+		private void OnTriggerEnter2D(Collider2D other)
+		{
+			if (controller != null && other != null)
+				controller.NotifyChildTriggerEnter2D(other);
 		}
 	}
 }

@@ -183,23 +183,15 @@ public class LevelManager : AddressableSingleton<LevelManager>
 			else if (finalState is Level.FailState fs)
 			{
 				onFail?.Invoke(fs);
-				if (alwaysReloadOnFail || fs.DoReload)
-				{
-					keepPlaying = true;
-					shouldLoadScene = fs.DoReload;
-					if (fs.ShowTransition && transition != null)
-					{
-						string failMsg = !string.IsNullOrEmpty(fs.Message) ? fs.Message : null;
-						yield return StartCoroutine(transition.StartTransition(failMsg, onTheSide, fs.Delay, null, customColor, null, false, false, false, customEffect));
-					}
-					if (shouldLoadScene)
-						yield return StartCoroutine(UnloadLevel(levelData));
-				}
-				else if (!skipTransitionOut && transition != null)
+				keepPlaying = true;
+				shouldLoadScene = alwaysReloadOnFail || fs.DoReload;
+				if (fs.ShowTransition && transition != null)
 				{
 					string failMsg = !string.IsNullOrEmpty(fs.Message) ? fs.Message : null;
 					yield return StartCoroutine(transition.StartTransition(failMsg, onTheSide, fs.Delay, null, customColor, null, false, false, false, customEffect));
 				}
+				if (shouldLoadScene)
+					yield return StartCoroutine(UnloadLevel(levelData));
 			}
 			else if (finalState is Level.RestartState rs)
 			{
