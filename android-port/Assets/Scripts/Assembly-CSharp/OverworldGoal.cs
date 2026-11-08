@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Core;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class OverworldGoal : MonoBehaviour
 {
@@ -76,14 +77,69 @@ public class OverworldGoal : MonoBehaviour
 
 	private void Awake()
 	{
-		RefreshState();
-		RefreshVisuals();
+		if (isSkipping)
+			gameObject.SetActive(false);
 	}
 
 	public void Init(GridFiller filler)
 	{
+		if (isSkipping || levelData == null)
+		{
+			isSkipping = true;
+			gameObject.SetActive(false);
+			return;
+		}
+
+		parentHubSection = GetComponentInParent<HubSection>();
+		circleCollider = GetComponent<CircleCollider2D>();
+		boxCollider = GetComponentInChildren<BoxCollider2D>();
+
+		if (levelData.GetWindowType() == LevelData.WindowType.TwoD && !IsStuckToWall && !DontRotateBasedOnLevel)
+		{
+			transform.Rotate(0f, 0f, -90f, Space.Self);
+		}
+
+		if (IsStuckToWall)
+		{
+			if (circleCollider != null) circleCollider.enabled = false;
+			if (boxCollider != null) boxCollider.enabled = true;
+		}
+
+		if (filler != null)
+		{
+			Tilemap groundMap = filler.currentGroundMap;
+			Tilemap refMap = filler.groundMap != null ? filler.groundMap : groundMap;
+			if (groundMap != null && refMap != null)
+			{
+				Vector3 cellSize = refMap.cellSize;
+				Vector3 pos = transform.position;
+				Vector3 lookupPos = new Vector3(pos.x + cellSize.x * 0.25f, pos.y + cellSize.x * 0.25f, pos.z);
+				Vector3Int cell = groundMap.WorldToCell(lookupPos);
+				Vector3 snapped = groundMap.CellToWorld(cell);
+				if (!dontSnapToGrid)
+					transform.position = snapped;
+			}
+		}
+
+		if (IsStuckToWall && !dontSnapToGrid)
+		{
+			transform.position += transform.forward * 0.05f;
+		}
+
+		if (visualHole != null)
+			visualHole.SetActive(!IsStuckToWall);
+
+		if (requireGoalToUnlock != null)
+		{
+			requireGoalToUnlock.OnUpdateData -= RefreshFlag;
+			requireGoalToUnlock.OnUpdateData += RefreshFlag;
+		}
+
+		state = States.Unplayed;
 		RefreshState();
-		RefreshVisuals();
+
+		if (gameObject.activeSelf && requireGoalToUnlock != null)
+			StartCoroutine(OneFrameDelayedSetStatus());
 	}
 
 	public IEnumerator UpdatePlayerTracking(bool force = false)
@@ -108,7 +164,11 @@ public class OverworldGoal : MonoBehaviour
 	}
 
 	public bool IsCompleted() => levelData != null && levelData.IsCompletedInSaveGame;
-	public bool IsRotated2D() => false;
+
+	public bool IsRotated2D()
+	{
+		return PlatformSettings.IsMobile && levelData != null && levelData.GetWindowType() == LevelData.WindowType.TwoD;
+	}
 
 	public List<LevelData> GetAllGoalLevels()
 	{
@@ -119,12 +179,28 @@ public class OverworldGoal : MonoBehaviour
 			foreach (var l in AdditionalLevelData)
 				if (l != null && !res.Contains(l)) res.Add(l);
 		}
+		if (ExcludeFromSequence != null)
+		{
+			foreach (var ex in ExcludeFromSequence)
+				if (ex != null) res.Remove(ex);
+		}
 		return res;
 	}
 
 	public bool HasChallenges() => AdditionalLevelData != null && AdditionalLevelData.Count > 0;
 	public bool IsVisible() => state != States.Hidden;
-	public bool IsFullyCompleted() => IsCompleted();
+
+	public bool IsFullyCompleted()
+	{
+		var all = GetAllGoalLevels();
+		if (all == null || all.Count == 0) return false;
+		for (int i = 0; i < all.Count; i++)
+		{
+			if (all[i] == null || !all[i].IsCompletedInSaveGame)
+				return false;
+		}
+		return true;
+	}
 
 	public void ForceShowCrownOutline()
 	{
@@ -148,19 +224,47 @@ public class OverworldGoal : MonoBehaviour
 
 	private void RefreshState()
 	{
-		if (!IsUnlocked())
-			state = States.Unplayed;
+		if (requireGoalToUnlock != null && !requireGoalToUnlock.IsCompleted())
+		{
+			state = States.Hidden;
+		}
+		else if (IsFullyCompleted())
+		{
+			state = States.Crown;
+		}
 		else if (IsCompleted())
+		{
 			state = States.Won;
+		}
 		else
+		{
 			state = States.Unplayed;
+		}
 	}
 
 	public void RefreshVisuals()
 	{
-		if (visualNotCompleted != null) visualNotCompleted.SetActive(state == States.Unplayed);
-		if (visualWon != null) visualWon.SetActive(state == States.Won || state == States.Crown);
-		if (visualCrown != null) visualCrown.SetActive(state == States.Crown);
+		if (isSkipping || gameObject == null || !gameObject.activeInHierarchy)
+			return;
+
+		if (visualPole != null)
+			visualPole.SetActive(state != States.Hidden);
+		if (visualWon != null)
+			visualWon.SetActive(state == States.Won || state == States.Crown);
+		if (visualNotCompleted != null)
+			visualNotCompleted.SetActive(state != States.Won && state != States.Crown);
+		if (visualCrown != null)
+			visualCrown.SetActive(state == States.Crown);
+		if (visualCrownOutline != null)
+		{
+			bool showOutline = state != States.Crown && SaveGame.CrownAwarenessMode;
+			visualCrownOutline.SetActive(showOutline);
+		}
+		if (activeAnimation != null)
+		{
+			bool showActive = state == States.Unplayed && canShowIndicator && !DontShowActiveCircle;
+			activeAnimation.SetActive(showActive);
+		}
 	}
 
 	public void ReloadData()
@@ -172,25 +276,11 @@ public class OverworldGoal : MonoBehaviour
 
 	public virtual void OnCollisionEnter2D(Collision2D collision)
 	{
-		if (collision == null) return;
+		if (collision == null || collision.collider == null) return;
 		var ball = collision.collider.GetComponentInParent<OverworldBall2D>();
 		if (ball != null)
 		{
 			m_OnHit?.Invoke(this, collision.transform.position, ball);
-			if (OverworldManager2d.HasInstance)
-				OverworldManager2d.Instance.Goal_OnHit(this, collision.transform.position, ball);
-		}
-	}
-
-	private void OnTriggerEnter2D(Collider2D other)
-	{
-		if (other == null) return;
-		var ball = other.GetComponentInParent<OverworldBall2D>();
-		if (ball != null)
-		{
-			m_OnHit?.Invoke(this, other.transform.position, ball);
-			if (OverworldManager2d.HasInstance)
-				OverworldManager2d.Instance.Goal_OnHit(this, other.transform.position, ball);
 		}
 	}
 

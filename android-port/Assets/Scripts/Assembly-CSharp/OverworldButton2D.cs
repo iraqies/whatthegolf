@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Audio;
 using CameraStack;
+using Core;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -83,7 +84,16 @@ public class OverworldButton2D : GolfBehaviour
 	[SerializeField] private AddOrRemoveNotification addOrRemoveNotification;
 	[SerializeField] private string levelNotificationId;
 
-	public int GetTotalCount => requireGoals != null ? requireGoals.Count : 0;
+	public int GetTotalCount
+	{
+		get
+		{
+			if (subObjective != null && !UseAllFlagsInOverworld)
+				return subObjectiveGoal;
+			return requireGoals != null ? requireGoals.Count : 0;
+		}
+	}
+
 	public bool IsOpenOrOpening => openOrOpening;
 	public bool CanOpen => GetFlagsLeft() <= 0;
 
@@ -99,63 +109,379 @@ public class OverworldButton2D : GolfBehaviour
 		remove => m_OnStartingToOpen = (Action)Delegate.Remove(m_OnStartingToOpen, value);
 	}
 
-	public override void OnPrePlayOrPreCompile() { }
+	public override void OnPrePlayOrPreCompile()
+	{
+		base.OnPrePlayOrPreCompile();
+		bubbleShake = GetComponentInChildren<PerlinShake>();
+	}
 
 	private void Awake()
 	{
-		overworldID = GetComponent<OverworldID>();
-		door = HorizontalDoor != null ? HorizontalDoor : VerticalDoor;
-	}
-
-	private void Start()
-	{
-		if (isStartingOpen || (overworldID != null && SaveGame.GetIsDoorOpen(overworldID.ID)))
-			JustOpen(true);
-		else
-			UpdateStatus();
+		if (flagContainer != null)
+			flagContainer.gameObject.SetActive(false);
 	}
 
 	public virtual void Init(Tilemap tilemap, List<OverworldGoal> goals, OverworldCamera camera)
 	{
 		this.tileMap = tilemap;
 		this.camera = camera;
+		requireGoals = new List<OverworldGoal>();
+
+		Bounds flagBounds = default;
+		bool hasFlagBounds = false;
+		if (flagContainer != null)
+		{
+			flagBounds = new Bounds(flagContainer.position, flagContainer.localScale + Vector3.forward * 100f);
+			flagContainer.gameObject.SetActive(false);
+			hasFlagBounds = true;
+		}
+
+		hasSubobjectives = subObjective != null;
+
+		if (goals != null)
+		{
+			for (int i = 0; i < goals.Count; i++)
+			{
+				var g = goals[i];
+				if (g == null || !g.gameObject.activeInHierarchy)
+					continue;
+				if ((hasFlagBounds && flagBounds.Contains(g.transform.position)) || UseAllFlagsInOverworld)
+				{
+					if (g.levelData != null && !g.isSkipping)
+					{
+						requireGoals.Add(g);
+						g.OnUpdateData -= Goal_OnUpdateData;
+						g.OnUpdateData += Goal_OnUpdateData;
+					}
+				}
+			}
+		}
+
+		transform.position = GetSnappedPosition();
+
+		var currentCfg = PlatformSettings.Instance != null ? PlatformSettings.Instance.GetCurrent() : null;
+		if (currentCfg == null || !currentCfg.useRotatedOverworldAndCameraInLevels)
+			isTilted = false;
+
+		ButtonType effOrientation = isTilted ? FlipTiltedOrientation(orientation) : orientation;
+		if (effOrientation == ButtonType.fromBelow)
+		{
+			door = HorizontalDoor;
+			if (door != null)
+				door.transform.localEulerAngles = Vector3.zero;
+		}
+		else if (effOrientation == ButtonType.fromLeft)
+		{
+			door = VerticalDoor;
+			if (door != null)
+				door.transform.localEulerAngles = new Vector3(0f, 0f, -90f);
+		}
+		else if (effOrientation == ButtonType.fromRight)
+		{
+			door = VerticalDoor;
+			if (door != null)
+				door.transform.localEulerAngles = new Vector3(0f, 0f, 90f);
+		}
+		else if (effOrientation == ButtonType.fromAboveTilted)
+		{
+			door = HorizontalDoor;
+			if (door != null)
+				door.transform.localEulerAngles = new Vector3(0f, 0f, 180f);
+		}
+
+		if (HorizontalDoor != null)
+			HorizontalDoor.gameObject.SetActive(door == HorizontalDoor);
+		if (VerticalDoor != null)
+			VerticalDoor.gameObject.SetActive(door == VerticalDoor);
+
+		if (door != null)
+		{
+			door.SetCamera(camera);
+			if (isTilted)
+			{
+				door.transform.localEulerAngles += new Vector3(0f, 0f, -90f);
+			}
+			if (DoorBubbleTransform != null)
+			{
+				Vector3 cornerDir = isTilted ? new Vector3(-1f, 0f, 0f) : new Vector3(1f, 0f, 0f);
+				DoorBubbleTransform.position = door.GetCornerInThatDirection(cornerDir) - Vector3.forward;
+				float bubbleZRot = isTilted ? (transform.localEulerAngles.z + 270f) : 0f;
+				DoorBubbleTransform.localRotation = Quaternion.Euler(0f, 0f, bubbleZRot);
+				doorBubble = DoorBubbleTransform.gameObject.GetComponent<DoorBubble>();
+				if (doorBubble != null)
+					doorBubble.Init();
+			}
+			if (openIndicator != null)
+			{
+				openIndicator.position = door.transform.position - door.transform.up;
+			}
+		}
+
+		count = GetFlagsLeft();
+		overworldID = GetComponent<OverworldID>();
+
+		bool alreadyOpen = isStartingOpen || (overworldID != null && !string.IsNullOrEmpty(overworldID.ID) && SaveGame.GetIsDoorOpen(overworldID.ID));
+		if (alreadyOpen)
+		{
+			openOrOpening = true;
+			if (useOpenIndicator && openIndicator != null)
+				openIndicator.gameObject.SetActive(false);
+			if (missingFlagsText != null && missingFlagsText.transform.parent != null)
+				missingFlagsText.transform.parent.gameObject.SetActive(false);
+			SetButtonColors(OpenColors);
+			if (door != null)
+			{
+				door.Init();
+				door.OpenDoor(() => m_OnOpen?.Invoke(), true);
+			}
+		}
+
+		if (hasSubobjectives)
+		{
+			if (missingFlagsText != null)
+				missingFlagsText.transform.localPosition = new Vector3(0.875f, 0.55f, 0f);
+			if (BubbleSprite != null)
+				BubbleSprite.transform.localScale = new Vector3(1.75f, 1.75f, 0f);
+			if (SubObjectiveSprite != null && subObjective != null)
+			{
+				SubObjectiveSprite.sprite = subObjective.icon;
+				SubObjectiveSprite.gameObject.SetActive(true);
+			}
+		}
+
+		if (HorizontalDoor != null)
+			HorizontalDoor.Init();
+		if (VerticalDoor != null)
+			VerticalDoor.Init();
+
+		if (previous != null)
+		{
+			previous.OnOpen -= HandlePreviousOpened;
+			previous.OnOpen += HandlePreviousOpened;
+		}
+		if (previousBoss != null)
+		{
+			previousBoss.OnCompleted -= HandlePreviousOpened;
+			previousBoss.OnCompleted += HandlePreviousOpened;
+		}
+	}
+
+	private void SetButtonColors(Color[] colors)
+	{
+		if (colors == null || colors.Length == 0) return;
+		if (ButtonRenderers != null)
+		{
+			for (int i = 0; i < ButtonRenderers.Length; i++)
+				if (ButtonRenderers[i] != null) ButtonRenderers[i].color = colors[0];
+		}
+		if (ButtonBackRenderers != null && colors.Length > 1)
+		{
+			for (int i = 0; i < ButtonBackRenderers.Length; i++)
+				if (ButtonBackRenderers[i] != null) ButtonBackRenderers[i].color = colors[1];
+		}
+	}
+
+	private void HandlePreviousOpened()
+	{
 		UpdateStatus();
 	}
 
-	private void HandlePreviousOpened() => UpdateStatus();
 	public void AfterInit() => UpdateStatus();
-	private IEnumerator FlagHintRoutine() { yield break; }
-	private IEnumerator BlinkRoutine() { yield break; }
+
+	private IEnumerator FlagHintRoutine()
+	{
+		yield break;
+	}
+
+	private IEnumerator BlinkRoutine()
+	{
+		while (!openOrOpening)
+		{
+			SetButtonColors(UnlockedColors);
+			yield return new WaitForSeconds(Mathf.Max(0.2f, UnlockBlinkRate * 0.5f));
+			if (openOrOpening) break;
+			SetButtonColors(OpenColors);
+			yield return new WaitForSeconds(Mathf.Max(0.2f, UnlockBlinkRate * 0.5f));
+		}
+	}
+
 	private void Goal_OnUpdateData(OverworldGoal obj) => UpdateStatus();
 
 	public virtual int GetFlagsLeft()
 	{
-		if (requireGoals == null || requireGoals.Count == 0) return 0;
+		int total = GetTotalCount;
 		int completed = 0;
-		foreach (var g in requireGoals)
+		if (subObjective != null)
 		{
-			if (g != null && g.IsCompleted()) completed++;
+			completed = SaveGame.GetListCount(subObjective.serializationId);
 		}
-		return Mathf.Max(0, requireGoals.Count + flagsRequiredOffset - completed);
+		else if (requireGoals != null)
+		{
+			for (int i = 0; i < requireGoals.Count; i++)
+			{
+				var g = requireGoals[i];
+				if (g == null) continue;
+				if (OnlyAcceptCrowns)
+				{
+					if (g.IsFullyCompleted()) completed++;
+				}
+				else
+				{
+					if (g.IsCompleted()) completed++;
+				}
+			}
+		}
+		return total - completed - flagsRequiredOffset;
 	}
 
 	public void SetOpenIndicator(bool open, bool setRotation = false)
 	{
-		if (openIndicator != null) openIndicator.gameObject.SetActive(open);
+		if (useOpenIndicator && openIndicator != null)
+			openIndicator.gameObject.SetActive(open);
 	}
 
-	public void ToggleBlinkRoutine(bool turnOn) { }
+	public void ToggleBlinkRoutine(bool turnOn)
+	{
+		if (turnOn)
+		{
+			if (currentBlinkRoutine == null && gameObject.activeInHierarchy)
+				currentBlinkRoutine = StartCoroutine(BlinkRoutine());
+		}
+		else
+		{
+			if (currentBlinkRoutine != null)
+			{
+				StopCoroutine(currentBlinkRoutine);
+				currentBlinkRoutine = null;
+			}
+		}
+	}
 
 	public virtual void UpdateStatus()
 	{
-		int left = GetFlagsLeft();
-		if (missingFlagsText != null)
-			missingFlagsText.text = left > 0 ? left.ToString() : string.Empty;
+		int flagsLeft = GetFlagsLeft();
+		bool prevOpen = previous == null || previous.openOrOpening;
+		bool bossOpen = previousBoss == null || previousBoss.IsCompleted();
+
+		if (count != flagsLeft)
+		{
+			if (bubbleShake != null)
+				bubbleShake.Shake(0.5f, 10f, 0.2f);
+			count = flagsLeft;
+		}
+
+		if (useOpenIndicator && openIndicator != null)
+			openIndicator.gameObject.SetActive(false);
+
+		if (flagsLeft >= 1)
+		{
+			ToggleBlinkRoutine(false);
+			SetButtonColors(LockedColors);
+			if (missingFlagsText != null)
+			{
+				if (hasSubobjectives || UseAllFlagsInOverworld)
+				{
+					int total = subObjectiveGoal;
+					int done = total - flagsLeft;
+					missingFlagsText.text = string.Format("{0}/{1}", done, total);
+				}
+				else if (requireGoals != null)
+				{
+					int total = requireGoals.Count - flagsRequiredOffset;
+					int done = total - flagsLeft;
+					missingFlagsText.text = string.Format("{0}/{1}", done, total);
+				}
+			}
+		}
+		else
+		{
+			if (missingFlagsText != null)
+				missingFlagsText.text = "!";
+			if (!openOrOpening && canOpen && prevOpen && bossOpen)
+			{
+				if (door != null && openIndicator != null)
+				{
+					Vector3 dPos = door.transform.position;
+					Vector3 iPos = openIndicator.position;
+					float angle = Mathf.Atan2(dPos.y - iPos.y, dPos.x - iPos.x) * Mathf.Rad2Deg;
+					openIndicator.rotation = Quaternion.Euler(0f, 0f, angle - 90f);
+				}
+				if (useOpenIndicator && openIndicator != null)
+					openIndicator.gameObject.SetActive(true);
+				ToggleBlinkRoutine(true);
+			}
+			else if (!openOrOpening)
+			{
+				ToggleBlinkRoutine(false);
+				SetButtonColors(LockedColors);
+			}
+		}
+
+		isActive = prevOpen && bossOpen && !openOrOpening;
+		canShowBubble = isActive && flagsLeft > 0;
+
+		if (doorBubble != null)
+		{
+			if (openOrOpening)
+				doorBubble.State = DoorBubbleState.Hidden;
+			else if (OnlyAcceptCrowns)
+				doorBubble.State = SaveGame.CrownAwarenessMode ? (canShowBubble ? DoorBubbleState.Visible : DoorBubbleState.Hidden) : DoorBubbleState.ShowOnHit;
+			else
+				doorBubble.State = canShowBubble ? DoorBubbleState.Visible : DoorBubbleState.Hidden;
+		}
+
+		if (!UseAllFlagsInOverworld && !OnlyAcceptCrowns && requireGoals != null)
+		{
+			for (int i = 0; i < requireGoals.Count; i++)
+			{
+				var g = requireGoals[i];
+				if (g != null)
+				{
+					g.CanShowIndicator = canShowBubble;
+					g.RefreshVisuals();
+				}
+			}
+		}
 	}
 
 	public void CheckOpen()
 	{
-		if (CanDoorBeOpened()) OpenDoor();
+		if (!openOrOpening)
+			UpdateStatus();
+		if (GetFlagsLeft() > 0)
+		{
+			if (doorBubble != null)
+				doorBubble.Hit();
+			return;
+		}
+		if (openOrOpening)
+			return;
+
+		m_OnStartingToOpen?.Invoke();
+		openOrOpening = true;
+		if (overworldID != null && !string.IsNullOrEmpty(overworldID.ID))
+			SaveGame.SetDoorOpen(overworldID.ID);
+		if (openParticles != null)
+			openParticles.Emit(40);
+		ToggleBlinkRoutine(false);
+		SetButtonColors(OpenColors);
+		if (useOpenIndicator && openIndicator != null)
+			openIndicator.gameObject.SetActive(false);
+		if (missingFlagsText != null && missingFlagsText.transform.parent != null)
+			missingFlagsText.transform.parent.gameObject.SetActive(false);
+		if (doorBubble != null)
+			doorBubble.State = DoorBubbleState.Hidden;
+		if (door != null)
+		{
+			door.OpenDoor(() =>
+			{
+				m_OnOpen?.Invoke();
+			}, false);
+		}
+		else
+		{
+			m_OnOpen?.Invoke();
+		}
 	}
 
 	private void OnOpenDoorAnalytcis() { }
@@ -165,10 +491,13 @@ public class OverworldButton2D : GolfBehaviour
 	public void OpenDoor()
 	{
 		if (openOrOpening) return;
-		JustOpen(false);
+		CheckOpen();
 	}
 
-	public void RemoveButton() => gameObject.SetActive(false);
+	public void RemoveButton()
+	{
+		if (door != null) door.RemoveButton();
+	}
 
 	public void JustOpen(bool instant = false)
 	{
@@ -176,11 +505,18 @@ public class OverworldButton2D : GolfBehaviour
 		m_OnStartingToOpen?.Invoke();
 		if (overworldID != null && !string.IsNullOrEmpty(overworldID.ID))
 			SaveGame.SetDoorOpen(overworldID.ID);
-		if (HorizontalDoor != null) HorizontalDoor.gameObject.SetActive(false);
-		if (VerticalDoor != null) VerticalDoor.gameObject.SetActive(false);
-		if (door != null) door.gameObject.SetActive(false);
-		SetOpenIndicator(true);
-		m_OnOpen?.Invoke();
+		ToggleBlinkRoutine(false);
+		SetButtonColors(OpenColors);
+		if (useOpenIndicator && openIndicator != null)
+			openIndicator.gameObject.SetActive(false);
+		if (missingFlagsText != null && missingFlagsText.transform.parent != null)
+			missingFlagsText.transform.parent.gameObject.SetActive(false);
+		if (doorBubble != null)
+			doorBubble.State = DoorBubbleState.Hidden;
+		if (door != null)
+			door.OpenDoor(() => m_OnOpen?.Invoke(), instant);
+		else
+			m_OnOpen?.Invoke();
 	}
 
 	public IEnumerator OpenAndClose(float delay)
@@ -191,22 +527,65 @@ public class OverworldButton2D : GolfBehaviour
 
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
-		if (collision != null && collision.collider.GetComponentInParent<OverworldBall2D>() != null)
+		if (collision != null && collision.collider != null && collision.collider.GetComponentInParent<OverworldBall2D>() != null)
 			CheckOpen();
 	}
 
-	private void OnTriggerEnter2D(Collider2D other)
+	private Vector3 GetSnappedPosition()
 	{
-		if (other != null && other.GetComponentInParent<OverworldBall2D>() != null)
-			CheckOpen();
+		if (tileMap == null)
+		{
+			var hs = GetComponentInParent<HubSection>();
+			if (hs != null)
+				tileMap = hs.SectionTilemap;
+		}
+		Vector3 pos = transform.position;
+		float origZ = pos.z;
+		if (tileMap == null)
+			return pos;
+
+		Vector3 cellSize = tileMap.cellSize;
+		Vector3 adj = pos;
+		if (!isTilted)
+		{
+			adj.x -= cellSize.x;
+			adj.y -= cellSize.y * 0.5f;
+		}
+		if (isSnappingToGrid)
+		{
+			Vector3Int cell = tileMap.WorldToCell(transform.position);
+			adj = tileMap.CellToWorld(cell);
+			adj.z = origZ;
+		}
+		Vector3 res = pos;
+		if (orientation == ButtonType.fromBelow)
+		{
+			res = new Vector3(adj.x + cellSize.x, adj.y + cellSize.y * 0.5f, adj.z);
+		}
+		else if (orientation == ButtonType.fromLeft || orientation == ButtonType.fromRight)
+		{
+			res = new Vector3(adj.x + cellSize.x * 0.5f, adj.y, adj.z);
+		}
+		return res;
 	}
 
-	private Vector3 GetSnappedPosition() => transform.position;
-	private ButtonType FlipTiltedOrientation(ButtonType orientation) => orientation;
+	private ButtonType FlipTiltedOrientation(ButtonType orientation)
+	{
+		if (!isTilted) return orientation;
+		switch (orientation)
+		{
+			case ButtonType.fromLeft: return ButtonType.fromBelow;
+			case ButtonType.fromRight: return ButtonType.fromAboveTilted;
+			case ButtonType.fromBelow: return ButtonType.fromRight;
+			case ButtonType.fromAboveTilted: return ButtonType.fromLeft;
+			default: return orientation;
+		}
+	}
+
 	public void OnDrawGizmos() { }
 	private void OnDrawGizmosSelected() { }
 	private IEnumerator CheatingRoutine() { yield break; }
-	public void OnMouseDown() => CheckOpen();
+	public void OnMouseDown() { }
 	public void OnMouseExit() { }
 	public void OnMouseUp() { }
 	public void DebugOpenDoor() => JustOpen(true);

@@ -374,6 +374,12 @@ public class OverworldManager2d : GolfBehaviour
 		}
 		else
 		{
+			if (OverworldLoader.ComingFromOverworldLoader)
+			{
+				isComingFromLoaderScene = true;
+				canStartAtLogoWhenStartingOverworld = true;
+				OverworldLoader.ComingFromOverworldLoader = false;
+			}
 			if (!isComingFromLoaderScene && LevelManager.Exists)
 				LevelManager.Instance.InstantTransitionCover(Color.black);
 			introTunnel.Init(canStartAtLogoWhenStartingOverworld);

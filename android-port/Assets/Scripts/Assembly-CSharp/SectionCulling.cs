@@ -96,13 +96,6 @@ public class SectionCulling : GolfBehaviour
 					}
 				}
 			}
-			if (info.section != null && (info.rotators == null || info.rotators.Length == 0))
-			{
-				var list = new List<MonoBehaviour>();
-				list.AddRange(info.section.GetComponentsInChildren<RotateAxis>(true));
-				list.AddRange(info.section.GetComponentsInChildren<RotateAxis2D>(true));
-				info.rotators = list.Where(x => x != null).ToArray();
-			}
 			if (info.rotators != null)
 			{
 				for (int j = 0; j < info.rotators.Length; j++)
@@ -115,7 +108,13 @@ public class SectionCulling : GolfBehaviour
 			if (info.section != null)
 			{
 				info.section.SetActiveCulling(false);
-				info.section.PreBuildScript(isRotated);
+				if (info.section.Container != null)
+				{
+					bool keepActive = isRotated
+						? (info.section.SectionPlatform == HubSection.SectionPlatformEnum.All || info.section.SectionPlatform == HubSection.SectionPlatformEnum.Mobile)
+						: (info.section.SectionPlatform == HubSection.SectionPlatformEnum.All || info.section.SectionPlatform == HubSection.SectionPlatformEnum.Standalone);
+					info.section.Container.SetActive(keepActive);
+				}
 			}
 		}
 		UpdateCulling();

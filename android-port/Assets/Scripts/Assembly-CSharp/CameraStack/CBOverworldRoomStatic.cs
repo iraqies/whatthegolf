@@ -15,20 +15,50 @@ namespace CameraStack
 		private Vector2 adjustedScreenPosition;
 
 		public Transform roomCenter { get => follow; set => follow = value; }
-		public override void Init() => base.Init();
+
+		public override void Init()
+		{
+			base.Init();
+			if (follow != null)
+				transform.position = CalculatePosition();
+		}
+
 		public void SetFollowTarget(Transform newTarget) => follow = newTarget;
 		public void SetOrthoSize(float val) => orthographicSize = val;
 		public float GetOrthoSize() => orthographicSize > 0.01f ? orthographicSize : 8f;
 		public Transform GetFollowTarget() => follow != null ? follow : transform;
-		public override void PreUpdate() { }
-		public override Quaternion CalculateRotation() => Quaternion.Euler(rotation);
+
+		public override void PreUpdate()
+		{
+			if (follow != null)
+			{
+				Vector3 targetPos = Vector3.SmoothDamp(transform.position, follow.position, ref camVelocity, smoothTime);
+				targetPos.z = distance;
+				transform.position = targetPos;
+			}
+			if (Cameras != null && Cameras.Length > 0 && Cameras[0] != null)
+			{
+				Cameras[0].orthographicSize = Mathf.MoveTowards(Cameras[0].orthographicSize, GetOrthoSize(), Time.deltaTime * 3.5f);
+			}
+		}
+
+		public override Quaternion CalculateRotation()
+		{
+			bool useRotated = Core.PlatformSettings.IsMobile;
+			if (Core.PlatformSettings.Instance != null && Core.PlatformSettings.Instance.GetCurrent() != null)
+				useRotated = Core.PlatformSettings.Instance.GetCurrent().useRotatedOverworldAndCameraInLevels;
+			return Quaternion.Euler(useRotated ? rotation : desktopRotation);
+		}
 
 		protected override Vector3 CalculatePosition()
 		{
-			Transform t = GetFollowTarget();
-			Quaternion rot = CalculateRotation();
-			float dist = Mathf.Abs(distance) > 0.1f ? Mathf.Abs(distance) : 15f;
-			return t.position - (rot * Vector3.forward) * dist;
+			if (follow != null)
+			{
+				Vector3 pos = follow.position;
+				pos.z = distance;
+				return pos;
+			}
+			return transform.position;
 		}
 	}
 }

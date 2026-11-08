@@ -42,8 +42,53 @@ public class OverworldDoor : MonoBehaviour
 	public void OpenDoor(Action onOpen, bool instant = false)
 	{
 		Init();
-		if (LeftDoor != null) LeftDoor.localPosition = leftStart + Vector3.left * DoorExtend;
-		if (RightDoor != null) RightDoor.localPosition = rightStart + Vector3.right * DoorExtend;
+		float dur = instant ? 0f : RoutineLength;
+		if (dur <= 0f || !gameObject.activeInHierarchy)
+		{
+			if (Button != null) Button.SetActive(false);
+			Vector3 localRight = transform.InverseTransformDirection(transform.right);
+			if (LeftDoor != null) LeftDoor.localPosition = leftStart - localRight * DoorExtend;
+			if (RightDoor != null) RightDoor.localPosition = rightStart + localRight * DoorExtend;
+			if (Colliders != null)
+			{
+				foreach (var c in Colliders)
+					if (c != null) c.enabled = false;
+			}
+			onOpen?.Invoke();
+		}
+		else
+		{
+			StartCoroutine(OpenDoorRoutineInternal(onOpen, dur, true));
+		}
+	}
+
+	private IEnumerator OpenDoorRoutineInternal(Action onOpen, float duration, bool playEndSounds)
+	{
+		if (Button != null) Button.SetActive(false);
+		if (duration > 0f && canPlaySound && SFX != null)
+		{
+			SFX.Play(transform.position);
+		}
+		if (duration > 0f)
+			yield return new WaitForSeconds(0.5f);
+
+		Vector3 localRight = transform.InverseTransformDirection(transform.right);
+		Vector3 leftEnd = leftStart - localRight * DoorExtend;
+		Vector3 rightEnd = rightStart + localRight * DoorExtend;
+
+		float elapsed = 0f;
+		while (elapsed < duration && duration > 0f)
+		{
+			elapsed += Time.deltaTime;
+			float t = Mathf.Clamp01(elapsed / duration);
+			float eval = animationCurve != null && animationCurve.length > 0 ? animationCurve.Evaluate(t) : t;
+			if (LeftDoor != null) LeftDoor.localPosition = Vector3.Lerp(leftStart, leftEnd, eval);
+			if (RightDoor != null) RightDoor.localPosition = Vector3.Lerp(rightStart, rightEnd, eval);
+			yield return null;
+		}
+		if (LeftDoor != null) LeftDoor.localPosition = leftEnd;
+		if (RightDoor != null) RightDoor.localPosition = rightEnd;
+
 		if (Colliders != null)
 		{
 			foreach (var c in Colliders)
@@ -54,7 +99,7 @@ public class OverworldDoor : MonoBehaviour
 
 	public Task OpenDoorAsync(Action onOpen, float duration, bool playEndSounds = true)
 	{
-		OpenDoor(onOpen, false);
+		OpenDoor(onOpen, duration <= 0f);
 		return Task.CompletedTask;
 	}
 
@@ -79,6 +124,26 @@ public class OverworldDoor : MonoBehaviour
 		yield break;
 	}
 
-	public Vector3 GetCornerInThatDirection(Vector3 worldDir) => transform.position;
+	public Vector3 GetCornerInThatDirection(Vector3 worldDir)
+	{
+		if (corners == null || corners.Length == 0)
+			return transform.position;
+		Vector3 best = transform.position;
+		float bestDot = float.NegativeInfinity;
+		Vector3 dirNorm = worldDir.normalized;
+		for (int i = 0; i < corners.Length; i++)
+		{
+			Vector3 wp = transform.TransformPoint(corners[i]);
+			Vector3 toCorner = (wp - transform.position).normalized;
+			float d = Vector3.Dot(toCorner, dirNorm);
+			if (d > bestDot)
+			{
+				bestDot = d;
+				best = wp;
+			}
+		}
+		return best;
+	}
+
 	private void OnDrawGizmos() { }
 }

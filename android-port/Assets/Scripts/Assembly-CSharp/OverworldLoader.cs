@@ -19,6 +19,8 @@ public class OverworldLoader : MonoBehaviour
 	private bool shouldContinueTunnel;
 	private float startTunnelTime;
 
+	public static bool ComingFromOverworldLoader;
+
 	private IEnumerator LogoSplashRoutine()
 	{
 		yield return new WaitForSecondsRealtime(2f);
@@ -124,6 +126,7 @@ public class OverworldLoader : MonoBehaviour
 
 	private IEnumerator OverworldStartLoadingAsync_(bool skipTunnel)
 	{
+		ComingFromOverworldLoader = !skipTunnel;
 		Application.backgroundLoadingPriority = ThreadPriority.Low;
 		string sceneName = !string.IsNullOrEmpty(OverWorldSceneName) ? OverWorldSceneName : "main overworld new";
 		if (Application.CanStreamedLevelBeLoaded(sceneName))

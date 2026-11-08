@@ -125,8 +125,6 @@ public class GridFiller : GolfBehaviour
 		bool useRotated = false;
 		if (PlatformSettings.Instance != null && PlatformSettings.Instance.GetCurrent() != null)
 			useRotated = PlatformSettings.Instance.GetCurrent().useRotatedOverworldAndCameraInLevels;
-		if (Screen.height > Screen.width)
-			useRotated = true;
 
 		if (useRotated)
 		{

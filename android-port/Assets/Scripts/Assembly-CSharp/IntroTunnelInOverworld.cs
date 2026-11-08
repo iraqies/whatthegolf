@@ -189,7 +189,7 @@ public class IntroTunnelInOverworld : MonoBehaviour
 
 			while (OnReachedLogo != null && !OnReachedLogo())
 			{
-				SetPositionOnPath(pathFromLogo, 1f, null, false);
+				SetPositionOnPath(pathToLogo, 1f, null, false);
 				yield return null;
 			}
 
