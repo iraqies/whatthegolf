@@ -68,6 +68,11 @@ public class Loading : MonoBehaviour
 		SaveGame.SessionCount = SaveGame.SessionCount + 1;
 		iOSOnlineServices.IsReady = true;
 
+		if (AudioManager.Instance != null && AudioManager.Instance.music != null)
+		{
+			AudioManager.Instance.music.InitializeBank(null, WhereToStart() != StartingPoint.HUB);
+		}
+
 		if (StartupLoadingScreen.Instance != null)
 			StartupLoadingScreen.Instance.Hide();
 

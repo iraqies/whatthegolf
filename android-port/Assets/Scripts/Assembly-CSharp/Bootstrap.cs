@@ -23,8 +23,19 @@ public class Bootstrap : MonoBehaviour
 		SetWindowSize();
 		SetOrientation();
 
+		_ = AudioManager.Instance;
+
 		if (arcadeSplashScreen != null)
-			arcadeSplashScreen.gameObject.SetActive(false);
+		{
+			bool splashDone = false;
+			yield return StartCoroutine(arcadeSplashScreen.Show(
+				OnCoveredBySplash: () => { },
+				OnCompleted: () => splashDone = true,
+				OnCanShowGCBanner: () => { if (SplashScreensContainer != null) SplashScreensContainer.SetActive(false); }
+			));
+			while (!splashDone)
+				yield return null;
+		}
 		if (SplashScreensContainer != null)
 			SplashScreensContainer.SetActive(false);
 		if (StartupLoadingScreen.Instance != null)

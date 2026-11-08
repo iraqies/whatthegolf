@@ -15,56 +15,96 @@ namespace Audio
 			OverworldSpatial = 4
 		}
 
-		private static float twelfthRootOfTwo;
+		private static float twelfthRootOfTwo = 1.0594631f;
 
 		public static float LinearToDecibel(float linear, float zeroVolume = -80f)
 		{
-			return 0f;
+			if (linear <= 0.0001f) return zeroVolume;
+			return Mathf.Clamp(20f * Mathf.Log10(linear), zeroVolume, 0f);
 		}
 
 		public static float NormalizeMinMax(float value, float min, float max)
 		{
-			return 0f;
+			if (Mathf.Abs(max - min) < 1e-5f) return 1f;
+			return (value - min) / (max - min);
 		}
 
 		public static float NormalizeMinMax(float value, MinMax minMax)
 		{
-			return 0f;
+			if (minMax == null) return 1f;
+			return NormalizeMinMax(value, minMax.min, minMax.max);
 		}
 
 		public static float NormalizeMinMax01(float value, float min, float max)
 		{
-			return 0f;
+			return Mathf.Clamp01(NormalizeMinMax(value, min, max));
 		}
 
 		public static float NormalizeMinMax01(float value, MinMax minMax)
 		{
-			return 0f;
+			if (minMax == null) return 1f;
+			return NormalizeMinMax01(value, minMax.min, minMax.max);
 		}
 
 		public static bool CheckConditions(this List<SerializedAudioCondition> conditions)
 		{
-			return false;
+			return true;
 		}
 
 		public static AudioSources GetVoice(AudioManagerVoice voice)
 		{
-			return null;
+			var am = AudioManager.Instance;
+			if (am == null) return null;
+			switch (voice)
+			{
+				case AudioManagerVoice.ShortEffects: return am.shortEffects;
+				case AudioManagerVoice.ImpactEffects: return am.impactEffects ?? am.shortEffects;
+				case AudioManagerVoice.UiEffects: return am.uiEffects ?? am.shortEffects;
+				case AudioManagerVoice.AmbientEffects: return am.ambientEffects ?? am.shortEffects;
+				case AudioManagerVoice.OverworldSpatial: return am.overworldSpatial ?? am.shortEffects;
+				default: return am.shortEffects;
+			}
 		}
 
 		public static HitInfo GetHitInfo(Collision collision)
 		{
-			return default;
+			if (collision == null) return default;
+			Vector3 pt = collision.contactCount > 0 ? collision.GetContact(0).point : collision.transform.position;
+			return new HitInfo
+			{
+				point = pt,
+				incomingVelocity = collision.relativeVelocity,
+				impactOnNormal = collision.relativeVelocity,
+				childHit = collision.gameObject,
+				otherHit = collision.collider != null ? collision.collider.gameObject : collision.gameObject
+			};
 		}
 
 		public static HitInfo GetHitInfo(Collision2D collision)
 		{
-			return default;
+			if (collision == null) return default;
+			Vector3 pt = collision.contactCount > 0 ? (Vector3)collision.GetContact(0).point : collision.transform.position;
+			return new HitInfo
+			{
+				point = pt,
+				incomingVelocity = collision.relativeVelocity,
+				impactOnNormal = collision.relativeVelocity,
+				childHit = collision.gameObject,
+				otherHit = collision.collider != null ? collision.collider.gameObject : collision.gameObject
+			};
 		}
 
 		public static HitInfo GetHitInfo(RaycastHit raycastHit, Rigidbody hitter)
 		{
-			return default;
+			Vector3 vel = hitter != null ? hitter.velocity : Vector3.one;
+			return new HitInfo
+			{
+				point = raycastHit.point,
+				incomingVelocity = vel,
+				impactOnNormal = vel,
+				childHit = hitter != null ? hitter.gameObject : null,
+				otherHit = raycastHit.collider != null ? raycastHit.collider.gameObject : null
+			};
 		}
 	}
 }

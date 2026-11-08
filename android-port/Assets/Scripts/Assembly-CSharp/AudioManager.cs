@@ -5,6 +5,7 @@ using Audio.Rumble;
 using Core;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
@@ -43,10 +44,20 @@ public class AudioManager : MonoBehaviour
 				instance = FindObjectOfType<AudioManager>();
 				if (instance == null)
 				{
-					var go = new GameObject("AudioManager");
-					instance = go.AddComponent<AudioManager>();
-					instance.music = go.AddComponent<MusicManager>();
-					DontDestroyOnLoad(go);
+					var prefab = Resources.Load<AudioManager>("Prefabs/Audiomanager")
+						?? Resources.Load<AudioManager>("Prefabs/AudioManager")
+						?? Resources.Load<AudioManager>("Audiomanager");
+					if (prefab != null)
+					{
+						instance = Instantiate(prefab);
+					}
+					else
+					{
+						var go = new GameObject("AudioManager");
+						instance = go.AddComponent<AudioManager>();
+					}
+					DontDestroyOnLoad(instance.gameObject);
+					instance.Init();
 				}
 			}
 			return instance;
@@ -55,10 +66,39 @@ public class AudioManager : MonoBehaviour
 
 	public Dictionary<int, AudioMaterialSettings> AudioMatCache => audioMatCache;
 
+	private AudioSources EnsurePool(ref AudioSources field, string childName)
+	{
+		if (field != null) return field;
+		var t = transform.Find(childName);
+		if (t != null) field = t.GetComponent<AudioSources>();
+		if (field == null)
+		{
+			var go = new GameObject(childName);
+			go.transform.SetParent(transform, false);
+			field = go.AddComponent<AudioSources>();
+		}
+		return field;
+	}
+
 	public void Init()
 	{
 		instance = this;
-		if (music == null) music = GetComponentInChildren<MusicManager>() ?? gameObject.AddComponent<MusicManager>();
+		EnsurePool(ref shortEffects, "short");
+		EnsurePool(ref impactEffects, "impacts");
+		EnsurePool(ref uiEffects, "uiSFX");
+		EnsurePool(ref overworldSpatial, "overworldSpatial");
+		EnsurePool(ref ambientEffects, "ambientShort");
+		EnsurePool(ref voices, "nonScaled");
+		if (AmbientPlayer == null)
+			AmbientPlayer = GetComponentInChildren<AmbientAudioPlayer>(true) ?? gameObject.AddComponent<AmbientAudioPlayer>();
+		ambient = AmbientPlayer;
+		if (golfAudioManager == null)
+			golfAudioManager = GetComponentInChildren<GolfAudioManager>(true);
+		golfAudio = golfAudioManager;
+		if (music == null)
+			music = GetComponentInChildren<MusicManager>(true) ?? gameObject.AddComponent<MusicManager>();
+		AudioListener.volume = 1f;
+		AudioListener.pause = false;
 	}
 
 	[RuntimeInitializeOnLoadMethod]
@@ -69,12 +109,28 @@ public class AudioManager : MonoBehaviour
 
 	private void Awake()
 	{
-		if (instance == null)
+		if (instance != null && instance != this)
 		{
-			instance = this;
-			DontDestroyOnLoad(gameObject);
+			Destroy(gameObject);
+			return;
 		}
-		if (music == null) music = GetComponentInChildren<MusicManager>() ?? gameObject.AddComponent<MusicManager>();
+		instance = this;
+		DontDestroyOnLoad(gameObject);
+		Init();
+		SceneManager.sceneLoaded += OnSceneLoaded;
+	}
+
+	private void OnDestroy()
+	{
+		SceneManager.sceneLoaded -= OnSceneLoaded;
+	}
+
+	private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+	{
+		if (FindObjectOfType<AudioListener>() == null && Camera.main != null)
+			Camera.main.gameObject.AddComponent<AudioListener>();
+		AmbientPlayer?.InitializeNewScene();
+		golfAudioManager?.InitializeNewScene();
 	}
 
 	private void Start() => Init();
@@ -83,12 +139,12 @@ public class AudioManager : MonoBehaviour
 	public void OnLevelDesignerPlayStart(Camera cam, Transform listenerFollowTarget) { }
 	public void OnLevelDesignerReset(Camera cam, Transform listenerFollowTarget) { }
 
-	public bool CheckMaterial(GameObject go, List<AudioMaterial> include, List<AudioMaterial> exclude, bool includeEmpty = false) => includeEmpty;
+	public bool CheckMaterial(GameObject go, List<AudioMaterial> include, List<AudioMaterial> exclude, bool includeEmpty = false) => true;
 
 	public bool CheckMaterial(out AudioMaterialSettings setting, GameObject go, List<AudioMaterial> include, List<AudioMaterial> exclude, bool includeEmpty = false)
 	{
-		setting = null;
-		return includeEmpty;
+		setting = go != null ? go.GetComponentInParent<AudioMaterialSettings>() : null;
+		return true;
 	}
 
 	private void UpdateMixerSettings(LevelData leveldata) { }
@@ -100,8 +156,17 @@ public class AudioManager : MonoBehaviour
 		yield break;
 	}
 
-	public static void SetMusicGain(float volume) { }
-	public static void SetSoundGain(float volume) { }
+	public static void SetMusicGain(float volume)
+	{
+		if (Instance != null && Instance.music != null)
+			Instance.music.SetUserVolume(volume);
+	}
+
+	public static void SetSoundGain(float volume)
+	{
+		AudioListener.volume = Mathf.Clamp01(volume);
+	}
+
 	public void SetMixerSnapshot(AudioMixerSnapshot snapshot, float time = 0.4f) { }
 	public void ResetMixerSnapshot(float time = 0.4f) { }
 	public void AudioSourceFollowTransform(AudioSource src, Transform trans, float time) { }

@@ -23,7 +23,11 @@ public class AASplashScreen : MonoBehaviour
 		splashScreenExecuted = false;
 	}
 
-	private void Awake() { }
+	private void Awake()
+	{
+		if (logoCanvasGroup != null)
+			logoCanvasGroup.alpha = 0f;
+	}
 
 	private IEnumerator Start()
 	{
@@ -34,9 +38,27 @@ public class AASplashScreen : MonoBehaviour
 
 	public IEnumerator Show(Action OnCoveredBySplash = null, Action OnCompleted = null, Action OnCanShowGCBanner = null)
 	{
+		if (splashScreenExecuted)
+		{
+			OnCoveredBySplash?.Invoke();
+			OnCanShowGCBanner?.Invoke();
+			if (gameObject != null) gameObject.SetActive(false);
+			OnCompleted?.Invoke();
+			yield break;
+		}
+		splashScreenExecuted = true;
+		gameObject.SetActive(true);
 		OnCoveredBySplash?.Invoke();
+		if (splashAudioSource != null)
+		{
+			splashAudioSource.transform.SetParent(null);
+			DontDestroyOnLoad(splashAudioSource.gameObject);
+			splashAudioSource.Play();
+		}
+		yield return StartCoroutine(ShowTribandLogoCR(() => tribandLogoDone = true));
 		OnCanShowGCBanner?.Invoke();
-		yield return null;
+		if (splashAudioSource != null)
+			splashAudioSource.OnSplashScreenComplete(false);
 		if (gameObject != null)
 			gameObject.SetActive(false);
 		OnCompleted?.Invoke();
@@ -44,11 +66,38 @@ public class AASplashScreen : MonoBehaviour
 
 	private void StartLogoAnimation() { }
 	private void OnLogoAnimationEnd(bool skipped) { }
-	private bool CheckForButtonSkip() => true;
+	private bool CheckForButtonSkip() => InputHelper.TouchedOrMouseClicked() || InputHelper.GetAllPlayerButtonConfirm();
 
 	private IEnumerator ShowTribandLogoCR(UnityAction onDone)
 	{
+		if (logoCanvasGroup != null)
+		{
+			logoCanvasGroup.gameObject.SetActive(true);
+			float t = 0f;
+			while (t < 0.45f)
+			{
+				t += Time.unscaledDeltaTime;
+				logoCanvasGroup.alpha = Mathf.Clamp01(t / 0.45f);
+				if (CheckForButtonSkip()) break;
+				yield return null;
+			}
+			logoCanvasGroup.alpha = 1f;
+			float hold = 0f;
+			while (hold < 1.1f)
+			{
+				hold += Time.unscaledDeltaTime;
+				if (CheckForButtonSkip()) break;
+				yield return null;
+			}
+			t = 0f;
+			while (t < 0.35f)
+			{
+				t += Time.unscaledDeltaTime;
+				logoCanvasGroup.alpha = 1f - Mathf.Clamp01(t / 0.35f);
+				yield return null;
+			}
+			logoCanvasGroup.alpha = 0f;
+		}
 		onDone?.Invoke();
-		yield break;
 	}
 }
