@@ -18,11 +18,8 @@ public class AnimateRectTransform : MonoBehaviour
 	public struct TransitionType
 	{
 		public float duration;
-
 		public EasingFunction.Ease ease;
-
 		public Property prop;
-
 		public Graphic overrideColorGraphic;
 	}
 
@@ -31,112 +28,104 @@ public class AnimateRectTransform : MonoBehaviour
 	public struct RectState
 	{
 		public bool useSize;
-
 		public Vector2 sizeDelta;
-
 		public bool useScale;
-
 		public Vector2 scale;
-
 		public bool usePos;
-
 		public Vector2 anchoredPos;
-
 		public bool useColor;
-
 		public Color color;
 	}
 
 	public bool disableOnHide;
-
-	[SerializeField]
-	private List<TransitionType> overrideTransition;
-
+	[SerializeField] private List<TransitionType> overrideTransition;
 	private TransitionType defaultT;
+	[SerializeField] public RectState HideState;
+	[SerializeField] private RectState ShowState;
+	[SerializeField] private bool alternate;
+	[SerializeField] private List<RectState> AlternateStates;
+	[SerializeField] private RectTransform overrideRectTransform;
 
-	[SerializeField]
-	public RectState HideState;
-
-	[SerializeField]
-	private RectState ShowState;
-
-	[SerializeField]
-	private bool alternate;
-
-	[SerializeField]
-	private List<RectState> AlternateStates;
-
-	[SerializeField]
-	private RectTransform overrideRectTransform;
-
-	private RectTransform RectTransform => null;
+	private RectTransform RectTransform => overrideRectTransform != null ? overrideRectTransform : GetComponent<RectTransform>();
 
 	private Graphic Graphic(TransitionType transitionType)
 	{
-		return null;
+		return transitionType.overrideColorGraphic != null ? transitionType.overrideColorGraphic : GetComponent<Graphic>();
 	}
 
 	public float SetShow(bool s, bool instant = false)
 	{
-		return 0f;
+		if (s) gameObject.SetActive(true);
+		RectState state = s ? ShowState : HideState;
+		if (instant) SetInstant(state);
+		else SetProps(state);
+		if (!s && disableOnHide)
+		{
+			if (instant || !gameObject.activeInHierarchy) gameObject.SetActive(false);
+			else StartCoroutine(DeactiveAfter(GetLongestTransition(state)));
+		}
+		return instant ? 0f : GetLongestTransition(state);
 	}
 
-	private void Deactivate()
-	{
-	}
+	private void Deactivate() => gameObject.SetActive(false);
 
-	public float Show()
-	{
-		return 0f;
-	}
+	public float Show() => SetShow(true, false);
 
 	private IEnumerator AlternateAfter(float a)
 	{
-		return null;
+		yield return new WaitForSecondsRealtime(a);
+		Alternate();
 	}
 
-	public float Hide()
-	{
-		return 0f;
-	}
+	public float Hide() => SetShow(false, false);
 
-	private void SetProps(RectState s)
-	{
-	}
+	private void SetProps(RectState s) => SetInstant(s);
 
 	private void SetInstant(RectState s)
 	{
+		var rt = RectTransform;
+		if (rt != null)
+		{
+			if (s.useSize) rt.sizeDelta = s.sizeDelta;
+			if (s.useScale) rt.localScale = new Vector3(s.scale.x, s.scale.y, 1f);
+			if (s.usePos) rt.anchoredPosition = s.anchoredPos;
+		}
+		if (s.useColor)
+		{
+			var g = GetComponent<Graphic>();
+			if (g != null) g.color = s.color;
+		}
 	}
 
 	private IEnumerator DeactiveAfter(float t)
 	{
-		return null;
+		if (t > 0f) yield return new WaitForSecondsRealtime(t);
+		if (disableOnHide) gameObject.SetActive(false);
 	}
 
 	public float GetLongestTransition(RectState s)
 	{
-		return 0f;
+		float max = 0.2f;
+		if (overrideTransition != null)
+		{
+			foreach (var tr in overrideTransition)
+				if (tr.duration > max) max = tr.duration;
+		}
+		return max;
 	}
 
 	private TransitionType GetTransitionLength(Property p)
 	{
-		return default;
+		if (overrideTransition != null)
+		{
+			foreach (var tr in overrideTransition)
+				if (tr.prop == p) return tr;
+		}
+		return defaultT;
 	}
 
-	private void SetProp(Property p, Vector2 end)
-	{
-	}
-
-	private void SetProp(Property p, Color c)
-	{
-	}
-
-	private void Alternate()
-	{
-	}
-
-	private IEnumerator AlternateCR()
-	{
-		return null;
-	}
+	private void SetProp(Property p, Vector2 end) { }
+	private void SetProp(Property p, Color c) { }
+	private void Alternate() { }
+	private IEnumerator AlternateCR() { yield break; }
 }

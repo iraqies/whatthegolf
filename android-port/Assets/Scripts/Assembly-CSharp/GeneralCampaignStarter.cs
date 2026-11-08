@@ -6,46 +6,31 @@ public class GeneralCampaignStarter : BasePackStarter
 {
 	public override bool StartPack(ContentPack pack, params object[] additionalContext)
 	{
-		return false;
+		if (pack == null) return false;
+		_ = PackStarterManager.StartPack(pack, false, additionalContext);
+		return true;
 	}
 
 	private IEnumerator StartPack(ContentPack pack, string level = null, Transmogrif.BALLSHAPES shape = Transmogrif.BALLSHAPES.ball)
 	{
-		return null;
+		yield return StartCampaignCR(pack, level, shape);
 	}
 
 	public Task StartCampaign(ContentPack pack, string level = null, Transmogrif.BALLSHAPES shape = Transmogrif.BALLSHAPES.ball)
 	{
-		return null;
+		return PackStarterManager.StartPack(pack, false, level, shape);
 	}
 
 	private IEnumerator StartCampaignCR(ContentPack pack, string level = null, Transmogrif.BALLSHAPES shape = Transmogrif.BALLSHAPES.ball)
 	{
-		return null;
+		var task = PackStarterManager.StartPack(pack, false, level, shape);
+		while (!task.IsCompleted) yield return null;
+		OnPackDone?.Invoke(task.Result);
 	}
 
-	private IEnumerator GoToComputerCR(string notificationId)
-	{
-		return null;
-	}
-
-	private IEnumerator AwaitLevelLoadCR(float delay)
-	{
-		return null;
-	}
-
-	private IEnumerator GoToLevelCR(string level, Transmogrif.BALLSHAPES shape, float delay = 0f)
-	{
-		return null;
-	}
-
-	private IEnumerator GoToPosition(Vector2 position)
-	{
-		return null;
-	}
-
-	private bool CheckDoors(string level)
-	{
-		return false;
-	}
+	private IEnumerator GoToComputerCR(string notificationId) { yield break; }
+	private IEnumerator AwaitLevelLoadCR(float delay) { yield break; }
+	private IEnumerator GoToLevelCR(string level, Transmogrif.BALLSHAPES shape, float delay = 0f) { yield break; }
+	private IEnumerator GoToPosition(Vector2 position) { yield break; }
+	private bool CheckDoors(string level) => true;
 }

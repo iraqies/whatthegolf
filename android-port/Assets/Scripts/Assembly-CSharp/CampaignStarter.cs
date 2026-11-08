@@ -6,24 +6,19 @@ public class CampaignStarter : BasePackStarter
 
 	public override bool StartPack(ContentPack pack, params object[] additionalContext)
 	{
-		return false;
+		if (pack == null) return false;
+		_ = PackStarterManager.StartPack(pack, false, additionalContext);
+		return true;
 	}
 
 	private IEnumerator StartCampaignCR(ContentPack pack, OverworldLevelSection section)
 	{
-		return null;
+		var task = PackStarterManager.StartPack(pack, false, section);
+		while (!task.IsCompleted) yield return null;
+		OnPackDone?.Invoke(task.Result);
 	}
 
-	private void LevelAborted()
-	{
-	}
-
-	private void BackFromOnboarding(bool isComplete)
-	{
-	}
-
-	private IEnumerator WaitAfterLevelLoaded()
-	{
-		return null;
-	}
+	private void LevelAborted() => OnPackDone?.Invoke(false);
+	private void BackFromOnboarding(bool isComplete) => OnPackDone?.Invoke(isComplete);
+	private IEnumerator WaitAfterLevelLoaded() { yield break; }
 }

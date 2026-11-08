@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace CameraStack
@@ -45,7 +44,9 @@ namespace CameraStack
 		{
 			Instance = this;
 			_cameras = GetComponentsInChildren<Camera>(true);
-			ActiveBehavior = MobileCameraBehaviour != null ? MobileCameraBehaviour : StandaloneCameraBehaviour;
+			var b = MobileCameraBehaviour != null ? MobileCameraBehaviour : StandaloneCameraBehaviour;
+			if (b == null) b = GetComponent<CameraBehavior>();
+			if (b != null) SwitchBehavior(b);
 		}
 
 		private IEnumerator ResetCameraNextFrame()
@@ -53,30 +54,68 @@ namespace CameraStack
 			yield return null;
 		}
 
-		private void OnCameraSettingsChanged(OverworldCameraSettings settings, float pct) { }
-		public void OnRoomEnter(CBOverworldRoomStatic camSettings) { }
-		public void OnRoomExit() { }
+		private void OnCameraSettingsChanged(OverworldCameraSettings settings, float pct)
+		{
+			if (settings != null && settings.IOSData != null && ActiveBehavior is CBOrthographicFollow2D ortho)
+			{
+				if (settings.IOSData.orthographicSize > 0.1f)
+					ortho.SetOrthoSize(settings.IOSData.orthographicSize);
+			}
+		}
+
+		public void OnRoomEnter(CBOverworldRoomStatic camSettings)
+		{
+			if (camSettings != null) SwitchBehavior(camSettings);
+		}
+
+		public void OnRoomExit()
+		{
+			var b = MobileCameraBehaviour != null ? MobileCameraBehaviour : StandaloneCameraBehaviour;
+			if (b != null) SwitchBehavior(b);
+		}
 
 		private void LateUpdate()
 		{
 			m_OnPreLateUpdate?.Invoke();
-			Transform target = OverridePositionTransform;
-			if (target == null && OverworldManager2d.HasInstance)
+			if (ActiveBehavior != null)
 			{
-				var ow = OverworldManager2d.Instance;
-				if (ow.cameraTarget != null) target = ow.cameraTarget;
-				else if (ow.ball != null) target = ow.ball.transform;
+				ActiveBehavior.PreUpdate();
+				Vector3 pos = ActiveBehavior.Position;
+				if (OverridePositionTransform != null && OverridePositionWeight > 0f)
+				{
+					Vector3 ov = new Vector3(OverridePositionTransform.position.x, OverridePositionTransform.position.y, pos.z);
+					pos = Vector3.Lerp(pos, ov, Mathf.Clamp01(OverridePositionWeight));
+				}
+				transform.position = pos;
+				transform.rotation = ActiveBehavior.Rotation;
 			}
-			if (target != null)
+			else
 			{
-				Vector3 desired = new Vector3(target.position.x, target.position.y, transform.position.z);
-				transform.position = Vector3.Lerp(transform.position, desired, Time.unscaledDeltaTime * 6f);
+				Transform target = OverridePositionTransform;
+				if (target == null && OverworldManager2d.HasInstance)
+				{
+					var ow = OverworldManager2d.Instance;
+					if (ow.cameraTarget != null) target = ow.cameraTarget;
+					else if (ow.ball != null) target = ow.ball.transform;
+				}
+				if (target != null)
+				{
+					Vector3 desired = new Vector3(target.position.x, target.position.y, transform.position.z);
+					transform.position = Vector3.Lerp(transform.position, desired, Time.unscaledDeltaTime * 6f);
+				}
 			}
 		}
 
-		public void SwitchBehavior(CameraBehavior newCameraBehavior) => ActiveBehavior = newCameraBehavior;
-		public void Shake(float duration, float speed, float magnitude) { }
+		public void SwitchBehavior(CameraBehavior newCameraBehavior)
+		{
+			if (newCameraBehavior == null) return;
+			ActiveBehavior?.Cleanup();
+			ActiveBehavior = newCameraBehavior;
+			ActiveBehavior.Cameras = Cameras;
+			ActiveBehavior.Init();
+		}
 
+		public void Shake(float duration, float speed, float magnitude) { }
 		public bool IsWorldPosNearScreen(Vector3 pos, float nearThreshold = 0.25f) => true;
 	}
 }
