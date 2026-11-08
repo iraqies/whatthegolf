@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Threading.Tasks;
+using Core;
 using UnityEngine;
 
 public class GeneralCampaignStarter : BasePackStarter
@@ -7,7 +8,10 @@ public class GeneralCampaignStarter : BasePackStarter
 	public override bool StartPack(ContentPack pack, params object[] additionalContext)
 	{
 		if (pack == null) return false;
-		_ = PackStarterManager.StartPack(pack, false, additionalContext);
+		string level = null;
+		if (additionalContext != null && additionalContext.Length > 0)
+			level = additionalContext[0] as string;
+		StartCoroutine(StartPack(pack, level, Transmogrif.BALLSHAPES.ball));
 		return true;
 	}
 
@@ -16,16 +20,32 @@ public class GeneralCampaignStarter : BasePackStarter
 		yield return StartCampaignCR(pack, level, shape);
 	}
 
-	public Task StartCampaign(ContentPack pack, string level = null, Transmogrif.BALLSHAPES shape = Transmogrif.BALLSHAPES.ball)
+	public async Task StartCampaign(ContentPack pack, string level = null, Transmogrif.BALLSHAPES shape = Transmogrif.BALLSHAPES.ball)
 	{
-		return PackStarterManager.StartPack(pack, false, level, shape);
+		if (pack == null) return;
+		SaveGame.SetOverworld(pack.campaignType);
+		SaveGame.IncrementContentPackPlayCount(pack.contentPackID);
+		SaveGame.LastPlayedCampaignType = pack.campaignType;
+		await OverworldSceneLoader.TryLoadOverworld(pack, false);
+		OnPackDone?.Invoke(true);
 	}
 
 	private IEnumerator StartCampaignCR(ContentPack pack, string level = null, Transmogrif.BALLSHAPES shape = Transmogrif.BALLSHAPES.ball)
 	{
-		var task = PackStarterManager.StartPack(pack, false, level, shape);
-		while (!task.IsCompleted) yield return null;
-		OnPackDone?.Invoke(task.Result);
+		if (pack == null)
+		{
+			OnPackDone?.Invoke(false);
+			yield break;
+		}
+		SaveThrobber.HideThrobber();
+		var def = CampaignDef.GetDef(pack.campaignType);
+		ECampaignType cType = def != null ? def.campaignType : pack.campaignType;
+		SaveGame.SetOverworld(cType);
+		SaveGame.IncrementContentPackPlayCount(pack.contentPackID);
+		SaveGame.LastPlayedCampaignType = cType;
+		OverworldSceneLoader.LoadOverworld(pack, false);
+		yield return null;
+		OnPackDone?.Invoke(true);
 	}
 
 	private IEnumerator GoToComputerCR(string notificationId) { yield break; }

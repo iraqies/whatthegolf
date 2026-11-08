@@ -23,9 +23,19 @@ public class PackStarterManager : MonoBehaviour
 				instance = FindObjectOfType<PackStarterManager>();
 				if (instance == null)
 				{
-					var go = new GameObject("PackStarterManager");
-					instance = go.AddComponent<PackStarterManager>();
-					DontDestroyOnLoad(go);
+					var prefab = Resources.Load<GameObject>("Prefabs/PackStarterManager");
+					if (prefab != null)
+					{
+						var go = Instantiate(prefab);
+						go.name = "PackStarterManager";
+						instance = go.GetComponent<PackStarterManager>();
+					}
+					if (instance == null)
+					{
+						var go = new GameObject("PackStarterManager");
+						instance = go.AddComponent<PackStarterManager>();
+					}
+					DontDestroyOnLoad(instance.gameObject);
 				}
 			}
 			return instance;
@@ -36,6 +46,7 @@ public class PackStarterManager : MonoBehaviour
 	private void Awake()
 	{
 		instance = this;
+		DontDestroyOnLoad(gameObject);
 	}
 
 	public static Task<bool> StartPack(ContentPack pack, bool isLevelNotification, params object[] args)
@@ -57,57 +68,16 @@ public class PackStarterManager : MonoBehaviour
 			{
 				foreach (var def in packStarters)
 				{
-					if (def != null && def.starter != null && def.contentPackIds != null && def.contentPackIds.Contains(cp.contentPackID))
+					if (def != null && def.starter != null && def.isLevelNotificationStarter == isLevelNotification && def.contentPackIds != null && def.contentPackIds.Contains(cp.contentPackID))
 					{
 						return await StartPack(pack, def.starter, args);
 					}
 				}
 			}
 
-			string sceneName = ResolveOverworldScene(cp);
-			if (!string.IsNullOrEmpty(sceneName))
-			{
-				try
-				{
-					var h = Addressables.LoadSceneAsync(sceneName, LoadSceneMode.Single, true);
-					if (h.IsValid())
-					{
-						while (!h.IsDone) await Task.Yield();
-						return true;
-					}
-				}
-				catch { }
-				if (Application.CanStreamedLevelBeLoaded(sceneName))
-				{
-					var op = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
-					while (op != null && !op.isDone) await Task.Yield();
-					return true;
-				}
-			}
+			return await OverworldSceneLoader.TryLoadOverworld(cp, false);
 		}
 		return false;
-	}
-
-	private static string ResolveOverworldScene(ContentPack cp)
-	{
-		if (cp == null) return "main overworld new";
-		string id = (cp.contentPackID ?? cp.name ?? "").ToLowerInvariant();
-		if (id.Contains("sport") || id.Contains("olympic")) return "Sports_Overworld";
-		if (id.Contains("snow") || id.Contains("winter")) return "SnowySnow Overworld";
-		if (id.Contains("hole") || id.Contains("living")) return "LivingThings_Overworld";
-		if (id.Contains("impossible")) return "Impossible_Overworld";
-		if (id.Contains("hotdog")) return "Hotdog_Overworld";
-		if (id.Contains("hub")) return "Hub_Overworld";
-		var cat = WTGPortCatalog.Instance;
-		if (cat != null && cat.episodes != null)
-		{
-			foreach (var ep in cat.episodes)
-			{
-				if (ep.pack == cp && !string.IsNullOrEmpty(ep.overworldScene))
-					return ep.overworldScene;
-			}
-		}
-		return "main overworld new";
 	}
 
 	private Task<bool> StartPack(IPackWithData pack, BasePackStarter starter, params object[] args)

@@ -17,7 +17,8 @@ public class Transition : MonoBehaviour
 		Car = 6,
 		SpecialDay = 7,
 		Slime = 8,
-		CustomPrefab = 9
+		CustomPrefab = 9,
+		Random = 0
 	}
 
 	private enum State

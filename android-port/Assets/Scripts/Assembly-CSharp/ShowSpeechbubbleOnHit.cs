@@ -55,6 +55,8 @@ public class ShowSpeechbubbleOnHit : ShowSpeechBubble
 	{
 	}
 
+	public void ShowBubble() => ForceStartSpeechBubble();
+
 	public IEnumerator HandleHit(Action onDone = null, Action onTextShown = null, Func<string, string> OnPreprocessText = null)
 	{
 		return null;

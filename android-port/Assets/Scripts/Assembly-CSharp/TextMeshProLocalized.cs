@@ -31,18 +31,19 @@ public class TextMeshProLocalized : MonoBehaviour
 
 	private void Retranslate()
 	{
-		if (!string.IsNullOrEmpty(_textId))
-			ChangeText(Localization.Instance.GetString(_textId));
+		CheckForComponent();
+		if (TryTranslate(_textId, out string translated))
+			ChangeTextAfterTranslation(translated);
 	}
 
 	public void ChangeText(string text)
 	{
+		_textId = text;
 		CheckForComponent();
-		if (_tmp != null && !string.IsNullOrEmpty(text))
-		{
-			_tmp.text = text;
-			onTextChanged?.Invoke();
-		}
+		if (TryTranslate(_textId, out string translated))
+			ChangeTextAfterTranslation(translated);
+		else
+			ChangeTextAfterTranslation(_textId);
 	}
 
 	private void CheckForComponent()
@@ -52,8 +53,15 @@ public class TextMeshProLocalized : MonoBehaviour
 
 	private static bool TryTranslate(string textOrTerm, out string translated)
 	{
-		translated = Localization.Instance.GetString(textOrTerm);
-		return !string.IsNullOrEmpty(translated);
+		translated = textOrTerm;
+		if (string.IsNullOrEmpty(textOrTerm))
+			return false;
+		if (Localization.Instance != null && (Localization.Instance.HasTerm(textOrTerm) || textOrTerm.StartsWith("ID_")))
+		{
+			translated = Localization.Instance.GetString(textOrTerm);
+			return !string.IsNullOrEmpty(translated);
+		}
+		return false;
 	}
 
 	public void ClearText()
@@ -62,7 +70,17 @@ public class TextMeshProLocalized : MonoBehaviour
 		if (_tmp != null) _tmp.text = string.Empty;
 	}
 
-	public virtual void ChangeTextAfterTranslation(string textOrTerm) => ChangeText(Localization.Instance.GetString(textOrTerm));
+	public virtual void ChangeTextAfterTranslation(string textOrTerm)
+	{
+		CheckForComponent();
+		UpdateAlignment();
+		UpdateFont();
+		if (_tmp != null)
+		{
+			_tmp.text = textOrTerm ?? string.Empty;
+			onTextChanged?.Invoke();
+		}
+	}
 	public void UpdateAlignment() { }
 	public void UpdateFont() { }
 	private bool IsUGUI() => _tmp is TextMeshProUGUI;

@@ -14,6 +14,7 @@ namespace CameraStack
 		[SerializeField] private Vector3 desktopRotation;
 		private Vector2 adjustedScreenPosition;
 
+		public Transform roomCenter { get => follow; set => follow = value; }
 		public override void Init() => base.Init();
 		public void SetFollowTarget(Transform newTarget) => follow = newTarget;
 		public void SetOrthoSize(float val) => orthographicSize = val;

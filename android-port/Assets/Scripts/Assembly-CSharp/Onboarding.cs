@@ -82,6 +82,12 @@ public class Onboarding : MonoBehaviour
 				}
 			}
 		}
+		if (pack != null)
+		{
+			var loadTask = OverworldSceneLoader.TryLoadOverworld(pack, true);
+			while (loadTask != null && !loadTask.IsCompleted)
+				yield return null;
+		}
 		m_OnOnboardingCompleted?.Invoke();
 	}
 

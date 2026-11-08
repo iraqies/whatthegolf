@@ -140,36 +140,232 @@ public class OverworldManager2d : GolfBehaviour
 	{
 		instance = this;
 		SaveGame.SetOverworld(overworldType);
-		if (sectionManager != null) sectionManager.Init();
-		if (gridfiller != null) gridfiller.Init();
-		if (culling != null) culling.Initialize();
-		if (ui != null) ui.Initialize();
-		if (deathTransition != null) StartCoroutine(deathTransition.EndTransition(true));
-		if (ball == null) ball = FindObjectOfType<OverworldBall2D>();
-		if (Camera == null) Camera = FindObjectOfType<OverworldCamera>();
-		if (goals == null || goals.Count == 0)
-			goals = FindObjectsOfType<OverworldGoal>().ToList();
-		if (ui != null && ui.AimMarker != null && ball != null && ball.Controller != null)
-			ui.AimMarker.SubscribeToController(ball.Controller);
+		if (sectionManager != null)
+			sectionManager.Init();
+
+		RemoveNullsFromList(goals);
+		RemoveNullsFromList(allButtons);
+		RemoveNullsFromList(allSecrets);
+		RemoveNullsFromList(allOverworldMainButton);
+		RemoveNullsFromList(allOverworldPortals);
+		RemoveNullsFromList(allOverworldRobots);
+		RemoveNullsFromList(allPuzzleDoors);
+		RemoveNullsFromList(allResetProps);
+
+		if (Camera == null)
+			Camera = FindObjectOfType<OverworldCamera>();
+		if (Camera != null && Camera.MainCamera != null)
+			mainCameraCullingMask = Camera.MainCamera.cullingMask;
+
+		var ballMgr = GetComponent<OverworldBallManager>();
+		if (ballMgr == null)
+			ballMgr = FindObjectOfType<OverworldBallManager>();
+		if (ballMgr != null)
+		{
+			ballMgr.OnNewBall -= Instance_OnNewBall;
+			ballMgr.OnNewBall += Instance_OnNewBall;
+			ballMgr.Initialize();
+			ballMgr.OnDeath -= BallMananger_OnDeath;
+			ballMgr.OnDeath += BallMananger_OnDeath;
+			if (ball == null && ballMgr.Ball != null)
+				ball = ballMgr.Ball;
+		}
+		if (ball == null)
+			ball = FindObjectOfType<OverworldBall2D>();
+
+		if (gridfiller != null)
+		{
+			gridfiller.Init();
+			gridRigid = gridfiller.currentRigid;
+		}
+		if (culling != null)
+			culling.Initialize();
+		if (deathTransition != null)
+			StartCoroutine(deathTransition.EndTransition(true));
 	}
 
-	private void Undocking_OnDockingStateChanged(bool isDocked) { }
+	private void Undocking_OnDockingStateChanged(bool isDocked)
+	{
+		RefreshDoorsAndGoals();
+	}
+
 	private void RemoveNullsFromList<T>(List<T> list) => list?.RemoveAll(x => x == null);
 	private bool IsPrecompiledListsOk() => true;
 
 	private IEnumerator Start()
 	{
+		audioManager = AudioManager.Instance;
+		if (ball == null && OverworldBallManager.HasInstance && OverworldBallManager.Instance != null)
+			ball = OverworldBallManager.Instance.Ball;
+		if (ball == null)
+			ball = FindObjectOfType<OverworldBall2D>();
+
 		if (ball != null)
 		{
 			ball.Init();
 			ballStartPosition = ball.transform.position;
-			ball.ShowAndEnable();
-			if (ball.Controller != null)
-				ball.Controller.Activate();
+			var ctrl = ball.GetComponent<GolfBallController>();
+			if (ctrl != null)
+			{
+				ctrl.OnShoot -= OnBallShot;
+				ctrl.OnShoot += OnBallShot;
+			}
+			if (ui != null && ui.AimMarker != null && ball.Controller != null)
+				ui.AimMarker.SubscribeToController(ball.Controller);
 		}
-		RefreshDoorsAndGoals();
-		if (LevelManager.Exists)
-			yield return LevelManager.Instance.EndTransition(true);
+
+		if (goals == null || goals.Count == 0)
+			goals = FindObjectsOfType<OverworldGoal>().ToList();
+		foreach (var g in goals)
+		{
+			if (g == null) continue;
+			g.Init(gridfiller);
+			g.OnHit -= Goal_OnHitSimple;
+			g.OnHit += Goal_OnHitSimple;
+			g.OnCrownWon -= Goal_CrownWon;
+			g.OnCrownWon += Goal_CrownWon;
+		}
+
+		var groundMap = gridfiller != null ? gridfiller.currentGroundMap : null;
+
+		if (allButtons != null)
+		{
+			foreach (var b in allButtons)
+			{
+				if (b == null) continue;
+				if (debugWithoutDoors)
+					b.gameObject.SetActive(false);
+				else if (b.gameObject.activeInHierarchy)
+					b.Init(groundMap, goals, Camera);
+			}
+			foreach (var b in allButtons)
+			{
+				if (b != null && !debugWithoutDoors && b.gameObject.activeInHierarchy)
+					b.AfterInit();
+			}
+		}
+
+		if (OLButtons != null)
+		{
+			foreach (var ob in OLButtons)
+			{
+				if (ob == null) continue;
+				if (debugWithoutDoors)
+					ob.gameObject.SetActive(false);
+				else if (ob.gameObject.activeInHierarchy)
+					ob.Init(groundMap, goals, Camera);
+			}
+			foreach (var ob in OLButtons)
+			{
+				if (ob != null && !debugWithoutDoors && ob.gameObject.activeInHierarchy)
+					ob.AfterInit();
+			}
+		}
+
+		if (overworldMusic != null)
+			overworldMusic.Init();
+
+		foreach (var g in goals)
+		{
+			if (g != null)
+				g.RefreshVisuals();
+		}
+
+		if (allOverworldRobots != null)
+		{
+			foreach (var r in allOverworldRobots)
+			{
+				if (r == null) continue;
+				if (debugWithoutComputersAndBigButtons)
+					r.gameObject.SetActive(false);
+				else
+					r.Initialize(this, groundMap);
+			}
+		}
+
+		if (allSecrets != null)
+		{
+			foreach (var s in allSecrets)
+				if (s != null) s.Init(gridfiller);
+		}
+
+		if (allOverworldMainButton != null)
+		{
+			foreach (var mb in allOverworldMainButton)
+			{
+				if (mb == null) continue;
+				if (debugWithoutComputersAndBigButtons)
+				{
+					mb.gameObject.SetActive(false);
+				}
+				else
+				{
+					mb.Init(groundMap);
+					mb.OnPressed -= Mainbutton_OnPressed;
+					mb.OnPressed += Mainbutton_OnPressed;
+				}
+			}
+		}
+
+		if (allOverworldPortals != null)
+		{
+			foreach (var p in allOverworldPortals)
+				if (p != null) p.Init(gridfiller);
+		}
+
+		if (allPuzzleDoors != null)
+		{
+			foreach (var pd in allPuzzleDoors)
+				if (pd != null) pd.Init(groundMap);
+		}
+
+		if (FlagScanner != null)
+			FlagScanner.goals = goals;
+
+		state = STATES.active;
+		if (ui != null)
+			ui.Initialize();
+		timeForLastTransitionJingle = Time.unscaledTime - 60f;
+		if (Camera != null && Camera.MainCamera != null && mainCameraCullingMask != 0)
+			Camera.MainCamera.cullingMask = mainCameraCullingMask;
+
+		bool introDone = SaveGame.IsIntroAnimationComplete;
+		if (introDone || isHub || introTunnel == null)
+		{
+			if (!isHub || (HubSceneLoader.Instance != null && !HubSceneLoader.Instance.HasBeenLoadedBefore))
+				StartCoroutine(StartOverworldMusicDelayed(0.2f));
+			if (ball != null)
+			{
+				ball.ShowAndEnable();
+				if (ball.Controller != null)
+				{
+					ball.Controller.enabled = true;
+					ball.Controller.Activate();
+				}
+			}
+			if (ui != null)
+				ui.EnableReturnButton();
+			IsIntroAnimationComplete = true;
+			if (LevelManager.Exists)
+				yield return StartCoroutine(LevelManager.Instance.EndTransition(false, 0f));
+		}
+		else
+		{
+			if (!isComingFromLoaderScene && LevelManager.Exists)
+				LevelManager.Instance.InstantTransitionCover(Color.black);
+			introTunnel.Init(canStartAtLogoWhenStartingOverworld);
+			yield return StartCoroutine(PlayIntroAnimation());
+		}
+	}
+
+	private void OnBallShot(Vector3 dir)
+	{
+		m_OnShoot?.Invoke();
+	}
+
+	private void Goal_OnHitSimple(OverworldGoal goal, Vector3 hitPos, OverworldBall2D ballHit)
+	{
+		Goal_OnHit(goal, hitPos, ballHit, false);
 	}
 
 	public void RefreshDoorsAndGoals()
@@ -179,26 +375,192 @@ public class OverworldManager2d : GolfBehaviour
 			foreach (var g in goals)
 				g?.ReloadData();
 		}
+		if (allButtons != null)
+		{
+			foreach (var b in allButtons)
+				if (b != null && b.gameObject.activeInHierarchy)
+					b.UpdateStatus();
+		}
 	}
 
 	public static void ActivateParticleSystems(Transform root) { }
 	private void RestOverworldProps() { }
-	private void BallMananger_OnDeath(OverworldBall2D b) { }
-	private IEnumerator DeathRoutine() { yield break; }
+
+	private void BallMananger_OnDeath(OverworldBall2D b)
+	{
+		StartCoroutine(DeathRoutine());
+	}
+
+	private IEnumerator DeathRoutine()
+	{
+		if (ball != null)
+		{
+			ball.StopBall(false);
+			ball.transform.position = ballStartPosition;
+			ball.ShowAndEnable();
+		}
+		yield break;
+	}
 
 	public void RegisterBall(OverworldBall2D _ball, Transmogrif.BALLSHAPES newShape)
 	{
 		ball = _ball;
+		if (ball != null)
+		{
+			var ctrl = ball.GetComponent<GolfBallController>();
+			if (ctrl != null)
+			{
+				ctrl.OnShoot -= OnBallShot;
+				ctrl.OnShoot += OnBallShot;
+				if (ui != null && ui.AimMarker != null)
+					ui.AimMarker.SubscribeToController(ctrl);
+			}
+		}
 	}
 
-	private void Instance_OnNewBall(Transmogrif.BALLSHAPES newShape) { }
-	private void Mainbutton_OnPressed(OverworldMainButton button) { }
-	private IEnumerator MainButtonPressRoutine(OverworldMainButton button) { yield break; }
-	private IEnumerator StartOverworldMusicDelayed(float delay) { yield break; }
-	private IEnumerator PlayIntroAnimation() { yield break; }
+	private void Instance_OnNewBall(Transmogrif.BALLSHAPES newShape)
+	{
+		if (OverworldBallManager.HasInstance && OverworldBallManager.Instance != null)
+			RegisterBall(OverworldBallManager.Instance.Ball, newShape);
+	}
+
+	private void Mainbutton_OnPressed(OverworldMainButton button)
+	{
+		if (button != null)
+			StartCoroutine(MainButtonPressRoutine(button));
+	}
+
+	private IEnumerator MainButtonPressRoutine(OverworldMainButton button)
+	{
+		if (button == null) yield break;
+		Vector3 btnPos = button.transform.position;
+		if (ball != null)
+		{
+			if (ball.Controller != null)
+			{
+				ball.Controller.StopAiming();
+				ball.Controller.enabled = false;
+			}
+			ball.enabled = false;
+			if (ball.rigidBody != null)
+			{
+				ball.rigidBody.isKinematic = true;
+				ball.rigidBody.velocity = Vector2.zero;
+				ball.rigidBody.angularVelocity = 0f;
+			}
+			ball.SetColliders(false);
+			ball.Hide();
+		}
+
+		yield return new WaitForSeconds(0.3f);
+
+		yield return StartCoroutine(button.EnableButtonAndCable(
+			cablePos =>
+			{
+				if (cameraTarget != null)
+					cameraTarget.position = cablePos;
+			},
+			() =>
+			{
+				var curBall = OverworldBallManager.HasInstance && OverworldBallManager.Instance != null && OverworldBallManager.Instance.Ball != null
+					? OverworldBallManager.Instance.Ball
+					: ball;
+				if (curBall != null)
+				{
+					curBall.ShowAndEnable();
+					curBall.enabled = true;
+					if (curBall.rigidBody != null)
+						curBall.rigidBody.isKinematic = false;
+					curBall.SetColliders(true);
+					if (curBall.Controller != null)
+					{
+						curBall.Controller.enabled = true;
+						curBall.Controller.Activate();
+					}
+					if (cameraTarget != null)
+						cameraTarget.position = curBall.transform.position;
+				}
+			}
+		));
+	}
+
+	private IEnumerator StartOverworldMusicDelayed(float delay)
+	{
+		if (delay > 0f)
+			yield return new WaitForSeconds(delay);
+		StartMusicWithoutTransition();
+	}
+
+	private IEnumerator PlayIntroAnimation()
+	{
+		if (AudioManager.Instance != null && AudioManager.Instance.music != null)
+			AudioManager.Instance.music.InitializeBank(null, false);
+
+		GolfBallController ctrl = ball != null ? ball.GetComponent<GolfBallController>() : null;
+		if (ctrl != null)
+			ctrl.enabled = false;
+
+		state = STATES.inOnboarding;
+		ToggleOverworld(true);
+		if (culling != null)
+			culling.ReturnToOverworld();
+
+		if (!isComingFromLoaderScene)
+		{
+			if (LevelManager.Exists)
+				StartCoroutine(LevelManager.Instance.EndTransition(false, 1f));
+			if (delayAfterHidingTransitionOnStartinInTunnel > 0f)
+				yield return new WaitForSeconds(delayAfterHidingTransitionOnStartinInTunnel);
+		}
+		else if (LevelManager.Exists)
+		{
+			StartCoroutine(LevelManager.Instance.EndTransition(false, 0f));
+		}
+
+		if (overworldMusic != null && musicOverworldStart != null)
+			overworldMusic.StartWithoutTransition(musicOverworldStart);
+
+		bool done = false;
+		if (introTunnel != null)
+		{
+			var routine = introTunnel.PlayAnimationRoutine(
+				() => done = true,
+				() => true,
+				() => true
+			);
+			StartCoroutine(pTween.Then(routine, 0.1f, () => { }));
+			while (!done)
+				yield return null;
+		}
+
+		state = STATES.active;
+		yield return null;
+
+		if (ctrl != null)
+		{
+			ctrl.enabled = true;
+			ctrl.Activate();
+		}
+		if (ball != null)
+		{
+			ballStartPosition = ball.transform.position;
+			ball.ShowAndEnable();
+		}
+		if (ui != null)
+			ui.EnableReturnButton();
+		IsIntroAnimationComplete = true;
+		SaveGame.IsIntroAnimationComplete = true;
+		SaveGame.Save(false);
+	}
+
 	private void Update() { }
 	private IEnumerator ShowBallDelayed(OverworldGoal goalHit) { yield break; }
-	public void StartMusicWithoutTransition() { }
+
+	public void StartMusicWithoutTransition()
+	{
+		if (overworldMusic != null && musicOverworldStart != null)
+			overworldMusic.StartWithoutTransition(musicOverworldStart);
+	}
 
 	private void ReturnToOverworld(List<LevelData> levelData, bool isCompleted, List<Level.CompletedState> completeState, OverworldGoal goalHit, bool clearPlayAgainDialog = true, OverworldBall2D ballThatHit = null, List<Level.FailState> failStates = null)
 	{
@@ -258,6 +620,7 @@ public class OverworldManager2d : GolfBehaviour
 			bool won = false;
 			yield return LevelManager.Instance.Play(level, onComplete: _ => won = true);
 			ToggleOverworld(true);
+			RefreshDoorsAndGoals();
 			callback?.Invoke(won);
 		}
 	}
@@ -272,8 +635,16 @@ public class OverworldManager2d : GolfBehaviour
 		}
 		if (ball != null)
 		{
-			if (isOverworldActive) ball.ShowAndEnable();
-			else ball.HideAndStop();
+			if (isOverworldActive)
+			{
+				ball.ShowAndEnable();
+				if (ball.Controller != null)
+					ball.Controller.Activate();
+			}
+			else
+			{
+				ball.HideAndStop();
+			}
 		}
 		m_OnToggleOverworld?.Invoke(isOverworldActive);
 	}
@@ -289,7 +660,7 @@ public class OverworldManager2d : GolfBehaviour
 			onComplete: _ => completed = true
 		);
 		ToggleOverworld(true);
-		goal.ReloadData();
+		RefreshDoorsAndGoals();
 		if (completed)
 			OnlevelCompleted?.Invoke(goal, true);
 		else
@@ -299,23 +670,19 @@ public class OverworldManager2d : GolfBehaviour
 
 	public void DisplayCampaignHub(bool display) { }
 
-	public void ResetBallPositionToLastSave()
+	public IEnumerator CameraMoveCenter(Transform target, float duration)
 	{
-		if (ball != null) ball.transform.position = ballStartPosition;
-	}
-
-	private IEnumerator CameraMoveCenter(Transform target, float time) { yield break; }
-	private IEnumerator CameraMoveDuringTransition(bool zoomIn, Transform target = null) { yield break; }
-
-	public void SaveBallStartPosition(Vector3 position) => ballStartPosition = position;
-	private void NotifyOnShoot(Vector3 boost) => m_OnShoot?.Invoke();
-	public HubSection FindCurrentHubSection() => FindObjectOfType<HubSection>();
-
-	public void DisableInteraction(bool hide = true) => IsInteractionDisabled = true;
-	public void EnableInteraction() => IsInteractionDisabled = false;
-
-	private void OnDestroy()
-	{
-		if (instance == this) instance = null;
+		if (Camera == null || target == null || duration <= 0f)
+			yield break;
+		Vector3 startPos = Camera.transform.position;
+		Vector3 endPos = new Vector3(target.position.x, target.position.y, startPos.z);
+		Camera.enabled = false;
+		yield return StartCoroutine(pTween.ToRealTime(duration, t =>
+		{
+			if (Camera != null)
+				Camera.transform.position = Vector3.Lerp(startPos, endPos, TweenFunctions.EaseInOut(t));
+		}));
+		if (Camera != null)
+			Camera.enabled = true;
 	}
 }

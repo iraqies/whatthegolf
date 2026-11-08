@@ -12,6 +12,7 @@ namespace Core
 		{
 			public ScreenModes defaultScreenMode;
 			public bool isMobile = true;
+			public bool IsMobile => isMobile;
 			public bool useRotatedOverworldAndCameraInLevels;
 			public EPlatformType platformType = EPlatformType.Android;
 			public bool useFileSave = true;

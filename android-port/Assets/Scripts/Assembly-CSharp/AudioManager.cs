@@ -64,6 +64,7 @@ public class AudioManager : MonoBehaviour
 		}
 	}
 
+	public AudioSources sfx => shortEffects;
 	public Dictionary<int, AudioMaterialSettings> AudioMatCache => audioMatCache;
 
 	private AudioSources EnsurePool(ref AudioSources field, string childName)

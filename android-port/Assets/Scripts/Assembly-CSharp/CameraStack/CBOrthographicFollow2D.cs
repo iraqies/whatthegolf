@@ -1,3 +1,4 @@
+using Core;
 using UnityEngine;
 
 namespace CameraStack
@@ -5,16 +6,16 @@ namespace CameraStack
 	public class CBOrthographicFollow2D : CameraBehaviorOrthographic, ICameraBehaviourFollowing
 	{
 		[SerializeField] private Vector3 rotation;
-		[SerializeField] private float distance = 15f;
-		[SerializeField] public float sideTrackPadding = 0.2f;
-		[SerializeField] public float upperTrackPadding = 0.2f;
-		[SerializeField] public float lowerTrackPadding = 0.2f;
+		[SerializeField] private float distance = 50f;
+		[SerializeField] public float sideTrackPadding = 0.25f;
+		[SerializeField] public float upperTrackPadding = 0.25f;
+		[SerializeField] public float lowerTrackPadding = 0.25f;
 		[SerializeField] public Vector2 offSetAxis;
 		[SerializeField] public bool lockVerticalAxis;
 		[SerializeField] public bool lockHorizontalAxis;
 		[SerializeField] private Transform follow;
-		[SerializeField] private bool autoAdjustOrthographicSize;
-		[SerializeField] public float tweenTime = 0.15f;
+		[SerializeField] private bool autoAdjustOrthographicSize = true;
+		[SerializeField] public float tweenTime = 0.1f;
 		[SerializeField] private Vector3 desktopRotation;
 		public Vector3 lookAhead;
 		public bool isInPipeIntro;
@@ -22,13 +23,19 @@ namespace CameraStack
 		private Vector3 currentPosition;
 		private Vector2 adjustedScreenPosition;
 		public float lookAheadDistance;
-		private bool _hasPos;
 
 		public override void Init()
 		{
 			base.Init();
+			if (follow == null && Ball != null)
+				follow = Ball.transform;
+			if (follow != null)
+			{
+				Vector3 fpos = follow.position;
+				float dist = Mathf.Abs(distance) > 0.1f ? Mathf.Abs(distance) : 50f;
+				transform.position = new Vector3(fpos.x, fpos.y, -dist);
+			}
 			currentPosition = transform.position;
-			_hasPos = true;
 		}
 
 		public void SetFollowTarget(Transform newTarget) => follow = newTarget;
@@ -46,54 +53,86 @@ namespace CameraStack
 			orthographicSize = val;
 			if (Cameras != null)
 			{
-				foreach (var c in Cameras)
+				for (int i = 0; i < Cameras.Length; i++)
 				{
-					if (c != null && c.orthographic)
-						c.orthographicSize = orthographicSize;
+					if (Cameras[i] != null)
+						Cameras[i].orthographicSize = orthographicSize;
 				}
 			}
 		}
 
-		public float GetOrthoSize() => orthographicSize > 0.01f ? orthographicSize : 8f;
+		public float GetOrthoSize() => orthographicSize;
 
 		public Transform GetFollowTarget()
 		{
 			if (follow != null) return follow;
-			if (OverworldManager2d.HasInstance)
+			if (OverworldManager2d.HasInstance && OverworldManager2d.Instance != null)
 			{
-				var ow = OverworldManager2d.Instance;
-				if (ow.cameraTarget != null) return ow.cameraTarget;
-				if (ow.ball != null) return ow.ball.transform;
+				if (OverworldManager2d.Instance.cameraTarget != null)
+					return follow = OverworldManager2d.Instance.cameraTarget;
+				if (OverworldManager2d.Instance.ball != null)
+					return follow = OverworldManager2d.Instance.ball.transform;
 			}
-			var b = Ball;
-			return b != null ? b.transform : null;
+			if (Ball != null)
+				return follow = Ball.transform;
+			return null;
 		}
 
 		public override void PreUpdate() { }
 
-		public override Quaternion CalculateRotation() => Quaternion.Euler(rotation);
+		public override Quaternion CalculateRotation()
+		{
+			var currentCfg = PlatformSettings.Instance != null ? PlatformSettings.Instance.GetCurrent() : null;
+			bool useMobile = currentCfg == null || currentCfg.IsMobile;
+			return Quaternion.Euler(useMobile ? rotation : desktopRotation);
+		}
 
 		protected override Vector3 CalculatePosition()
 		{
-			Transform t = GetFollowTarget();
-			if (t == null) return transform.position;
-			Quaternion rot = CalculateRotation();
-			float dist = Mathf.Abs(distance) > 0.1f ? Mathf.Abs(distance) : 15f;
-			Vector3 targetPos = t.position + new Vector3(offSetAxis.x, offSetAxis.y, 0f) + lookAhead;
-			if (lockHorizontalAxis && _hasPos) targetPos.x = currentPosition.x;
-			if (lockVerticalAxis && _hasPos) targetPos.y = currentPosition.y;
-			Vector3 desired = targetPos - (rot * Vector3.forward) * dist;
-			if (!_hasPos)
+			if (Cameras == null || Cameras.Length == 0 || Cameras[0] == null || isInPipeIntro)
+				return transform.position;
+
+			Camera cam = Cameras[0];
+			Transform target = GetFollowTarget();
+			if (target == null)
+				return transform.position;
+
+			Vector3 clampedLook = Vector3.ClampMagnitude(lookAhead, 5f) * lookAheadDistance;
+			Vector3 focusWorld = target.position - clampedLook;
+			Vector3 vp = cam.WorldToViewportPoint(focusWorld);
+			adjustedScreenPosition = new Vector2(vp.x, vp.y);
+
+			if (!lockHorizontalAxis)
 			{
-				currentPosition = desired;
-				_hasPos = true;
+				float padX = Mathf.Clamp(sideTrackPadding, 0.05f, 0.5f);
+				if (adjustedScreenPosition.x < padX)
+					adjustedScreenPosition.x = padX;
+				if (adjustedScreenPosition.x > 1f - padX)
+					adjustedScreenPosition.x = 1f - padX;
 			}
-			else
+			if (!lockVerticalAxis)
 			{
-				float st = Mathf.Max(0.05f, tweenTime);
-				currentPosition = Vector3.SmoothDamp(currentPosition, desired, ref velocity, st, Mathf.Infinity, Time.unscaledDeltaTime);
+				float padLow = Mathf.Clamp(lowerTrackPadding, 0.05f, 0.5f);
+				float padUp = Mathf.Clamp(upperTrackPadding, 0.05f, 0.5f);
+				if (adjustedScreenPosition.y < padLow)
+					adjustedScreenPosition.y = padLow;
+				if (adjustedScreenPosition.y > 1f - padUp)
+					adjustedScreenPosition.y = 1f - padUp;
 			}
-			return currentPosition;
+
+			float dist = Mathf.Abs(distance) > 0.1f ? Mathf.Abs(distance) : 50f;
+			Vector3 vpTarget = new Vector3(adjustedScreenPosition.x + offSetAxis.x, adjustedScreenPosition.y + offSetAxis.y, dist);
+			Vector3 worldFromVp = cam.ViewportToWorldPoint(vpTarget);
+			Vector3 camPos = transform.position;
+			Vector3 desired = (camPos - worldFromVp) + target.position;
+			desired.z = -dist;
+
+			if (tweenTime > 0f)
+			{
+				return Vector3.SmoothDamp(camPos, desired, ref velocity, tweenTime);
+			}
+			velocity = Vector3.zero;
+			return desired;
 		}
 	}
 }

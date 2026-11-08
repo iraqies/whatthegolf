@@ -158,15 +158,33 @@ public class Loading : MonoBehaviour
 		}
 		isOnboardingRunning = true;
 		bool done = false;
-		Onboarding.OnOnboardingCompleted += () => done = true;
-		Onboarding.StartOnBoarding(pack, allowMenuButtons, () => done = true);
+		bool aborted = false;
+		Action onCompleted = null;
+		onCompleted = () =>
+		{
+			Onboarding.OnOnboardingCompleted -= onCompleted;
+			done = true;
+		};
+		Onboarding.OnOnboardingCompleted += onCompleted;
+		Onboarding.StartOnBoarding(pack, allowMenuButtons, () =>
+		{
+			Onboarding.OnOnboardingCompleted -= onCompleted;
+			aborted = true;
+			done = true;
+			AbandonButtonClicked();
+		});
 		while (!done)
 			yield return null;
 		isOnboardingRunning = false;
-		SaveGame.IsOnboardingComplete = true;
-		SaveGame.IsFirstTime = false;
-		SaveGame.Save();
-		LoadHub();
+		if (!aborted)
+		{
+			if (isMainOnboarding)
+			{
+				SaveGame.IsOnboardingComplete = true;
+				SaveGame.IsFirstTime = false;
+				SaveGame.Save();
+			}
+		}
 	}
 
 	public void AbandonButtonClicked()
