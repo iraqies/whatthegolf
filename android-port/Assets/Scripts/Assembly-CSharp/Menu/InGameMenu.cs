@@ -55,7 +55,14 @@ namespace Menu
 			if (strokeCounter != null)
 				strokeCounter.Init();
 			if (fullScreenText != null)
+			{
 				fullScreenText.Init();
+				fullScreenText.HideInstantly();
+			}
+			if (informationText != null)
+				informationText.ClearText();
+			if (DailyChallengePagination != null)
+				DailyChallengePagination.DisableInstantly();
 			if (exitButton != null)
 			{
 				exitButton.onClick.RemoveAllListeners();

@@ -18,28 +18,28 @@ namespace Core
 		[SerializeField] public List<Renderer> renderers = new List<Renderer>();
 		[SerializeField] public List<Renderer> shadowRenderers = new List<Renderer>();
 		[SerializeField] public Renderer arrowOutline;
-		[SerializeField] public Color colorMin = new Color(1f, 0.9f, 0.2f, 1f);
-		[SerializeField] public Color colorMax = new Color(1f, 0.2f, 0.2f, 1f);
+		[SerializeField] public Color colorMin = new Color(0.9803922f, 0.65882355f, 0.16470589f, 1f);
+		[SerializeField] public Color colorMax = new Color(1f, 0.34509805f, 0.3254902f, 1f);
 		[SerializeField] public AnimationCurve colorCurve;
-		[SerializeField] public Color blockedColor = Color.gray;
-		[SerializeField] public Color outlineBlockedColor = Color.black;
+		[SerializeField] public Color blockedColor = new Color(0.6691177f, 0.6691177f, 0.6691177f, 1f);
+		[SerializeField] public Color outlineBlockedColor = new Color(0.67058825f, 0.67058825f, 0.67058825f, 1f);
 		[SerializeField] public Transform overrideBall;
 		[SerializeField] public Transform basePivot;
-		[SerializeField] public float limitValue = 1f;
+		[SerializeField] public float limitValue = 0.9f;
 		[SerializeField] public Transform arrowHeadJoint;
 		[SerializeField] public Transform arrowBaseJoint;
 		[SerializeField] public MoveMethodEnum MoveMethod;
 		[SerializeField] public MoveMethodEnum RotateMethod;
 		[SerializeField] private GameObject boostArrow;
 		[SerializeField] public bool AutoHide = true;
-		[SerializeField] public float SmoothedPhysicsSpeed = 15f;
+		[SerializeField] public float SmoothedPhysicsSpeed = 500f;
 		[SerializeField] private float gyroMagnitude;
 		[SerializeField] private float scaleMod = 1f;
 
-		private float alphaDipSpeed;
-		private float alphaDipStart;
-		public float InsideAlpha = 0.5f;
-		public float InsideAlphaOutline = 0.5f;
+		private float alphaDipSpeed = 2.2f;
+		private float alphaDipStart = 1f;
+		public float InsideAlpha = 0.4f;
+		public float InsideAlphaOutline = 0.3f;
 		public Camera cam;
 		private GolfBallController ball;
 		private float blockValue;
@@ -50,14 +50,14 @@ namespace Core
 		private float arrowSizeChangeSpeed = 20f;
 		private Rigidbody rigid;
 		private Rigidbody2D rigid2D;
-		private float alphaTarget;
+		private float alphaTarget = 1f;
 		private float currentAlpha = 1f;
 		private bool overrideIsBlocked;
 		public bool clampAimVector = true;
 
 		public float ShaftLength => Scale * 6f;
 		private float Scale => (ball != null && ball.Scale > 0f ? ball.Scale : 1f) * (scaleMod > 0f ? scaleMod : 1f);
-		private Vector3 Up => ball != null && ball.AimPlane == AimPlanes.Camera ? Vector3.forward : Vector3.up;
+		private Vector3 Up => ball != null ? ball.GetPlane(ball.AimPlane).normal : Vector3.up;
 
 		public bool CastShadow
 		{
@@ -76,25 +76,65 @@ namespace Core
 		public void Initialize(GolfBallController ballController, bool showArrowOnTop)
 		{
 			ball = ballController;
+			if (ball != null)
+				overrideBall = ball.transform;
 			if (scaleMod <= 0f) scaleMod = 1f;
 			if (arrowSizeChangeSpeed <= 0f) arrowSizeChangeSpeed = 20f;
-			if (renderers != null && renderers.Count > 0 && renderers[0] != null)
+
+			Material baseMat = null;
+			if (renderers != null)
 			{
-				arrowMaterial = new Material(renderers[0].sharedMaterial);
 				foreach (var r in renderers)
 				{
-					if (r != null) r.sharedMaterial = arrowMaterial;
+					if (r != null && r.sharedMaterial != null)
+					{
+						baseMat = r.sharedMaterial;
+						break;
+					}
 				}
 			}
+			if (baseMat != null)
+			{
+				arrowMaterial = new Material(baseMat);
+				foreach (var r in renderers)
+				{
+					if (r != null)
+					{
+						r.sharedMaterial = arrowMaterial;
+						r.sortingLayerName = "Foreground";
+						if (r is SkinnedMeshRenderer smr)
+							smr.updateWhenOffscreen = true;
+					}
+				}
+			}
+
 			if (arrowOutline != null && arrowOutline.sharedMaterial != null)
 			{
 				arrowOutlineMaterial = new Material(arrowOutline.sharedMaterial);
 				arrowOutline.sharedMaterial = arrowOutlineMaterial;
+				arrowOutline.sortingLayerName = "Foreground";
 			}
-			if (boostArrow != null)
-				boostArrow.SetActive(false);
-			if (AutoHide)
-				Hide();
+
+			if (showArrowOnTop)
+			{
+				InsideAlpha = 1f;
+				InsideAlphaOutline = 1f;
+				if (arrowMaterial != null) arrowMaterial.renderQueue = 4000;
+				if (arrowOutlineMaterial != null) arrowOutlineMaterial.renderQueue = 4000;
+			}
+			else
+			{
+				InsideAlpha = 0.85f;
+				InsideAlphaOutline = 0.3f;
+				if (arrowMaterial != null) arrowMaterial.renderQueue = 3004;
+				if (arrowOutlineMaterial != null) arrowOutlineMaterial.renderQueue = 3005;
+			}
+
+			if (arrowOutlineMaterial != null)
+				arrowOutlineMaterial.SetFloat("_InsideAlpha", InsideAlphaOutline);
+
+			currentAlpha = alphaTarget > 0f ? alphaTarget : 1f;
+			gameObject.SetActive(false);
 		}
 
 		public void SetOverrideBall(Transform newBall) => overrideBall = newBall;
@@ -105,28 +145,56 @@ namespace Core
 
 		public void UpdateArrow(Vector3 vec, bool isBlocked, bool onlyDashedArrow)
 		{
-			if (!gameObject.activeSelf)
-				gameObject.SetActive(true);
-			Transform target = overrideBall != null ? overrideBall : (ball != null ? ball.ArrowPosition : null);
-			if (target != null)
-				MoveArrow(target.position);
-			RotateArrow(vec);
+			if (clampAimVector && vec.magnitude > 1f)
+				vec.Normalize();
 
-			blockValue = Mathf.MoveTowards(blockValue, (isBlocked || overrideIsBlocked) ? 1f : 0f, Time.unscaledDeltaTime * 10f);
-			Color c = Color.Lerp(GetColor(vec), blockedColor, blockValue);
-			c.a = 1f;
-			SetArrowColor(c);
-			if (arrowOutlineMaterial != null)
-				arrowOutlineMaterial.color = Color.Lerp(Color.white, outlineBlockedColor, blockValue);
+			if (ball != null && !onlyDashedArrow && ball.OnlyFullPower)
+			{
+				if (boostArrow != null) boostArrow.SetActive(true);
+				targetArrowSize = 0f;
+			}
+			else
+			{
+				if (!gameObject.activeSelf)
+					gameObject.SetActive(true);
+				if (ball != null && ball.ReverseArrow)
+					vec = -vec;
 
-			float len = onlyDashedArrow ? 0f : Mathf.Clamp01(vec.magnitude);
-			ChangeLength(len);
+				Transform target = overrideBall != null ? overrideBall : (ball != null ? ball.ArrowPosition : null);
+				if (ball != null && ball.ArrowPosition != null)
+					target = ball.ArrowPosition;
+				if (target != null)
+					MoveArrow(target.position);
+				RotateArrow(vec);
 
-			if (boostArrow != null)
-				boostArrow.SetActive(false);
+				blockValue = Mathf.MoveTowards(blockValue, (isBlocked || overrideIsBlocked) ? 1f : 0f, Time.unscaledDeltaTime * 10f);
+				Color baseCol = GetColor(vec);
+				if (overrideIsBlocked)
+				{
+					blockValue = 0f;
+					baseCol = Color.clear;
+				}
+				Color fillCol = Color.Lerp(baseCol, blockedColor, blockValue);
+				fillCol.a = Mathf.Max(0.85f, InsideAlpha);
+				SetArrowColor(fillCol);
 
-			targetArrowSize = 1f;
-			arrowSize = Mathf.MoveTowards(arrowSize, targetArrowSize, Time.unscaledDeltaTime * arrowSizeChangeSpeed);
+				if (arrowOutlineMaterial != null)
+				{
+					Color outCol = Color.Lerp(Color.white, outlineBlockedColor, blockValue);
+					outCol.a = Mathf.Clamp01(currentAlpha > 0f ? currentAlpha : 1f);
+					arrowOutlineMaterial.color = outCol;
+				}
+
+				float len = onlyDashedArrow ? 0f : vec.magnitude;
+				ChangeLength(len);
+
+				if (boostArrow != null)
+					boostArrow.SetActive(!onlyDashedArrow);
+
+				targetArrowSize = 1f;
+			}
+
+			arrowSize = Mathf.MoveTowards(arrowSize, targetArrowSize, Time.unscaledDeltaTime * (arrowSizeChangeSpeed > 0f ? arrowSizeChangeSpeed : 20f));
 			if (basePivot != null)
 				basePivot.localScale = Vector3.one * (arrowSize * Scale * 0.45f);
 		}
@@ -217,7 +285,11 @@ namespace Core
 		public void StartAim()
 		{
 			gameObject.SetActive(true);
+			if (boostArrow != null)
+				boostArrow.SetActive(true);
 			Transform target = overrideBall != null ? overrideBall : (ball != null ? ball.ArrowPosition : null);
+			if (ball != null && ball.ArrowPosition != null)
+				target = ball.ArrowPosition;
 			if (target == null) return;
 			if (MoveMethod == MoveMethodEnum.Normal)
 			{
@@ -246,7 +318,11 @@ namespace Core
 				gameObject.SetActive(false);
 		}
 
-		public void DoAlphaDip() { }
+		public void DoAlphaDip()
+		{
+			currentAlpha = alphaDipStart;
+		}
+
 		public Vector3? GetClosestPointOnShaft(Vector3 pos) => transform.position;
 	}
 }
