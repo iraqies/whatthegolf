@@ -56,6 +56,20 @@ public class Transition : MonoBehaviour
 
 	private void Awake()
 	{
+		transitionCam = GetComponent<Camera>();
+		if (transitionCam != null)
+			transitionCam.enabled = false;
+		if (waitAnimation != null)
+		{
+			waitAnimation.SetActive(false);
+			waitAnimationSpriteRenderer = waitAnimation.GetComponentInChildren<SVGImage>(true);
+		}
+		if (waitText != null)
+			waitText.SetActive(false);
+		if (fullScreenUIBlocker != null)
+			fullScreenUIBlocker.SetActive(false);
+		if (subtitles != null)
+			subtitles.Hide();
 		InitializeTransitionEffects();
 		InitializeTextEffects();
 	}
@@ -64,25 +78,68 @@ public class Transition : MonoBehaviour
 	{
 		if (transitionEffects != null)
 		{
-			foreach (var e in transitionEffects) e?.Init();
+			foreach (var e in transitionEffects)
+			{
+				if (e != null)
+				{
+					e.Init();
+					e.CleanUp();
+				}
+			}
+		}
+		foreach (var e in GetComponentsInChildren<BaseTransitionEffect>(true))
+		{
+			if (e != null)
+			{
+				e.Init();
+				e.CleanUp();
+			}
 		}
 	}
 
 	private void InitializeTextEffects()
 	{
 		textEffects = new TransitionTextEffects(_textEffects);
+		if (defaultTextEffect != null)
+		{
+			defaultTextEffect.Initialize();
+			defaultTextEffect.gameObject.SetActive(false);
+		}
+		if (_textEffects != null)
+		{
+			foreach (var te in _textEffects)
+			{
+				if (te != null)
+				{
+					te.Initialize();
+					te.gameObject.SetActive(false);
+				}
+			}
+		}
+		foreach (var te in GetComponentsInChildren<TransitionTextEffect>(true))
+		{
+			if (te != null)
+			{
+				te.Initialize();
+				te.gameObject.SetActive(false);
+			}
+		}
 	}
 
 	public void InstantTransitionCover(Color? color = null, BaseTransitionEffect transitionEffect = null)
 	{
-		state = State.Loop;
+		state = State.Idle;
+		if (transitionCam != null)
+			transitionCam.enabled = false;
+		if (fullScreenUIBlocker != null)
+			fullScreenUIBlocker.SetActive(false);
 	}
 
 	public IEnumerator StartTransition(string textId = null, bool onTheSide = false, float delay = 0f, Action onDone = null, Color? color = null, TransitionTextEffect textEffect = null, bool showWaitAnimation = false, bool isAsync = false, bool showWaitingText = false, BaseTransitionEffect transitionEffect = null, Func<bool> allowEndWhen = null)
 	{
 		state = State.Start;
 		if (delay > 0f)
-			yield return new WaitForSecondsRealtime(Mathf.Min(delay, 0.4f));
+			yield return new WaitForSecondsRealtime(Mathf.Min(delay, 0.25f));
 		state = State.Loop;
 		onDone?.Invoke();
 	}
@@ -93,13 +150,28 @@ public class Transition : MonoBehaviour
 	}
 
 	private void SetInputAllowed(bool allowed) { }
-	public void EndTextTransitionImmidiate() { }
+
+	public void EndTextTransitionImmidiate()
+	{
+		InitializeTextEffects();
+		if (subtitles != null) subtitles.Hide();
+	}
 
 	public IEnumerator EndTransition(bool force = false, float overrideTransitionDuration = 0f)
 	{
 		state = State.Idle;
+		InitializeTransitionEffects();
+		InitializeTextEffects();
+		if (subtitles != null)
+			subtitles.Hide();
+		if (waitAnimation != null)
+			waitAnimation.SetActive(false);
+		if (waitText != null)
+			waitText.SetActive(false);
 		if (fullScreenUIBlocker != null)
 			fullScreenUIBlocker.SetActive(false);
+		if (transitionCam != null)
+			transitionCam.enabled = false;
 		yield break;
 	}
 

@@ -394,6 +394,12 @@ namespace Rewired.Integration.UnityUI
 
 		protected override void Awake()
 		{
+			if (GetComponent<StandaloneInputModule>() == null)
+			{
+				var sim = gameObject.AddComponent<StandaloneInputModule>();
+				sim.forceModuleActive = true;
+			}
+			enabled = false;
 		}
 
 		public override void UpdateModule()

@@ -4,29 +4,33 @@ using UnityEngine;
 public class PlaystationSplashScreen : MonoBehaviour
 {
 	public Transition transition;
-
 	public float timeToShowTransitionPS4;
-
 	public float timeToShowTransitionPS5;
 
 	private bool isShowing;
-
 	private float loadingTime;
-
 	private float timeToShowTransition;
 
 	private void Awake()
 	{
+		timeToShowTransition = timeToShowTransitionPS4;
+		if (transition != null)
+		{
+			var cam = transition.GetComponent<Camera>();
+			if (cam != null) cam.enabled = false;
+		}
+		gameObject.SetActive(false);
 	}
 
 	public IEnumerator ShowRoutine()
 	{
-		return null;
+		yield break;
 	}
 
 	public IEnumerator HideRoutine()
 	{
-		return null;
+		gameObject.SetActive(false);
+		yield break;
 	}
 
 	private void Update()

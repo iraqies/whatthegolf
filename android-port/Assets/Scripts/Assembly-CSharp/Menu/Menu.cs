@@ -44,6 +44,16 @@ namespace Menu
 
 		public bool IsOpen() => _isOpen;
 
+		public override void Initialize()
+		{
+			Init();
+		}
+
+		private void Awake()
+		{
+			Init();
+		}
+
 		public Task ShowAndAwait()
 		{
 			Show();
@@ -55,12 +65,41 @@ namespace Menu
 		{
 			if (quitButton != null) quitButton.gameObject.SetActive(false);
 			if (accessPointButton != null) accessPointButton.gameObject.SetActive(false);
+			if (defaultCloseButton != null)
+			{
+				defaultCloseButton.onClick.RemoveAllListeners();
+				defaultCloseButton.onClick.AddListener(CloseButtonClicked);
+			}
+			if (landscapeMainCampaignCloseButton != null)
+			{
+				landscapeMainCampaignCloseButton.onClick.RemoveAllListeners();
+				landscapeMainCampaignCloseButton.onClick.AddListener(CloseButtonClicked);
+			}
+			if (hubButton != null)
+			{
+				hubButton.onClick.RemoveAllListeners();
+				hubButton.onClick.AddListener(OnHubButtonClicked);
+			}
+			if (settingsButton != null)
+			{
+				settingsButton.onClick.RemoveAllListeners();
+				settingsButton.onClick.AddListener(SettingsButtonClicked);
+			}
+			Close();
 		}
 
 		public void Show()
 		{
 			_isOpen = true;
 			gameObject.SetActive(true);
+			if (otherTeleportMenu != null)
+				otherTeleportMenu.gameObject.SetActive(false);
+			if (currentTeleportMenu != null)
+			{
+				currentTeleportMenu.Show();
+			}
+			if (hubButton != null)
+				hubButton.gameObject.SetActive(GetLocation() != Location.Hub);
 			EnableInteraction();
 		}
 
@@ -79,6 +118,12 @@ namespace Menu
 		{
 			_isOpen = false;
 			DisableInteraction();
+			if (otherTeleportMenu != null)
+				otherTeleportMenu.gameObject.SetActive(false);
+			if (currentTeleportMenu != null)
+				currentTeleportMenu.gameObject.SetActive(false);
+			if (gameObject != null)
+				gameObject.SetActive(false);
 			tcs?.TrySetResult(true);
 		}
 
@@ -96,7 +141,12 @@ namespace Menu
 			_ = HubSceneLoader.Instance.LoadSceneAsync(LoadSceneMode.Single);
 		}
 
-		public void SettingsButtonClicked() { }
+		public void SettingsButtonClicked()
+		{
+			if (SettingsMenu.Exists || SettingsMenu.Instance != null)
+				SettingsMenu.Instance.Show();
+		}
+
 		public void CloseButtonClicked() => Close();
 		private void DisableInteraction() => _isInteractable = false;
 		private void EnableInteraction() => _isInteractable = true;

@@ -140,10 +140,17 @@ public class OverworldManager2d : GolfBehaviour
 	{
 		instance = this;
 		SaveGame.SetOverworld(overworldType);
+		if (sectionManager != null) sectionManager.Init();
+		if (gridfiller != null) gridfiller.Init();
+		if (culling != null) culling.Initialize();
+		if (ui != null) ui.Initialize();
+		if (deathTransition != null) StartCoroutine(deathTransition.EndTransition(true));
 		if (ball == null) ball = FindObjectOfType<OverworldBall2D>();
 		if (Camera == null) Camera = FindObjectOfType<OverworldCamera>();
 		if (goals == null || goals.Count == 0)
 			goals = FindObjectsOfType<OverworldGoal>().ToList();
+		if (ui != null && ui.AimMarker != null && ball != null && ball.Controller != null)
+			ui.AimMarker.SubscribeToController(ball.Controller);
 	}
 
 	private void Undocking_OnDockingStateChanged(bool isDocked) { }

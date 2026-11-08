@@ -11,36 +11,31 @@ public class SuperPuttTransitionTextEffect : TransitionTextEffect
 	public class SuperPuttEffect
 	{
 		public string Text;
-
 		public float Duration;
-
 		public List<AudioClip> Clip;
-
 		public float Volume;
 	}
 
 	public List<SuperPuttEffect> Messages;
-
 	public TextMeshProUGUI Text;
-
 	public bool TestSequence;
 
 	private bool isBusy;
-
 	private CanvasScaler canvasScaler;
-
 	private RectTransform rootTransform;
-
 	private int repeats;
 
-	public override bool IsBusy => false;
+	public override bool IsBusy => isBusy;
 
 	private void Awake()
 	{
+		gameObject.SetActive(false);
 	}
 
 	public override void Initialize()
 	{
+		isBusy = false;
+		gameObject.SetActive(false);
 	}
 
 	public override void Prepare(string text = null, bool onTheSide = false)
@@ -49,11 +44,13 @@ public class SuperPuttTransitionTextEffect : TransitionTextEffect
 
 	public override IEnumerator Show(float transitionInDuration)
 	{
-		return null;
+		yield break;
 	}
 
 	public override IEnumerator Hide(float transitionOutDuration)
 	{
-		return null;
+		isBusy = false;
+		gameObject.SetActive(false);
+		yield break;
 	}
 }

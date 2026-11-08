@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 namespace Core
@@ -34,6 +35,7 @@ namespace Core
 			Application.targetFrameRate = 60;
 			Screen.sleepTimeout = SleepTimeout.NeverSleep;
 			SceneManager.sceneLoaded += OnSceneLoaded;
+			EnsureScenePlayable();
 		}
 
 		private void OnDestroy()
@@ -49,6 +51,30 @@ namespace Core
 
 		private void EnsureScenePlayable()
 		{
+			foreach (var es in FindObjectsOfType<EventSystem>())
+			{
+				if (es != null && es.GetComponent<StandaloneInputModule>() == null)
+				{
+					var sim = es.gameObject.AddComponent<StandaloneInputModule>();
+					sim.forceModuleActive = true;
+				}
+			}
+			foreach (var tr in FindObjectsOfType<Transition>())
+			{
+				if (tr != null && !tr.IsShowing)
+				{
+					var cam = tr.GetComponent<Camera>();
+					if (cam != null) cam.enabled = false;
+				}
+			}
+			foreach (var hs in FindObjectsOfType<HubSection>())
+			{
+				if (hs != null && hs.SectionTilemap != null)
+				{
+					var r = hs.SectionTilemap.GetComponent<Renderer>();
+					if (r != null) r.enabled = false;
+				}
+			}
 			var ctrls = FindObjectsOfType<GolfBallController>();
 			foreach (var c in ctrls)
 			{

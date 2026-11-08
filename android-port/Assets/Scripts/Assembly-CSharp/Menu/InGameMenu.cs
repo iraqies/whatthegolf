@@ -53,6 +53,19 @@ namespace Menu
 				restartButton.onClick.RemoveAllListeners();
 				restartButton.onClick.AddListener(RestartLevel);
 			}
+			if (UndockMessage != null)
+				UndockMessage.gameObject.SetActive(false);
+			if (LookUpText != null)
+				LookUpText.SetActive(false);
+			if (ChallengeUI != null)
+				ChallengeUI.gameObject.SetActive(false);
+			if (ChallengeFailedUI != null)
+				ChallengeFailedUI.gameObject.SetActive(false);
+			if (ChallengeInfo != null)
+				ChallengeInfo.gameObject.SetActive(false);
+			if (ChallengeInfoTop != null)
+				ChallengeInfoTop.gameObject.SetActive(false);
+			HideMenu();
 		}
 
 		public void DisableCloseButton() { }
@@ -63,6 +76,7 @@ namespace Menu
 		{
 			if (levelName != null && level != null)
 				levelName.text = level.name;
+			ShowMenu();
 		}
 
 		public bool ToggleLevelName() => true;
@@ -78,11 +92,11 @@ namespace Menu
 			if (menuCanvas != null) menuCanvas.enabled = false;
 		}
 
-		public void DeactivateMenu() => gameObject.SetActive(false);
+		public void DeactivateMenu() => HideMenu();
 		public void ToggleTopButtonTransparency(bool isVisible) { }
 		public void ToggleRestartButton(bool state) { if (restartButton != null) restartButton.gameObject.SetActive(state); }
 		public void ToggleExitButton(bool state) { if (exitButton != null) exitButton.gameObject.SetActive(state); }
-		public void ActivateMenu() => gameObject.SetActive(true);
+		public void ActivateMenu() => ShowMenu();
 		public void ToggleLookUp(bool state) { if (LookUpText != null) LookUpText.SetActive(state); }
 		public void SetStrokeCounterSettings(StrokeCounter.CounterTypes counterType, bool useExternalCountActivator) { }
 		public StrokeCounter GetStrokeCounter() => strokeCounter;
@@ -116,7 +130,7 @@ namespace Menu
 		public void ShowChallengeInfo(string text, Sprite[] icons) { }
 		public IEnumerator ShowText(string text, float duration) { yield break; }
 		public void ShowUndockMessage() { }
-		public void HideUndockMessage() { }
+		public void HideUndockMessage() { if (UndockMessage != null) UndockMessage.gameObject.SetActive(false); }
 		public void EnableBuildText() { }
 		public void DisableBuildText() { }
 		public void SetActiveBuildText(bool enable) { }
