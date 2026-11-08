@@ -686,6 +686,42 @@ public class OverworldManager2d : GolfBehaviour
 		afterLevelCallback?.Invoke(completed);
 	}
 
+	public void DisableInteraction(bool hide = true)
+	{
+		IsInteractionDisabled = true;
+		if (ball != null)
+		{
+			if (hide) ball.HideAndStop();
+			else if (ball.Controller != null) ball.Controller.enabled = false;
+		}
+	}
+
+	public void EnableInteraction()
+	{
+		IsInteractionDisabled = false;
+		if (ball != null && state == STATES.active)
+		{
+			ball.ShowAndEnable();
+			if (ball.Controller != null)
+			{
+				ball.Controller.enabled = true;
+				ball.Controller.Activate();
+			}
+		}
+	}
+
+	public HubSection FindCurrentHubSection()
+	{
+		if (ball == null) return null;
+		Bounds b = new Bounds(ball.transform.position, new Vector3(1f, 1f, 100f));
+		foreach (var hs in FindObjectsOfType<HubSection>())
+		{
+			if (hs != null && hs.Intersects(b))
+				return hs;
+		}
+		return null;
+	}
+
 	public void DisplayCampaignHub(bool display) { }
 
 	public IEnumerator CameraMoveCenter(Transform target, float duration)

@@ -25,9 +25,9 @@ public class AdventureButton : MainMenu2Button
 	[SerializeField] private MaskableGraphic _buttonOutline;
 
 	public bool shouldAnimateSize;
-	public float animationSpeed = 4f;
+	public float animationSpeed = 0.4f;
 	public float animationSizeMax = 1.05f;
-	public float animationSizeMin = 0.98f;
+	public float animationSizeMin = 0.95f;
 	public Transform button;
 	private bool _locked;
 
@@ -43,17 +43,32 @@ public class AdventureButton : MainMenu2Button
 
 	public bool isLocked
 	{
-		get => _locked;
+		get => _lockedImage != null ? _lockedImage.activeSelf : _locked;
 		set
 		{
 			_locked = value;
 			if (_lockedImage != null) _lockedImage.SetActive(value);
+			if (_progressRoot != null) _progressRoot.gameObject.SetActive(!value);
+			if (_playIcon != null) _playIcon.SetActive(!value);
+			if (_adventureImages != null)
+			{
+				for (int i = 0; i < _adventureImages.Length; i++)
+				{
+					var g = _adventureImages[i];
+					if (g != null)
+						g.material = value ? _grayscaleMaterial : null;
+				}
+			}
 		}
 	}
 
-	private bool isProgressVisible
+	public bool isProgressVisible
 	{
-		set { if (_progressRoot != null) _progressRoot.gameObject.SetActive(value); }
+		set
+		{
+			if (_progressText != null) _progressText.gameObject.SetActive(value);
+			if (_progressRoot != null) _progressRoot.gameObject.SetActive(value);
+		}
 	}
 
 	public bool hasNumberPanel
@@ -70,25 +85,43 @@ public class AdventureButton : MainMenu2Button
 	{
 		set
 		{
-			if (_adventureImages != null)
+			if (_adventureImages == null) return;
+			for (int i = 0; i < _adventureImages.Length; i++)
 			{
-				foreach (var g in _adventureImages)
-					if (g is Image img) img.sprite = value;
+				var g = _adventureImages[i];
+				if (g is Image img)
+					img.sprite = value;
+				else if (g is SVGImage svg)
+					svg.sprite = value;
+				if (g != null && value != null)
+				{
+					var arf = g.GetComponent<AspectRatioFitter>();
+					if (arf != null && value.rect.height > 0.01f)
+						arf.aspectRatio = value.rect.width / value.rect.height;
+				}
 			}
 		}
 	}
 
 	public string adventureTitleID
 	{
-		set { if (_titleText != null) _titleText.ChangeTextAfterTranslation(value); }
+		set { if (_titleText != null) _titleText.ChangeText(value); }
 	}
 
 	public float progress
 	{
 		set
 		{
-			int pct = Mathf.Clamp(Mathf.RoundToInt(value * 100f), 0, 100);
-			if (_progressText != null) _progressText.text = pct + "%";
+			if (_progressText == null || _progressFill == null) return;
+			float clamped = Mathf.Clamp01(value);
+			int pct = Mathf.FloorToInt(clamped * 100f);
+			_progressText.text = $"{pct}%";
+			_progressFill.anchorMax = new Vector2(Mathf.Clamp(clamped, 0.05f, 1f), 1f);
+			Color c = clamped < 0.2f ? _colorBad : (clamped < 0.8f ? _colorMedium : _colorGood);
+			_progressText.color = c;
+			var fillImg = _progressFill.GetComponent<Image>();
+			if (fillImg != null)
+				fillImg.color = c;
 		}
 	}
 
@@ -96,21 +129,46 @@ public class AdventureButton : MainMenu2Button
 
 	public new bool IsActive
 	{
-		set { if (_playIcon != null) _playIcon.SetActive(value); }
+		set
+		{
+			if (_buttonOutline != null)
+				_buttonOutline.color = value ? _colorActive : _colorNormal;
+		}
 	}
 
 	public void UpdatePack(ContentPackDef container, IPackWithData pack)
 	{
 		levelPackContainer = container;
 		CurrentPack = pack ?? container?.pack;
+		if (container != null)
+		{
+			bool avail = container.pack != null;
+			isNewVisible = avail && container.accessible;
+			isLocked = !container.accessible;
+			if (container.pack != null && container.pack.campaignType != ECampaignType.None)
+			{
+				int pct = SaveGame.GetCompletedPercentage(container.pack.campaignType, null, true);
+				progress = pct / 100f;
+				isProgressVisible = pct > 0 && container.accessible;
+			}
+			else
+			{
+				isProgressVisible = false;
+			}
+		}
 		if (CurrentPack != null)
 		{
 			adventureTitleID = CurrentPack.TitleID;
-			isLocked = false;
-			if (CurrentPack is ContentPack cp)
-				progress = SaveGame.GetCompletedPercentage(cp.campaignType) / 100f;
+			IsSpecial = CurrentPack.PackID == "CP_DAILY_CHALLENGE";
 		}
 	}
 
-	public void Update() { }
+	public void Update()
+	{
+		if (shouldAnimateSize && button != null)
+		{
+			float s = Mathf.Lerp(animationSizeMin, animationSizeMax, Mathf.PingPong(Time.time * animationSpeed, 1f));
+			button.localScale = new Vector3(s, s, 1f);
+		}
+	}
 }

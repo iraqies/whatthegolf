@@ -124,15 +124,16 @@ public class OverworldUI : MonoBehaviour
 		ShowMenu();
 	}
 
-	public void ShowMenu()
+	public async void ShowMenu()
 	{
+		if (_exiting) return;
+		bool prevActive = ExitOverworldButton != null && ExitOverworldButton.gameObject.activeSelf;
+		if (ExitOverworldButton != null)
+			ExitOverworldButton.gameObject.SetActive(false);
 		if (Menu.Menu.Instance != null)
-		{
-			if (Menu.Menu.Instance.IsOpen())
-				Menu.Menu.Instance.Close();
-			else
-				Menu.Menu.Instance.Show();
-		}
+			await Menu.Menu.Instance.ShowAndAwait();
+		if (ExitOverworldButton != null)
+			ExitOverworldButton.gameObject.SetActive(prevActive);
 	}
 
 	public IEnumerator ExitToHub()
