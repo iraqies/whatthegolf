@@ -12,3 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a39bf57c90f5079a83cbd423ef0b5579, type: 3}
   m_Name: Podium
   m_EditorClassIdentifier:
+  TopBevelSize: 1
+  TopBevelHeight: 1.5
+  BottomBevelSize: 20
+  BottomBevelHeight: 100
+  RoundCorners: 0
+  Roundness: 2
+  CornerSize: 0.122
+  TopMaterial: {fileID: 2100000, guid: 88a1dc0a9028de24cb79ec927bdf28cc, type: 2}
+  CornerMaterial: {fileID: 2100000, guid: 1831d8f16c9cfd1418a15983993f883d, type: 2}
+  SidesMaterial: {fileID: 2100000, guid: 7c84fc91cee150f43aa5121a5ed41058, type: 2}
+  Notes:

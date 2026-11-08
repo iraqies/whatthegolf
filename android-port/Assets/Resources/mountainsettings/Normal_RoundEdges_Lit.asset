@@ -12,3 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a39bf57c90f5079a83cbd423ef0b5579, type: 3}
   m_Name: Normal_RoundEdges_Lit
   m_EditorClassIdentifier:
+  TopBevelSize: 1.5
+  TopBevelHeight: 1
+  BottomBevelSize: 100
+  BottomBevelHeight: 200
+  RoundCorners: 1
+  Roundness: 10
+  CornerSize: 0.222
+  TopMaterial: {fileID: 0}
+  CornerMaterial: {fileID: 0}
+  SidesMaterial: {fileID: 0}
+  Notes: Only for footprint levels

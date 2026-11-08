@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1a7b207000040008000000000000001, type: 3}
   m_Name: WTGPortCatalog
   m_EditorClassIdentifier: 
-  storeData: {fileID: 11400000, guid: ea128c82e0f799946a5a4898df41eb54, type: 2}
-  platformSettings: {fileID: 11400000, guid: 5676b1c6caa0be94fb7da54810b9348b, type: 2}
-  defaultShootArrow: {fileID: 11400000, guid: c4cfb544df939ef43ab77b0b059bb5af, type: 3}
+  storeData: {fileID: 11400000, guid: b053dd35f6c1c9048ae7d51fda89b5a3, type: 2}
+  platformSettings: {fileID: 11400000, guid: 21b9233ddb2a9d54890d341db59982e8, type: 2}
+  defaultShootArrow: {fileID: 11400000, guid: ff91352a2b4ad624e8c849a024a53dd4, type: 3}
   episodes:
   - packId: CP_MAIN_ONBOARDING
     title: MainOnboarding

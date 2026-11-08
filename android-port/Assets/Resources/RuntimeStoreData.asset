@@ -12,3 +12,72 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8a5f9dfee9c94970a4f61980743d99e, type: 3}
   m_Name: RuntimeStoreData
   m_EditorClassIdentifier:
+  storeType: 2
+  editorOverridePlatformType: 1
+  contentPacksDefs:
+  - pack: {fileID: 11400000, guid: d83a2c28e1598494db864ddb81949e4d, type: 2}
+    visible: 0
+    accessible: 1
+  - pack: {fileID: 11400000, guid: 653c546a31276294ca26259d4de555c4, type: 2}
+    visible: 1
+    accessible: 1
+  - pack: {fileID: 11400000, guid: cf7bde2701f707944822a6c8e41b2318, type: 2}
+    visible: 1
+    accessible: 1
+  - pack: {fileID: 11400000, guid: c274c88784293a14999d891f228d43be, type: 2}
+    visible: 0
+    accessible: 1
+  - pack: {fileID: 11400000, guid: 2c7e8668cf49f434a8dd2e1ba8c4edf9, type: 2}
+    visible: 1
+    accessible: 1
+  - pack: {fileID: 11400000, guid: b8c1aa3d49579264c81403ef32d5c554, type: 2}
+    visible: 1
+    accessible: 1
+  - pack: {fileID: 11400000, guid: 8ea9d34490dc2b14196a482e644b37a4, type: 2}
+    visible: 1
+    accessible: 1
+  - pack: {fileID: 11400000, guid: 55e7963d0b6e1494d987766acec40256, type: 2}
+    visible: 1
+    accessible: 1
+  - pack: {fileID: 11400000, guid: ec71d4d9e156d794d8d6b034ffe81f36, type: 2}
+    visible: 1
+    accessible: 0
+  - pack: {fileID: 11400000, guid: 5b8179b88a48dc54190f865e1b7ba943, type: 2}
+    visible: 0
+    accessible: 1
+  - pack: {fileID: 11400000, guid: 4d6d5608bf8d9c54fb5e3189515f7f58, type: 2}
+    visible: 1
+    accessible: 1
+  - pack: {fileID: 11400000, guid: 91a997d8fd2cae64680fa5db6af178e5, type: 2}
+    visible: 1
+    accessible: 1
+  - pack: {fileID: 11400000, guid: 5474dd289b12afe48a8add7816a2d384, type: 2}
+    visible: 1
+    accessible: 1
+  - pack: {fileID: 11400000, guid: eac24a2074e29b94f9c1e8de50f59896, type: 2}
+    visible: 1
+    accessible: 1
+  - pack: {fileID: 11400000, guid: 1e6aa7f94f6c7d24b9cb5480717f84d0, type: 2}
+    visible: 1
+    accessible: 1
+  - pack: {fileID: 11400000, guid: a6e71687db3e356439b77e2f3070b348, type: 2}
+    visible: 1
+    accessible: 1
+  - pack: {fileID: 11400000, guid: c3df0e9d7787e7946ae3209acf411ece, type: 2}
+    visible: 1
+    accessible: 1
+  updateInfos:
+  - {fileID: 11400000, guid: 939cbdf3fcbb5744ea81a2f71871e4d9, type: 2}
+  - {fileID: 11400000, guid: ce9e055c2d83c7141ad5126f88ab4dd0, type: 2}
+  - {fileID: 11400000, guid: fab74d8d8599ed3489d88636954dd43d, type: 2}
+  - {fileID: 11400000, guid: 7f3a67282d301df4e9ddd44d7eefe340, type: 2}
+  - {fileID: 11400000, guid: 2667bc4faf935e04180d4fa31c7c3416, type: 2}
+  onlineLeaderboardType: 2
+  leaderboardsAutologin: 0
+  supportsAchievements: 1
+  supportsAnalytics: 1
+  analyticsRequiresConsent: 1
+  analyticsBatchSize: 80
+  analyticsCacheDurationHours: 24
+  allowCustomizedOutboundLinks: 0
+  notificationsEnabled: 1

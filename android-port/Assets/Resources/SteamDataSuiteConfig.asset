@@ -12,3 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83d9c50f9bc1aa726ebf967e6d4f61ab, type: 3}
   m_Name: SteamDataSuiteConfig
   m_EditorClassIdentifier:
+  Enabled: 1
+  TrackingKey: cc8d7078bd40419d996c45fbbccfcf91
+  DebugMode: 1
+  OpenThankYouPageOnExit: 1

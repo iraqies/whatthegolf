@@ -12,3 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a39bf57c90f5079a83cbd423ef0b5579, type: 3}
   m_Name: Dusk_RoundEdges_Small
   m_EditorClassIdentifier:
+  TopBevelSize: 0.4
+  TopBevelHeight: 0.4
+  BottomBevelSize: 100
+  BottomBevelHeight: 200
+  RoundCorners: 1
+  Roundness: 10
+  CornerSize: 0.1
+  TopMaterial: {fileID: 2100000, guid: 39ec224830c32b74cb194fdde9f6aaf9, type: 2}
+  CornerMaterial: {fileID: 2100000, guid: 11589aa004375824084f447192932f74, type: 2}
+  SidesMaterial: {fileID: 2100000, guid: 82bf84ebaeb52894d8c5c4633fd2af9b, type: 2}
+  Notes:

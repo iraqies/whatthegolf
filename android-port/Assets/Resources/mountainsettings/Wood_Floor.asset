@@ -12,3 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a39bf57c90f5079a83cbd423ef0b5579, type: 3}
   m_Name: Wood_Floor
   m_EditorClassIdentifier:
+  TopBevelSize: 2
+  TopBevelHeight: 1
+  BottomBevelSize: 0
+  BottomBevelHeight: 20
+  RoundCorners: 0
+  Roundness: 5
+  CornerSize: 0.1
+  TopMaterial: {fileID: 2100000, guid: 6e35e5d4bdb4b9d4d99ccd4c76e2a36e, type: 2}
+  CornerMaterial: {fileID: 2100000, guid: f5d0f04de07b6724ab2d8902de631261, type: 2}
+  SidesMaterial: {fileID: 2100000, guid: c156d9dac5cf1a64e8480d8018764530, type: 2}
+  Notes:

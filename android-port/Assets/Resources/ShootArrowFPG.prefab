@@ -174,6 +174,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f77a7f6a2da17e07d1d0122960dc3dfe, type: 3}
   m_Name:
   m_EditorClassIdentifier:
+  renderers:
+  - {fileID: 137161607090078389}
+  shadowRenderers:
+  - {fileID: 137161607090078389}
+  arrowOutline: {fileID: 212372920208702427}
+  colorMin: {r: 0.9803922, g: 0.65882355, b: 0.16470589, a: 1}
+  colorMax: {r: 1, g: 0.34509805, b: 0.3254902, a: 1}
+  colorCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  blockedColor: {r: 0.6691177, g: 0.6691177, b: 0.6691177, a: 1}
+  outlineBlockedColor: {r: 0.67058825, g: 0.67058825, b: 0.67058825, a: 1}
+  overrideBall: {fileID: 0}
+  basePivot: {fileID: 4044625135789424}
+  limitValue: 1
+  arrowHeadJoint: {fileID: 4977153420339851}
+  arrowBaseJoint: {fileID: 4705390221481576}
+  MoveMethod: 0
+  RotateMethod: 0
+  boostArrow: {fileID: 1618682377417806}
+  AutoHide: 1
+  SmoothedPhysicsSpeed: 500
+  gyroMagnitude: 1
+  scaleMod: 1
+  InsideAlpha: 0.4
+  InsideAlphaOutline: 0.3
+  cam: {fileID: 0}
+  clampAimVector: 1
 --- !u!4 &4044625135789424
 Transform:
   m_ObjectHideFlags: 0
@@ -244,7 +293,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 78fe6b37ccd72c74ab5057b3a7f9ee24, type: 2}
+  m_Sprite: {fileID: 21300000, guid: 80e6c0adaeebfeb44948d52851e36867, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -364,7 +413,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: bf52878de6e65a74ebb3d46637b68ccd, type: 2}
+  - {fileID: 2100000, guid: 91e26127447d51047a35303d9abc0eee, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -388,7 +437,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 4300000, guid: dea12fc97cce1bd408dc737a66c1deea, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 79a798beb54ff3f4ba3b694f70c07cc3, type: 2}
   m_Bones:
   - {fileID: 4705390221481576}
   - {fileID: 4977153420339851}

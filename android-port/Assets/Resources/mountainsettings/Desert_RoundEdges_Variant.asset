@@ -12,3 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a39bf57c90f5079a83cbd423ef0b5579, type: 3}
   m_Name: Desert_RoundEdges_Variant
   m_EditorClassIdentifier:
+  TopBevelSize: 1.5
+  TopBevelHeight: 1
+  BottomBevelSize: 100
+  BottomBevelHeight: 200
+  RoundCorners: 1
+  Roundness: 10
+  CornerSize: 0.1
+  TopMaterial: {fileID: 2100000, guid: 2fd784302d1724d4295163b4f4bbff64, type: 2}
+  CornerMaterial: {fileID: 2100000, guid: 0e2f03ad8c5cec24a9c4f4d0cd350119, type: 2}
+  SidesMaterial: {fileID: 2100000, guid: 17ef51337d2ac604fbe9e50769cd958f, type: 2}
+  Notes:

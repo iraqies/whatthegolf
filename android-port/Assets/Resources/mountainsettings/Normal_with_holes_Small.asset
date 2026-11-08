@@ -12,3 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a39bf57c90f5079a83cbd423ef0b5579, type: 3}
   m_Name: Normal_with_holes_Small
   m_EditorClassIdentifier:
+  TopBevelSize: 0.4
+  TopBevelHeight: 0.4
+  BottomBevelSize: 100
+  BottomBevelHeight: 200
+  RoundCorners: 1
+  Roundness: 10
+  CornerSize: 0.1
+  TopMaterial: {fileID: 2100000, guid: 1e9824cbda5ead04e82197fbbd3f15a2, type: 2}
+  CornerMaterial: {fileID: 2100000, guid: a974342acf50481478a244045ae1563f, type: 2}
+  SidesMaterial: {fileID: 2100000, guid: 572963e04e0b25444b9a5c60cbd20668, type: 2}
+  Notes:
