@@ -157,6 +157,12 @@ public class OverworldManager2d : GolfBehaviour
 		if (Camera != null && Camera.MainCamera != null)
 			mainCameraCullingMask = Camera.MainCamera.cullingMask;
 
+		var currentCfg = PlatformSettings.Instance != null ? PlatformSettings.Instance.GetCurrent() : null;
+		if (currentCfg != null && currentCfg.useRotatedOverworldAndCameraInLevels)
+			Screen.orientation = ScreenOrientation.Portrait;
+		else
+			Screen.orientation = ScreenOrientation.LandscapeLeft;
+
 		var ballMgr = GetComponent<OverworldBallManager>();
 		if (ballMgr == null)
 			ballMgr = FindObjectOfType<OverworldBallManager>();
@@ -169,9 +175,13 @@ public class OverworldManager2d : GolfBehaviour
 			ballMgr.OnDeath += BallMananger_OnDeath;
 			if (ball == null && ballMgr.Ball != null)
 				ball = ballMgr.Ball;
+			if (cameraTarget == null && ballMgr.ballProxy != null)
+				cameraTarget = ballMgr.ballProxy.transform;
 		}
 		if (ball == null)
 			ball = FindObjectOfType<OverworldBall2D>();
+		if (cameraTarget == null && ball != null)
+			cameraTarget = ball.transform;
 
 		if (gridfiller != null)
 		{
@@ -322,12 +332,25 @@ public class OverworldManager2d : GolfBehaviour
 		if (FlagScanner != null)
 			FlagScanner.goals = goals;
 
+		if (!isHub)
+		{
+			foreach (var ms in FindObjectsOfType<MovingStone>())
+				if (ms != null) ms.Initialize();
+			foreach (var spb in FindObjectsOfType<ShortCutPortalBoxEnableOnComputer>())
+				if (spb != null) spb.Init();
+			foreach (var uf in FindObjectsOfType<OverworldUnfinishedLevels>())
+				if (uf != null) uf.Init();
+		}
+
 		state = STATES.active;
 		if (ui != null)
 			ui.Initialize();
 		timeForLastTransitionJingle = Time.unscaledTime - 60f;
 		if (Camera != null && Camera.MainCamera != null && mainCameraCullingMask != 0)
 			Camera.MainCamera.cullingMask = mainCameraCullingMask;
+
+		if (Camera != null && Camera.ActiveBehavior is CBOrthographicFollow2D orthoFollow && cameraTarget != null)
+			orthoFollow.SetFollowTarget(cameraTarget);
 
 		bool introDone = SaveGame.IsIntroAnimationComplete;
 		if (introDone || isHub || introTunnel == null)
@@ -536,18 +559,23 @@ public class OverworldManager2d : GolfBehaviour
 		state = STATES.active;
 		yield return null;
 
+		if (OverworldBallManager.HasInstance && OverworldBallManager.Instance != null && OverworldBallManager.Instance.Ball != null)
+			ball = OverworldBallManager.Instance.Ball;
+		if (ball != null)
+		{
+			ballStartPosition = ball.transform.position;
+			ball.ShowAndEnable();
+			ctrl = ball.GetComponent<GolfBallController>();
+		}
 		if (ctrl != null)
 		{
 			ctrl.enabled = true;
 			ctrl.Activate();
 		}
-		if (ball != null)
-		{
-			ballStartPosition = ball.transform.position;
-			ball.ShowAndEnable();
-		}
 		if (ui != null)
 			ui.EnableReturnButton();
+		if (culling != null)
+			culling.UpdateCulling();
 		IsIntroAnimationComplete = true;
 		SaveGame.IsIntroAnimationComplete = true;
 		SaveGame.Save(false);
@@ -555,7 +583,7 @@ public class OverworldManager2d : GolfBehaviour
 
 	private void Update()
 	{
-		if (culling != null && state == STATES.active)
+		if (culling != null && (state == STATES.active || state == STATES.inOnboarding || state == STATES.inAnimation || state == STATES.inDialog))
 			culling.UpdateCulling();
 	}
 	private IEnumerator ShowBallDelayed(OverworldGoal goalHit) { yield break; }

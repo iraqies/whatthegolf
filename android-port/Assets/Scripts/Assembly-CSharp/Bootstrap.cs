@@ -94,11 +94,15 @@ public class Bootstrap : MonoBehaviour
 
 	private void SetOrientation()
 	{
-		Screen.sleepTimeout = -1;
+		var cfg = PlatformSettings.Instance != null ? PlatformSettings.Instance.GetCurrent() : null;
+		Screen.sleepTimeout = cfg != null ? cfg.SleepTimeout : -1;
 		Screen.autorotateToPortrait = false;
 		Screen.autorotateToPortraitUpsideDown = false;
-		Screen.autorotateToLandscapeLeft = true;
-		Screen.autorotateToLandscapeRight = true;
-		Screen.orientation = ScreenOrientation.AutoRotation;
+		Screen.autorotateToLandscapeLeft = false;
+		Screen.autorotateToLandscapeRight = false;
+		if (cfg != null && cfg.defaultScreenMode == PlatformSettings.ScreenModes.Portrait)
+			Screen.orientation = ScreenOrientation.Portrait;
+		else
+			Screen.orientation = ScreenOrientation.LandscapeLeft;
 	}
 }

@@ -45,18 +45,31 @@ namespace CameraStack
 		private void Awake()
 		{
 			Instance = this;
+			var shakeGo = new GameObject("Shake", typeof(PerlinShake));
+			shakeGo.transform.SetParent(transform, false);
+			shakeGo.transform.localPosition = Vector3.zero;
+			shakeGo.transform.localRotation = Quaternion.identity;
+			shake = shakeGo.GetComponent<PerlinShake>();
+
+			var currentCfg = PlatformSettings.Instance != null ? PlatformSettings.Instance.GetCurrent() : null;
+			if (currentCfg != null && currentCfg.useGyro && Settings.UseGyroShake)
+				gyro = shakeGo.AddComponent<GyroShakeOverworld>();
+
 			_cameras = GetComponentsInChildren<Camera>(true);
 			if (_cameras != null)
 			{
 				foreach (var cam in _cameras)
 				{
 					if (cam != null)
+					{
+						cam.transform.SetParent(shakeGo.transform, true);
 						cam.useOcclusionCulling = false;
+					}
 				}
 			}
-			var currentCfg = PlatformSettings.Instance != null ? PlatformSettings.Instance.GetCurrent() : null;
-			bool useMobile = currentCfg == null || currentCfg.IsMobile;
-			CameraBehavior chosen = useMobile
+
+			bool useRotated = currentCfg != null && currentCfg.useRotatedOverworldAndCameraInLevels;
+			CameraBehavior chosen = useRotated
 				? (MobileCameraBehaviour != null ? MobileCameraBehaviour : StandaloneCameraBehaviour)
 				: (StandaloneCameraBehaviour != null ? StandaloneCameraBehaviour : MobileCameraBehaviour);
 			if (chosen == null) chosen = GetComponent<CameraBehavior>();
@@ -110,12 +123,12 @@ namespace CameraStack
 				return;
 
 			var currentCfg = PlatformSettings.Instance != null ? PlatformSettings.Instance.GetCurrent() : null;
-			bool useMobile = currentCfg == null || currentCfg.IsMobile;
+			bool useRotated = currentCfg != null && currentCfg.useRotatedOverworldAndCameraInLevels;
 
-			OverworldCameraSettings.CameraData toData = useMobile ? (settings.IOSData ?? settings.PCTVData) : (settings.PCTVData ?? settings.IOSData);
+			OverworldCameraSettings.CameraData toData = useRotated ? (settings.IOSData ?? settings.PCTVData) : (settings.PCTVData ?? settings.IOSData);
 			OverworldCameraSettings.CameraData fromData = null;
 			if (defaultSettings != null)
-				fromData = useMobile ? (defaultSettings.IOSData ?? defaultSettings.PCTVData) : (defaultSettings.PCTVData ?? defaultSettings.IOSData);
+				fromData = useRotated ? (defaultSettings.IOSData ?? defaultSettings.PCTVData) : (defaultSettings.PCTVData ?? defaultSettings.IOSData);
 			if (fromData == null)
 				fromData = toData;
 			if (toData == null)
@@ -151,8 +164,8 @@ namespace CameraStack
 		public void OnRoomExit()
 		{
 			var currentCfg = PlatformSettings.Instance != null ? PlatformSettings.Instance.GetCurrent() : null;
-			bool useMobile = currentCfg == null || currentCfg.IsMobile;
-			var b = useMobile
+			bool useRotated = currentCfg != null && currentCfg.useRotatedOverworldAndCameraInLevels;
+			var b = useRotated
 				? (MobileCameraBehaviour != null ? MobileCameraBehaviour : StandaloneCameraBehaviour)
 				: (StandaloneCameraBehaviour != null ? StandaloneCameraBehaviour : MobileCameraBehaviour);
 			if (b != null) SwitchBehavior(b);

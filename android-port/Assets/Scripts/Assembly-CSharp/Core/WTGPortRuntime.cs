@@ -50,6 +50,19 @@ namespace Core
 			QualitySettings.vSyncCount = 0;
 			if (Application.targetFrameRate < 60)
 				Application.targetFrameRate = 120;
+			var cfg = PlatformSettings.Instance != null ? PlatformSettings.Instance.GetCurrent() : null;
+			if (cfg != null && cfg.useRotatedOverworldAndCameraInLevels)
+			{
+				if (Screen.orientation != ScreenOrientation.Portrait)
+					Screen.orientation = ScreenOrientation.Portrait;
+			}
+			else
+			{
+				Screen.autorotateToPortrait = false;
+				Screen.autorotateToPortraitUpsideDown = false;
+				if (Screen.orientation == ScreenOrientation.Portrait || Screen.orientation == ScreenOrientation.PortraitUpsideDown)
+					Screen.orientation = ScreenOrientation.LandscapeLeft;
+			}
 			foreach (var es in FindObjectsOfType<EventSystem>())
 			{
 				if (es != null && es.GetComponent<StandaloneInputModule>() == null)

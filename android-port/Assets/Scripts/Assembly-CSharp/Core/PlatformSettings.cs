@@ -146,7 +146,7 @@ namespace Core
 		public static bool IsPS5 => false;
 		public static bool IsXboxOne => false;
 		public static bool IsConsole => false;
-		public static bool IsPortraitByDefault => Instance.GetCurrent().defaultScreenMode == ScreenModes.Portrait;
+		public static bool IsPortraitByDefault => Instance != null && Instance.GetCurrent() != null && Instance.GetCurrent().useRotatedOverworldAndCameraInLevels;
 		public static bool UseNativeNotifications => false;
 		public static bool UseDeepLinks => false;
 

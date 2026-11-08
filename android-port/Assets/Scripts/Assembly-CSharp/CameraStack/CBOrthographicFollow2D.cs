@@ -29,11 +29,13 @@ namespace CameraStack
 			base.Init();
 			if (follow == null && Ball != null)
 				follow = Ball.transform;
+			var currentCfg = PlatformSettings.Instance != null ? PlatformSettings.Instance.GetCurrent() : null;
+			bool useRotated = currentCfg != null && currentCfg.useRotatedOverworldAndCameraInLevels;
+			if (!useRotated)
+				desktopRotation = rotation;
 			if (follow != null)
 			{
-				Vector3 fpos = follow.position;
-				float dist = Mathf.Abs(distance) > 0.1f ? Mathf.Abs(distance) : 50f;
-				transform.position = new Vector3(fpos.x, fpos.y, -dist);
+				transform.position = CalculatePosition();
 			}
 			currentPosition = transform.position;
 		}
@@ -83,8 +85,8 @@ namespace CameraStack
 		public override Quaternion CalculateRotation()
 		{
 			var currentCfg = PlatformSettings.Instance != null ? PlatformSettings.Instance.GetCurrent() : null;
-			bool useMobile = currentCfg == null || currentCfg.IsMobile;
-			return Quaternion.Euler(useMobile ? rotation : desktopRotation);
+			bool useRotated = currentCfg != null && currentCfg.useRotatedOverworldAndCameraInLevels;
+			return Quaternion.Euler(useRotated ? rotation : desktopRotation);
 		}
 
 		protected override Vector3 CalculatePosition()

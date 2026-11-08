@@ -184,6 +184,14 @@ public class SectionCulling : GolfBehaviour
 		if (!cullingEnabled) return;
 		if (trans == null) trans = transform;
 		Vector3 pos = trans.position;
+		if (CameraStack.OverworldCamera.Instance != null && CameraStack.OverworldCamera.Instance.MainCamera != null)
+		{
+			pos = CameraStack.OverworldCamera.Instance.MainCamera.transform.position;
+		}
+		else if (OverworldManager2d.HasInstance && OverworldManager2d.Instance != null && OverworldManager2d.Instance.ball != null)
+		{
+			pos = OverworldManager2d.Instance.ball.transform.position;
+		}
 		playerBounds.center = new Vector3(pos.x, pos.y, 0f);
 		if (sections == null) return;
 

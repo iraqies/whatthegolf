@@ -221,7 +221,16 @@ namespace Core
 			return false;
 		}
 
-		protected Camera GetCam() => mainCamera != null ? mainCamera : (mainCamera = Camera.main);
+		protected Camera GetCam()
+		{
+			if (mainCamera != null)
+				return mainCamera;
+			if (CameraStack.CameraManager.Instance != null && CameraStack.CameraManager.Instance.MainCamera != null)
+				return mainCamera = CameraStack.CameraManager.Instance.MainCamera;
+			if (CameraStack.OverworldCamera.Instance != null && CameraStack.OverworldCamera.Instance.MainCamera != null)
+				return mainCamera = CameraStack.OverworldCamera.Instance.MainCamera;
+			return mainCamera = Camera.main;
+		}
 
 		private void Awake()
 		{
@@ -396,7 +405,23 @@ namespace Core
 
 				if (AimPlane == AimPlanes.Camera || AimPlane == AimPlanes.TwoD || GetComponent<Rigidbody2D>() != null)
 				{
-					aimVector = new Vector3(norm2D.x, norm2D.y, 0f);
+					Camera cam = GetCam();
+					if (cam != null)
+					{
+						Vector3 right = cam.transform.right;
+						right.z = 0f;
+						if (right.sqrMagnitude > 1e-4f) right.Normalize();
+						else right = Vector3.right;
+						Vector3 up = cam.transform.up;
+						up.z = 0f;
+						if (up.sqrMagnitude > 1e-4f) up.Normalize();
+						else up = Vector3.up;
+						aimVector = Vector3.ClampMagnitude(right * norm2D.x + up * norm2D.y, 1f);
+					}
+					else
+					{
+						aimVector = new Vector3(norm2D.x, norm2D.y, 0f);
+					}
 				}
 				else
 				{
