@@ -32,7 +32,7 @@ namespace Rewired
 		{
 			set
 			{
-				JTlChJEDrPyhCpommhesSOVQjIrlA(num);
+				JTlChJEDrPyhCpommhesSOVQjIrlA(value);
 			}
 		}
 

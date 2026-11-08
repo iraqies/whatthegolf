@@ -77,11 +77,11 @@ namespace Rewired.Internal
 		{
 			add
 			{
-				AeSzurUEgoPLNVVeZVUCgcFdEgPk(axisValueChangedEventHandler);
+				AeSzurUEgoPLNVVeZVUCgcFdEgPk(value);
 			}
 			remove
 			{
-				hRhbvzDKQmlJZEbUDVQFfHfnfvomb(axisValueChangedEventHandler);
+				hRhbvzDKQmlJZEbUDVQFfHfnfvomb(value);
 			}
 		}
 
@@ -99,11 +99,11 @@ namespace Rewired.Internal
 		{
 			add
 			{
-				oIgOQRlUJEzaBypcjimwROpFpOnb(axisValueChangedEventHandler);
+				oIgOQRlUJEzaBypcjimwROpFpOnb(value);
 			}
 			remove
 			{
-				DaCBKygiAYtLFgQeYqpykyBnnWki(axisValueChangedEventHandler);
+				DaCBKygiAYtLFgQeYqpykyBnnWki(value);
 			}
 		}
 
@@ -121,11 +121,11 @@ namespace Rewired.Internal
 		{
 			add
 			{
-				nhDoObcXFlMvhCXoqGBIKpnqAnQU(buttonDownEventHandler);
+				nhDoObcXFlMvhCXoqGBIKpnqAnQU(value);
 			}
 			remove
 			{
-				SpnGPCkIVBftNFVRyTcVfKYBmHBi(buttonDownEventHandler);
+				SpnGPCkIVBftNFVRyTcVfKYBmHBi(value);
 			}
 		}
 
@@ -143,11 +143,11 @@ namespace Rewired.Internal
 		{
 			add
 			{
-				fbljwImkNgDtxVZTrvFGGoLwmfJ(buttonUpEventHandler);
+				fbljwImkNgDtxVZTrvFGGoLwmfJ(value);
 			}
 			remove
 			{
-				XgZiRkAQovdxaBqkYiHIjLPtTBODb(buttonUpEventHandler);
+				XgZiRkAQovdxaBqkYiHIjLPtTBODb(value);
 			}
 		}
 
@@ -165,11 +165,11 @@ namespace Rewired.Internal
 		{
 			add
 			{
-				bxhnOYxOdSZdCgLyydabQBHDudkG(buttonValueChangedEventHandler);
+				bxhnOYxOdSZdCgLyydabQBHDudkG(value);
 			}
 			remove
 			{
-				fbgqqUpGhGfDdTTzSBupoSPVMFDN(buttonValueChangedEventHandler);
+				fbgqqUpGhGfDdTTzSBupoSPVMFDN(value);
 			}
 		}
 

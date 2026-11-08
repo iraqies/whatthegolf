@@ -35,6 +35,11 @@ namespace TMPro
 			return false;
 		}
 
+		public static bool operator !=(TMP_Offset lhs, TMP_Offset rhs)
+		{
+			return !(lhs == rhs);
+		}
+
 		public static TMP_Offset operator *(TMP_Offset a, float b)
 		{
 			return default;

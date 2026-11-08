@@ -214,6 +214,11 @@ namespace UnityEngine.ProBuilder
 			return false;
 		}
 
+		public static bool operator !=(Vertex a, Vertex b)
+		{
+			return !(a == b);
+		}
+
 		public static void GetArrays(IList<Vertex> vertices, out Vector3[] position, out Color[] color, out Vector2[] uv0, out Vector3[] normal, out Vector4[] tangent, out Vector2[] uv2, out List<Vector4> uv3, out List<Vector4> uv4)
 		{
 			position = null;

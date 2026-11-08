@@ -1,5 +1,9 @@
 {
   "name": "WTG.MountainBuilding",
-  "references": [],
+  "references": [
+    "Triband.Core.Runtime",
+    "Triband.Splines.Runtime",
+    "Triband.MountainGenerator.Runtime"
+  ],
   "allowUnsafeCode": true
 }

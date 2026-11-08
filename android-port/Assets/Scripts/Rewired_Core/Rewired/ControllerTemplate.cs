@@ -44,16 +44,11 @@ namespace Rewired
 
 			protected readonly AckvZZpMMZJEeXiTnzpZGygPjFpk[] mLceIVIgGsVFwNSYjUnnnJkOqsgBA;
 
-			public override bool PhpaujTLOdqAPpftaxjzKpWeuveq => get_exists();
+			public override bool exists => false;
 
 			protected bDpsuBEObmlAmAiaSwlxSBIiPRrE(IControllerTemplate P_0, int P_1, string P_2, ControllerTemplateElementType P_3, IList<AckvZZpMMZJEeXiTnzpZGygPjFpk> P_4)
 				: base(null, 0, null, ControllerTemplateElementType.Axis)
 			{
-			}
-
-			public virtual bool get_exists()
-			{
-				return false;
 			}
 		}
 
@@ -163,23 +158,13 @@ namespace Rewired
 
 			protected readonly tWsRepKMnZBPynxcHEOrqJwJrtqi[] hObmyuQkxgNXDiBtSEwFNgLuBsoZ;
 
-			public override bool PhpaujTLOdqAPpftaxjzKpWeuveq => get_exists();
+			public override bool exists => false;
 
-			public override IControllerTemplateElementSource rmMLNGpqXVBSkkjZadentyrvdrgtA => get_source();
+			public override IControllerTemplateElementSource source => null;
 
 			protected HdTcpZLoztFKwinvXwmQwXyhMbTN(IControllerTemplate P_0, int P_1, string P_2, ControllerTemplateElementType P_3, tWsRepKMnZBPynxcHEOrqJwJrtqi[] P_4)
 				: base(null, 0, null, ControllerTemplateElementType.Axis)
 			{
-			}
-
-			public virtual bool get_exists()
-			{
-				return false;
-			}
-
-			public virtual IControllerTemplateElementSource get_source()
-			{
-				return null;
 			}
 
 			public override int GetElementTargets(ControllerElementTarget P_0, ref IList<ControllerTemplateElementTarget> P_1)

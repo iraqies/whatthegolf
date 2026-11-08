@@ -24,7 +24,7 @@ namespace Rewired
 			}
 			internal set
 			{
-				wCSxwiqotcZMrRMttyyFfwKZNIVi(flag);
+				wCSxwiqotcZMrRMttyyFfwKZNIVi(value);
 			}
 		}
 

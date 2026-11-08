@@ -12,7 +12,7 @@ internal struct sIZBQTbRJzPyjCTmkapJVcfyXvVBb : IEquatable<sIZBQTbRJzPyjCTmkapJV
 	// C# has no syntax for parameterized property 'xKHWVyyMFvFkZzVdcahSgmCfFoFGb'.
 	private void set_xKHWVyyMFvFkZzVdcahSgmCfFoFGb(int P_0, ModifierKey P_1)
 	{
-		DbTdhyBCZzPmwrwbRmklmOASylcc(num, modifierKey);
+		DbTdhyBCZzPmwrwbRmklmOASylcc(P_0, P_1);
 	}
 
 	private void DbTdhyBCZzPmwrwbRmklmOASylcc(int P_0, ModifierKey P_1)

@@ -143,7 +143,7 @@ namespace Amazon.Util.Internal
 
 			public override Assembly Assembly => null;
 
-			internal TypeInfoWrapper(Type type)
+			internal TypeInfoWrapper(Type type) : base(type)
 			{
 			}
 

@@ -411,7 +411,7 @@ namespace Rewired.ComponentControls
 			}
 			set
 			{
-				sznURolKtaEECqNLyqDzEGocjuuF(stickBounds);
+				sznURolKtaEECqNLyqDzEGocjuuF(value);
 			}
 		}
 

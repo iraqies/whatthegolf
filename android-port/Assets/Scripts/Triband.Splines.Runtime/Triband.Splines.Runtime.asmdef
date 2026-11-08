@@ -1,5 +1,7 @@
 {
   "name": "Triband.Splines.Runtime",
-  "references": [],
+  "references": [
+    "Triband.Core.Runtime"
+  ],
   "allowUnsafeCode": true
 }

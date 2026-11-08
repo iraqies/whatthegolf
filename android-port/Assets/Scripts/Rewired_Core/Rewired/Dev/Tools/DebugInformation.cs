@@ -47,7 +47,7 @@ namespace Rewired.Dev.Tools
 				}
 				set
 				{
-					ekRxSLdkySnZzggbAjgvcgdnECyP(num);
+					ekRxSLdkySnZzggbAjgvcgdnECyP(value);
 				}
 			}
 
@@ -96,7 +96,7 @@ namespace Rewired.Dev.Tools
 			{
 				set
 				{
-					JDHFhZdudaHpbRZEHYqUxnsxfgbQ(num);
+					JDHFhZdudaHpbRZEHYqUxnsxfgbQ(value);
 				}
 			}
 
@@ -104,7 +104,7 @@ namespace Rewired.Dev.Tools
 			{
 				set
 				{
-					NrkngBdLZmGaaBMgdRrxvqCkAMwGA(num);
+					NrkngBdLZmGaaBMgdRrxvqCkAMwGA(value);
 				}
 			}
 

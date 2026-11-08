@@ -64,7 +64,7 @@ internal class WiGEESztaQcOlAVSzDYLfidomemMA
 			{
 				set
 				{
-					UfcyVlyGJnugMRAcHmsasSHxRtef(flag);
+					UfcyVlyGJnugMRAcHmsasSHxRtef(value);
 				}
 			}
 
@@ -100,7 +100,7 @@ internal class WiGEESztaQcOlAVSzDYLfidomemMA
 			{
 				set
 				{
-					UfcyVlyGJnugMRAcHmsasSHxRtef(num);
+					UfcyVlyGJnugMRAcHmsasSHxRtef(value);
 				}
 			}
 

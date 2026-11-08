@@ -54,8 +54,6 @@ def main() -> None:
 
     aa_ios = os.path.join(proj, "Assets", "StreamingAssets", "aa", "iOS")
     aa_android = os.path.join(proj, "Assets", "StreamingAssets", "aa", "Android")
-    if os.path.exists(aa_ios) and not os.path.exists(aa_android):
-        os.symlink("iOS", aa_android)
 
     with open(os.path.join(proj, "ProjectSettings", "ProjectVersion.txt"), "w", encoding="utf-8") as f:
         f.write("m_EditorVersion: 2020.3.49f1\n")

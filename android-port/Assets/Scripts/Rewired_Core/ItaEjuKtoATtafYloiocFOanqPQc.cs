@@ -176,7 +176,7 @@ internal sealed class ItaEjuKtoATtafYloiocFOanqPQc
 		{
 			set
 			{
-				XxLRONUBywbJsfrxRDboMUZgqYRk(updateLoopType);
+				XxLRONUBywbJsfrxRDboMUZgqYRk(value);
 			}
 		}
 

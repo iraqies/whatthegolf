@@ -466,11 +466,12 @@ namespace Rewired
 
 					public double tEDFaJjOLaplFpvDzbLxFyLzHDrab;
 
-					Controller ErQenHIYsTkFUbnkMAtWziiYAMGtA => ZCMIkJsulsGqqdpafCqkRjTDvFkf();
-
-					DnOVsxyYplvCxlGqDJhQTdITXUim pxlGvvmmBMZIJiyXisYPNdMoyvDn => lUkNvaAscjtjJezlRrCYZEJFfbgv();
-
-					double tvUAAraGvYJRpabzmoHBQhaNlppCb => BEpaoGIhhnIzuWXfczQKkUpEMSxdb();
+					DnOVsxyYplvCxlGqDJhQTdITXUim UnNPkxDfGWJQVABSUufpxfnajIgHA.ONWZvZGbSQUjcMvUiPoePNFmWXVD => lUkNvaAscjtjJezlRrCYZEJFfbgv();
+					Controller UnNPkxDfGWJQVABSUufpxfnajIgHA.MHuXHKLCPsUIeLOovImpnHVJaYufA => ZCMIkJsulsGqqdpafCqkRjTDvFkf();
+					double UnNPkxDfGWJQVABSUufpxfnajIgHA.tEDFaJjOLaplFpvDzbLxFyLzHDrab => BEpaoGIhhnIzuWXfczQKkUpEMSxdb();
+					DnOVsxyYplvCxlGqDJhQTdITXUim UnNPkxDfGWJQVABSUufpxfnajIgHA.pxlGvvmmBMZIJiyXisYPNdMoyvDn() => lUkNvaAscjtjJezlRrCYZEJFfbgv();
+					Controller UnNPkxDfGWJQVABSUufpxfnajIgHA.ErQenHIYsTkFUbnkMAtWziiYAMGtA() => ZCMIkJsulsGqqdpafCqkRjTDvFkf();
+					double UnNPkxDfGWJQVABSUufpxfnajIgHA.tvUAAraGvYJRpabzmoHBQhaNlppCb() => BEpaoGIhhnIzuWXfczQKkUpEMSxdb();
 
 					private Controller ZCMIkJsulsGqqdpafCqkRjTDvFkf()
 					{
@@ -516,11 +517,8 @@ namespace Rewired
 
 				public ControllerType zCReGrIKaGDiebYAdEKHNKYMyFBzA => EuagPFCCohHTwfgTqaHdPdGetvWf();
 
-				// C# has no syntax for parameterized property 'Rewired.Player.ControllerHelper.HfrONhohtqJsXuOJcrerFhDFBfdP.dvPsYKgTmQEzpmDbxLcTJoNaDxtw'.
-				UnNPkxDfGWJQVABSUufpxfnajIgHA HfrONhohtqJsXuOJcrerFhDFBfdP.get_dvPsYKgTmQEzpmDbxLcTJoNaDxtw(int P_0)
-				{
-					return ZfzbacfrUazhyIUVQWszgBueKSeU(P_0);
-				}
+				UnNPkxDfGWJQVABSUufpxfnajIgHA HfrONhohtqJsXuOJcrerFhDFBfdP.get_xKHWVyyMFvFkZzVdcahSgmCfFoFGb(int P_0) => ZfzbacfrUazhyIUVQWszgBueKSeU(P_0);
+				UnNPkxDfGWJQVABSUufpxfnajIgHA HfrONhohtqJsXuOJcrerFhDFBfdP.dvPsYKgTmQEzpmDbxLcTJoNaDxtw(int P_0) => ZfzbacfrUazhyIUVQWszgBueKSeU(P_0);
 
 				public int brCKhbyjTmEJBciEhfzbFpIgaewZ()
 				{

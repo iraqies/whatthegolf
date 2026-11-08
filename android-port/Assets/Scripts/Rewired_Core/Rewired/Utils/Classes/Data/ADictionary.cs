@@ -287,14 +287,10 @@ namespace Rewired.Utils.Classes.Data
 
 		public ValueCollection Values => null;
 
-		// C# has no syntax for parameterized property 'Item'.
-		public TValue get_Item(TKey key)
+		public TValue this[TKey key]
 		{
-			return default;
-		}
-
-		public void set_Item(TKey key, TValue value)
-		{
+			get => default;
+			set { }
 		}
 
 		ICollection<TKey> IDictionary<TKey, TValue>.Keys => null;
@@ -315,14 +311,10 @@ namespace Rewired.Utils.Classes.Data
 
 		ICollection IDictionary.Values => null;
 
-		// C# has no syntax for parameterized property 'System.Collections.IDictionary.Item'.
-		object IDictionary.get_Item(object key)
+		object IDictionary.this[object key]
 		{
-			return null;
-		}
-
-		void IDictionary.set_Item(object key, object value)
-		{
+			get => null;
+			set { }
 		}
 
 		public ADictionary()

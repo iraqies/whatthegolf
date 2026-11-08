@@ -23,7 +23,7 @@ namespace Rewired
 			}
 			internal set
 			{
-				CsQOAWYijZfmerTlmIiSxDfjlXTN(text);
+				CsQOAWYijZfmerTlmIiSxDfjlXTN(value);
 			}
 		}
 
@@ -31,7 +31,7 @@ namespace Rewired
 		{
 			set
 			{
-				sfIvBHTvDSWiArkDjaeZnAaDyaEo(text);
+				sfIvBHTvDSWiArkDjaeZnAaDyaEo(value);
 			}
 		}
 
@@ -43,7 +43,7 @@ namespace Rewired
 			}
 			internal set
 			{
-				JPbZDUeCyFLRqbbbjNbTfHOyjoLk(num);
+				JPbZDUeCyFLRqbbbjNbTfHOyjoLk(value);
 			}
 		}
 

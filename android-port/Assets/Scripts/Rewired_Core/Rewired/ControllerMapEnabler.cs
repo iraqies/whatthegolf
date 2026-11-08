@@ -123,14 +123,10 @@ namespace Rewired
 
 			public string tag => null;
 
-			// C# has no syntax for parameterized property 'Item'.
-			public Rule get_Item(int index)
+			public Rule this[int index]
 			{
-				return null;
-			}
-
-			public void set_Item(int index, Rule value)
-			{
+				get => null;
+				set { }
 			}
 
 			public int Count => 0;

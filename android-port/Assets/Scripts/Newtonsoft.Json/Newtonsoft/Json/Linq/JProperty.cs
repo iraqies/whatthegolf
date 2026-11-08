@@ -14,14 +14,10 @@ namespace Newtonsoft.Json.Linq
 
 			public bool IsReadOnly => false;
 
-			// C# has no syntax for parameterized property 'Item'.
-			public JToken get_Item(int index)
+			public JToken this[int index]
 			{
-				return null;
-			}
-
-			public void set_Item(int index, JToken value)
-			{
+				get => null;
+				set { }
 			}
 
 			public IEnumerator<JToken> GetEnumerator()

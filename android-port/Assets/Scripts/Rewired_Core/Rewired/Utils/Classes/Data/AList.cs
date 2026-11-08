@@ -80,28 +80,20 @@ namespace Rewired.Utils.Classes.Data
 
 		public int Version => 0;
 
-		// C# has no syntax for parameterized property 'Item'.
-		public T get_Item(int index)
+		public T this[int index]
 		{
-			return default;
-		}
-
-		public void set_Item(int index, T value)
-		{
+			get => default;
+			set { }
 		}
 
 		bool ICollection<T>.IsReadOnly => false;
 
 		bool IList.IsReadOnly => false;
 
-		// C# has no syntax for parameterized property 'System.Collections.IList.Item'.
-		object IList.get_Item(int index)
+		object IList.this[int index]
 		{
-			return null;
-		}
-
-		void IList.set_Item(int index, object value)
-		{
+			get => null;
+			set { }
 		}
 
 		int ICollection.Count => 0;

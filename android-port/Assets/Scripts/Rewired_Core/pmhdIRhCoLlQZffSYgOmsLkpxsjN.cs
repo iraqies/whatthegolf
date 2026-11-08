@@ -126,11 +126,11 @@ internal sealed class pmhdIRhCoLlQZffSYgOmsLkpxsjN : IDisposable
 	{
 		add
 		{
-			WzlWlEKffOrsmcmQsFPAvyShuqHR(action);
+			WzlWlEKffOrsmcmQsFPAvyShuqHR(value);
 		}
 		remove
 		{
-			wKGQdmacyAcLTGdVOuFLqwcSTgBtA(action);
+			wKGQdmacyAcLTGdVOuFLqwcSTgBtA(value);
 		}
 	}
 
@@ -138,11 +138,11 @@ internal sealed class pmhdIRhCoLlQZffSYgOmsLkpxsjN : IDisposable
 	{
 		add
 		{
-			HsdBzVDkwdKmSABieDOXuFkruVNyA(action);
+			HsdBzVDkwdKmSABieDOXuFkruVNyA(value);
 		}
 		remove
 		{
-			YVxzVWDcGuTOvYZvsFSmfkIVbHkc(action);
+			YVxzVWDcGuTOvYZvsFSmfkIVbHkc(value);
 		}
 	}
 

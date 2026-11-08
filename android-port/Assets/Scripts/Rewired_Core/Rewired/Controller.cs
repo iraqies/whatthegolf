@@ -41,7 +41,7 @@ namespace Rewired
 				{
 					set
 					{
-						XxLRONUBywbJsfrxRDboMUZgqYRk(updateLoopType);
+						XxLRONUBywbJsfrxRDboMUZgqYRk(value);
 					}
 				}
 
@@ -182,7 +182,7 @@ namespace Rewired
 				}
 				internal set
 				{
-					HRlrWREAihtoxtbYHTpLLmsPbPaO(num);
+					HRlrWREAihtoxtbYHTpLLmsPbPaO(value);
 				}
 			}
 
@@ -729,7 +729,7 @@ namespace Rewired
 		{
 			set
 			{
-				PYEahVoDRrCwzZbCFQEMWekzHHEz(flag);
+				PYEahVoDRrCwzZbCFQEMWekzHHEz(value);
 			}
 		}
 
@@ -753,11 +753,11 @@ namespace Rewired
 		{
 			add
 			{
-				bGHHQfxphgKUsmAEUOeOBePmdIHC(action);
+				bGHHQfxphgKUsmAEUOeOBePmdIHC(value);
 			}
 			remove
 			{
-				tSeGuWepnwKpvLurmCNuhckhFifHB(action);
+				tSeGuWepnwKpvLurmCNuhckhFifHB(value);
 			}
 		}
 

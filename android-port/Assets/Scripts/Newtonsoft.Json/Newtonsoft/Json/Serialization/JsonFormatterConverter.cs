@@ -25,6 +25,18 @@ namespace Newtonsoft.Json.Serialization
 			return null;
 		}
 
+		public object Convert(object value, TypeCode typeCode) => null;
+		public byte ToByte(object value) => 0;
+		public char ToChar(object value) => '\0';
+		public DateTime ToDateTime(object value) => default;
+		public decimal ToDecimal(object value) => 0m;
+		public double ToDouble(object value) => 0.0;
+		public short ToInt16(object value) => 0;
+		public sbyte ToSByte(object value) => 0;
+		public ushort ToUInt16(object value) => 0;
+		public uint ToUInt32(object value) => 0u;
+		public ulong ToUInt64(object value) => 0uL;
+
 		public bool ToBoolean(object value)
 		{
 			return false;

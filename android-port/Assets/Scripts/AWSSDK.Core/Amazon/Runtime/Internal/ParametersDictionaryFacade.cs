@@ -9,14 +9,10 @@ namespace Amazon.Runtime.Internal
 
 		public int Count => 0;
 
-		// C# has no syntax for parameterized property 'Item'.
-		public string get_Item(string key)
+		public string this[string key]
 		{
-			return null;
-		}
-
-		public void set_Item(string key, string value)
-		{
+			get => null;
+			set { }
 		}
 
 		public ICollection<string> Keys => null;

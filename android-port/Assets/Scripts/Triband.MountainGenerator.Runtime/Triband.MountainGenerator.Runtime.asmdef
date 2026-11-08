@@ -1,5 +1,8 @@
 {
   "name": "Triband.MountainGenerator.Runtime",
-  "references": [],
+  "references": [
+    "Triband.Core.Runtime",
+    "Triband.Splines.Runtime"
+  ],
   "allowUnsafeCode": true
 }

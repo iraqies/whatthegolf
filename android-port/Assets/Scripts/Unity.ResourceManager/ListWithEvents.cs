@@ -13,14 +13,10 @@ internal class ListWithEvents<T> : IList<T>, ICollection<T>, IEnumerable<T>, IEn
 	[CompilerGenerated]
 	private Action<T> m_OnElementRemoved;
 
-	// C# has no syntax for parameterized property 'Item'.
-	public T get_Item(int index)
+	public T this[int index]
 	{
-		return default;
-	}
-
-	public void set_Item(int index, T value)
-	{
+		get => m_List != null && index >= 0 && index < m_List.Count ? m_List[index] : default;
+		set { if (m_List != null && index >= 0 && index < m_List.Count) m_List[index] = value; }
 	}
 
 	public int Count => 0;

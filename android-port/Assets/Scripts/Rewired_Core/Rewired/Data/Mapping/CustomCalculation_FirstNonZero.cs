@@ -8,12 +8,7 @@ namespace Rewired.Data.Mapping
 	{
 		private const TypeWrapper.DataType resultType = TypeWrapper.DataType.Single;
 
-		internal override TypeWrapper.DataType msPGkahjUeDsvWeBnAwyduNCSsdO => get_ResultType();
-
-		internal TypeWrapper.DataType get_ResultType()
-		{
-			return TypeWrapper.DataType.Unknown;
-		}
+		internal override TypeWrapper.DataType ResultType => TypeWrapper.DataType.Single;
 
 		internal override bool Process()
 		{

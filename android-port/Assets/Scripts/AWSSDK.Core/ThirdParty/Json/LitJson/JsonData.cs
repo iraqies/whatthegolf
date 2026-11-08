@@ -77,34 +77,22 @@ namespace ThirdParty.Json.LitJson
 
 		bool IList.IsReadOnly => false;
 
-		// C# has no syntax for parameterized property 'System.Collections.IDictionary.Item'.
-		object IDictionary.get_Item(object key)
+		object IDictionary.this[object key]
 		{
-			return null;
+			get => null;
+			set { }
 		}
 
-		void IDictionary.set_Item(object key, object value)
+		object IOrderedDictionary.this[int idx]
 		{
+			get => null;
+			set { }
 		}
 
-		// C# has no syntax for parameterized property 'System.Collections.Specialized.IOrderedDictionary.Item'.
-		object IOrderedDictionary.get_Item(int idx)
+		object IList.this[int index]
 		{
-			return null;
-		}
-
-		void IOrderedDictionary.set_Item(int idx, object value)
-		{
-		}
-
-		// C# has no syntax for parameterized property 'System.Collections.IList.Item'.
-		object IList.get_Item(int index)
-		{
-			return null;
-		}
-
-		void IList.set_Item(int index, object value)
-		{
+			get => null;
+			set { }
 		}
 
 		public IEnumerable<string> PropertyNames => null;

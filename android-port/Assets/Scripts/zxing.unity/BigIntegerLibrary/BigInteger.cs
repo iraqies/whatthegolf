@@ -159,6 +159,11 @@ namespace BigIntegerLibrary
 			return false;
 		}
 
+		public static bool operator >(BigInteger a, BigInteger b)
+		{
+			return false;
+		}
+
 		public static bool operator >=(BigInteger a, BigInteger b)
 		{
 			return false;

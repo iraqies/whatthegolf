@@ -198,7 +198,7 @@ namespace Rewired.Data
 		{
 			set
 			{
-				JPbZDUeCyFLRqbbbjNbTfHOyjoLk(num);
+				JPbZDUeCyFLRqbbbjNbTfHOyjoLk(value);
 			}
 		}
 
@@ -210,7 +210,7 @@ namespace Rewired.Data
 			}
 			internal set
 			{
-				CsQOAWYijZfmerTlmIiSxDfjlXTN(text);
+				CsQOAWYijZfmerTlmIiSxDfjlXTN(value);
 			}
 		}
 
@@ -222,7 +222,7 @@ namespace Rewired.Data
 			}
 			internal set
 			{
-				sfIvBHTvDSWiArkDjaeZnAaDyaEo(text);
+				sfIvBHTvDSWiArkDjaeZnAaDyaEo(value);
 			}
 		}
 
@@ -234,7 +234,7 @@ namespace Rewired.Data
 			}
 			internal set
 			{
-				wecLYLNkqzqKLmTQSOtXGzWXGKiD(flag);
+				wecLYLNkqzqKLmTQSOtXGzWXGKiD(value);
 			}
 		}
 
@@ -248,7 +248,7 @@ namespace Rewired.Data
 			}
 			internal set
 			{
-				bqhYNtsiyJGFrujirYDTFIgZlCDs(flag);
+				bqhYNtsiyJGFrujirYDTFIgZlCDs(value);
 			}
 		}
 
@@ -260,7 +260,7 @@ namespace Rewired.Data
 			}
 			internal set
 			{
-				pzdttbBVBHLnMKxbYSvdLzhekRao(flag);
+				pzdttbBVBHLnMKxbYSvdLzhekRao(value);
 			}
 		}
 
@@ -272,7 +272,7 @@ namespace Rewired.Data
 			}
 			internal set
 			{
-				JaqkwxeAeAaAjzTwxtXYjgaJLDfJ(flag);
+				JaqkwxeAeAaAjzTwxtXYjgaJLDfJ(value);
 			}
 		}
 

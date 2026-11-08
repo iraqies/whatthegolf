@@ -79,7 +79,7 @@ namespace Rewired
 			}
 			internal set
 			{
-				AQtmJuWrLHPQSquyyGnfWvcLtYwo(controllerElementType);
+				AQtmJuWrLHPQSquyyGnfWvcLtYwo(value);
 			}
 		}
 

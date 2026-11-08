@@ -290,14 +290,10 @@ namespace Rewired.Utils.Classes.Data
 
 		bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly => false;
 
-		// C# has no syntax for parameterized property 'System.Collections.Generic.IDictionary<TKey,TValue>.Item'.
-		TValue IDictionary<TKey, TValue>.get_Item(TKey P_0)
+		TValue IDictionary<TKey, TValue>.this[TKey P_0]
 		{
-			return default;
-		}
-
-		void IDictionary<TKey, TValue>.set_Item(TKey P_0, TValue P_1)
-		{
+			get => default;
+			set { }
 		}
 
 		bool IDictionary.IsFixedSize => false;
@@ -308,14 +304,10 @@ namespace Rewired.Utils.Classes.Data
 
 		ICollection IDictionary.Values => null;
 
-		// C# has no syntax for parameterized property 'System.Collections.IDictionary.Item'.
-		object IDictionary.get_Item(object key)
+		object IDictionary.this[object key]
 		{
-			return null;
-		}
-
-		void IDictionary.set_Item(object key, object value)
-		{
+			get => null;
+			set { }
 		}
 
 		bool ICollection.IsSynchronized => false;

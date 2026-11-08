@@ -34,7 +34,7 @@ namespace Rewired
 		{
 			set
 			{
-				JTlChJEDrPyhCpommhesSOVQjIrlA(num);
+				JTlChJEDrPyhCpommhesSOVQjIrlA(value);
 			}
 		}
 
@@ -42,7 +42,7 @@ namespace Rewired
 		{
 			set
 			{
-				wlAgKJIIcfcfQdqTuFSHQypFIQRO(controllerType);
+				wlAgKJIIcfcfQdqTuFSHQypFIQRO(value);
 			}
 		}
 
@@ -50,7 +50,7 @@ namespace Rewired
 		{
 			set
 			{
-				CvTXqvoxPGOpJIGVlCfgqxiAAxFI(num);
+				CvTXqvoxPGOpJIGVlCfgqxiAAxFI(value);
 			}
 		}
 

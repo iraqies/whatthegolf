@@ -212,6 +212,11 @@ namespace Rewired.Utils
 				return false;
 			}
 
+			public static bool operator <=(UnityVersionClass a, UnityVersionClass b)
+			{
+				return false;
+			}
+
 			public static bool operator ==(UnityVersionClass a, UnityVersionClass b)
 			{
 				return false;
@@ -321,7 +326,7 @@ namespace Rewired.Utils
 			}
 			set
 			{
-				ANewaltkJCoDsFjRazvRNtaaGRue(androidFallbackPlatformHelper);
+				ANewaltkJCoDsFjRazvRNtaaGRue(value);
 			}
 		}
 

@@ -36,11 +36,11 @@ namespace Rewired.InputSources.SDL2
 		{
 			add
 			{
-				wktFDwPoDTIgPwgEdTShFPdGZamx(action);
+				wktFDwPoDTIgPwgEdTShFPdGZamx(value);
 			}
 			remove
 			{
-				gmJoWdBTSiKdSPvZqbYdJWWUEJhG(action);
+				gmJoWdBTSiKdSPvZqbYdJWWUEJhG(value);
 			}
 		}
 

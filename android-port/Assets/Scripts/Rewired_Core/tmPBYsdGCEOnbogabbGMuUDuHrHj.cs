@@ -79,13 +79,10 @@ internal sealed class tmPBYsdGCEOnbogabbGMuUDuHrHj<_0001> : IEnumerable, IEnumer
 
 	private readonly IList<_0001> BqfAwMORHhdFJVeudgHEtCMTMAbR;
 
-	// C# has no syntax for parameterized property 'DnOVsxyYplvCxlGqDJhQTdITXUim.dvPsYKgTmQEzpmDbxLcTJoNaDxtw'.
-	ControllerMap DnOVsxyYplvCxlGqDJhQTdITXUim.get_dvPsYKgTmQEzpmDbxLcTJoNaDxtw(int P_0)
-	{
-		return tNrdumShOleCoQpkZDYIKhozLDUu(P_0);
-	}
-
-	IList<ControllerMap> IYAZWDOxptdEIZqQulstZlWFDrWQ => vHnkNxDCkZkLEycTguoDvbSiQQbL();
+	ControllerMap DnOVsxyYplvCxlGqDJhQTdITXUim.get_xKHWVyyMFvFkZzVdcahSgmCfFoFGb(int P_0) => tNrdumShOleCoQpkZDYIKhozLDUu(P_0);
+	ControllerMap DnOVsxyYplvCxlGqDJhQTdITXUim.dvPsYKgTmQEzpmDbxLcTJoNaDxtw(int P_0) => tNrdumShOleCoQpkZDYIKhozLDUu(P_0);
+	IList<ControllerMap> DnOVsxyYplvCxlGqDJhQTdITXUim.kIfmjNGuuXrTJuvNLfqyicMBRuPS => vHnkNxDCkZkLEycTguoDvbSiQQbL();
+	IList<ControllerMap> DnOVsxyYplvCxlGqDJhQTdITXUim.IYAZWDOxptdEIZqQulstZlWFDrWQ() => vHnkNxDCkZkLEycTguoDvbSiQQbL();
 
 	public int dtBwysZFYjgnHwWwaJGMOdwhhiAO => brCKhbyjTmEJBciEhfzbFpIgaewZ();
 

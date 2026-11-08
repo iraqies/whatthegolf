@@ -493,7 +493,7 @@ namespace Rewired.Data
 			}
 			private set
 			{
-				xTuAzIgCeHrAwXSmCIuNGtPzXTeA(list);
+				xTuAzIgCeHrAwXSmCIuNGtPzXTeA(value);
 			}
 		}
 
@@ -501,7 +501,7 @@ namespace Rewired.Data
 		{
 			set
 			{
-				bExjroxNyGWfUNbpZNgulNOxcCCI(list);
+				bExjroxNyGWfUNbpZNgulNOxcCCI(value);
 			}
 		}
 
@@ -513,7 +513,7 @@ namespace Rewired.Data
 			}
 			private set
 			{
-				aMosdRMkBlUpGBSCOmXidIzeANTW(list);
+				aMosdRMkBlUpGBSCOmXidIzeANTW(value);
 			}
 		}
 
@@ -521,7 +521,7 @@ namespace Rewired.Data
 		{
 			set
 			{
-				ENQOHwHYdaVtUAzQxQcNCTfkRsdT(list);
+				ENQOHwHYdaVtUAzQxQcNCTfkRsdT(value);
 			}
 		}
 
@@ -533,7 +533,7 @@ namespace Rewired.Data
 			}
 			private set
 			{
-				CuvBlHsTPuHPqKDWRpSiVJoMpCOWA(list);
+				CuvBlHsTPuHPqKDWRpSiVJoMpCOWA(value);
 			}
 		}
 
@@ -545,7 +545,7 @@ namespace Rewired.Data
 			}
 			private set
 			{
-				RBsFBVFboifcsasMkJhEVqTOpaIfA(list);
+				RBsFBVFboifcsasMkJhEVqTOpaIfA(value);
 			}
 		}
 
@@ -557,7 +557,7 @@ namespace Rewired.Data
 			}
 			private set
 			{
-				hgDBuVsYqzDZNtDadtiOtaKKvEVh(list);
+				hgDBuVsYqzDZNtDadtiOtaKKvEVh(value);
 			}
 		}
 
@@ -569,7 +569,7 @@ namespace Rewired.Data
 			}
 			private set
 			{
-				WeSgxYFrunZqYuqHVrOcsigxnwoS(list);
+				WeSgxYFrunZqYuqHVrOcsigxnwoS(value);
 			}
 		}
 
@@ -581,7 +581,7 @@ namespace Rewired.Data
 			}
 			private set
 			{
-				cHDhCpnowpySLCULArJOoTGHjMMw(list);
+				cHDhCpnowpySLCULArJOoTGHjMMw(value);
 			}
 		}
 
@@ -589,7 +589,7 @@ namespace Rewired.Data
 		{
 			set
 			{
-				afRWIrmveYldFkNTReeclprCaDYy(list);
+				afRWIrmveYldFkNTReeclprCaDYy(value);
 			}
 		}
 
@@ -597,7 +597,7 @@ namespace Rewired.Data
 		{
 			set
 			{
-				NBMqVGaBOMfTYiPWKnBFnFzTuOrIA(list);
+				NBMqVGaBOMfTYiPWKnBFnFzTuOrIA(value);
 			}
 		}
 
@@ -605,7 +605,7 @@ namespace Rewired.Data
 		{
 			set
 			{
-				PFrApxgnPJucqajgpDgrOSxgaPRCA(list);
+				PFrApxgnPJucqajgpDgrOSxgaPRCA(value);
 			}
 		}
 
@@ -613,7 +613,7 @@ namespace Rewired.Data
 		{
 			set
 			{
-				RWnuQvMnSMFEGOMkXPpNZHjUEbmfA(list);
+				RWnuQvMnSMFEGOMkXPpNZHjUEbmfA(value);
 			}
 		}
 
@@ -621,7 +621,7 @@ namespace Rewired.Data
 		{
 			set
 			{
-				SFDqGeHcLzgVwsLiYCIVKuYLoPScA(list);
+				SFDqGeHcLzgVwsLiYCIVKuYLoPScA(value);
 			}
 		}
 
@@ -629,7 +629,7 @@ namespace Rewired.Data
 		{
 			set
 			{
-				QrKmCUIliAFrhBusbLxQLOGXqNWtA(list);
+				QrKmCUIliAFrhBusbLxQLOGXqNWtA(value);
 			}
 		}
 

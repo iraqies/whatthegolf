@@ -16,7 +16,7 @@ namespace Rewired
 		{
 			set
 			{
-				oENTcUXnbQVTSxraqICAInUKNXhK(inputActionEventType);
+				oENTcUXnbQVTSxraqICAInUKNXhK(value);
 			}
 		}
 

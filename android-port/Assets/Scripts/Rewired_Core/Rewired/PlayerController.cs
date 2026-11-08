@@ -294,7 +294,7 @@ namespace Rewired
 				}
 				set
 				{
-					QogGjtbarFqmkKesqDXoceThdxAEA(flag);
+					QogGjtbarFqmkKesqDXoceThdxAEA(value);
 				}
 			}
 

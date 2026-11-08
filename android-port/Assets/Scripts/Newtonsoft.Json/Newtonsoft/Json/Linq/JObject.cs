@@ -31,14 +31,10 @@ namespace Newtonsoft.Json.Linq
 
 		public override JTokenType Type => JTokenType.None;
 
-		// C# has no syntax for parameterized property 'Item'.
-		public JToken get_Item(string propertyName)
+		public JToken this[string propertyName]
 		{
-			return null;
-		}
-
-		public void set_Item(string propertyName, JToken value)
-		{
+			get => null;
+			set { }
 		}
 
 		ICollection<string> IDictionary<string, JToken>.Keys => null;

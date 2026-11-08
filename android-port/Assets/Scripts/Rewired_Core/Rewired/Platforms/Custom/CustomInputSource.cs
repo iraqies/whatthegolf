@@ -155,11 +155,11 @@ namespace Rewired.Platforms.Custom
 		{
 			add
 			{
-				alVWABSXzsQaFVWiUaUWqyJviqJw(action);
+				alVWABSXzsQaFVWiUaUWqyJviqJw(value);
 			}
 			remove
 			{
-				mBDbggZkJKDHaIFtaJuFWkPdhpdrA(action);
+				mBDbggZkJKDHaIFtaJuFWkPdhpdrA(value);
 			}
 		}
 
@@ -167,11 +167,11 @@ namespace Rewired.Platforms.Custom
 		{
 			add
 			{
-				JwcfJfaOLsKfZtOacLvkfWrCnUUfB(action);
+				JwcfJfaOLsKfZtOacLvkfWrCnUUfB(value);
 			}
 			remove
 			{
-				yMGTAHtJNYEIcHorwpREbqjiQaTlc(action);
+				yMGTAHtJNYEIcHorwpREbqjiQaTlc(value);
 			}
 		}
 
@@ -179,11 +179,11 @@ namespace Rewired.Platforms.Custom
 		{
 			add
 			{
-				kcliwPuXVLfgBTTJDHAEHhHnxyVU(action);
+				kcliwPuXVLfgBTTJDHAEHhHnxyVU(value);
 			}
 			remove
 			{
-				NbygqORNqcIzZyVXxGXzetijRFRB(action);
+				NbygqORNqcIzZyVXxGXzetijRFRB(value);
 			}
 		}
 
@@ -191,11 +191,11 @@ namespace Rewired.Platforms.Custom
 		{
 			add
 			{
-				aJEszINcAYFgMGCMrjUNpcKKUqEg(action);
+				aJEszINcAYFgMGCMrjUNpcKKUqEg(value);
 			}
 			remove
 			{
-				OwwNxycrqjcPdquUCatCFcMZTOnv(action);
+				OwwNxycrqjcPdquUCatCFcMZTOnv(value);
 			}
 		}
 
