@@ -22,11 +22,11 @@ public class OverworldTeleportMenu : MonoBehaviour
 	private void PopulateMainCampaignSections()
 	{
 		var data = _campaignData;
-		if (data == null || data.sections == null) return;
-		for (int i = 0; i < _teleportButtons.Count && i < data.sections.Count; i++)
+		if (data == null || data.Sections == null) return;
+		for (int i = 0; i < _teleportButtons.Count && i < data.Sections.Count; i++)
 		{
 			int idx = i;
-			var sec = data.sections[i];
+			var sec = data.Sections[i];
 			var btn = _teleportButtons[i];
 			if (btn == null) continue;
 			btn.gameObject.SetActive(true);
@@ -44,7 +44,7 @@ public class OverworldTeleportMenu : MonoBehaviour
 			if (goals != null && index >= 0 && index < goals.Count && goals[index] != null)
 				OverworldManager2d.Instance.ball.transform.position = goals[index].transform.position + Vector3.down * 1.5f;
 		}
-		if (Menu.Menu.HasInstance) Menu.Menu.Instance.Close();
+		if (Menu.Menu.Exists) Menu.Menu.Instance.Close();
 	}
 
 	private void RefreshButtons() => InitializeIfNot();

@@ -25,9 +25,9 @@ namespace Hub
 		{
 			get
 			{
-				if (packDef == null && RuntimeStoreData.instance != null && RuntimeStoreData.instance.levelPackContainers != null)
+				if (packDef == null && RuntimeStoreData.instance != null && RuntimeStoreData.instance.contentPacksDefs != null)
 				{
-					foreach (var c in RuntimeStoreData.instance.levelPackContainers)
+					foreach (var c in RuntimeStoreData.instance.contentPacksDefs)
 					{
 						if (c != null && c.pack != null && (c.pack.contentPackID == pack || c.pack.name == pack))
 						{
@@ -79,9 +79,9 @@ namespace Hub
 		public static async Task<bool> StartFlag(string packId)
 		{
 			if (string.IsNullOrEmpty(packId)) return false;
-			if (RuntimeStoreData.instance != null && RuntimeStoreData.instance.levelPackContainers != null)
+			if (RuntimeStoreData.instance != null && RuntimeStoreData.instance.contentPacksDefs != null)
 			{
-				foreach (var c in RuntimeStoreData.instance.levelPackContainers)
+				foreach (var c in RuntimeStoreData.instance.contentPacksDefs)
 				{
 					if (c != null && c.pack != null && (c.pack.contentPackID == packId || c.pack.name == packId))
 						return await PackStarterManager.StartPack(c.pack, false);
