@@ -141,12 +141,22 @@ public class Loading : MonoBehaviour
 	private StartingPoint WhereToStart()
 	{
 		if (forceSecondOnboarding) return StartingPoint.SECONDONBOARDING;
-		if (SaveGame.IsFirstTime && !SaveGame.IsOnboardingComplete)
+		if (!SaveGame.IsOnboardingComplete)
 			return StartingPoint.ONBOARDING;
+		if (IsUserBeginner() && RuntimeStoreData.instance != null && RuntimeStoreData.instance.secondOnboarding != null)
+			return StartingPoint.SECONDONBOARDING;
 		return StartingPoint.HUB;
 	}
 
-	private bool IsUserBeginner() => SaveGame.IsFirstTime;
+	private bool IsUserBeginner()
+	{
+		if (SaveGame.GetCompletedPercentage(ECampaignType.Main, null, true) <= 19 && SaveGame.SecondOnboardingIndex <= 2 && RuntimeStoreData.instance != null && RuntimeStoreData.instance.secondOnboarding != null)
+		{
+			SaveGame.SecondOnboardingIndex = (SaveGame.SecondOnboardingIndex + 1) % 3;
+			return true;
+		}
+		return false;
+	}
 	private bool HasOnlyPlayedMainCampaign() => true;
 
 	private IEnumerator StartOnBoardingRoutine(ContentPack pack, bool allowMenuButtons, bool isMainOnboarding)

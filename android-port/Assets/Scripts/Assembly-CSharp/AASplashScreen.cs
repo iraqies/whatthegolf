@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Core;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -91,13 +92,14 @@ public class AASplashScreen : MonoBehaviour
 				videoCamera.enabled = false;
 			if (logo.mountainGenerator != null)
 				logo.mountainGenerator.BuildMountain();
+			bool isMobile = PlatformSettings.Instance == null || PlatformSettings.Instance.GetCurrent() == null || PlatformSettings.Instance.GetCurrent().IsMobile;
 			if (logo.logoAnimationDesktopCam != null)
-			{
-				logo.logoAnimationDesktopCam.gameObject.SetActive(true);
-				logo.logoAnimationDesktopCam.depth = 50f;
-			}
+				logo.logoAnimationDesktopCam.gameObject.SetActive(!isMobile);
 			if (logo.logoAnimationMobileCam != null)
-				logo.logoAnimationMobileCam.gameObject.SetActive(false);
+			{
+				logo.logoAnimationMobileCam.gameObject.SetActive(isMobile);
+				if (isMobile) logo.logoAnimationMobileCam.depth = 50f;
+			}
 		}
 		tribandLogoCR = StartCoroutine(ShowTribandLogoCR(() => OnLogoAnimationEnd(false)));
 	}

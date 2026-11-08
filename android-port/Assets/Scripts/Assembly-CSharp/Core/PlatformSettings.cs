@@ -168,11 +168,15 @@ namespace Core
 			if (android != null && android.menu != null)
 			{
 				android.isMobile = true;
+				android.defaultScreenMode = ScreenModes.Portrait;
+				android.useRotatedOverworldAndCameraInLevels = true;
 				android.useFileSave = true;
 				android.usesKeyboardAndControllerInput = true;
 				android.UseAimMarker = true;
 				return android;
 			}
+			if (iPhone != null)
+				return iPhone;
 			if (iPad != null)
 			{
 				iPad.isMobile = true;
@@ -181,8 +185,6 @@ namespace Core
 				iPad.UseAimMarker = true;
 				return iPad;
 			}
-			if (iPhone != null)
-				return iPhone;
 			return new PlatformConfiguration();
 		}
 

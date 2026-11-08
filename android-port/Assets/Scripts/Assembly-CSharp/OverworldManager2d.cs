@@ -352,7 +352,7 @@ public class OverworldManager2d : GolfBehaviour
 		if (Camera != null && Camera.ActiveBehavior is CBOrthographicFollow2D orthoFollow && cameraTarget != null)
 			orthoFollow.SetFollowTarget(cameraTarget);
 
-		bool introDone = SaveGame.IsIntroAnimationComplete;
+		bool introDone = SaveGame.IsIntroAnimationComplete && SaveGame.GetCompletedPercentage(ECampaignType.Main, null, true) > 0;
 		if (introDone || isHub || introTunnel == null)
 		{
 			if (!isHub || (HubSceneLoader.Instance != null && !HubSceneLoader.Instance.HasBeenLoadedBefore))

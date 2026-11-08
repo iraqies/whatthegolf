@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Core;
 using UnityEngine;
 
 public class AnimateRectTransformPlatformSettings : MonoBehaviour
@@ -20,10 +22,23 @@ public class AnimateRectTransformPlatformSettings : MonoBehaviour
 
 	public List<PlatformCameraSettings> Settings;
 
-	public AnimateRectTransform UIAnimater => null;
+	public AnimateRectTransform UIAnimater
+	{
+		get
+		{
+			if (Settings == null || Settings.Count == 0)
+				return GetComponent<AnimateRectTransform>();
+			var plat = GetPlatform();
+			var match = Settings.FirstOrDefault(s => s != null && s.Platform == plat);
+			if (match != null && match.animateRectTransform != null)
+				return match.animateRectTransform;
+			var fallback = Settings.FirstOrDefault(s => s != null && s.animateRectTransform != null);
+			return fallback != null ? fallback.animateRectTransform : GetComponent<AnimateRectTransform>();
+		}
+	}
 
 	private AvailablePlatformsEnum GetPlatform()
 	{
-		return AvailablePlatformsEnum.Mobile;
+		return PlatformSettings.IsMobile ? AvailablePlatformsEnum.Mobile : AvailablePlatformsEnum.NonMobile;
 	}
 }

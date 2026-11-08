@@ -95,7 +95,13 @@ public class Onboarding : MonoBehaviour
 	{
 		if (pack == null) return new List<LevelData>();
 		var container = pack.onboardingContainer ?? pack.mainContainer;
-		return container != null ? container.GetLevelDatas() : new List<LevelData>();
+		var list = container != null ? container.GetLevelDatas() : new List<LevelData>();
+		if (isSecondOnboarding && list != null && list.Count > 1)
+		{
+			int idx = Mathf.Clamp(SaveGame.SecondOnboardingIndex, 0, list.Count - 1);
+			return new List<LevelData> { list[idx] };
+		}
+		return list ?? new List<LevelData>();
 	}
 
 	private List<LevelData> GetRandomList(int numberOfElements, List<LevelData> list)

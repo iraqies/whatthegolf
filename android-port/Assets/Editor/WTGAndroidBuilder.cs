@@ -40,9 +40,9 @@ public static class WTGAndroidBuilder
 			PlayerSettings.Android.bundleVersionCode = 200534;
 			PlayerSettings.allowUnsafeCode = true;
 
-			PlayerSettings.defaultInterfaceOrientation = UIOrientation.AutoRotation;
-			PlayerSettings.allowedAutorotateToLandscapeLeft = true;
-			PlayerSettings.allowedAutorotateToLandscapeRight = true;
+			PlayerSettings.defaultInterfaceOrientation = UIOrientation.Portrait;
+			PlayerSettings.allowedAutorotateToLandscapeLeft = false;
+			PlayerSettings.allowedAutorotateToLandscapeRight = false;
 			PlayerSettings.allowedAutorotateToPortrait = true;
 			PlayerSettings.allowedAutorotateToPortraitUpsideDown = false;
 

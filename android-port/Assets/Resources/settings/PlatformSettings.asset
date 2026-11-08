@@ -160,14 +160,14 @@ MonoBehaviour:
     useNativeNotifications: 0
     useDeepLinks: 0
   android:
-    defaultScreenMode: 0
+    defaultScreenMode: 1
     isMobile: 1
-    useRotatedOverworldAndCameraInLevels: 0
+    useRotatedOverworldAndCameraInLevels: 1
     platformType: 7
     useFileSave: 1
     useSaveThrobber: 0
     longSaveAnimation: 0
-    menu: {fileID: 11400000, guid: a55bea1dc507b7b448961619c82aebc9, type: 2}
+    menu: {fileID: 11400000, guid: f66e94739cf2f40428ed79dc8a77de13, type: 2}
     playAgainSelectionAlwaysVisible: 0
     useQuickmenuInOnboarding: 0
     useBackButtonInMenus: 1

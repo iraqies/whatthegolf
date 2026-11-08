@@ -39,7 +39,7 @@ public class AnimateRectTransform : MonoBehaviour
 
 	public bool disableOnHide;
 	[SerializeField] private List<TransitionType> overrideTransition;
-	private TransitionType defaultT;
+	private TransitionType defaultT = new TransitionType { duration = 0.25f, ease = EasingFunction.Ease.EaseOutQuad };
 	[SerializeField] public RectState HideState;
 	[SerializeField] private RectState ShowState;
 	[SerializeField] private bool alternate;
@@ -55,31 +55,73 @@ public class AnimateRectTransform : MonoBehaviour
 
 	public float SetShow(bool s, bool instant = false)
 	{
-		if (s) gameObject.SetActive(true);
-		RectState state = s ? ShowState : HideState;
-		if (instant) SetInstant(state);
-		else SetProps(state);
-		if (!s && disableOnHide)
+		if (instant)
 		{
-			if (instant || !gameObject.activeInHierarchy) gameObject.SetActive(false);
-			else StartCoroutine(DeactiveAfter(GetLongestTransition(state)));
+			RectState state = s ? ShowState : HideState;
+			SetInstant(state);
+			if (!s && disableOnHide && gameObject != null)
+				gameObject.SetActive(false);
+			return 0f;
 		}
-		return instant ? 0f : GetLongestTransition(state);
+		return s ? Show() : Hide();
 	}
 
-	private void Deactivate() => gameObject.SetActive(false);
+	private void Deactivate()
+	{
+		if (disableOnHide && gameObject != null)
+			gameObject.SetActive(false);
+	}
 
-	public float Show() => SetShow(true, false);
+	public float Show()
+	{
+		StopAllCoroutines();
+		SetInstant(HideState);
+		if (gameObject != null)
+			gameObject.SetActive(true);
+		if (gameObject != null && gameObject.activeInHierarchy)
+		{
+			SetProps(ShowState);
+			float dur = GetLongestTransition(ShowState);
+			if (alternate)
+				StartCoroutine(AlternateAfter(dur));
+			return dur;
+		}
+		SetInstant(ShowState);
+		return 0f;
+	}
 
 	private IEnumerator AlternateAfter(float a)
 	{
-		yield return new WaitForSecondsRealtime(a);
+		if (a > 0f)
+			yield return new WaitForSecondsRealtime(a);
 		Alternate();
 	}
 
-	public float Hide() => SetShow(false, false);
+	public float Hide()
+	{
+		StopAllCoroutines();
+		if (gameObject != null && gameObject.activeInHierarchy)
+		{
+			float dur = GetLongestTransition(HideState);
+			SetProps(HideState);
+			StartCoroutine(DeactiveAfter(dur));
+			return dur;
+		}
+		SetInstant(HideState);
+		return 0f;
+	}
 
-	private void SetProps(RectState s) => SetInstant(s);
+	private void SetProps(RectState s)
+	{
+		if (s.useColor)
+			SetProp(Property.color, s.color);
+		if (s.usePos)
+			SetProp(Property.position, s.anchoredPos);
+		if (s.useSize)
+			SetProp(Property.sizeDelta, s.sizeDelta);
+		if (s.useScale)
+			SetProp(Property.scale, s.scale);
+	}
 
 	private void SetInstant(RectState s)
 	{
@@ -87,8 +129,8 @@ public class AnimateRectTransform : MonoBehaviour
 		if (rt != null)
 		{
 			if (s.useSize) rt.sizeDelta = s.sizeDelta;
-			if (s.useScale) rt.localScale = new Vector3(s.scale.x, s.scale.y, 1f);
 			if (s.usePos) rt.anchoredPosition = s.anchoredPos;
+			if (s.useScale) rt.localScale = new Vector3(s.scale.x, s.scale.y, 1f);
 		}
 		if (s.useColor)
 		{
@@ -99,33 +141,122 @@ public class AnimateRectTransform : MonoBehaviour
 
 	private IEnumerator DeactiveAfter(float t)
 	{
-		if (t > 0f) yield return new WaitForSecondsRealtime(t);
-		if (disableOnHide) gameObject.SetActive(false);
+		if (t > 0f)
+			yield return new WaitForSecondsRealtime(t);
+		Deactivate();
 	}
 
 	public float GetLongestTransition(RectState s)
 	{
-		float max = 0.2f;
-		if (overrideTransition != null)
-		{
-			foreach (var tr in overrideTransition)
-				if (tr.duration > max) max = tr.duration;
-		}
-		return max;
+		float max = 0f;
+		if (s.useColor)
+			max = Mathf.Max(GetTransitionLength(Property.color).duration, max);
+		if (s.usePos)
+			max = Mathf.Max(GetTransitionLength(Property.position).duration, max);
+		if (s.useSize)
+			max = Mathf.Max(GetTransitionLength(Property.sizeDelta).duration, max);
+		if (s.useScale)
+			max = Mathf.Max(GetTransitionLength(Property.scale).duration, max);
+		return max <= 0f ? 0.25f : max;
 	}
 
 	private TransitionType GetTransitionLength(Property p)
 	{
 		if (overrideTransition != null)
 		{
-			foreach (var tr in overrideTransition)
-				if (tr.prop == p) return tr;
+			for (int i = 0; i < overrideTransition.Count; i++)
+			{
+				if (overrideTransition[i].prop == p)
+					return overrideTransition[i];
+			}
 		}
-		return defaultT;
+		return new TransitionType { duration = 0.25f, ease = EasingFunction.Ease.EaseOutQuad, prop = p };
 	}
 
-	private void SetProp(Property p, Vector2 end) { }
-	private void SetProp(Property p, Color c) { }
-	private void Alternate() { }
-	private IEnumerator AlternateCR() { yield break; }
+	private void SetProp(Property p, Vector2 end)
+	{
+		var rt = RectTransform;
+		if (rt == null || !isActiveAndEnabled)
+			return;
+		var tr = GetTransitionLength(p);
+		float dur = tr.duration > 0f ? tr.duration : 0.2f;
+		var easeFn = EasingFunction.GetEasingFunction(tr.ease);
+		if (p == Property.sizeDelta)
+		{
+			Vector2 start = rt.sizeDelta;
+			StartCoroutine(pTween.ToRealTime(dur, t =>
+			{
+				if (rt != null)
+				{
+					float et = easeFn != null ? easeFn(0f, 1f, t) : t;
+					rt.sizeDelta = Vector2.LerpUnclamped(start, end, et);
+				}
+			}));
+		}
+		else if (p == Property.position)
+		{
+			Vector2 start = rt.anchoredPosition;
+			StartCoroutine(pTween.ToRealTime(dur, t =>
+			{
+				if (rt != null)
+				{
+					float et = easeFn != null ? easeFn(0f, 1f, t) : t;
+					rt.anchoredPosition = Vector2.LerpUnclamped(start, end, et);
+				}
+			}));
+		}
+		else if (p == Property.scale)
+		{
+			Vector2 start = rt.localScale;
+			StartCoroutine(pTween.ToRealTime(dur, t =>
+			{
+				if (rt != null)
+				{
+					float et = easeFn != null ? easeFn(0f, 1f, t) : t;
+					Vector2 cur = Vector2.LerpUnclamped(start, end, et);
+					rt.localScale = new Vector3(cur.x, cur.y, 1f);
+				}
+			}));
+		}
+	}
+
+	private void SetProp(Property p, Color c)
+	{
+		if (!isActiveAndEnabled)
+			return;
+		var tr = GetTransitionLength(p);
+		var g = Graphic(tr);
+		if (g == null)
+			return;
+		float dur = tr.duration > 0f ? tr.duration : 0.2f;
+		var easeFn = EasingFunction.GetEasingFunction(tr.ease);
+		Color start = g.color;
+		StartCoroutine(pTween.ToRealTime(dur, t =>
+		{
+			if (g != null)
+			{
+				float et = easeFn != null ? easeFn(0f, 1f, t) : t;
+				g.color = Color.LerpUnclamped(start, c, et);
+			}
+		}));
+	}
+
+	private void Alternate()
+	{
+		if (AlternateStates != null && AlternateStates.Count > 0 && isActiveAndEnabled)
+			StartCoroutine(AlternateCR());
+	}
+
+	private IEnumerator AlternateCR()
+	{
+		int idx = 0;
+		while (AlternateStates != null && AlternateStates.Count > 0)
+		{
+			var st = AlternateStates[idx % AlternateStates.Count];
+			SetProps(st);
+			float d = GetLongestTransition(st);
+			yield return new WaitForSecondsRealtime(Mathf.Max(0.1f, d));
+			idx++;
+		}
+	}
 }

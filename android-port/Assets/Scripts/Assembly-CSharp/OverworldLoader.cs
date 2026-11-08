@@ -41,7 +41,7 @@ public class OverworldLoader : MonoBehaviour
 		yield return StartCoroutine(Cleanup(!PlatformSettings.IsConsole, true));
 		if (logoAnimator != null)
 			logoAnimator.SetBool("Instant", false);
-		bool skipTunnel = SaveGame.IsIntroAnimationComplete;
+		bool skipTunnel = SaveGame.IsIntroAnimationComplete && SaveGame.GetCompletedPercentage(ECampaignType.Main, null, true) > 0;
 		if (AudioManager.Instance != null && AudioManager.Instance.music != null)
 			AudioManager.Instance.music.InitializeBank(null, false);
 		StartCoroutine(OverworldStartLoadingAsync_(skipTunnel));
