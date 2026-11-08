@@ -25,8 +25,8 @@ namespace Core
 
 		protected virtual void Awake()
 		{
-			rigidbodyC = rigidbodyOverride != null ? rigidbodyOverride : GetComponent<Rigidbody>();
-			GolfBallController = golfBallControllerOverride != null ? golfBallControllerOverride : GetComponent<GolfBallController>();
+			rigidbodyC = rigidbodyOverride != null ? rigidbodyOverride : (GetComponent<Rigidbody>() ?? GetComponentInChildren<Rigidbody>());
+			GolfBallController = golfBallControllerOverride != null ? golfBallControllerOverride : (GetComponent<GolfBallController>() ?? GetComponentInParent<GolfBallController>());
 			if (GolfBallController != null)
 			{
 				GolfBallController.shooter = this;
@@ -38,6 +38,11 @@ namespace Core
 
 		private void GolfBallController_OnShoot(Vector3 obj) => OnShoot(obj);
 
+		public override void OnShoot(Vector3 boost)
+		{
+			base.OnShoot(boost);
+		}
+
 		public void SetOwner(GolfBallController newOwner)
 		{
 			GolfBallController = newOwner;
@@ -47,7 +52,7 @@ namespace Core
 
 		protected virtual void FixedUpdate()
 		{
-			if (rigidbodyC == null) rigidbodyC = GetComponent<Rigidbody>();
+			if (rigidbodyC == null) rigidbodyC = GetComponent<Rigidbody>() ?? GetComponentInChildren<Rigidbody>();
 		}
 
 		protected virtual bool IsBlocking()
@@ -66,7 +71,7 @@ namespace Core
 
 		protected virtual void StandardShoot(Vector3 boost, float pitch, float minShootVelocity, float fullShootVelocity, float spin)
 		{
-			if (rigidbodyC == null) rigidbodyC = GetComponent<Rigidbody>();
+			if (rigidbodyC == null) rigidbodyC = GetComponent<Rigidbody>() ?? GetComponentInChildren<Rigidbody>();
 			if (rigidbodyC == null) return;
 			rigidbodyC.isKinematic = false;
 			rigidbodyC.WakeUp();

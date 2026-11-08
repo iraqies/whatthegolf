@@ -26,6 +26,7 @@ public class GolfCartShooter : GolfBallShooterBase
 
 	protected override void Awake()
 	{
+	base.Awake();
 	}
 
 	public override void OnAimStart()
@@ -38,6 +39,7 @@ public class GolfCartShooter : GolfBallShooterBase
 
 	public override void OnShoot(Vector3 boost)
 	{
+	StandardShoot(boost, 20f, 18f, 5f);
 	}
 
 	private new void FixedUpdate()

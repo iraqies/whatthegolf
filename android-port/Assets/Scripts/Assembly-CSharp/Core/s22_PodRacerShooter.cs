@@ -148,7 +148,8 @@ namespace Core
 
 		public override void OnShoot(Vector3 boost)
 		{
-		}
+		StandardShoot(boost, 20f, 18f, 5f);
+	}
 
 		private void OnCollisionEnter(Collision collision)
 		{
@@ -156,7 +157,8 @@ namespace Core
 
 		protected override void FixedUpdate()
 		{
-		}
+		base.FixedUpdate();
+	}
 
 		private void AddForceAtPosition(Vector3 force, Vector3 position, ForceMode forceMode)
 		{

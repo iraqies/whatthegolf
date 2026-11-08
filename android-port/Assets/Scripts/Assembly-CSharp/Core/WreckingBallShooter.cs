@@ -31,7 +31,8 @@ namespace Core
 
 		protected override void Awake()
 		{
-		}
+		base.Awake();
+	}
 
 		public override void OnAimUpdate(Vector3 boost, bool onlyAimArrow)
 		{
@@ -43,7 +44,8 @@ namespace Core
 
 		public override void OnShoot(Vector3 boost)
 		{
-		}
+		StandardShoot(boost, 20f, 18f, 5f);
+	}
 
 		private void AdjustRotation(Vector3 dir)
 		{
@@ -51,6 +53,7 @@ namespace Core
 
 		protected override void FixedUpdate()
 		{
-		}
+		base.FixedUpdate();
+	}
 	}
 }

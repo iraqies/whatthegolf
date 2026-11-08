@@ -18,6 +18,7 @@ public class HorsebackShooter2D : GolfBall2DShooterBase
 
 	protected override void Awake()
 	{
+	base.Awake();
 	}
 
 	private void Start()
@@ -30,5 +31,6 @@ public class HorsebackShooter2D : GolfBall2DShooterBase
 
 	public override void OnShoot(Vector3 boost)
 	{
+	StandardShoot(boost, 20f, 18f, 5f);
 	}
 }

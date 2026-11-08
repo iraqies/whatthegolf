@@ -34,7 +34,7 @@ public class AASplashScreen : MonoBehaviour
 		yield break;
 	}
 
-	private bool shouldShowLogoScreen() => false;
+	private bool shouldShowLogoScreen() => true;
 
 	public IEnumerator Show(Action OnCoveredBySplash = null, Action OnCompleted = null, Action OnCanShowGCBanner = null)
 	{
@@ -49,54 +49,100 @@ public class AASplashScreen : MonoBehaviour
 		splashScreenExecuted = true;
 		gameObject.SetActive(true);
 		OnCoveredBySplash?.Invoke();
+
+		StartLogoAnimation();
+		while (!tribandLogoDone)
+		{
+			if (CheckForButtonSkip())
+			{
+				OnLogoAnimationEnd(true);
+				break;
+			}
+			yield return null;
+		}
+
+		if (logoCanvasGroup != null)
+			logoCanvasGroup.alpha = 0f;
+		OnCanShowGCBanner?.Invoke();
+		if (gameObject != null)
+			gameObject.SetActive(false);
+		OnCompleted?.Invoke();
+	}
+
+	private void StartLogoAnimation()
+	{
+		if (!shouldShowLogoScreen())
+		{
+			tribandLogoDone = true;
+			return;
+		}
 		if (splashAudioSource != null)
 		{
 			splashAudioSource.transform.SetParent(null);
 			DontDestroyOnLoad(splashAudioSource.gameObject);
 			splashAudioSource.Play();
 		}
-		yield return StartCoroutine(ShowTribandLogoCR(() => tribandLogoDone = true));
-		OnCanShowGCBanner?.Invoke();
-		if (splashAudioSource != null)
-			splashAudioSource.OnSplashScreenComplete(false);
-		if (gameObject != null)
-			gameObject.SetActive(false);
-		OnCompleted?.Invoke();
+		tribandLogoDone = false;
+		logo = Logo.Instance;
+		if (logo != null)
+		{
+			logo.gameObject.SetActive(true);
+			if (videoCamera != null)
+				videoCamera.enabled = false;
+			if (logo.mountainGenerator != null)
+				logo.mountainGenerator.BuildMountain();
+			if (logo.logoAnimationDesktopCam != null)
+			{
+				logo.logoAnimationDesktopCam.gameObject.SetActive(true);
+				logo.logoAnimationDesktopCam.depth = 50f;
+			}
+			if (logo.logoAnimationMobileCam != null)
+				logo.logoAnimationMobileCam.gameObject.SetActive(false);
+		}
+		tribandLogoCR = StartCoroutine(ShowTribandLogoCR(() => OnLogoAnimationEnd(false)));
 	}
 
-	private void StartLogoAnimation() { }
-	private void OnLogoAnimationEnd(bool skipped) { }
-	private bool CheckForButtonSkip() => InputHelper.TouchedOrMouseClicked() || InputHelper.GetAllPlayerButtonConfirm();
+	private void OnLogoAnimationEnd(bool skipped)
+	{
+		if (splashAudioSource != null)
+			splashAudioSource.OnSplashScreenComplete(skipped);
+		tribandLogoDone = true;
+		if (videoCamera != null)
+			videoCamera.enabled = true;
+		if (logo != null)
+		{
+			logo.gameObject.SetActive(false);
+			Destroy(logo.gameObject);
+			logo = null;
+		}
+		if (tribandLogoCR != null)
+		{
+			StopCoroutine(tribandLogoCR);
+			tribandLogoCR = null;
+		}
+	}
+
+	private bool CheckForButtonSkip() => InputHelper.TouchedOrMouseClicked() || InputHelper.GetAllPlayerButtonConfirm() || InputHelper.GetAllPlayerButtonCancel();
 
 	private IEnumerator ShowTribandLogoCR(UnityAction onDone)
 	{
 		if (logoCanvasGroup != null)
 		{
 			logoCanvasGroup.gameObject.SetActive(true);
-			float t = 0f;
-			while (t < 0.45f)
+			yield return StartCoroutine(pTween.To(0.35f, 0f, 1f, t =>
 			{
-				t += Time.unscaledDeltaTime;
-				logoCanvasGroup.alpha = Mathf.Clamp01(t / 0.45f);
-				if (CheckForButtonSkip()) break;
-				yield return null;
-			}
-			logoCanvasGroup.alpha = 1f;
-			float hold = 0f;
-			while (hold < 1.1f)
+				if (logoCanvasGroup != null)
+					logoCanvasGroup.alpha = 1f - t;
+			}));
+		}
+		yield return new WaitForSeconds(2.5f);
+		if (logoCanvasGroup != null)
+		{
+			yield return StartCoroutine(pTween.To(0.25f, 0f, 1f, t =>
 			{
-				hold += Time.unscaledDeltaTime;
-				if (CheckForButtonSkip()) break;
-				yield return null;
-			}
-			t = 0f;
-			while (t < 0.35f)
-			{
-				t += Time.unscaledDeltaTime;
-				logoCanvasGroup.alpha = 1f - Mathf.Clamp01(t / 0.35f);
-				yield return null;
-			}
-			logoCanvasGroup.alpha = 0f;
+				if (logoCanvasGroup != null)
+					logoCanvasGroup.alpha = t;
+			}));
 		}
 		onDone?.Invoke();
 	}

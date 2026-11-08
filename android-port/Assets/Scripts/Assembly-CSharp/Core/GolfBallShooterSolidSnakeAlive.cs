@@ -68,7 +68,8 @@ namespace Core
 
 		protected override void Awake()
 		{
-		}
+		base.Awake();
+	}
 
 		private void Start()
 		{
@@ -92,7 +93,8 @@ namespace Core
 
 		protected override void FixedUpdate()
 		{
-		}
+		base.FixedUpdate();
+	}
 
 		private void Update()
 		{
@@ -100,7 +102,8 @@ namespace Core
 
 		public override void OnShoot(Vector3 boost)
 		{
-		}
+		StandardShoot(boost, 20f, 18f, 5f);
+	}
 
 		public void OnExplode()
 		{

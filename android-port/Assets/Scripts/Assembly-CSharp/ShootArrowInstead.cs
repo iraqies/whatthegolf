@@ -53,6 +53,7 @@ public class ShootArrowInstead : GolfBallShooterBase
 
 	protected override void Awake()
 	{
+	base.Awake();
 	}
 
 	private IEnumerator Start()
@@ -66,6 +67,7 @@ public class ShootArrowInstead : GolfBallShooterBase
 
 	protected override void FixedUpdate()
 	{
+	base.FixedUpdate();
 	}
 
 	public override void OnAimStart()
@@ -82,5 +84,6 @@ public class ShootArrowInstead : GolfBallShooterBase
 
 	public override void OnShoot(Vector3 dir)
 	{
+	StandardShoot(dir, 20f, 18f, 5f);
 	}
 }

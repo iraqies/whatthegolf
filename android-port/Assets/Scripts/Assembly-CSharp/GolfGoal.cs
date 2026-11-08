@@ -29,15 +29,15 @@ public class GolfGoal : MonoBehaviour
 		remove => m_OnGoalProgress = (Action<int, string>)Delegate.Remove(m_OnGoalProgress, value);
 	}
 
-	public virtual void Complete() => DoComplete(GetWinString(), winDelay);
+	public virtual void Complete() => Complete(GetWinString());
 
-	public virtual void Complete(float delay) => DoComplete(GetWinString(), delay);
+	public virtual void Complete(float delay) => Complete(GetWinString(), delay);
 
-	protected virtual string GetWinString() => !string.IsNullOrEmpty(CustomWinTextID) ? CustomWinTextID : "GOLF!";
+	protected virtual string GetWinString() => !string.IsNullOrEmpty(CustomWinTextID) ? CustomWinTextID : string.Empty;
 
-	public void GoalProgress(int playerIndex) => m_OnGoalProgress?.Invoke(playerIndex, GetWinString());
+	public void GoalProgress(int playerIndex) => m_OnGoalProgress?.Invoke(playerIndex, string.Empty);
 
-	public virtual void Complete(string message) => DoComplete(message, winDelay);
+	public virtual void Complete(string message) => DoComplete(message, null);
 
 	public virtual void Complete(string message, float delay) => DoComplete(message, delay);
 

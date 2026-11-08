@@ -89,6 +89,7 @@ public class BeachBallWithAvatarController : GolfBallShooterBase
 
 	protected override void FixedUpdate()
 	{
+	base.FixedUpdate();
 	}
 
 	private void StopDashing()
@@ -111,5 +112,6 @@ public class BeachBallWithAvatarController : GolfBallShooterBase
 
 	public override void OnShoot(Vector3 boost)
 	{
+	StandardShoot(boost, 20f, 18f, 5f);
 	}
 }

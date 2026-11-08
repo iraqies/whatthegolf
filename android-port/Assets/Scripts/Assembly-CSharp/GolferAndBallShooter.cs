@@ -34,10 +34,12 @@ public class GolferAndBallShooter : GolfBallShooterBase
 
 	protected override void Awake()
 	{
+	base.Awake();
 	}
 
 	public override void OnShoot(Vector3 boost)
 	{
+	StandardShoot(boost, 20f, 18f, 5f);
 	}
 
 	public override void OnAimUpdate(Vector3 boost, bool onlyAimArrow)

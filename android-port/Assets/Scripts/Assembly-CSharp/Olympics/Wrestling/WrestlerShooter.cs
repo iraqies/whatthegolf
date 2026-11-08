@@ -19,6 +19,7 @@ namespace Olympics.Wrestling
 
 		public override void OnShoot(Vector3 boost)
 		{
-		}
+		StandardShoot(boost, 20f, 18f, 5f);
+	}
 	}
 }

@@ -65,10 +65,12 @@ public class PoleVaultingGrappleShooter : GolfBallShooterBase
 
 	public override void OnShoot(Vector3 boost)
 	{
+	StandardShoot(boost, 20f, 18f, 5f);
 	}
 
 	protected override void FixedUpdate()
 	{
+	base.FixedUpdate();
 	}
 
 	public override void OnReset()

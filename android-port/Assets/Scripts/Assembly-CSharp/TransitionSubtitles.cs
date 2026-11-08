@@ -14,12 +14,20 @@ public class TransitionSubtitles : MonoBehaviour
 
 	public void Show(string key, bool onTheSide)
 	{
-		if (string.IsNullOrEmpty(key))
+		if (string.IsNullOrEmpty(key) || Localization.Instance == null)
 		{
 			Hide();
 			return;
 		}
-		if (text != null) text.text = key;
+		string localized = Localization.Instance.GetString(key, false, null);
+		if (string.IsNullOrEmpty(localized))
+		{
+			Hide();
+			return;
+		}
+		localized = localized.Replace('\n', ' ').Replace('\r', ' ');
+		if (text != null)
+			text.text = localized;
 		gameObject.SetActive(true);
 	}
 

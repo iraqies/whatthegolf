@@ -16,7 +16,7 @@ namespace Core
 
 		protected virtual void Awake()
 		{
-			rigidbodyC = GetComponent<Rigidbody2D>();
+			rigidbodyC = GetComponent<Rigidbody2D>() ?? GetComponentInChildren<Rigidbody2D>();
 			GolfBallController = GetComponent<GolfBallController>() ?? GetComponentInParent<GolfBallController>();
 			if (GolfBallController != null)
 			{
@@ -29,7 +29,7 @@ namespace Core
 
 		protected virtual void FixedUpdate()
 		{
-			if (rigidbodyC == null) rigidbodyC = GetComponent<Rigidbody2D>();
+			if (rigidbodyC == null) rigidbodyC = GetComponent<Rigidbody2D>() ?? GetComponentInChildren<Rigidbody2D>();
 		}
 
 		protected virtual bool IsBlocking()
@@ -65,7 +65,7 @@ namespace Core
 
 		protected void StandardShoot(Vector3 boost, float pitch, float minShootVelocity, float fullShootVelocity, float spin)
 		{
-			if (rigidbodyC == null) rigidbodyC = GetComponent<Rigidbody2D>();
+			if (rigidbodyC == null) rigidbodyC = GetComponent<Rigidbody2D>() ?? GetComponentInChildren<Rigidbody2D>();
 			if (rigidbodyC == null) return;
 			rigidbodyC.isKinematic = false;
 			rigidbodyC.WakeUp();

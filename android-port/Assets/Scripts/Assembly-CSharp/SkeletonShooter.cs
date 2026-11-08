@@ -43,6 +43,7 @@ public class SkeletonShooter : GolfBallShooterBase
 
 	protected override void Awake()
 	{
+	base.Awake();
 	}
 
 	private void Update()
@@ -55,6 +56,7 @@ public class SkeletonShooter : GolfBallShooterBase
 
 	public override void OnShoot(Vector3 boost)
 	{
+	StandardShoot(boost, 20f, 18f, 5f);
 	}
 
 	public override void OnReset()

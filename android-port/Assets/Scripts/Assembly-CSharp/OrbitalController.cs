@@ -27,6 +27,7 @@ public class OrbitalController : GolfBallShooterBase
 
 	protected override void FixedUpdate()
 	{
+	base.FixedUpdate();
 	}
 
 	private void OnDrawGizmosSelected()

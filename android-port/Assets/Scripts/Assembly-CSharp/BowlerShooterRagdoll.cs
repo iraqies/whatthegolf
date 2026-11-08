@@ -33,6 +33,7 @@ public class BowlerShooterRagdoll : GolfBallShooterBase
 
 	protected override void Awake()
 	{
+	base.Awake();
 	}
 
 	private IEnumerator Start()
@@ -46,6 +47,7 @@ public class BowlerShooterRagdoll : GolfBallShooterBase
 
 	protected override void FixedUpdate()
 	{
+	base.FixedUpdate();
 	}
 
 	private void ControllerOnOnShoot(Vector3 vector3)
@@ -54,5 +56,6 @@ public class BowlerShooterRagdoll : GolfBallShooterBase
 
 	public override void OnShoot(Vector3 dir)
 	{
+	StandardShoot(dir, 20f, 18f, 5f);
 	}
 }

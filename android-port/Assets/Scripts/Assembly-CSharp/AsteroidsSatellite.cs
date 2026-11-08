@@ -27,6 +27,7 @@ public class AsteroidsSatellite : GolfBallShooterBase
 
 	protected override void Awake()
 	{
+	base.Awake();
 	}
 
 	public override void OnAimUpdate(Vector3 boost, bool onlyAimArrow)
@@ -47,6 +48,7 @@ public class AsteroidsSatellite : GolfBallShooterBase
 
 	protected override void FixedUpdate()
 	{
+	base.FixedUpdate();
 	}
 
 	private void OnCollisionEnter2D(Collision2D collision)

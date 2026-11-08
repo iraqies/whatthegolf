@@ -14,27 +14,15 @@ public class OtherCollisionEvents : MonoBehaviour
 
 	public InspectorCollisionEvent CollisionExit;
 
-	private void OnCollisionEnter(Collision collision)
-	{
-	}
+	private void OnCollisionEnter(Collision collision) => CollisionEnter?.Invoke(collision);
 
-	private void OnCollisionStay(Collision collision)
-	{
-	}
+	private void OnCollisionStay(Collision collision) => CollisionStay?.Invoke(collision);
 
-	private void OnCollisionExit(Collision collision)
-	{
-	}
+	private void OnCollisionExit(Collision collision) => CollisionExit?.Invoke(collision);
 
-	private void OnTriggerEnter(Collider other)
-	{
-	}
+	private void OnTriggerEnter(Collider other) => TriggerEnter?.Invoke(other);
 
-	private void OnTriggerStay(Collider other)
-	{
-	}
+	private void OnTriggerStay(Collider other) => TriggerStay?.Invoke(other);
 
-	private void OnTriggerExit(Collider other)
-	{
-	}
+	private void OnTriggerExit(Collider other) => TriggerExit?.Invoke(other);
 }

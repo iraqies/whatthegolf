@@ -10,6 +10,7 @@ public class Localization
 	public static Action OnLanguageChangedEvent;
 	private static Localization instance;
 	private string _currentLang = "English";
+	private Dictionary<string, string> _englishLookup;
 
 	public static Localization Instance => instance ?? (instance = new Localization());
 
@@ -17,6 +18,31 @@ public class Localization
 	private static void Init()
 	{
 		_ = Instance;
+	}
+
+	private void EnsureLoaded()
+	{
+		if (_englishLookup != null) return;
+		_englishLookup = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+		try
+		{
+			var asset = Resources.Load<LanguageSourceAsset>("I2Languages");
+			if (asset != null && asset.mSource != null && asset.mSource.mTerms != null)
+			{
+				foreach (var term in asset.mSource.mTerms)
+				{
+					if (term != null && !string.IsNullOrEmpty(term.Term) && term.Languages != null && term.Languages.Length > 0)
+					{
+						string val = term.Languages[0];
+						if (!string.IsNullOrEmpty(val))
+							_englishLookup[term.Term] = val;
+					}
+				}
+			}
+		}
+		catch
+		{
+		}
 	}
 
 	public void ChangeLanguage(string languageId)
@@ -32,7 +58,13 @@ public class Localization
 	public bool IsEnglish() => string.IsNullOrEmpty(_currentLang) || _currentLang.StartsWith("en", StringComparison.OrdinalIgnoreCase);
 	public string ReverseCustomTextIfNecessary(string text) => text ?? string.Empty;
 	public string GetNextLanguage() => _currentLang;
-	public bool HasTerm(string id) => !string.IsNullOrEmpty(id);
+
+	public bool HasTerm(string id)
+	{
+		if (string.IsNullOrEmpty(id)) return false;
+		EnsureLoaded();
+		return _englishLookup != null && _englishLookup.ContainsKey(id);
+	}
 
 	public string GetStringWithFormat(string id, params object[] values)
 	{
@@ -46,8 +78,16 @@ public class Localization
 	public string GetString(string id, bool suppressWarnings = false, string overrideLanguage = null)
 	{
 		if (string.IsNullOrEmpty(id)) return string.Empty;
+		EnsureLoaded();
+		if (_englishLookup != null && _englishLookup.TryGetValue(id, out string translated) && !string.IsNullOrEmpty(translated))
+			return translated;
 		if (id.StartsWith("ID_"))
+		{
+			int doubleIdx = id.LastIndexOf("__", StringComparison.Ordinal);
+			if (doubleIdx >= 0 && doubleIdx + 2 < id.Length)
+				return id.Substring(doubleIdx + 2).Replace("_", " ");
 			return id.Substring(3).Replace("__", ": ").Replace("_", " ");
+		}
 		return id;
 	}
 

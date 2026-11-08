@@ -1,6 +1,5 @@
 Shader "Custom/Arrow Outline" {
 	Properties {
-
 		_Color ("Color", Vector) = (1,1,1,1)
 		_MainTex ("Base (RGB) Trans (A)", 2D) = "white" {}
 		_InsideAlpha ("Inside alpha", Float) = 0.5
@@ -19,6 +18,7 @@ Shader "Custom/Arrow Outline" {
 
 			sampler2D _MainTex; float4 _MainTex_ST;
 			float4 _Color;
+			float _InsideAlpha;
 
 			struct appdata {
 				float4 vertex : POSITION;
@@ -46,9 +46,9 @@ Shader "Custom/Arrow Outline" {
 			}
 
 			fixed4 frag(v2f i) : SV_Target {
-				float4 col = float4(1, 1, 1, 1);
-				col *= _Color;
-				col *= tex2D(_MainTex, i.uv);
+				float4 tex = tex2D(_MainTex, i.uv);
+				float4 col = _Color * tex;
+				col.a *= _InsideAlpha;
 				return col;
 			}
 			ENDCG

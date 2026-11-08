@@ -57,6 +57,7 @@ public class GenericTimelineShooter : GolfBallShooterBase
 
 	protected override void FixedUpdate()
 	{
+	base.FixedUpdate();
 	}
 
 	public override void OnAimUpdate(Vector3 boost, bool onlyAimArrow)
@@ -65,6 +66,7 @@ public class GenericTimelineShooter : GolfBallShooterBase
 
 	public override void OnShoot(Vector3 boost)
 	{
+	StandardShoot(boost, 20f, 18f, 5f);
 	}
 
 	protected override void StandardShoot(Vector3 boost, float pitch, float minShootVelocity, float fullShootVelocity, float spin)

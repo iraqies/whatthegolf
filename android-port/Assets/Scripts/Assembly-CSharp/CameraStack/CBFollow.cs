@@ -23,7 +23,7 @@ namespace CameraStack
 		[SerializeField] protected float lowerTrackPadding = 0.2f;
 
 		public LocalClock Clock;
-		protected float elevationSmoothTime;
+		protected float elevationSmoothTime = 0.15f;
 		protected Vector2 velocity;
 		protected Vector2 adjustedScreenPosition;
 		public float groundedElevation;
@@ -35,8 +35,6 @@ namespace CameraStack
 		protected float smoothTime;
 		protected float width;
 		protected float height;
-		private Vector3 _currentPos;
-		private bool _hasInitialPos;
 
 		public Transform FollowTarget
 		{
@@ -49,7 +47,9 @@ namespace CameraStack
 			get
 			{
 				var t = GetFollowTarget();
-				return t != null ? t.position : Vector3.zero;
+				if (t == null) return Vector3.zero;
+				Vector3 p = t.position;
+				return new Vector3(p.x, groundedElevation, p.z);
 			}
 		}
 
@@ -63,46 +63,189 @@ namespace CameraStack
 		public override void Init()
 		{
 			base.Init();
-			_currentPos = transform.position;
-			_hasInitialPos = true;
+			if (followTarget == null)
+			{
+				var b = Ball;
+				if (b != null) followTarget = b.transform;
+			}
+			StartCoroutine(WaitForActiveBall());
+			UpdateWidthAndHeight();
+			if (followTarget != null)
+			{
+				groundedElevation = followTarget.position.y;
+				targetGroundedElevation = followTarget.position.y;
+				adjustedScreenPosition = screenPosition;
+				transform.rotation = CalculateRotation();
+				transform.position = ScreenToWorld(screenPosition);
+			}
 		}
 
 		private IEnumerator WaitForActiveBall()
 		{
-			yield break;
+			while (Ball == null)
+				yield return null;
+			Ball.OnShoot += _ =>
+			{
+				if (Ball != null)
+					FollowTarget = Ball.ArrowPosition != null ? Ball.ArrowPosition : Ball.transform;
+			};
+			Ball.OnAimStart += () =>
+			{
+				if (Ball != null)
+					FollowTarget = Ball.ArrowPosition != null ? Ball.ArrowPosition : Ball.transform;
+			};
 		}
 
-		public override void OutOfBounds() { }
+		public override void OutOfBounds()
+		{
+			velocity = Vector2.zero;
+			elevationSmoothVel = 0f;
+			if (followTarget != null)
+			{
+				groundedElevation = followTarget.position.y;
+				targetGroundedElevation = followTarget.position.y;
+				transform.position = ScreenToWorld(screenPosition);
+			}
+		}
+
 		public void SetElevation(float newElevation) => elevation = newElevation;
 		public float GetElevation() => elevation;
 		public void SetRotation(Vector3 newRotation) => rotation = newRotation;
 		public Vector3 GetRotation() => rotation;
-		public override Quaternion CalculateRotation() => Quaternion.Euler(rotation);
-		protected Vector3 ScreenToWorld(Vector2 screenPos) => transform.position;
-		protected void UpdateWidthAndHeight() { }
+
+		public override Quaternion CalculateRotation()
+		{
+			if (orbitTarget == null)
+				return Quaternion.Euler(rotation);
+			if (followTarget == null)
+				return Quaternion.Euler(rotation);
+			Vector3 dir = new Vector3(orbitTarget.position.x, followTarget.position.y, orbitTarget.position.z) - transform.position;
+			if (dir.sqrMagnitude > 1e-4f)
+				return Quaternion.LookRotation(dir);
+			return Quaternion.Euler(rotation);
+		}
+
+		protected Vector3 ScreenToWorld(Vector2 screenPos)
+		{
+			if (!shouldFollow || followTarget == null) return transform.position;
+			var cams = Cameras;
+			Camera cam = (cams != null && cams.Length > 0 && cams[0] != null) ? cams[0] : Camera.main;
+			if (cam == null)
+			{
+				Quaternion rot = CalculateRotation();
+				float sinPitch = Mathf.Max(0.15f, Mathf.Sin(Mathf.Abs(rotation.x) * Mathf.Deg2Rad));
+				float dist = Mathf.Max(2f, elevation / sinPitch);
+				return ballAtElevation - (rot * Vector3.forward) * dist;
+			}
+			Vector3 vpZero = cam.ViewportToWorldPoint(new Vector3(screenPos.x, screenPos.y, 0f));
+			Vector3 targetPos = ballAtElevation;
+			Vector3 delta = new Vector3(vpZero.x - targetPos.x, groundedElevation - targetPos.y, vpZero.z - targetPos.z);
+			diff = delta.magnitude;
+			distance = Mathf.Sqrt(diff * diff + elevation * elevation);
+			if (distance < 1f)
+			{
+				float sinPitch = Mathf.Max(0.15f, Mathf.Sin(Mathf.Abs(rotation.x) * Mathf.Deg2Rad));
+				distance = Mathf.Max(2f, elevation / sinPitch);
+			}
+			Vector3 worldAtDist = cam.ViewportToWorldPoint(new Vector3(screenPos.x, screenPos.y, distance));
+			Vector3 camOffset = transform.position - worldAtDist;
+			return targetPos + camOffset;
+		}
+
+		protected void UpdateWidthAndHeight()
+		{
+			var cams = Cameras;
+			Camera cam = (cams != null && cams.Length > 0 && cams[0] != null) ? cams[0] : Camera.main;
+			if (cam != null)
+			{
+				width = cam.pixelWidth;
+				height = cam.pixelHeight;
+				if (cam.targetTexture != null)
+				{
+					width = cam.targetTexture.width;
+					height = cam.targetTexture.height;
+				}
+			}
+		}
 
 		protected override Vector3 CalculatePosition()
 		{
-			var target = GetFollowTarget();
-			if (target == null || !shouldFollow) return transform.position;
-			Quaternion rot = CalculateRotation();
-			float dist = elevation > 0.1f ? elevation : 14f;
-			Vector3 desired = target.position - (rot * Vector3.forward) * dist;
-			if (!_hasInitialPos)
+			if (followTarget == null) return transform.position;
+			var cams = Cameras;
+			Camera cam = (cams != null && cams.Length > 0 && cams[0] != null) ? cams[0] : Camera.main;
+			UpdateWidthAndHeight();
+
+			if (orbitTarget != null)
 			{
-				_currentPos = desired;
-				_hasInitialPos = true;
+				Vector3 dir = (orbitTarget.position - followTarget.position).normalized;
+				return followTarget.position - dir * 100f;
+			}
+
+			if (IsPointOutsideOfBox(followTarget.position) || followTarget.position.y < targetGroundedElevation)
+				targetGroundedElevation = followTarget.position.y;
+
+			float dt = Clock != null ? Clock.deltaTime : Time.unscaledDeltaTime;
+			groundedElevation = Mathf.SmoothDamp(groundedElevation, targetGroundedElevation, ref elevationSmoothVel, Mathf.Max(0.05f, elevationSmoothTime), float.PositiveInfinity, dt);
+
+			if (cam != null)
+			{
+				Vector3 vp = cam.WorldToViewportPoint(ballAtElevation);
+				adjustedScreenPosition = new Vector2(vp.x, vp.y);
+				float px = vp.x * width;
+				float py = vp.y * height;
+				float leftPad = sideTrackPadding * width;
+				float rightPad = (1f - sideTrackPadding) * width;
+				if (px < leftPad || px > rightPad)
+					adjustedScreenPosition.x = px > rightPad ? (1f - sideTrackPadding) : sideTrackPadding;
+				float botPad = lowerTrackPadding * height;
+				if (py < botPad)
+					adjustedScreenPosition.y = lowerTrackPadding;
+				float topPad = (1f - upperTrackPadding) * height;
+				if (py > topPad)
+					adjustedScreenPosition.y = 1f - upperTrackPadding;
 			}
 			else
 			{
-				float st = Mathf.Max(0.05f, continuousSmoothTime);
-				_currentPos = Vector3.Lerp(_currentPos, desired, Time.unscaledDeltaTime / st);
+				adjustedScreenPosition = screenPosition;
 			}
-			return _currentPos;
+
+			continousTrackingTimerCountDown -= (Clock != null ? Clock.deltaTime : Time.deltaTime);
+			if (Ball != null && Ball.IsAiming)
+				smoothTime = aimSmoothTime;
+			else if (continousTrackingTimerCountDown < 0f)
+				smoothTime = continuousSmoothTime;
+			else
+				smoothTime = startSmoothTime;
+
+			adjustedScreenPosition = Vector2.SmoothDamp(
+				adjustedScreenPosition,
+				screenPosition,
+				ref velocity,
+				Mathf.Max(0.05f, smoothTime),
+				float.PositiveInfinity,
+				dt);
+
+			return ScreenToWorld(adjustedScreenPosition);
 		}
 
-		protected bool IsBallOutsideOfBox() => true;
-		protected bool IsPointOutsideOfBox(Vector3 p) => true;
+		protected bool IsBallOutsideOfBox()
+		{
+			return followTarget != null && IsPointOutsideOfBox(followTarget.position);
+		}
+
+		protected bool IsPointOutsideOfBox(Vector3 p)
+		{
+			var cams = Cameras;
+			Camera cam = (cams != null && cams.Length > 0 && cams[0] != null) ? cams[0] : Camera.main;
+			if (cam == null) return true;
+			Vector3 sp = cam.WorldToScreenPoint(p);
+			if (sp.x < sideTrackPadding * width || sp.x > (1f - sideTrackPadding) * width)
+				return true;
+			if (sp.y < lowerTrackPadding * height)
+				return true;
+			return sp.y > (1f - upperTrackPadding) * height;
+		}
+
 		public override string ToString() => name;
 		public void SetFollowTarget(Transform target) => followTarget = target;
 	}

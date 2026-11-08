@@ -57,6 +57,7 @@ public class SharkShooter : GolfBallShooterBase
 
 	protected override void Awake()
 	{
+	base.Awake();
 	}
 
 	public override void OnAimUpdate(Vector3 boost, bool onlyAimArrow)
@@ -65,10 +66,12 @@ public class SharkShooter : GolfBallShooterBase
 
 	protected override void FixedUpdate()
 	{
+	base.FixedUpdate();
 	}
 
 	public override void OnShoot(Vector3 boost)
 	{
+	StandardShoot(boost, 20f, 18f, 5f);
 	}
 
 	private void Throw(Vector3 boost)

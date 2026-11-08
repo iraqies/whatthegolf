@@ -75,7 +75,8 @@ namespace GolfCourse
 
 		protected override void Awake()
 		{
-		}
+		base.Awake();
+	}
 
 		private void Start()
 		{
@@ -95,7 +96,8 @@ namespace GolfCourse
 
 		public override void OnShoot(Vector3 boost)
 		{
-		}
+		StandardShoot(boost, 20f, 18f, 5f);
+	}
 
 		private IEnumerator ShootRoutine(Vector3 boost)
 		{

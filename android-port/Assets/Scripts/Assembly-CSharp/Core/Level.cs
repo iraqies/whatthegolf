@@ -75,7 +75,7 @@ namespace Core
 			public CompletedState(string message = null, float delay = 1f, int strokes = -1, TransitionTextEffect transitionTextEffect = null, int levelSkips = 0, bool leaveLevel = false, GolfBallController[] allControllers = null)
 				: base("Completed")
 			{
-				Message = message ?? "GOLF!";
+				Message = message;
 				Delay = delay;
 				Strokes = strokes;
 				TransitionTextEffect = transitionTextEffect;
@@ -233,6 +233,7 @@ namespace Core
 		public IEnumerator Play(Action<State> onDone = null, Action<int> onStrokeChange = null)
 		{
 			state = State.Playing;
+			changeStateAfterGif = false;
 			foreach (var c in controllers)
 			{
 				if (c != null)
@@ -243,13 +244,24 @@ namespace Core
 			}
 			m_OnStart?.Invoke();
 
-			while (state == State.Playing)
+			while (state == State.Playing || isWaitingForGif)
 				yield return null;
 
-			if (state is CompletedState cs && cs.Delay > 0f)
-				yield return new WaitForSecondsRealtime(cs.Delay);
+			if (state is CompletedState cs)
+			{
+				m_OnComplete?.Invoke(cs);
+			}
+			else if (state is FailState fs)
+			{
+				m_OnFail?.Invoke(Ball, fs.Message, fs);
+				m_OnOutOfBounds?.Invoke();
+			}
 
-			onDone?.Invoke(state);
+			State finalState = state;
+			state = State.NotPlaying;
+			onDone?.Invoke(finalState);
+			if (LevelManager.Exists && LevelManager.Instance != null && LevelManager.Instance.InGameMenu != null)
+				LevelManager.Instance.InGameMenu.DisableMenu();
 		}
 
 		public void WaitForGifStart() => isWaitingForGif = true;
@@ -257,19 +269,28 @@ namespace Core
 
 		public void Fail(bool doReload = true, bool showTransition = true, GolfBallController controller = null, float delay = 0f, bool playFailSFX = true, string message = "")
 		{
-			if (state != State.Playing) return;
+			if (state != State.Playing)
+			{
+				if (controller != null) controller.Reset(0f);
+				return;
+			}
+			if (!doReload && controller != null)
+			{
+				controller.Reset(delay);
+				m_OnOutOfBounds?.Invoke();
+				return;
+			}
 			var fs = new FailState(doReload, showTransition, delay, playFailSFX, GetHighestAmountOfStrokes(controller), message);
 			state = fs;
-			m_OnFail?.Invoke(controller, message, fs);
 		}
 
 		public void Complete(string message = null, float? delay = null, TransitionTextEffect transitionTextEffect = null, int levelSkips = 0)
 		{
 			if (state is CompletedState) return;
 			int strokes = GetHighestAmountOfStrokes();
-			var cs = new CompletedState(message ?? "GOLF!", delay ?? postCompletionDelay, strokes, transitionTextEffect, levelSkips, false, controllers.ToArray());
+			float actualDelay = delay ?? postCompletionDelay;
+			var cs = new CompletedState(message, actualDelay, strokes, transitionTextEffect, levelSkips, false, controllers.ToArray());
 			state = cs;
-			m_OnComplete?.Invoke(cs);
 		}
 
 		public void Abort()

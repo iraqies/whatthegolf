@@ -65,7 +65,8 @@ namespace Core
 
 		protected override void Awake()
 		{
-		}
+		base.Awake();
+	}
 
 		public override void OnActivate()
 		{
@@ -77,7 +78,8 @@ namespace Core
 
 		public override void OnShoot(Vector3 boost)
 		{
-		}
+		StandardShoot(boost, 20f, 18f, 5f);
+	}
 
 		protected override void StandardShoot(Vector3 boost, float pitch, float minShootVelocity, float fullShootVelocity, float spin)
 		{

@@ -78,6 +78,7 @@ public class FPGFlying : GolfBallShooterBase
 
 	protected override void FixedUpdate()
 	{
+	base.FixedUpdate();
 	}
 
 	private void OnCollisionEnter(Collision other)

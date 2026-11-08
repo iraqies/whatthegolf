@@ -24,6 +24,7 @@ public class DefenderArrowShooter : GolfBallShooterBase
 
 	protected override void Awake()
 	{
+	base.Awake();
 	}
 
 	private IEnumerator Start()
@@ -33,6 +34,7 @@ public class DefenderArrowShooter : GolfBallShooterBase
 
 	protected override void FixedUpdate()
 	{
+	base.FixedUpdate();
 	}
 
 	public override void OnAimStart()

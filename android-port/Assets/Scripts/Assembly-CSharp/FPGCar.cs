@@ -34,6 +34,7 @@ public class FPGCar : GolfBallShooterBase
 
 	public override void OnShoot(Vector3 boost)
 	{
+	StandardShoot(boost, 20f, 18f, 5f);
 	}
 
 	public override void OnAimStart()
@@ -46,5 +47,6 @@ public class FPGCar : GolfBallShooterBase
 
 	protected override void FixedUpdate()
 	{
+	base.FixedUpdate();
 	}
 }

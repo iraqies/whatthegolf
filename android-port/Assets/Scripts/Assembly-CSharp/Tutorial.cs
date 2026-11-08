@@ -27,7 +27,7 @@ public class Tutorial : MonoBehaviour
 
 	private Helper helperState = Helper.IOS_HELPER;
 	private bool shouldShowHelpPrev;
-	public int state;
+	public int state = -1;
 	public List<GameObject> tutorialStates;
 	public bool forceControllerHelpOnTV;
 	public GolfBallController controller;
@@ -48,6 +48,7 @@ public class Tutorial : MonoBehaviour
 	private void Awake()
 	{
 		TurnOffAnimations();
+		showAdditionalHelp = showAdditionalHelpIOS;
 		if (controller == null)
 			controller = FindObjectOfType<GolfBallController>();
 		if (controller != null)
@@ -57,12 +58,16 @@ public class Tutorial : MonoBehaviour
 			controller.OnCancel += Controller_OnCancel;
 			controller.OnShoot += Controller_OnShoot;
 		}
+		if (showAdditionalHelp && Level.HasInstance)
+		{
+			Level.Instance.OnOutOfBounds += Instance_OnOutOfBounds;
+		}
 		if (tutorialStates != null)
 		{
 			for (int i = 0; i < tutorialStates.Count; i++)
 			{
 				if (tutorialStates[i] != null)
-					tutorialStates[i].SetActive(i == state);
+					tutorialStates[i].SetActive(state >= 0 && i <= state);
 			}
 		}
 	}
@@ -80,6 +85,13 @@ public class Tutorial : MonoBehaviour
 	{
 		if (!didShoot && !didAim)
 			_timeNotShooting += Time.deltaTime;
+		bool show = ShouldShowHelp();
+		if (show != shouldShowHelpPrev)
+		{
+			shouldShowHelpPrev = show;
+			if (show) TurnOnAnimations();
+			else TurnOffAnimations();
+		}
 	}
 
 	private void TurnOffAnimations()
@@ -96,30 +108,32 @@ public class Tutorial : MonoBehaviour
 	private void TurnOnAnimations()
 	{
 		TurnOffAnimations();
+		TurnOnIfOff(ref iOSController);
 	}
 
 	private void Controller_OnShoot(Vector3 obj)
 	{
 		didShoot = true;
+		_timeNotShooting = 0f;
 		TurnOffAnimations();
-		StartCoroutine(NextStage());
 	}
 
 	private void Instance_OnOutOfBounds()
 	{
+		if (showAdditionalHelp && tutorialStates != null && state + 1 < tutorialStates.Count)
+		{
+			StartCoroutine(NextStage());
+		}
 	}
 
 	private IEnumerator NextStage()
 	{
-		yield return new WaitForSeconds(0.5f);
 		state++;
-		if (tutorialStates != null)
+		yield return new WaitForSeconds(0.5f);
+		if (tutorialStates != null && state >= 0 && state < tutorialStates.Count)
 		{
-			for (int i = 0; i < tutorialStates.Count; i++)
-			{
-				if (tutorialStates[i] != null)
-					tutorialStates[i].SetActive(i == state);
-			}
+			if (tutorialStates[state] != null)
+				tutorialStates[state].SetActive(true);
 		}
 	}
 

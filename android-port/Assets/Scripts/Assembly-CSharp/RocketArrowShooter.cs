@@ -36,6 +36,7 @@ public class RocketArrowShooter : GolfBallShooterBase
 
 	public override void OnShoot(Vector3 boost)
 	{
+	StandardShoot(boost, 20f, 18f, 5f);
 	}
 
 	public override void OnCancel()
@@ -52,6 +53,7 @@ public class RocketArrowShooter : GolfBallShooterBase
 
 	protected override void FixedUpdate()
 	{
+	base.FixedUpdate();
 	}
 
 	private void Update()

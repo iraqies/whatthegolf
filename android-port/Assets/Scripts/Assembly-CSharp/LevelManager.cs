@@ -32,7 +32,7 @@ public class LevelManager : AddressableSingleton<LevelManager>
 	private static bool applicationIsQuitting;
 	public bool goToLevelOnLoad;
 	private int textIndex;
-	private string[] texts;
+	private string[] texts = new string[] { "GOLF?", "WHAT?", "PUTT!" };
 	private float time;
 	private AsyncOperationHandle<SceneInstance> addressableLoadHandle;
 
@@ -69,6 +69,8 @@ public class LevelManager : AddressableSingleton<LevelManager>
 	{
 		if (transition == null)
 			transition = GetComponentInChildren<Transition>(true);
+		if (inGameMenu == null)
+			inGameMenu = GetComponentInChildren<InGameMenu>(true);
 	}
 
 	private void HandleSteamOverlayActivated(bool active) { }
@@ -83,54 +85,162 @@ public class LevelManager : AddressableSingleton<LevelManager>
 		if (!string.IsNullOrEmpty(challengeID))
 			m_ChallengeSelected?.Invoke(challengeID);
 
+		currentLevel = levelData;
+		bool onTheSide = levelData.GetWindowType() == LevelData.WindowType.TwoD;
+		Color? customColor = levelData.userCustomTransitionColor ? (Color?)levelData.customTransitionColor : null;
+		BaseTransitionEffect customEffect = null;
+		if (levelData.useCustomTransitionEffect && transition != null && transition.transitionEffects != null)
+		{
+			int idx = (int)levelData.customTransitionEffectIndex;
+			if (idx >= 0 && idx < transition.transitionEffects.Count)
+				customEffect = transition.transitionEffects[idx];
+		}
+
 		if (!skipTransitionIn && transition != null)
-			yield return StartCoroutine(transition.StartTransition());
+		{
+			string startText = null;
+			if (onTheSide != wasLastPlayedLevelOnTheSide && levelData.isShowingFlipText && texts != null && texts.Length > 0)
+			{
+				startText = texts[textIndex % texts.Length];
+				textIndex = (textIndex + 1) % texts.Length;
+			}
+			yield return StartCoroutine(transition.StartTransition(startText, onTheSide, 0f, null, customColor, null, false, false, false, customEffect));
+		}
+
+		if (inGameMenu != null)
+		{
+			if (showStrokeCounter)
+			{
+				inGameMenu.SetStrokeCounterSettings(StrokeCounterType, false);
+				if (multiplayerConfiguration == null)
+					inGameMenu.ResetStrokes(strokesFromPreviousLevels);
+			}
+			else
+			{
+				inGameMenu.ToggleStrokeCounter(false);
+			}
+			inGameMenu.ToggleLookUp(false);
+		}
 
 		onTransitionCoverBefore?.Invoke();
 		if (onTransitionBeforeCoroutine != null)
 			yield return StartCoroutine(onTransitionBeforeCoroutine);
 
+		bool keepPlaying = true;
+		bool shouldLoadScene = true;
 		Level loadedLevel = null;
-		yield return StartCoroutine(LoadLevel(levelData, discardLoadedScenes, l => loadedLevel = l, multiplayerConfiguration));
 
-		if (!skipTransitionIn && transition != null)
-			yield return StartCoroutine(transition.EndTransition());
-
-		onLevelLoaded?.Invoke(levelData);
-		m_OnLevelLoaded?.Invoke(levelData);
-
-		if (loadedLevel != null)
+		while (keepPlaying)
 		{
+			keepPlaying = false;
+			if (shouldLoadScene)
+			{
+				yield return StartCoroutine(LoadLevel(levelData, discardLoadedScenes, l => loadedLevel = l, multiplayerConfiguration));
+				onLevelLoaded?.Invoke(levelData);
+				m_OnLevelLoaded?.Invoke(levelData);
+			}
+			else if (loadedLevel != null)
+			{
+				loadedLevel.ResetLevel();
+			}
+
+			if (inGameMenu != null)
+			{
+				inGameMenu.ShowMenu();
+				inGameMenu.OnAbandonButtonClicked = () => OnAbandon(loadedLevel);
+				inGameMenu.OnRestartButtonClicked = () => OnRestart(loadedLevel);
+				inGameMenu.ToggleExitButton(!disableExitButton);
+				inGameMenu.ToggleRestartButton(!disableRestartButton);
+				inGameMenu.ActivateMenu();
+			}
+
+			if (transition != null && transition.IsShowing)
+				yield return StartCoroutine(transition.EndTransition());
+
 			Level.State finalState = Level.State.NotPlaying;
-			yield return StartCoroutine(loadedLevel.Play(s => finalState = s));
+			if (loadedLevel != null)
+			{
+				yield return StartCoroutine(loadedLevel.Play(s => finalState = s));
+			}
 
 			if (finalState is Level.CompletedState cs)
 			{
 				levelData.IsCompletedInSaveGame = true;
 				m_OnLevelComplete?.Invoke();
 				onComplete?.Invoke(cs);
+				keepPlaying = false;
+
+				if (!skipTransitionOut && transition != null)
+				{
+					string winText = null;
+					if (!hideLevelCompletionText)
+					{
+						winText = !string.IsNullOrEmpty(cs.Message) ? cs.Message : levelData.GetCompletionTextID();
+					}
+					yield return StartCoroutine(transition.StartTransition(winText, onTheSide, cs.Delay, null, customColor, cs.TransitionTextEffect, false, false, false, customEffect));
+				}
 			}
 			else if (finalState is Level.FailState fs)
 			{
 				onFail?.Invoke(fs);
+				if (alwaysReloadOnFail || fs.DoReload)
+				{
+					keepPlaying = true;
+					shouldLoadScene = fs.DoReload;
+					if (fs.ShowTransition && transition != null)
+					{
+						string failMsg = !string.IsNullOrEmpty(fs.Message) ? fs.Message : null;
+						yield return StartCoroutine(transition.StartTransition(failMsg, onTheSide, fs.Delay, null, customColor, null, false, false, false, customEffect));
+					}
+					if (shouldLoadScene)
+						yield return StartCoroutine(UnloadLevel(levelData));
+				}
+				else if (!skipTransitionOut && transition != null)
+				{
+					string failMsg = !string.IsNullOrEmpty(fs.Message) ? fs.Message : null;
+					yield return StartCoroutine(transition.StartTransition(failMsg, onTheSide, fs.Delay, null, customColor, null, false, false, false, customEffect));
+				}
 			}
 			else if (finalState is Level.RestartState rs)
 			{
 				onRestart?.Invoke(rs);
+				keepPlaying = true;
+				shouldLoadScene = true;
+				if (transition != null)
+					yield return StartCoroutine(transition.StartTransition(null, onTheSide, 0f, null, customColor, null, false, false, false, customEffect));
+				yield return StartCoroutine(UnloadLevel(levelData));
 			}
 			else
 			{
 				onAbort?.Invoke();
+				keepPlaying = false;
+				if (!skipTransitionOut && transition != null)
+					yield return StartCoroutine(transition.StartTransition(null, onTheSide, 0f, null, customColor, null, false, false, false, customEffect));
 			}
 		}
-		else
+
+		if (inGameMenu != null)
 		{
-			onAbort?.Invoke();
+			inGameMenu.DisableMenu();
+			inGameMenu.HideMenu();
+			if (resetStrokesWhenFinished)
+				inGameMenu.ResetStrokes(0);
+			inGameMenu.ToggleLookUp(false);
 		}
 
+		if (finalStateIsCompleted(loadedLevel) && onTransitionAfterCoroutineIfComplete != null)
+			yield return StartCoroutine(onTransitionAfterCoroutineIfComplete);
+
 		onTransitionCoverAfter?.Invoke(true);
+		wasLastPlayedLevelOnTheSide = onTheSide;
+		SaveGame.Save();
 		yield return StartCoroutine(UnloadLevel(levelData));
+
+		if (!skipTransitionOut && transition != null)
+			yield return StartCoroutine(transition.EndTransition());
 	}
+
+	private bool finalStateIsCompleted(Level lvl) => true;
 
 	internal void SetDailyTransitionEffect(TransitionColorDefinition transitionColors) { }
 

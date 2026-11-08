@@ -40,6 +40,7 @@ public class MooseController : GolfBallShooterBase
 
 	protected override void Awake()
 	{
+	base.Awake();
 	}
 
 	private void OnOutOfBounds(OutOfBoundsTrigger obj)
@@ -48,6 +49,7 @@ public class MooseController : GolfBallShooterBase
 
 	public override void OnShoot(Vector3 boost)
 	{
+	StandardShoot(boost, 20f, 18f, 5f);
 	}
 
 	public override void OnAimStart()
@@ -68,6 +70,7 @@ public class MooseController : GolfBallShooterBase
 
 	protected override void FixedUpdate()
 	{
+	base.FixedUpdate();
 	}
 
 	private void MoveTransformToRigidbody()

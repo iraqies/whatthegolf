@@ -60,10 +60,18 @@ public class Onboarding : MonoBehaviour
 				m_OnOnboardingProgressChanged?.Invoke((float)i / levels.Count, i);
 				bool levelDone = false;
 				bool aborted = false;
+				bool isFirst = i == 0;
+				bool isLast = i == levels.Count - 1;
 				yield return LevelManager.Instance.Play(
 					lvl,
 					onComplete: _ => levelDone = true,
-					onAbort: () => { aborted = true; levelDone = true; }
+					onAbort: () => { aborted = true; levelDone = true; },
+					onTransitionCoverAfter: isLast ? onTransitionCoverAfter : null,
+					skipTransitionIn: !isFirst,
+					skipTransitionOut: false,
+					disableRestartButton: false,
+					disableExitButton: !allowMenuButtons,
+					showStrokeCounter: false
 				);
 				while (!levelDone)
 					yield return null;

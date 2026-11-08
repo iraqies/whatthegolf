@@ -25,14 +25,19 @@ public class StrokeCounter : MonoBehaviour
 
 		public void Reset()
 		{
+			AppearTimer = 0f;
+			Disappearing = false;
+			AppearSoundHasPlayed = false;
+			if (StrokeRect != null)
+				StrokeRect.gameObject.SetActive(false);
 		}
 	}
 
 	public class PlayerStrokeData
 	{
-		public List<Stroke> CurrentStrokes;
+		public List<Stroke> CurrentStrokes = new List<Stroke>();
 
-		public Queue<Stroke> AvailableStrokeTransforms;
+		public Queue<Stroke> AvailableStrokeTransforms = new Queue<Stroke>();
 
 		public Stroke LastStroke;
 
@@ -55,19 +60,19 @@ public class StrokeCounter : MonoBehaviour
 	private RectTransform strokeAppearPosition;
 
 	[SerializeField]
-	private Vector2 cardPositionOffset;
+	private Vector2 cardPositionOffset = new Vector2(0f, -50f);
 
 	[SerializeField]
 	private GameObject playerStrokesContainer;
 
 	[SerializeField]
-	private float positionChangeSpeed;
+	private float positionChangeSpeed = 10f;
 
 	[SerializeField]
-	private float appearSpeed;
+	private float appearSpeed = 8f;
 
 	[SerializeField]
-	private float scaleChangeForCurrent;
+	private float scaleChangeForCurrent = 1.2f;
 
 	[SerializeField]
 	private AnimationCurve appearCurve;
@@ -82,12 +87,12 @@ public class StrokeCounter : MonoBehaviour
 	private List<AudioClip> appearClips;
 
 	[SerializeField]
-	private float appearVolume;
+	private float appearVolume = 0.5f;
 
 	[SerializeField]
 	private float appearDelay;
 
-	public float scaleMod;
+	public float scaleMod = 1f;
 
 	public CounterTypes CounterType;
 
@@ -101,15 +106,15 @@ public class StrokeCounter : MonoBehaviour
 
 	public Action<int, int> OnStrokeUpdated;
 
-	private Dictionary<int, PlayerStrokeData> playerData;
+	private Dictionary<int, PlayerStrokeData> playerData = new Dictionary<int, PlayerStrokeData>();
 
 	private Transform[] playerContainers;
 
-	private List<Stroke> toBeRemoved;
+	private List<Stroke> toBeRemoved = new List<Stroke>();
 
-	private List<GolfBallController> subscribedControllers;
+	private List<GolfBallController> subscribedControllers = new List<GolfBallController>();
 
-	private readonly int MAXPLAYERS;
+	private readonly int MAXPLAYERS = 2;
 
 	private Vector3 baseOffsetMax;
 
@@ -121,18 +126,48 @@ public class StrokeCounter : MonoBehaviour
 
 	public void Awake()
 	{
+		HideTemplates();
 	}
 
 	public void Init()
 	{
+		HideTemplates();
+		if (LevelManager.Exists && LevelManager.Instance != null)
+		{
+			LevelManager.Instance.OnLevelLoaded -= Instance_OnLevelLoaded;
+			LevelManager.Instance.OnLevelLoaded += Instance_OnLevelLoaded;
+			LevelManager.Instance.OnLevelWillUnload -= Instance_OnLevelWillUnload;
+			LevelManager.Instance.OnLevelWillUnload += Instance_OnLevelWillUnload;
+		}
+	}
+
+	private void HideTemplates()
+	{
+		if (strokeAppearPosition != null)
+			strokeAppearPosition.gameObject.SetActive(false);
+		if (playerStrokesContainer != null)
+			playerStrokesContainer.SetActive(false);
+		if (LeaderCrown != null)
+			LeaderCrown.gameObject.SetActive(false);
 	}
 
 	private void Instance_OnLevelWillUnload()
 	{
+		if (subscribedControllers != null)
+		{
+			for (int i = 0; i < subscribedControllers.Count; i++)
+			{
+				if (subscribedControllers[i] != null)
+					subscribedControllers[i].OnPlayerHasShot -= Instance_OnGolfStroke;
+			}
+			subscribedControllers.Clear();
+		}
+		HideTemplates();
 	}
 
 	public void SetInitialStrokes(bool hasInitialStrokes, int strokes, int playerIndex)
 	{
+		HideTemplates();
 	}
 
 	public void MoveCrownToPlayer(int playerIndex)
@@ -145,30 +180,43 @@ public class StrokeCounter : MonoBehaviour
 
 	public void Instance_OnLevelLoaded(LevelData data)
 	{
+		HideTemplates();
 	}
 
 	public void SubscribePlayerToStrokeCounter(GolfBallController controller, Color color)
 	{
+		if (controller != null && !subscribedControllers.Contains(controller))
+		{
+			subscribedControllers.Add(controller);
+			controller.OnPlayerHasShot -= Instance_OnGolfStroke;
+			controller.OnPlayerHasShot += Instance_OnGolfStroke;
+		}
 	}
 
 	public void SubscribePlayerToStrokeCounter(GolfBallController controller)
 	{
+		SubscribePlayerToStrokeCounter(controller, Color.white);
 	}
 
 	private void Instance_OnGolfStroke(GolfBallController shooter, int strokes)
 	{
+		if (!UseExternalCountActivator && shooter != null)
+			CountStroke(shooter.PlayerIndex, strokes);
 	}
 
 	public void CountStroke(int strokes)
 	{
+		CountStroke(0, strokes);
 	}
 
 	public void CountStroke(int playerIndex, int strokes)
 	{
+		OnStrokeUpdated?.Invoke(playerIndex, strokes);
 	}
 
 	public void RegisterShot(int playerIndex, int strokes)
 	{
+		OnStrokeUpdated?.Invoke(playerIndex, strokes);
 	}
 
 	public void RemoveCurrentStroke(int playerIndex)
@@ -185,13 +233,18 @@ public class StrokeCounter : MonoBehaviour
 
 	public void Reset(int resetToThis = 0)
 	{
+		Game.strokes = resetToThis;
+		HideTemplates();
 	}
 
 	public void ToggleLeaderCrown(bool state)
 	{
+		if (LeaderCrown != null)
+			LeaderCrown.gameObject.SetActive(state);
 	}
 
 	public void ResetForPlayer(int playerIndex, int resetToThis)
 	{
+		HideTemplates();
 	}
 }
