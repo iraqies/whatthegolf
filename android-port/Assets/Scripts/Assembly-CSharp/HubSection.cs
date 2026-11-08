@@ -27,7 +27,7 @@ public class HubSection : GolfBehaviour
 	public bool isUsingSectionBoundsInstead;
 	public List<Bounds> cullingBounds;
 	public bool hasBeenCached;
-	public bool isActiveInCulling = true;
+	public bool isActiveInCulling;
 	[SerializeField] private TilemapRenderer tileRenderer;
 
 	[CompilerGenerated]
@@ -56,19 +56,11 @@ public class HubSection : GolfBehaviour
 			var tr = SectionTilemap.GetComponent<Renderer>();
 			if (tr != null) tr.enabled = false;
 		}
-		if (DecorationsMaps != null)
+		foreach (var s in GetComponentsInChildren<SortByY>(true))
 		{
-			foreach (var dm in DecorationsMaps)
-			{
-				if (dm != null)
-				{
-					var r = dm.GetComponent<Renderer>();
-					if (r != null) r.enabled = true;
-				}
-			}
+			if (s != null)
+				s.isSorting = false;
 		}
-		if (Container != null)
-			Container.SetActive(true);
 		if (!dontChangeAnimatorCullingMode)
 		{
 			foreach (var anim in GetComponentsInChildren<Animator>(true))
@@ -81,12 +73,23 @@ public class HubSection : GolfBehaviour
 
 	public override void OnPrePlayOrPreCompile()
 	{
-		Awake();
+		base.OnPrePlayOrPreCompile();
+		if (SectionTilemap != null)
+			tileRenderer = SectionTilemap.GetComponent<TilemapRenderer>();
 	}
 
 	public bool PreBuildScript(bool isRotated)
 	{
-		Awake();
+		if (sortManager == null)
+			sortManager = GetComponent<SortGroupManager>();
+		if (Container != null)
+		{
+			Container.SetActive(true);
+			if (sortManager != null)
+				sortManager.PreCache();
+			bool keepActive = isRotated ? (SectionPlatform == SectionPlatformEnum.All || SectionPlatform == SectionPlatformEnum.Mobile) : (SectionPlatform == SectionPlatformEnum.All || SectionPlatform == SectionPlatformEnum.Standalone);
+			Container.SetActive(keepActive);
+		}
 		return true;
 	}
 
@@ -98,17 +101,34 @@ public class HubSection : GolfBehaviour
 
 	public Bounds GetBounds(bool redraw = true)
 	{
-		if (hasBeenCached && !redraw) return cachedBounds;
+		if (!redraw && hasBeenCached)
+			return cachedBounds;
+		Bounds b = new Bounds(transform.position, new Vector3(40f, 40f, 10f));
 		if (SectionTilemap != null)
 		{
 			SectionTilemap.CompressBounds();
-			Bounds b = SectionTilemap.localBounds;
-			b.center += SectionTilemap.transform.position;
-			cachedBounds = b;
-			hasBeenCached = true;
-			return cachedBounds;
+			b = SectionTilemap.localBounds;
+			b.center += transform.position;
+			Vector3 min = b.min + new Vector3(-1f, -1f, 0f);
+			Vector3 max = b.max + new Vector3(1f, 1f, 0f);
+			b.SetMinMax(new Vector3(min.x, min.y, 0f), new Vector3(max.x, max.y, 0f));
 		}
-		return new Bounds(transform.position, new Vector3(100f, 100f, 100f));
+		foreach (var sr in gameObject.GetComponentsInChildren<SpriteRenderer>(true))
+		{
+			if (sr != null)
+				b.Encapsulate(sr.bounds);
+		}
+		if (useLineRendersForBounds)
+		{
+			foreach (var lr in gameObject.GetComponentsInChildren<LineRenderer>(false))
+			{
+				if (lr != null)
+					b.Encapsulate(lr.bounds);
+			}
+		}
+		cachedBounds = b;
+		hasBeenCached = true;
+		return cachedBounds;
 	}
 
 	private void OnDrawGizmosSelected() { }
@@ -117,29 +137,46 @@ public class HubSection : GolfBehaviour
 	{
 		if (Container != null)
 			Container.SetActive(true);
-		gameObject.SetActive(true);
 	}
 
 	public void OnDisable()
 	{
-		SetActiveCulling(false);
+		isActiveInCulling = false;
+		m_OnSectionCullingUpdate?.Invoke(false);
 	}
 
 	public bool Intersects(Bounds playerBounds)
 	{
-		return true;
+		Bounds b = GetBounds(false);
+		playerBounds.center = new Vector3(playerBounds.center.x, playerBounds.center.y, b.center.z);
+		return b.Intersects(playerBounds);
 	}
 
 	public bool IntersectsCullingBounds(Bounds playerBounds)
 	{
-		return true;
+		Bounds b = GetBounds(false);
+		playerBounds.center = new Vector3(playerBounds.center.x, playerBounds.center.y, b.center.z);
+		if (isUsingSectionBoundsInstead)
+		{
+			if (!b.Intersects(playerBounds))
+				return false;
+			if (cullingBounds == null || cullingBounds.Count == 0)
+				return true;
+			for (int i = 0; i < cullingBounds.Count; i++)
+			{
+				Bounds cb = cullingBounds[i];
+				playerBounds.center = new Vector3(playerBounds.center.x, playerBounds.center.y, cb.center.z);
+				if (cb.Intersects(playerBounds))
+					return true;
+			}
+			return false;
+		}
+		return b.Intersects(playerBounds);
 	}
 
 	public void SetActiveCulling(bool isActive)
 	{
 		isActiveInCulling = isActive;
-		if (Container != null && isActive)
-			Container.SetActive(true);
 		m_OnSectionCullingUpdate?.Invoke(isActive);
 	}
 }

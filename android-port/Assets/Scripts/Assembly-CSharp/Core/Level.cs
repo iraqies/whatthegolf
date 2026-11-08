@@ -135,8 +135,8 @@ namespace Core
 		}
 
 		public bool IsAiming => controllers.Any(c => c != null && c.IsAiming);
-		public static Level Instance => instance != null ? instance : (instance = FindObjectOfType<Level>());
-		public static bool HasInstance => Instance != null;
+		public static Level Instance => instance;
+		public static bool HasInstance => instance != null;
 		public TransitionTextEffects TransitionTextEffects => levelManager != null ? levelManager.TransitionTextEffects : null;
 
 		public event Action OnReset

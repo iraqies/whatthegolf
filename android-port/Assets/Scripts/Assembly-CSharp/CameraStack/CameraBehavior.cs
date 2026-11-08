@@ -24,7 +24,18 @@ namespace CameraStack
 			set => virtualCameras = value;
 		}
 
-		protected GolfBallController Ball => Level.HasInstance ? Level.Instance.Ball : FindObjectOfType<GolfBallController>();
+		private GolfBallController _cachedBall;
+		protected GolfBallController Ball
+		{
+			get
+			{
+				if (Level.HasInstance && Level.Instance.Ball != null)
+					return Level.Instance.Ball;
+				if (_cachedBall == null)
+					_cachedBall = FindObjectOfType<GolfBallController>();
+				return _cachedBall;
+			}
+		}
 		public Vector3 Position => CalculatePosition();
 		public Quaternion Rotation => CalculateRotation();
 

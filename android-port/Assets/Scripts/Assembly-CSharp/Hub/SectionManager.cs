@@ -17,11 +17,6 @@ namespace Hub
 		[SerializeField] private GridFiller gridFiller;
 		[SerializeField] private List<HubPlatformSection> hubPlatformSections;
 
-		private void Awake()
-		{
-			Init();
-		}
-
 		public void Init()
 		{
 			if (hideAreasScriptList == null)
@@ -62,28 +57,11 @@ namespace Hub
 					sec.gameObject.SetActive(sec.disableIfPackIsIncluded ? !included : included);
 				}
 			}
-
-			if (gridFiller != null)
-			{
-				gridFiller.Init();
-				gridFiller.PreBuildScript(null, () => StartCoroutine(FixColliders()), false);
-			}
-			else
-			{
-				StartCoroutine(FixColliders());
-			}
 		}
 
 		private IEnumerator FixColliders()
 		{
-			foreach (var col in gameObject.GetComponentsInChildren<CompositeCollider2D>(true))
-			{
-				if (col != null && col.gameObject.activeInHierarchy)
-				{
-					col.GenerateGeometry();
-					yield return null;
-				}
-			}
+			yield break;
 		}
 	}
 }

@@ -103,9 +103,9 @@ public class OverworldManager2d : GolfBehaviour
 	public bool IsIntroAnimationComplete { get; private set; } = true;
 	public bool IsOverworldPlaying => state == STATES.active;
 	public bool IsInteractionDisabled { get; private set; }
-	private OverworldBall2D BallOrIslandBall => ball != null ? ball : (ball = FindObjectOfType<OverworldBall2D>());
-	public static OverworldManager2d Instance => instance != null ? instance : (instance = FindObjectOfType<OverworldManager2d>());
-	public static bool HasInstance => Instance != null;
+	private OverworldBall2D BallOrIslandBall => ball;
+	public static OverworldManager2d Instance => instance;
+	public static bool HasInstance => instance != null;
 
 	public event Action<bool> OnToggleOverworld
 	{
@@ -553,7 +553,11 @@ public class OverworldManager2d : GolfBehaviour
 		SaveGame.Save(false);
 	}
 
-	private void Update() { }
+	private void Update()
+	{
+		if (culling != null && state == STATES.active)
+			culling.UpdateCulling();
+	}
 	private IEnumerator ShowBallDelayed(OverworldGoal goalHit) { yield break; }
 
 	public void StartMusicWithoutTransition()
@@ -628,11 +632,26 @@ public class OverworldManager2d : GolfBehaviour
 	public void ToggleOverworld(bool isOverworldActive)
 	{
 		state = isOverworldActive ? STATES.active : STATES.inlevel;
+		m_OnToggleOverworld?.Invoke(isOverworldActive);
 		if (disableWhilePlaying != null)
 		{
 			foreach (var go in disableWhilePlaying)
 				if (go != null) go.SetActive(isOverworldActive);
 		}
+		if (gridRigid != null)
+			gridRigid.simulated = isOverworldActive;
+		if (gridfiller != null)
+		{
+			foreach (var col in gridfiller.transform.GetComponentsInChildren<Collider2D>(true))
+				if (col != null) col.enabled = isOverworldActive;
+			if (gridfiller.AllRenders != null)
+			{
+				foreach (var r in gridfiller.AllRenders)
+					if (r != null) r.enabled = isOverworldActive;
+			}
+		}
+		if (ui != null && ui.gameObject != null)
+			ui.gameObject.SetActive(isOverworldActive);
 		if (ball != null)
 		{
 			if (isOverworldActive)
@@ -646,7 +665,6 @@ public class OverworldManager2d : GolfBehaviour
 				ball.HideAndStop();
 			}
 		}
-		m_OnToggleOverworld?.Invoke(isOverworldActive);
 	}
 
 	private IEnumerator StartGoalLevel(OverworldGoal goal, string challengeID, OverworldBall2D ballHit = null, UnityAction<bool> afterLevelCallback = null)

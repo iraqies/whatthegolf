@@ -21,8 +21,8 @@ public class OverworldBallManager : MonoBehaviour
 	public Transmogrif.BALLSHAPES currentShape;
 	private TimeControl timeControl;
 
-	public static OverworldBallManager Instance => _Instance != null ? _Instance : (_Instance = FindObjectOfType<OverworldBallManager>());
-	public static bool HasInstance => _Instance != null || FindObjectOfType<OverworldBallManager>() != null;
+	public static OverworldBallManager Instance => _Instance;
+	public static bool HasInstance => _Instance != null;
 
 	public event Action<OverworldBall2D> OnDeath
 	{

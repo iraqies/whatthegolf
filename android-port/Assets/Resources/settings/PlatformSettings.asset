@@ -179,8 +179,8 @@ MonoBehaviour:
     simulateGyroWithTouchOrMouse: 1
     flipGyroInput: 1
     SleepTimeout: 120
-    FPSOnBattery: 30
-    FPSOnPower: 60
+    FPSOnBattery: 60
+    FPSOnPower: 120
     usesKeyboardAndControllerInput: 0
     maxDragLength: 0.3
     UseControllerDisconnectedPopup: 0
@@ -197,7 +197,7 @@ MonoBehaviour:
     maxAudioTransitionsInMemory: 4
     maxAudioStatesInMemory: 4
     useRumble: 0
-    useUnloadUnusedAssetsOnLevelUnload: 0
+    useUnloadUnusedAssetsOnLevelUnload: 1
     overwriteId: Android
     AdjustOrthoSizeForFourByThree: 1
     useAirPlay: 0
@@ -205,7 +205,7 @@ MonoBehaviour:
     aimTimeScaleModifier: 0
     defaultAntiAliasing: 0
     UseRoom8ObjectCulling: 0
-    usePhysicsOptimizationsInOverworld: 0
+    usePhysicsOptimizationsInOverworld: 1
     useNativeNotifications: 0
     useDeepLinks: 0
   windows:

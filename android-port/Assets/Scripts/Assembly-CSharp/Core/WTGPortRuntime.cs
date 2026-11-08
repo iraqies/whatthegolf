@@ -32,7 +32,9 @@ namespace Core
 			}
 			_instance = this;
 			DontDestroyOnLoad(gameObject);
-			Application.targetFrameRate = 60;
+			QualitySettings.vSyncCount = 0;
+			QualitySettings.antiAliasing = 0;
+			Application.targetFrameRate = 120;
 			Screen.sleepTimeout = SleepTimeout.NeverSleep;
 			SceneManager.sceneLoaded += OnSceneLoaded;
 			EnsureScenePlayable();
@@ -51,6 +53,9 @@ namespace Core
 
 		private void EnsureScenePlayable()
 		{
+			QualitySettings.vSyncCount = 0;
+			if (Application.targetFrameRate < 60)
+				Application.targetFrameRate = 120;
 			foreach (var es in FindObjectsOfType<EventSystem>())
 			{
 				if (es != null && es.GetComponent<StandaloneInputModule>() == null)
@@ -65,14 +70,6 @@ namespace Core
 				{
 					var cam = tr.GetComponent<Camera>();
 					if (cam != null) cam.enabled = false;
-				}
-			}
-			foreach (var hs in FindObjectsOfType<HubSection>())
-			{
-				if (hs != null && hs.SectionTilemap != null)
-				{
-					var r = hs.SectionTilemap.GetComponent<Renderer>();
-					if (r != null) r.enabled = false;
 				}
 			}
 			var ctrls = FindObjectsOfType<GolfBallController>();

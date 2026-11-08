@@ -23,7 +23,7 @@ namespace CameraStack
 		private bool activeBehaviourAttachedToThis;
 		public float gyroSenseMagnitude;
 
-		public static CameraManager Instance => _instance != null ? _instance : (_instance = FindObjectOfType<CameraManager>());
+		public static CameraManager Instance => _instance;
 		public Camera[] Cameras => _cameras ?? (_cameras = GetComponentsInChildren<Camera>(true));
 		public Camera MainCamera => GetComponent<Camera>() ?? (Cameras.Length > 0 ? Cameras[0] : Camera.main);
 		public CameraBehavior ActiveBehavior { get; private set; }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Core;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -89,21 +90,13 @@ public class GridFiller : GolfBehaviour
 	private List<Tilemap> allTilemaps;
 	private HubSection[] hubSections;
 
-	public Tilemap currentGroundMap => groundMap;
+	public Tilemap currentGroundMap => currentTileMap != null && currentTileMap.ground != null ? currentTileMap.ground : groundMap;
 	public Rigidbody2D currentRigid => currentTileMap != null ? currentTileMap.GetComponent<Rigidbody2D>() : GetComponentInChildren<Rigidbody2D>();
-
-	private void Awake()
-	{
-		Init();
-		ShowGridAndDecorationsOnly();
-	}
 
 	public void Init()
 	{
-		if (hubSectionContainer != null)
-			hubSections = hubSectionContainer.GetComponentsInChildren<HubSection>(true);
-		else
-			hubSections = GetComponentsInChildren<HubSection>(true);
+		if (AllRenders == null || AllRenders.Count == 0)
+			AllRenders = GetComponentsInChildren<TilemapRenderer>(true).ToList();
 		ActivateOnlyNeededTilemap();
 	}
 
