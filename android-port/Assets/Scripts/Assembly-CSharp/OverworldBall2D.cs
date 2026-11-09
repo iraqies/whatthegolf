@@ -11,9 +11,9 @@ public class OverworldBall2D : GolfBall2DShooterBase
 
 	public float speed = 15f;
 	public LayerMask layers;
-	public float minSpeed = 2f;
-	public float maxSpeedMultiplier = 1f;
-	public float stopThreshold = 0.1f;
+	public float minSpeed = 1f;
+	public float maxSpeedMultiplier = 2f;
+	public float stopThreshold = 2f;
 	public bool UseMinSpeed;
 	public float randomAngularForce;
 	public Rigidbody2D rigidBody;
@@ -57,6 +57,8 @@ public class OverworldBall2D : GolfBall2DShooterBase
 	protected override void Awake()
 	{
 		base.Awake();
+		rigidBody = GetComponent<Rigidbody2D>();
+		trail = GetComponentInChildren<TrailRenderer>();
 		Init();
 	}
 
@@ -66,12 +68,16 @@ public class OverworldBall2D : GolfBall2DShooterBase
 		didInit = true;
 		t = transform;
 		checkPoint = transform.position;
+		timeline = GetComponent<Timeline>();
 		if (rigidBody == null) rigidBody = GetComponent<Rigidbody2D>();
 		rigidbodyC = rigidBody;
+		if (rigidBody != null)
+			startDrag = rigidBody.drag;
 		controller = GetComponent<GolfBallController>();
 		if (controller != null)
 		{
 			controller.shooter = this;
+			controller.OnShoot -= OnShoot;
 			controller.OnShoot -= Shooter_OnShoot;
 			controller.OnShoot += Shooter_OnShoot;
 			controller.OnAimStart -= Controller_OnAimStart;
@@ -85,7 +91,7 @@ public class OverworldBall2D : GolfBall2DShooterBase
 
 	private void Start()
 	{
-		Init();
+		if (!didInit) Init();
 	}
 
 	public void ClearTrail()
@@ -98,51 +104,120 @@ public class OverworldBall2D : GolfBall2DShooterBase
 		m_OnDisabled?.Invoke(this);
 	}
 
-	protected virtual void Controller_OnCancel() => OnCancel();
-	protected virtual void Controller_OnAimStart() => OnAimStart();
-	protected virtual void Controller_OnAimUpdate(Vector3 dir, bool arg2) => OnAimUpdate(dir, arg2);
+	protected virtual void Controller_OnCancel() { }
+	protected virtual void Controller_OnAimStart() { }
+
+	protected virtual void Controller_OnAimUpdate(Vector3 dir, bool arg2)
+	{
+		if (lookInAimDirection && rigidbodyC != null && dir.sqrMagnitude > 1e-4f)
+		{
+			Vector2 n = new Vector2(dir.x, dir.y).normalized;
+			float angle = Vector2.SignedAngle( n, transform.up);
+			rigidbodyC.angularVelocity = angle * lookSpeed * Time.deltaTime;
+		}
+	}
 
 	public void SetEnableFlagsAndDoors() => canEnableFlagsAndDoors = true;
-	public bool CheckUseInteractiveThing() => canEnableFlagsAndDoors;
+
+	public bool CheckUseInteractiveThing()
+	{
+		bool res = canEnableFlagsAndDoors;
+		if (res) canEnableFlagsAndDoors = false;
+		return res;
+	}
+
 	public bool GetCanEnableFlagsAndDoors() => canEnableFlagsAndDoors;
 
 	private void ResetZ()
 	{
-		Vector3 p = transform.position;
+		if (t == null) t = transform;
+		Vector3 p = t.position;
 		p.z = 0f;
-		transform.position = p;
+		t.position = p;
 	}
 
 	public override void OnShoot(Vector3 boost) => Shooter_OnShoot(boost);
 
 	protected virtual void Shooter_OnShoot(Vector3 dir)
 	{
+		ResetZ();
 		if (rigidBody == null) rigidBody = GetComponent<Rigidbody2D>();
 		if (rigidBody == null) return;
 		rigidBody.isKinematic = false;
+		rigidBody.simulated = true;
 		rigidBody.WakeUp();
-		float s = speed > 0f ? speed : 15f;
-		StandardShoot(dir, 0f, UseMinSpeed ? minSpeed : 1f, s * Mathf.Max(0.5f, maxSpeedMultiplier), randomAngularForce);
+		float mag = Mathf.Clamp01(dir.magnitude);
+		if (mag <= 1e-4f) return;
+		float targetSpeed = Mathf.Lerp(minSpeed > 0f ? minSpeed : 1f, speed > 0f ? speed : 15f, mag);
+		Vector2 n = new Vector2(dir.x, dir.y);
+		if (n.sqrMagnitude < 1e-4f)
+			n = new Vector2(dir.x, dir.z);
+		n.Normalize();
+		rigidBody.velocity = n * targetSpeed;
+		if (Mathf.Abs(randomAngularForce) > 0.001f)
+			rigidBody.angularVelocity = UnityEngine.Random.Range(-randomAngularForce, randomAngularForce);
+		canEnableFlagsAndDoors = true;
 	}
 
 	protected override void FixedUpdate()
 	{
 		base.FixedUpdate();
+		if (rigidBody == null) return;
+		float mag = rigidBody.velocity.magnitude;
+		if (mag < stopThreshold)
+		{
+			float dt = Time.fixedDeltaTime;
+			rigidBody.velocity *= Mathf.Max(0f, 1f - 3f * dt);
+		}
+		if (rigidBody.velocity.magnitude < 0.1f)
+		{
+			rigidBody.velocity *= 0.1f;
+		}
 	}
 
 	private void DoCheat() { }
-	private void OnTriggerEnter2D(Collider2D other) { }
-	public void HitFlag() => StopBall(false);
 
-	public void StopBall(bool disable = true)
+	private void OnTriggerEnter2D(Collider2D other)
 	{
+		if (other != null && other.CompareTag("OutOfBounds"))
+		{
+			if (rigidBody != null)
+			{
+				rigidBody.velocity = Vector2.zero;
+				rigidBody.angularVelocity = 0f;
+			}
+			ResetZ();
+			transform.position = checkPoint;
+		}
+	}
+
+	public void HitFlag()
+	{
+		ResetZ();
 		if (rigidBody != null)
 		{
+			rigidBody.isKinematic = true;
 			rigidBody.velocity = Vector2.zero;
 			rigidBody.angularVelocity = 0f;
 		}
-		if (disable && controller != null)
+		if (controller != null)
 			controller.StopAiming();
+	}
+
+	public void StopBall(bool disable = true)
+	{
+		if (!gameObject.activeInHierarchy) return;
+		ResetZ();
+		if (rigidBody != null)
+		{
+			rigidBody.isKinematic = true;
+			rigidBody.velocity = Vector2.zero;
+			rigidBody.angularVelocity = 0f;
+		}
+		if (controller != null)
+			controller.CancelShooting();
+		if (disable)
+			gameObject.SetActive(false);
 	}
 
 	public void HideAndStop(bool disable = true)
@@ -151,22 +226,65 @@ public class OverworldBall2D : GolfBall2DShooterBase
 		Hide();
 	}
 
-	public void Hide() => gameObject.SetActive(false);
+	public void Hide()
+	{
+		foreach (var r in GetComponentsInChildren<Renderer>(true))
+		{
+			if (r != null) r.enabled = false;
+		}
+		ClearTrail();
+	}
 
-	public void Show() => gameObject.SetActive(true);
+	public void Show()
+	{
+		foreach (var r in GetComponentsInChildren<Renderer>(true))
+		{
+			if (r != null) r.enabled = true;
+		}
+		ClearTrail();
+		ResetZ();
+	}
 
 	public void ShowAndEnable()
 	{
+		if (!didInit) Init();
 		gameObject.SetActive(true);
-		if (controller != null) controller.enabled = true;
+		if (rigidBody != null)
+		{
+			rigidBody.isKinematic = false;
+			rigidBody.simulated = true;
+			rigidBody.velocity = Vector2.zero;
+			rigidBody.angularVelocity = 0f;
+			if (startDrag > 0f)
+				rigidBody.drag = startDrag;
+		}
+		canEnableFlagsAndDoors = false;
+		if (controller != null)
+			controller.enabled = true;
+		ResetZ();
+		Show();
 	}
 
-	public bool ToggleColliders() => true;
+	public bool ToggleColliders()
+	{
+		bool last = false;
+		foreach (var c in GetComponentsInChildren<Collider2D>(true))
+		{
+			if (c != null)
+			{
+				c.enabled = !c.enabled;
+				last = c.enabled;
+			}
+		}
+		return last;
+	}
 
 	public void SetColliders(bool state)
 	{
 		foreach (var c in GetComponentsInChildren<Collider2D>(true))
-			c.enabled = state;
+		{
+			if (c != null) c.enabled = state;
+		}
 	}
 
 	private void OnCollisionEnter2D(Collision2D collision) { }

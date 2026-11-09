@@ -1,6 +1,7 @@
 Shader "Custom/GolfLambertParticles" {
 	Properties {
 
+
 		_Color ("Color", Vector) = (1,1,1,1)
 		_ShadowColor ("Shadow Color", Vector) = (0,0,0,1)
 		_MainTex ("Albedo (RGB)", 2D) = "white" {}
@@ -17,7 +18,10 @@ Shader "Custom/GolfLambertParticles" {
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
+			#pragma multi_compile_fwdbase
 			#include "UnityCG.cginc"
+			#include "Lighting.cginc"
+			#include "AutoLight.cginc"
 
 			float4 _Color;
 			float4 _HighlightColor;
@@ -25,7 +29,6 @@ Shader "Custom/GolfLambertParticles" {
 			float _HighlightAmount;
 			float _HighlightAngle;
 			sampler2D _MainTex; float4 _MainTex_ST;
-			
 
 			struct appdata {
 				float4 vertex : POSITION;
@@ -39,29 +42,31 @@ Shader "Custom/GolfLambertParticles" {
 				float3 wnorm : TEXCOORD0;
 				float2 uv : TEXCOORD1;
 				float4 color : COLOR;
+				SHADOW_COORDS(2)
 			};
 
 			v2f vert(appdata v) {
 				v2f o;
-				
 				o.pos = UnityObjectToClipPos(v.vertex);
 				o.wnorm = UnityObjectToWorldNormal(v.normal);
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 				o.color = v.color;
+				TRANSFER_SHADOW(o);
 				return o;
 			}
 
 			fixed4 frag(v2f i) : SV_Target {
-				float4 albedo = _Color;
-				albedo *= i.color;
-				albedo *= tex2D(_MainTex, i.uv);
 				float3 n = normalize(i.wnorm);
 				float3 l = any(_WorldSpaceLightPos0.xyz) ? normalize(_WorldSpaceLightPos0.xyz) : normalize(float3(0.35, 0.85, -0.4));
-				float ndotl = dot(n, l) * 0.5 + 0.5;
-				float3 shaded = lerp(albedo.rgb * (1.0 - saturate(_ShadowColor.a) * 0.45) + _ShadowColor.rgb * 0.25, albedo.rgb, saturate(ndotl));
-				float hl = smoothstep(1.0 - max(_HighlightAngle, 0.05), 1.0, ndotl) * _HighlightAmount * 0.25;
-				shaded = saturate(shaded + _HighlightColor.rgb * hl);
-				return fixed4(shaded, albedo.a);
+				float3 lc = any(_LightColor0.rgb) ? _LightColor0.rgb : float3(1.0, 1.0, 1.0);
+				float ndotl = dot(n, l);
+				float ha = max(_HighlightAngle, 0.001);
+				float hl = saturate((ndotl - (1.0 - ha)) / ha);
+				float3 lit = ((tex2D(_MainTex, i.uv).rgb * (_Color.rgb * i.color.rgb)) + _HighlightColor.rgb * hl * _HighlightAmount) * lc;
+				float back = saturate(-ndotl);
+				float3 shade = lerp(float3(1.0, 1.0, 1.0), _ShadowColor.rgb, back);
+				fixed atten = SHADOW_ATTENUATION(i);
+				return fixed4(lit * shade * atten, 1.0);
 			}
 			ENDCG
 		}

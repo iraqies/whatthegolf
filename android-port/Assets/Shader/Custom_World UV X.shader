@@ -1,6 +1,5 @@
 Shader "Custom/World UV X" {
 	Properties {
-
 		_Color ("Main Color", Vector) = (1,1,1,1)
 		_MainTexWall ("Wall Side Texture (RGB)", 2D) = "surface" {}
 		_Scale ("Texture Scale", Float) = 0.1
@@ -12,48 +11,39 @@ Shader "Custom/World UV X" {
 		Blend Off
 		ZWrite On
 		Pass {
+			Tags { "LightMode"="ForwardBase" }
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
 			#include "UnityCG.cginc"
 
-			sampler2D _MainTex; float4 _MainTex_ST;
 			sampler2D _MainTexWall;
 			float4 _Color;
+			float _Scale;
 
 			struct appdata {
 				float4 vertex : POSITION;
 				float3 normal : NORMAL;
-				float2 uv : TEXCOORD0;
-				float4 color : COLOR;
 			};
 
 			struct v2f {
 				float4 pos : SV_POSITION;
-				float3 wnorm : TEXCOORD0;
-				float3 wpos : TEXCOORD1;
-				float2 uv : TEXCOORD2;
-				float4 color : COLOR;
+				float3 wpos : TEXCOORD0;
+				float3 wnorm : TEXCOORD1;
 			};
 
 			v2f vert(appdata v) {
 				v2f o;
 				o.pos = UnityObjectToClipPos(v.vertex);
-				o.wnorm = UnityObjectToWorldNormal(v.normal);
 				o.wpos = mul(unity_ObjectToWorld, v.vertex).xyz;
-				o.uv = v.uv;
-				o.color = v.color;
+				o.wnorm = UnityObjectToWorldNormal(v.normal);
 				return o;
 			}
 
 			fixed4 frag(v2f i) : SV_Target {
-				float4 col = float4(1, 1, 1, 1);
-				col *= _Color;
-				col *= tex2D(_MainTex, i.uv);
-				float3 n = normalize(i.wnorm);
-				float3 l = normalize(float3(0.35, 0.85, -0.4));
-				col.rgb *= (0.65 + 0.35 * saturate(dot(n, l)));
-				return col;
+				float sc = _Scale > 0.0001 ? _Scale : 0.1;
+				fixed4 tex = tex2D(_MainTexWall, i.wpos.xz * sc);
+				return tex * _Color;
 			}
 			ENDCG
 		}

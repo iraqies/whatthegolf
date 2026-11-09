@@ -370,7 +370,7 @@ namespace Core
 			if (Level.HasInstance && GetComponent<Rigidbody2D>() == null && AimPlane != AimPlanes.TwoD && !OverworldManager2d.HasInstance)
 			{
 				Vector3 posToCheck = ArrowPosition != null ? ArrowPosition.position : transform.position;
-				if (posToCheck.y < -40f)
+				if (posToCheck.y < -40f || posToCheck.y > 120f)
 				{
 					CheckOutOfBounds("OutOfBoundsReload");
 					return;
@@ -403,8 +403,9 @@ namespace Core
 				Vector2 curPos = GetInputPosition();
 				Vector2 deltaScreen = AimStartMousePosition - curPos;
 				if (ReverseArrow) deltaScreen = -deltaScreen;
-				float screenDiag = Mathf.Max(300f, Mathf.Min(Screen.width, Screen.height) * Mathf.Max(0.15f, maxDragLength));
-				Vector2 norm2D = Vector2.ClampMagnitude(deltaScreen / screenDiag, 1f);
+				float screenDiag = Mathf.Max(140f, Mathf.Min(Screen.width, Screen.height) * Mathf.Max(0.18f, maxDragLength));
+				float dragMag = Mathf.Clamp01(deltaScreen.magnitude / screenDiag) * Mathf.Max(0.1f, DragScaleRatio);
+				Vector2 norm2D = deltaScreen.sqrMagnitude > 1e-4f ? (deltaScreen.normalized * dragMag) : Vector2.zero;
 
 				if (AimPlane == AimPlanes.Camera || AimPlane == AimPlanes.TwoD || GetComponent<Rigidbody2D>() != null)
 				{
@@ -428,18 +429,34 @@ namespace Core
 				}
 				else
 				{
-					Camera cam = GetCam();
-					if (cam != null)
+					Vector3 planeDiff = GetMousePositionOnAimPlane(AimStartMousePosition) - GetMousePositionOnAimPlane(curPos);
+					if (ReverseArrow) planeDiff = -planeDiff;
+					if (planeDiff.sqrMagnitude > 1e-5f)
 					{
-						Vector3 fwd = Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up).normalized;
-						if (fwd.sqrMagnitude < 1e-4f) fwd = Vector3.ProjectOnPlane(cam.transform.up, Vector3.up).normalized;
-						Vector3 right = Vector3.ProjectOnPlane(cam.transform.right, Vector3.up).normalized;
-						aimVector = Vector3.ClampMagnitude(right * norm2D.x + fwd * norm2D.y, 1f);
+						aimVector = Vector3.ClampMagnitude(planeDiff.normalized * dragMag, 1f);
 					}
 					else
 					{
-						aimVector = new Vector3(norm2D.x, 0f, norm2D.y);
+						Camera cam = GetCam();
+						if (cam != null)
+						{
+							Vector3 fwd = Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up).normalized;
+							if (fwd.sqrMagnitude < 1e-4f) fwd = Vector3.ProjectOnPlane(cam.transform.up, Vector3.up).normalized;
+							Vector3 right = Vector3.ProjectOnPlane(cam.transform.right, Vector3.up).normalized;
+							aimVector = Vector3.ClampMagnitude(right * norm2D.x + fwd * norm2D.y, 1f);
+						}
+						else
+						{
+							aimVector = new Vector3(norm2D.x, 0f, norm2D.y);
+						}
 					}
+				}
+
+				if (shootStraightTutorialMode)
+				{
+					aimVector = Vector3.Project(aimVector, Vector3.forward);
+					if (Vector3.Dot(aimVector, Vector3.forward) < 0f)
+						aimVector = Vector3.zero;
 				}
 
 				if (OnlyFullPower || FullPowerOnAim)
@@ -469,7 +486,9 @@ namespace Core
 
 		internal virtual Vector3 GetFinalAimVector()
 		{
-			if (NormalizeShot && aimVector.sqrMagnitude > 0.001f)
+			if (OnlyFullPower && aimVector.sqrMagnitude > 0.001f)
+				return aimVector.normalized;
+			if (NormalizeShot && aimVector.magnitude > 1f)
 				return aimVector.normalized;
 			return Vector3.ClampMagnitude(aimVector, 1f);
 		}
@@ -483,6 +502,13 @@ namespace Core
 				if (CountStrokesWhileBlocked) CountShot();
 				m_OnShootWhileBlocked?.Invoke(finalAim);
 				return;
+			}
+			if (!OnlyFullPower && finalAim.sqrMagnitude > 1e-6f)
+			{
+				float mag = finalAim.magnitude;
+				float thresh = Mathf.Clamp(CancelThreshold, 0f, 0.5f);
+				float remapped = Mathf.Clamp01((mag - thresh) / Mathf.Max(0.01f, 1f - thresh));
+				finalAim = finalAim.normalized * remapped;
 			}
 			shootCoolTimer = Mathf.Max(0.05f, shootCoolDown);
 			CountShot();
@@ -576,7 +602,19 @@ namespace Core
 			return transform.position;
 		}
 
-		public Vector3 GetMousePositionOnAimPlane(Vector2 mousePosition) => GetPositionOnAimPlane(mousePosition);
+		public Vector3 GetMousePositionOnAimPlane(Vector2 mousePosition)
+		{
+			Vector3 ballPos = ArrowPosition != null ? ArrowPosition.position : transform.position;
+			Camera cam = (useAimStartCamTransform && aimStartCamTransformState != null) ? aimStartCamTransformState : GetCam();
+			if (cam == null) return ballPos;
+			Vector3 ballScreen = cam.WorldToScreenPoint(ballPos);
+			Vector3 offsetScreen = new Vector3((mousePosition.x - AimStartMousePosition.x) + ballScreen.x, (mousePosition.y - AimStartMousePosition.y) + ballScreen.y, 0f);
+			Plane p = GetPlane(AimPlane, ballPos);
+			Ray r = cam.ScreenPointToRay(offsetScreen);
+			if (p.Raycast(r, out float enter))
+				return r.GetPoint(enter);
+			return ballPos;
+		}
 
 		public Plane GetPlane(AimPlanes planeType, Vector3 position)
 		{

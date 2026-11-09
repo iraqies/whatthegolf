@@ -1,6 +1,5 @@
 Shader "Custom/Unlit Color (with shadow)" {
 	Properties {
-
 		_Color ("Albedo Color", Vector) = (1,1,1,1)
 		_ShadowAmount ("Shadow Amount", Float) = 1
 	}
@@ -11,45 +10,37 @@ Shader "Custom/Unlit Color (with shadow)" {
 		Blend Off
 		ZWrite On
 		Pass {
+			Tags { "LightMode"="ForwardBase" }
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
+			#pragma multi_compile_fwdbase
 			#include "UnityCG.cginc"
+			#include "AutoLight.cginc"
 
 			float4 _Color;
+			float _ShadowAmount;
 
 			struct appdata {
 				float4 vertex : POSITION;
-				float3 normal : NORMAL;
-				float2 uv : TEXCOORD0;
-				float4 color : COLOR;
 			};
 
 			struct v2f {
 				float4 pos : SV_POSITION;
-				float3 wnorm : TEXCOORD0;
-				float3 wpos : TEXCOORD1;
-				float2 uv : TEXCOORD2;
-				float4 color : COLOR;
+				SHADOW_COORDS(0)
 			};
 
 			v2f vert(appdata v) {
 				v2f o;
 				o.pos = UnityObjectToClipPos(v.vertex);
-				o.wnorm = UnityObjectToWorldNormal(v.normal);
-				o.wpos = mul(unity_ObjectToWorld, v.vertex).xyz;
-				o.uv = v.uv;
-				o.color = v.color;
+				TRANSFER_SHADOW(o);
 				return o;
 			}
 
 			fixed4 frag(v2f i) : SV_Target {
-				float4 col = float4(1, 1, 1, 1);
-				col *= _Color;
-				float3 n = normalize(i.wnorm);
-				float3 l = normalize(float3(0.35, 0.85, -0.4));
-				col.rgb *= (0.65 + 0.35 * saturate(dot(n, l)));
-				return col;
+				fixed atten = SHADOW_ATTENUATION(i);
+				float s = lerp(1.0 - _ShadowAmount, 1.0, atten);
+				return fixed4(_Color.rgb * s, _Color.a);
 			}
 			ENDCG
 		}

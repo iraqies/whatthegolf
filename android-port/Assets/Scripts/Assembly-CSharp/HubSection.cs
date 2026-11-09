@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.U2D.Animation;
 
 public class HubSection : GolfBehaviour
 {
@@ -56,10 +57,10 @@ public class HubSection : GolfBehaviour
 			var tr = SectionTilemap.GetComponent<Renderer>();
 			if (tr != null) tr.enabled = false;
 		}
-		foreach (var s in GetComponentsInChildren<SortByY>(true))
+		foreach (var skin in GetComponentsInChildren<SpriteSkin>(true))
 		{
-			if (s != null)
-				s.isSorting = false;
+			if (skin != null)
+				skin.alwaysUpdate = false;
 		}
 		if (!dontChangeAnimatorCullingMode)
 		{

@@ -31,6 +31,8 @@ public class SortGroupManager : GolfBehaviour
 			{
 				s.group = sg;
 				sceneSortingGroups.Add(s);
+				if (s.isSorting)
+					sg.sortingOrder = Mathf.RoundToInt(s.transform.position.y * -5f) + 5000;
 			}
 		}
 		int div = divideSortingOverFrames > 0 ? divideSortingOverFrames : 5;

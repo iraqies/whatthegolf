@@ -108,13 +108,7 @@ public class SectionCulling : GolfBehaviour
 			if (info.section != null)
 			{
 				info.section.SetActiveCulling(false);
-				if (info.section.Container != null)
-				{
-					bool keepActive = isRotated
-						? (info.section.SectionPlatform == HubSection.SectionPlatformEnum.All || info.section.SectionPlatform == HubSection.SectionPlatformEnum.Mobile)
-						: (info.section.SectionPlatform == HubSection.SectionPlatformEnum.All || info.section.SectionPlatform == HubSection.SectionPlatformEnum.Standalone);
-					info.section.Container.SetActive(keepActive);
-				}
+				info.section.PreBuildScript(isRotated);
 			}
 		}
 		UpdateCulling();
