@@ -15,10 +15,21 @@ namespace Audio
 
 		private void Awake()
 		{
+			if (controller == null)
+				controller = GetComponent<GolfBallController>() ?? GetComponentInParent<GolfBallController>();
+			if (controller != null)
+			{
+				controller.OnShoot -= Controller_OnShoot;
+				controller.OnShoot += Controller_OnShoot;
+			}
 		}
 
 		private void Controller_OnShoot(Vector3 obj)
 		{
+			if (didShoot) return;
+			didShoot = true;
+			if (clips != null)
+				clips.Play(transform.position);
 		}
 	}
 }

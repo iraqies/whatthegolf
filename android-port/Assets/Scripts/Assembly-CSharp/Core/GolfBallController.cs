@@ -697,6 +697,7 @@ namespace Core
 		{
 			_ballVelocity = Vector3.zero;
 			HideShootArrow();
+			AkSoundEngine.PostTrigger(AK.TRIGGERS.OFF_THE_MAP_SHORT, gameObject);
 			m_OnOutOfBoundsEvent?.Invoke();
 		}
 

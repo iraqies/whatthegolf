@@ -9,13 +9,19 @@ public class PlayAudioClipSetting : MonoBehaviour
 
 	private void Start()
 	{
+		DefaultSetPos();
 	}
 
 	private void DefaultSetPos()
 	{
+		if (position == null)
+			position = transform;
 	}
 
 	public void Play()
 	{
+		DefaultSetPos();
+		if (clipCollection != null)
+			clipCollection.Play(position != null ? position.position : transform.position);
 	}
 }

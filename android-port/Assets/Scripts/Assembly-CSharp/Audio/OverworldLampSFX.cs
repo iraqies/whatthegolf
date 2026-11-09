@@ -4,7 +4,7 @@ namespace Audio
 {
 	public class OverworldLampSFX : MonoBehaviour
 	{
-		public float threshold;
+		public float threshold = 15f;
 
 		public OnCollisionAudioBase col;
 
@@ -28,18 +28,40 @@ namespace Audio
 
 		private void Awake()
 		{
+			hinge = GetComponent<HingeJoint2D>();
+			if (col != null)
+			{
+				col.OnAudioPlay -= Col_OnAudioPlay;
+				col.OnAudioPlay += Col_OnAudioPlay;
+			}
 		}
 
 		private void Col_OnAudioPlay()
 		{
+			collisionTime = Time.time;
+			canCheck = true;
 		}
 
 		private void Update()
 		{
+			if (!canCheck || hinge == null)
+				return;
+			HandleSwing2();
 		}
 
 		private void HandleSwing2()
 		{
+			float angle = hinge.jointAngle;
+			if ((lastJointAngle < 0f && angle >= 0f) || (lastJointAngle > 0f && angle <= 0f))
+			{
+				if (Mathf.Abs(hinge.jointSpeed) >= threshold && SFX != null)
+				{
+					SFX.Play(transform.position);
+				}
+				if (Mathf.Abs(hinge.jointSpeed) < threshold * 0.5f)
+					canCheck = false;
+			}
+			lastJointAngle = angle;
 		}
 	}
 }

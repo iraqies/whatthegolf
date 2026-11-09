@@ -11,10 +11,17 @@ namespace Audio
 
 		public AudioSource audioSource;
 
-		public bool IsVisible { get; set; }
+		public bool IsVisible { get; set; } = true;
 
 		public void AnimationAudioOneshot(int index)
 		{
+			if (SFX_Oneshots == null || index < 0 || index >= SFX_Oneshots.Count)
+				return;
+			var col = SFX_Oneshots[index];
+			if (col == null)
+				return;
+			Vector3 pos = emitterTransform != null ? emitterTransform.position : transform.position;
+			col.Play(pos);
 		}
 	}
 }

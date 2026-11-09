@@ -212,6 +212,7 @@ public class LevelMusic : MonoBehaviour
 	private void CurrentLevel_OnOutOfBounds()
 	{
 		strokeCount = 0;
+		m_OnFail?.Invoke();
 	}
 
 	private void CurrentLevel_OnGoal(Level.CompletedState s)

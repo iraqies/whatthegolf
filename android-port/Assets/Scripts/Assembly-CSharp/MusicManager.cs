@@ -212,21 +212,21 @@ public class MusicManager : MonoBehaviour
 		switch (musicPreset)
 		{
 			case LevelMusic.LevelMusicPreset.Silent: return 1171021210u;
-			case LevelMusic.LevelMusicPreset.Lab: return 318868755u;
-			case LevelMusic.LevelMusicPreset.Green: return 3525279660u;
-			case LevelMusic.LevelMusicPreset.Sport: return 4118986117u;
-			case LevelMusic.LevelMusicPreset.Gravity: return 3118824634u;
-			case LevelMusic.LevelMusicPreset.Toast: return 1463504632u;
-			case LevelMusic.LevelMusicPreset.Blue: return 1995628048u;
-			case LevelMusic.LevelMusicPreset.Portal: return 3369439804u;
-			case LevelMusic.LevelMusicPreset.Secret: return 3712611991u;
-			case LevelMusic.LevelMusicPreset.Factory: return 2266810402u;
-			case LevelMusic.LevelMusicPreset.Desert: return 1850388778u;
-			case LevelMusic.LevelMusicPreset.Western: return 2817946958u;
-			case LevelMusic.LevelMusicPreset.Winter: return 2376621319u;
-			case LevelMusic.LevelMusicPreset.Hell: return 2954777512u;
-			case LevelMusic.LevelMusicPreset.Space: return 881962004u;
-			case LevelMusic.LevelMusicPreset.Computer: return 3882369967u;
+			case LevelMusic.LevelMusicPreset.Lab: return 3039861862u;
+			case LevelMusic.LevelMusicPreset.Green: return 224687804u;
+			case LevelMusic.LevelMusicPreset.Sport: return 368170253u;
+			case LevelMusic.LevelMusicPreset.Gravity: return 2685955085u;
+			case LevelMusic.LevelMusicPreset.Toast: return 1267265477u;
+			case LevelMusic.LevelMusicPreset.Blue: return 4035573696u;
+			case LevelMusic.LevelMusicPreset.Portal: return 3118032615u;
+			case LevelMusic.LevelMusicPreset.Secret: return 2909291642u;
+			case LevelMusic.LevelMusicPreset.Factory: return 1293164154u;
+			case LevelMusic.LevelMusicPreset.Desert: return 4081259465u;
+			case LevelMusic.LevelMusicPreset.Western: return 3740536705u;
+			case LevelMusic.LevelMusicPreset.Winter: return 3924562482u;
+			case LevelMusic.LevelMusicPreset.Hell: return 2335599710u;
+			case LevelMusic.LevelMusicPreset.Space: return 2685955085u;
+			case LevelMusic.LevelMusicPreset.Computer: return 3232647538u;
 			default: return 0u;
 		}
 	}
@@ -285,8 +285,15 @@ public class MusicManager : MonoBehaviour
 		EnsurePlayer();
 		currentStateID = wwiseState;
 		lastState = wwiseState;
-		AkSoundEngine.SetState(694173914u, wwiseState);
-		onLoaded?.Invoke();
+		if (wwisePlayer != null)
+		{
+			wwisePlayer.SetState(wwiseState, fromLoading, onLoaded, ignoreTransition);
+		}
+		else
+		{
+			AkSoundEngine.SetState(694173914u, wwiseState);
+			onLoaded?.Invoke();
+		}
 	}
 
 	public void SetGain(float fadeVolume)
