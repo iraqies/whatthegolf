@@ -120,8 +120,8 @@ public class ShortcutTunnel : MonoBehaviour
 				ball2d.Controller.enabled = false;
 			}
 			ball2d.Hide();
-			if (OverworldManager2d.HasInstance && OverworldManager2d.Instance != null && OverworldManager2d.Instance.UI != null)
-				OverworldManager2d.Instance.UI.DisableUI();
+			if (OverworldManager2d.HasInstance && OverworldManager2d.Instance != null && OverworldManager2d.Instance.ui != null)
+				OverworldManager2d.Instance.ui.DisableUI();
 		}
 
 		lastThing = thing;
@@ -249,8 +249,8 @@ public class ShortcutTunnel : MonoBehaviour
 					ball2d.Controller.CancelShooting();
 					ball2d.Controller.enabled = true;
 				}
-				if (OverworldManager2d.HasInstance && OverworldManager2d.Instance != null && OverworldManager2d.Instance.UI != null)
-					OverworldManager2d.Instance.UI.EnableUI();
+				if (OverworldManager2d.HasInstance && OverworldManager2d.Instance != null && OverworldManager2d.Instance.ui != null)
+					OverworldManager2d.Instance.ui.EnableUI();
 			}
 			m_OnBallExitTunnel?.Invoke(this);
 		}
