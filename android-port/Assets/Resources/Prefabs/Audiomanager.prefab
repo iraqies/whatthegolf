@@ -169187,7 +169187,7 @@ MonoBehaviour:
   HighFreqBump: {fileID: 11400000, guid: 40fc71cc7879615449cc8fc7f73e0b52, type: 2}
   LongBuildupRumble: {fileID: 11400000, guid: 99443e551b150e54da14f06581b18bb3, type: 2}
   PS5HapticsAudioSources: {fileID: 114689926493702669}
-  m_GenericSineWaveRumbleClip: {fileID: 8300000, guid: cd1eb605a7c83334dafb0d3d6ab2478e, type: 2}
+  m_GenericSineWaveRumbleClip: {fileID: 8300000, guid: cd1eb605a7c83334dafb0d3d6ab2478e, type: 3}
 --- !u!4 &4004090662707750
 Transform:
   m_ObjectHideFlags: 0

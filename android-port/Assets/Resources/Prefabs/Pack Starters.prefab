@@ -15784,7 +15784,7 @@ MonoBehaviour:
         max: 0
     PlayMode: 0
     Clips:
-    - clip: {fileID: 8300000, guid: 0a0d94c2bd8e11343b04abcc3f822fff, type: 2}
+    - clip: {fileID: 8300000, guid: 0a0d94c2bd8e11343b04abcc3f822fff, type: 3}
       voice: 0
       Volume:
         Value: 1
@@ -28399,7 +28399,7 @@ MonoBehaviour:
         max: 0
     PlayMode: 0
     Clips:
-    - clip: {fileID: 8300000, guid: 0a0d94c2bd8e11343b04abcc3f822fff, type: 2}
+    - clip: {fileID: 8300000, guid: 0a0d94c2bd8e11343b04abcc3f822fff, type: 3}
       voice: 0
       Volume:
         Value: 1
@@ -37015,7 +37015,7 @@ MonoBehaviour:
         max: 0
     PlayMode: 0
     Clips:
-    - clip: {fileID: 8300000, guid: 75246f8e5c62b154e9fdb224d62be135, type: 2}
+    - clip: {fileID: 8300000, guid: 75246f8e5c62b154e9fdb224d62be135, type: 3}
       voice: 2
       Volume:
         Value: 1
@@ -41164,7 +41164,7 @@ MonoBehaviour:
         max: 0
     PlayMode: 0
     Clips:
-    - clip: {fileID: 8300000, guid: 0a0d94c2bd8e11343b04abcc3f822fff, type: 2}
+    - clip: {fileID: 8300000, guid: 0a0d94c2bd8e11343b04abcc3f822fff, type: 3}
       voice: 0
       Volume:
         Value: 1
@@ -49949,7 +49949,7 @@ MonoBehaviour:
   endCircleTransform: {fileID: 4063714724629582}
   endCircleRenderer: {fileID: 23711137901037215}
   transitionClips:
-  - {fileID: 8300000, guid: be16fb1399c7d614d8c3b17bf488bf9d, type: 2}
+  - {fileID: 8300000, guid: be16fb1399c7d614d8c3b17bf488bf9d, type: 3}
 --- !u!4 &4063714724629582
 Transform:
   m_ObjectHideFlags: 0
@@ -54073,7 +54073,7 @@ MonoBehaviour:
         max: 0
     PlayMode: 0
     Clips:
-    - clip: {fileID: 8300000, guid: be16fb1399c7d614d8c3b17bf488bf9d, type: 2}
+    - clip: {fileID: 8300000, guid: be16fb1399c7d614d8c3b17bf488bf9d, type: 3}
       voice: 0
       Volume:
         Value: 0
@@ -54100,7 +54100,7 @@ MonoBehaviour:
         max: 0
     PlayMode: 0
     Clips:
-    - clip: {fileID: 8300000, guid: be16fb1399c7d614d8c3b17bf488bf9d, type: 2}
+    - clip: {fileID: 8300000, guid: be16fb1399c7d614d8c3b17bf488bf9d, type: 3}
       voice: 0
       Volume:
         Value: 0
@@ -61194,7 +61194,7 @@ MonoBehaviour:
         max: 0.2
     PlayMode: 0
     Clips:
-    - clip: {fileID: 8300000, guid: 4ff81794d6d452a46932b16b5625489c, type: 2}
+    - clip: {fileID: 8300000, guid: 4ff81794d6d452a46932b16b5625489c, type: 3}
       voice: 0
       Volume:
         Value: 1
@@ -61221,7 +61221,7 @@ MonoBehaviour:
         max: 0
     PlayMode: 0
     Clips:
-    - clip: {fileID: 8300000, guid: 6c24906c13b31d34bb2ba72a67f2285c, type: 2}
+    - clip: {fileID: 8300000, guid: 6c24906c13b31d34bb2ba72a67f2285c, type: 3}
       voice: 0
       Volume:
         Value: 1

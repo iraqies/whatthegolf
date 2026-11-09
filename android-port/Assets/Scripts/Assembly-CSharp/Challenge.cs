@@ -112,6 +112,16 @@ public abstract class Challenge : MonoBehaviour
 				LevelManager.Instance.InGameMenu.ShowChallengeInfo(GetDescription());
 		}
 
+		var initComponents = GetComponentsInChildren<ChallengeInitializeBase>(true);
+		if (initComponents != null)
+		{
+			for (int i = 0; i < initComponents.Length; i++)
+			{
+				if (initComponents[i] != null)
+					initComponents[i].InitOnActivate();
+			}
+		}
+
 		Activate();
 		UnityEvents.OnChallengeActivated?.Invoke();
 		hasBeenActivated = true;

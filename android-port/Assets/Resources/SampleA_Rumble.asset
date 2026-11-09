@@ -17,5 +17,5 @@ MonoBehaviour:
     PlayMode: 0
     Rumbles:
     - rumbleFile: {fileID: 4900000, guid: 7c0dff88fb321094faeb75b79a32d204, type: 3}
-      ps5HapticsAudioClip: {fileID: 8300000, guid: dba8d947281ce5640a9b43821403b1b8, type: 2}
+      ps5HapticsAudioClip: {fileID: 8300000, guid: dba8d947281ce5640a9b43821403b1b8, type: 3}
       vibrationData: []

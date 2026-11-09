@@ -382,16 +382,6 @@ namespace Core
 			if (shootCoolTimer > 0f) shootCoolTimer -= Time.unscaledDeltaTime;
 			if (ignoreBlocking > 0f) ignoreBlocking -= Time.unscaledDeltaTime;
 
-			if (Level.HasInstance && GetComponent<Rigidbody2D>() == null && AimPlane != AimPlanes.TwoD && !OverworldManager2d.HasInstance)
-			{
-				Vector3 posToCheck = ArrowPosition != null ? ArrowPosition.position : transform.position;
-				if (posToCheck.y < -40f || posToCheck.y > 120f)
-				{
-					CheckOutOfBounds("OutOfBoundsReload");
-					return;
-				}
-			}
-
 			if (BlockShotIfPaused && timeControl != null && timeControl.IsPaused)
 				return;
 

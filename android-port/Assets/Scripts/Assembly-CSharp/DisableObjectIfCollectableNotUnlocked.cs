@@ -6,5 +6,9 @@ public class DisableObjectIfCollectableNotUnlocked : MonoBehaviour
 
 	private void Awake()
 	{
+		if (Collectable != null && !Collectable.IsUnlocked())
+		{
+			gameObject.SetActive(false);
+		}
 	}
 }

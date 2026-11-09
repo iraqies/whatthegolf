@@ -23,28 +23,48 @@ public class AudioSources : MonoBehaviour
 	private void EnsureInitialized()
 	{
 		if (audioSources != null && audioSources.Length > 0) return;
+		if (audioSourcePrefab != null)
+		{
+			defaultSpatialBlendCurve = audioSourcePrefab.GetCustomCurve(AudioSourceCurveType.SpatialBlend);
+			nonSpatialCurve = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(1f, 0f));
+			defaultRolloffCurve = audioSourcePrefab.GetCustomCurve(AudioSourceCurveType.CustomRolloff);
+			nonSpatialRolloffCurve = new AnimationCurve(new Keyframe(0f, 1f), new Keyframe(1f, 1f));
+		}
 		var existing = GetComponentsInChildren<AudioSource>(true);
 		int targetCount = Mathf.Max(count, 8);
 		if (existing != null && existing.Length >= targetCount)
 		{
 			audioSources = existing;
-			return;
 		}
-		audioSources = new AudioSource[targetCount];
-		for (int i = 0; i < targetCount; i++)
+		else
 		{
-			if (audioSourcePrefab != null)
+			audioSources = new AudioSource[targetCount];
+			for (int i = 0; i < targetCount; i++)
 			{
-				audioSources[i] = Instantiate(audioSourcePrefab, transform);
+				if (audioSourcePrefab != null)
+				{
+					audioSources[i] = Instantiate(audioSourcePrefab, transform);
+				}
+				else
+				{
+					var go = new GameObject("AudioSource_" + i);
+					go.transform.SetParent(transform, false);
+					audioSources[i] = go.AddComponent<AudioSource>();
+				}
 			}
-			else
-			{
-				var go = new GameObject("AudioSource_" + i);
-				go.transform.SetParent(transform, false);
-				audioSources[i] = go.AddComponent<AudioSource>();
-			}
-			audioSources[i].playOnAwake = false;
-			audioSources[i].spatialBlend = 0f;
+		}
+		foreach (var s in audioSources)
+		{
+			if (s == null) continue;
+			s.playOnAwake = false;
+			s.spatialBlend = 0f;
+			if (nonSpatialCurve != null)
+				s.SetCustomCurve(AudioSourceCurveType.SpatialBlend, nonSpatialCurve);
+			if (nonSpatialRolloffCurve != null)
+				s.SetCustomCurve(AudioSourceCurveType.CustomRolloff, nonSpatialRolloffCurve);
+			var lpf = s.GetComponent<AudioLowPassFilter>();
+			if (lpf != null)
+				lpf.enabled = false;
 		}
 	}
 

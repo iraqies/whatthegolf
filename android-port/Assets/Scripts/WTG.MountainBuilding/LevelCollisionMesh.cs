@@ -1,5 +1,5 @@
 using UnityEngine;
 
-public class LevelCollisionMesh : MonoBehaviour
+public class LevelCollisionMesh : LevelMesh
 {
 }

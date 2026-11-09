@@ -138,9 +138,36 @@ public class OverworldGoal : MonoBehaviour
 
 		state = States.Unplayed;
 		RefreshState();
+		RefreshVisuals();
 
 		if (gameObject.activeSelf && requireGoalToUnlock != null)
 			StartCoroutine(OneFrameDelayedSetStatus());
+
+		var goalLevels = GetAllGoalLevels();
+		if (goalLevels != null)
+		{
+			foreach (var lvl in goalLevels)
+			{
+				if (lvl == null || lvl.levelCollectables == null) continue;
+				foreach (var lc in lvl.levelCollectables)
+				{
+					if (lc != null && lc.Collectable != null && lc.Collectable.requireUnlock && !lc.Collectable.IsUnlocked())
+					{
+						lc.Collectable.OnUnlocked -= RefreshFlag;
+						lc.Collectable.OnUnlocked += RefreshFlag;
+					}
+				}
+			}
+		}
+	}
+
+	private void OnEnable()
+	{
+		if (circleCollider != null)
+		{
+			RefreshState();
+			RefreshVisuals();
+		}
 	}
 
 	public IEnumerator UpdatePlayerTracking(bool force = false)
@@ -286,11 +313,17 @@ public class OverworldGoal : MonoBehaviour
 		{
 			state = States.Unplayed;
 		}
+
+		var allLevels = GetAllGoalLevels();
+		hasUnfinishedContent = allLevels != null && allLevels.Any(l =>
+			l != null && l.levelCollectables != null && l.levelCollectables.Any(c =>
+				c != null && c.Collectable != null && c.Collectable.IsImportant && c.Collectable.IsUnlocked() &&
+				c.IDs != null && !c.IDs.All(id => c.Collectable.WasCollected(id))));
 	}
 
 	public void RefreshVisuals()
 	{
-		if (isSkipping || gameObject == null || !gameObject.activeInHierarchy)
+		if (isSkipping || gameObject == null || circleCollider == null)
 			return;
 
 		if (visualPole != null)
@@ -308,7 +341,7 @@ public class OverworldGoal : MonoBehaviour
 		}
 		if (activeAnimation != null)
 		{
-			bool showActive = state == States.Unplayed && canShowIndicator && !DontShowActiveCircle;
+			bool showActive = (state == States.Unplayed || hasUnfinishedContent) && canShowIndicator && !DontShowActiveCircle;
 			activeAnimation.SetActive(showActive);
 		}
 	}

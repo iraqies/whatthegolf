@@ -92,41 +92,9 @@ public class IntroTunnelInOverworld : MonoBehaviour
 		remove => m_OnPreAtLogo = (Action)Delegate.Remove(m_OnPreAtLogo, value);
 	}
 
-	private void EnsureBulgeRendererReady()
-	{
-		if (ballBulge == null)
-			return;
-		if (!_capturedBulgeScale && ballBulge.localScale.sqrMagnitude > 1e-6f)
-		{
-			_initialBulgeScale = ballBulge.localScale;
-			_capturedBulgeScale = true;
-		}
-		ballBulge.gameObject.SetActive(true);
-		var sr = ballBulge.GetComponentInChildren<SpriteRenderer>(true);
-		if (sr != null)
-		{
-			sr.gameObject.SetActive(true);
-			sr.enabled = true;
-			if (sr.drawMode != SpriteDrawMode.Simple)
-			{
-				Vector2 targetSize = sr.size;
-				sr.drawMode = SpriteDrawMode.Simple;
-				float spriteWorldSize = (sr.sprite != null && sr.sprite.pixelsPerUnit > 0f && sr.sprite.rect.width > 0f)
-					? (sr.sprite.rect.width / sr.sprite.pixelsPerUnit)
-					: 0.5f;
-				float factor = spriteWorldSize > 0.001f ? (targetSize.x / spriteWorldSize) : 20f;
-				Vector3 ls = sr.transform.localScale;
-				sr.transform.localScale = new Vector3(ls.x * factor, ls.y * factor, 1f);
-			}
-			Vector3 lp = sr.transform.localPosition;
-			sr.transform.localPosition = new Vector3(lp.x, lp.y, 0f);
-		}
-	}
-
 	public void Init(bool _startAtLogo = false)
 	{
 		startAtLogo = _startAtLogo;
-		EnsureBulgeRendererReady();
 		ball = GetBall();
 		if (ball != null)
 		{
@@ -166,7 +134,11 @@ public class IntroTunnelInOverworld : MonoBehaviour
 	public IEnumerator PlayAnimationRoutine(Action OnCompleted, Func<bool> OnReachedLogo, Func<bool> OnABitBeforeLogo)
 	{
 		yield return null;
-		EnsureBulgeRendererReady();
+		if (!_capturedBulgeScale && ballBulge != null && ballBulge.localScale.sqrMagnitude > 1e-6f)
+		{
+			_initialBulgeScale = ballBulge.localScale;
+			_capturedBulgeScale = true;
+		}
 		Vector3 bulgeStartScale = _initialBulgeScale;
 		if (ballBulge != null)
 			ballBulge.localScale = bulgeStartScale;
@@ -197,9 +169,6 @@ public class IntroTunnelInOverworld : MonoBehaviour
 		lastPipeIndex = 0;
 		if (!startAtLogo)
 		{
-			Animator logoAnim = GetComponentInChildren<Animator>(true);
-			if (logoAnim != null)
-				logoAnim.SetBool("QuickSplash", false);
 			StartCoroutine(pTween.To(tweenTimeToLogo, t =>
 			{
 				SetPositionOnPath(pathToLogo, TweenFunctions.EaseIn(t), i =>
@@ -214,9 +183,6 @@ public class IntroTunnelInOverworld : MonoBehaviour
 
 			while (OnABitBeforeLogo != null && !OnABitBeforeLogo())
 				yield return null;
-
-			if (logoAnim != null)
-				logoAnim.SetTrigger("Splash");
 
 			yield return new WaitForSeconds(IsSnowIntro ? 0.1f : 1.5f);
 
@@ -428,7 +394,7 @@ public class IntroTunnelInOverworld : MonoBehaviour
 					float segPct = segDist > 0.0001f ? Mathf.Clamp01((targetDist - accum) / segDist) : 0f;
 					pos = Vector3.Lerp(path[i].position, path[nextIdx].position, segPct);
 					if (ballBulge != null)
-						ballBulge.position = new Vector3(pos.x, pos.y, 0f);
+						ballBulge.position = pos;
 					if (OnChangedIndex != null && lastPipeIndex != nextIdx)
 						OnChangedIndex(nextIdx);
 					lastPipeIndex = nextIdx;

@@ -47,6 +47,28 @@ namespace CameraStack
 		{
 			_instance = this;
 			_cameras = GetComponentsInChildren<Camera>(true);
+			var shakeGo = new GameObject("Shake");
+			shakeGo.transform.SetParent(transform, false);
+			shakeGo.transform.localPosition = Vector3.zero;
+			shakeGo.transform.localRotation = Quaternion.identity;
+			shake = shakeGo.AddComponent<PerlinShake>();
+			if (_cameras != null)
+			{
+				for (int i = 0; i < _cameras.Length; i++)
+				{
+					if (_cameras[i] == null) continue;
+					_cameras[i].transform.SetParent(shakeGo.transform, false);
+					_cameras[i].transform.localPosition = Vector3.zero;
+					_cameras[i].transform.localRotation = Quaternion.identity;
+					_cameras[i].allowMSAA = false;
+					_cameras[i].useOcclusionCulling = false;
+				}
+			}
+			if (LevelManager.Exists && LevelManager.Instance != null)
+			{
+				LevelManager.Instance.ChallengeSelected -= OnChallengeSelected;
+				LevelManager.Instance.ChallengeSelected += OnChallengeSelected;
+			}
 			if (challengeSetup)
 			{
 				if (OnChallengeCameraBehavior != null)
@@ -67,6 +89,10 @@ namespace CameraStack
 
 		private void OnDestroy()
 		{
+			if (LevelManager.Exists && LevelManager.Instance != null)
+			{
+				LevelManager.Instance.ChallengeSelected -= OnChallengeSelected;
+			}
 			if (Level.HasInstance && Level.Instance != null)
 			{
 				Level.Instance.OnComplete -= OnGoal;
@@ -75,12 +101,49 @@ namespace CameraStack
 			if (_instance == this) _instance = null;
 		}
 
-		private void OnChallengeSelected(string id) { }
+		private void OnChallengeSelected(string id)
+		{
+			if (!string.IsNullOrEmpty(id))
+			{
+				var lc = FindObjectOfType<LevelChallenges>();
+				if (lc != null && lc.Challenges != null)
+				{
+					Challenge found = null;
+					for (int i = 0; i < lc.Challenges.Count; i++)
+					{
+						if (lc.Challenges[i] != null && lc.Challenges[i].ID == id)
+						{
+							found = lc.Challenges[i];
+							break;
+						}
+					}
+					if (found != null && (found.cameraBehaviour != null || found.desktopCameraBehaviour != null || found.cameraTarget != null))
+					{
+						if (found.cameraBehaviour != null || found.desktopCameraBehaviour != null)
+						{
+							bool useRot = PlatformSettings.Instance != null && PlatformSettings.Instance.GetCurrent() != null && PlatformSettings.Instance.GetCurrent().useRotatedOverworldAndCameraInLevels;
+							var next = (useRot || found.desktopCameraBehaviour == null) ? found.cameraBehaviour : found.desktopCameraBehaviour;
+							if (next != null)
+								SwitchBehavior(next);
+						}
+						if (found.cameraTarget != null && ActiveBehavior is ICameraBehaviourFollowing following)
+						{
+							following.SetFollowTarget(found.cameraTarget);
+						}
+						OnReset();
+						return;
+					}
+				}
+			}
+			SetCurrentBehaviour();
+			OnReset();
+		}
 
 		public void SetCurrentBehaviour()
 		{
-			var next = OnPlayCameraBehavior != null ? OnPlayCameraBehavior : DesktopCameraOverrideBehaviour;
-			if (next == null) next = GetComponent<CameraBehavior>();
+			bool useRot = PlatformSettings.Instance != null && PlatformSettings.Instance.GetCurrent() != null && PlatformSettings.Instance.GetCurrent().useRotatedOverworldAndCameraInLevels;
+			CameraBehavior next = (useRot || DesktopCameraOverrideBehaviour == null) ? OnPlayCameraBehavior : DesktopCameraOverrideBehaviour;
+			if (next == null) next = OnPlayCameraBehavior ?? DesktopCameraOverrideBehaviour ?? GetComponent<CameraBehavior>();
 			if (next != null) SwitchBehavior(next);
 		}
 

@@ -19118,7 +19118,7 @@ MonoBehaviour:
     nonRepeating: 0
     playInOrder: 0
     clips:
-    - {fileID: 8300000, guid: 8991aa28acd524e42a1da75a6834f21e, type: 2}
+    - {fileID: 8300000, guid: 8991aa28acd524e42a1da75a6834f21e, type: 3}
     collection:
       Volume:
         Value: 1
@@ -20773,7 +20773,7 @@ MonoBehaviour:
           max: 0
       PlayMode: 0
       Clips:
-      - clip: {fileID: 8300000, guid: 8670f23e15005fc4dabd97b72886f7cc, type: 2}
+      - clip: {fileID: 8300000, guid: 8670f23e15005fc4dabd97b72886f7cc, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -20787,7 +20787,7 @@ MonoBehaviour:
             max: 0
         Weight: 1
         IsWeighted: 0
-      - clip: {fileID: 8300000, guid: f259a2070b313d744b347a59b8793055, type: 2}
+      - clip: {fileID: 8300000, guid: f259a2070b313d744b347a59b8793055, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -20801,7 +20801,7 @@ MonoBehaviour:
             max: 0
         Weight: 1
         IsWeighted: 0
-      - clip: {fileID: 8300000, guid: 4340222073785464398b819c21f8d0d9, type: 2}
+      - clip: {fileID: 8300000, guid: 4340222073785464398b819c21f8d0d9, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -20917,7 +20917,7 @@ MonoBehaviour:
           max: 0
       PlayMode: 0
       Clips:
-      - clip: {fileID: 8300000, guid: 66a3cdea982cc1741a444dfb93619210, type: 2}
+      - clip: {fileID: 8300000, guid: 66a3cdea982cc1741a444dfb93619210, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -20931,7 +20931,7 @@ MonoBehaviour:
             max: 0
         Weight: 1
         IsWeighted: 0
-      - clip: {fileID: 8300000, guid: 29b6da2c0f5f4074c8999af52c885619, type: 2}
+      - clip: {fileID: 8300000, guid: 29b6da2c0f5f4074c8999af52c885619, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -20945,7 +20945,7 @@ MonoBehaviour:
             max: 0
         Weight: 1
         IsWeighted: 0
-      - clip: {fileID: 8300000, guid: 38445be5d78ff3942af0778a7e3e0b05, type: 2}
+      - clip: {fileID: 8300000, guid: 38445be5d78ff3942af0778a7e3e0b05, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -21067,7 +21067,7 @@ MonoBehaviour:
           max: 0
       PlayMode: 0
       Clips:
-      - clip: {fileID: 8300000, guid: 0d258c566baab4b489fc7b1e69f4d737, type: 2}
+      - clip: {fileID: 8300000, guid: 0d258c566baab4b489fc7b1e69f4d737, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -21081,7 +21081,7 @@ MonoBehaviour:
             max: 0
         Weight: 1
         IsWeighted: 0
-      - clip: {fileID: 8300000, guid: c9d412d49db46954db6d04220c46ef8b, type: 2}
+      - clip: {fileID: 8300000, guid: c9d412d49db46954db6d04220c46ef8b, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -21095,7 +21095,7 @@ MonoBehaviour:
             max: 0
         Weight: 1
         IsWeighted: 0
-      - clip: {fileID: 8300000, guid: 81db8760cdddb394e83b46910fefd24a, type: 2}
+      - clip: {fileID: 8300000, guid: 81db8760cdddb394e83b46910fefd24a, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -21222,7 +21222,7 @@ MonoBehaviour:
           max: 0
       PlayMode: 0
       Clips:
-      - clip: {fileID: 8300000, guid: e5d40e0694c6f4c4a9a93b97f6b7ee99, type: 2}
+      - clip: {fileID: 8300000, guid: e5d40e0694c6f4c4a9a93b97f6b7ee99, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -21236,7 +21236,7 @@ MonoBehaviour:
             max: 0
         Weight: 1
         IsWeighted: 0
-      - clip: {fileID: 8300000, guid: 5ebace984e6071c4aa13d4d0076ab4da, type: 2}
+      - clip: {fileID: 8300000, guid: 5ebace984e6071c4aa13d4d0076ab4da, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -21250,7 +21250,7 @@ MonoBehaviour:
             max: 0
         Weight: 1
         IsWeighted: 0
-      - clip: {fileID: 8300000, guid: 43af1c6bbb7fb604cb5920738bef79e8, type: 2}
+      - clip: {fileID: 8300000, guid: 43af1c6bbb7fb604cb5920738bef79e8, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -21363,7 +21363,7 @@ MonoBehaviour:
           max: 0
       PlayMode: 0
       Clips:
-      - clip: {fileID: 8300000, guid: cb20fbe65f30817488db5e6e8fff90dc, type: 2}
+      - clip: {fileID: 8300000, guid: cb20fbe65f30817488db5e6e8fff90dc, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -21377,7 +21377,7 @@ MonoBehaviour:
             max: 0
         Weight: 1
         IsWeighted: 0
-      - clip: {fileID: 8300000, guid: 220a0201a8b4f9b4f8600959b53d27ce, type: 2}
+      - clip: {fileID: 8300000, guid: 220a0201a8b4f9b4f8600959b53d27ce, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -21391,7 +21391,7 @@ MonoBehaviour:
             max: 0
         Weight: 1
         IsWeighted: 0
-      - clip: {fileID: 8300000, guid: 9c60295ce51517b46a06f0f80435c33f, type: 2}
+      - clip: {fileID: 8300000, guid: 9c60295ce51517b46a06f0f80435c33f, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -21536,7 +21536,7 @@ AudioSource:
   m_GameObject: {fileID: 1601984538237284}
   m_Enabled: 1
   OutputAudioMixerGroup: {fileID: 24300054, guid: ac7d09fa106713d44b681e9663f48666, type: 2}
-  m_audioClip: {fileID: 8300000, guid: cd8cfcdd543d63943a1fed9651a51537, type: 2}
+  m_audioClip: {fileID: 8300000, guid: cd8cfcdd543d63943a1fed9651a51537, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0
   m_Pitch: 1
@@ -31956,7 +31956,7 @@ AudioSource:
   m_GameObject: {fileID: 1387228018655110}
   m_Enabled: 1
   OutputAudioMixerGroup: {fileID: 24300054, guid: ac7d09fa106713d44b681e9663f48666, type: 2}
-  m_audioClip: {fileID: 8300000, guid: dd1a4e51c0420c647baf93c0162dafd3, type: 2}
+  m_audioClip: {fileID: 8300000, guid: dd1a4e51c0420c647baf93c0162dafd3, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0
   m_Pitch: 1
@@ -32298,7 +32298,7 @@ MonoBehaviour:
           max: 0
       PlayMode: 0
       Clips:
-      - clip: {fileID: 8300000, guid: 8670f23e15005fc4dabd97b72886f7cc, type: 2}
+      - clip: {fileID: 8300000, guid: 8670f23e15005fc4dabd97b72886f7cc, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -32312,7 +32312,7 @@ MonoBehaviour:
             max: 0
         Weight: 1
         IsWeighted: 0
-      - clip: {fileID: 8300000, guid: f259a2070b313d744b347a59b8793055, type: 2}
+      - clip: {fileID: 8300000, guid: f259a2070b313d744b347a59b8793055, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -32326,7 +32326,7 @@ MonoBehaviour:
             max: 0
         Weight: 1
         IsWeighted: 0
-      - clip: {fileID: 8300000, guid: 4340222073785464398b819c21f8d0d9, type: 2}
+      - clip: {fileID: 8300000, guid: 4340222073785464398b819c21f8d0d9, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -32443,7 +32443,7 @@ MonoBehaviour:
           max: 0
       PlayMode: 0
       Clips:
-      - clip: {fileID: 8300000, guid: 66a3cdea982cc1741a444dfb93619210, type: 2}
+      - clip: {fileID: 8300000, guid: 66a3cdea982cc1741a444dfb93619210, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -32457,7 +32457,7 @@ MonoBehaviour:
             max: 0
         Weight: 1
         IsWeighted: 0
-      - clip: {fileID: 8300000, guid: 29b6da2c0f5f4074c8999af52c885619, type: 2}
+      - clip: {fileID: 8300000, guid: 29b6da2c0f5f4074c8999af52c885619, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -32471,7 +32471,7 @@ MonoBehaviour:
             max: 0
         Weight: 1
         IsWeighted: 0
-      - clip: {fileID: 8300000, guid: 38445be5d78ff3942af0778a7e3e0b05, type: 2}
+      - clip: {fileID: 8300000, guid: 38445be5d78ff3942af0778a7e3e0b05, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -32586,7 +32586,7 @@ MonoBehaviour:
           max: 0
       PlayMode: 0
       Clips:
-      - clip: {fileID: 8300000, guid: 0d258c566baab4b489fc7b1e69f4d737, type: 2}
+      - clip: {fileID: 8300000, guid: 0d258c566baab4b489fc7b1e69f4d737, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -32600,7 +32600,7 @@ MonoBehaviour:
             max: 0
         Weight: 1
         IsWeighted: 0
-      - clip: {fileID: 8300000, guid: c9d412d49db46954db6d04220c46ef8b, type: 2}
+      - clip: {fileID: 8300000, guid: c9d412d49db46954db6d04220c46ef8b, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -32614,7 +32614,7 @@ MonoBehaviour:
             max: 0
         Weight: 1
         IsWeighted: 0
-      - clip: {fileID: 8300000, guid: 81db8760cdddb394e83b46910fefd24a, type: 2}
+      - clip: {fileID: 8300000, guid: 81db8760cdddb394e83b46910fefd24a, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -32741,7 +32741,7 @@ MonoBehaviour:
           max: 0
       PlayMode: 0
       Clips:
-      - clip: {fileID: 8300000, guid: e5d40e0694c6f4c4a9a93b97f6b7ee99, type: 2}
+      - clip: {fileID: 8300000, guid: e5d40e0694c6f4c4a9a93b97f6b7ee99, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -32755,7 +32755,7 @@ MonoBehaviour:
             max: 0
         Weight: 1
         IsWeighted: 0
-      - clip: {fileID: 8300000, guid: 5ebace984e6071c4aa13d4d0076ab4da, type: 2}
+      - clip: {fileID: 8300000, guid: 5ebace984e6071c4aa13d4d0076ab4da, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -32769,7 +32769,7 @@ MonoBehaviour:
             max: 0
         Weight: 1
         IsWeighted: 0
-      - clip: {fileID: 8300000, guid: 43af1c6bbb7fb604cb5920738bef79e8, type: 2}
+      - clip: {fileID: 8300000, guid: 43af1c6bbb7fb604cb5920738bef79e8, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -32883,7 +32883,7 @@ MonoBehaviour:
           max: 0
       PlayMode: 0
       Clips:
-      - clip: {fileID: 8300000, guid: cb20fbe65f30817488db5e6e8fff90dc, type: 2}
+      - clip: {fileID: 8300000, guid: cb20fbe65f30817488db5e6e8fff90dc, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -32897,7 +32897,7 @@ MonoBehaviour:
             max: 0
         Weight: 1
         IsWeighted: 0
-      - clip: {fileID: 8300000, guid: 220a0201a8b4f9b4f8600959b53d27ce, type: 2}
+      - clip: {fileID: 8300000, guid: 220a0201a8b4f9b4f8600959b53d27ce, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -32911,7 +32911,7 @@ MonoBehaviour:
             max: 0
         Weight: 1
         IsWeighted: 0
-      - clip: {fileID: 8300000, guid: 9c60295ce51517b46a06f0f80435c33f, type: 2}
+      - clip: {fileID: 8300000, guid: 9c60295ce51517b46a06f0f80435c33f, type: 3}
         voice: 0
         Volume:
           Value: 1
@@ -33072,7 +33072,7 @@ AudioSource:
   m_GameObject: {fileID: 1500050402096248}
   m_Enabled: 1
   OutputAudioMixerGroup: {fileID: 24300054, guid: ac7d09fa106713d44b681e9663f48666, type: 2}
-  m_audioClip: {fileID: 8300000, guid: cd8cfcdd543d63943a1fed9651a51537, type: 2}
+  m_audioClip: {fileID: 8300000, guid: cd8cfcdd543d63943a1fed9651a51537, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0
   m_Pitch: 1
@@ -33263,8 +33263,8 @@ MonoBehaviour:
   PlayShootOnAimStart: 0
   boostSoundSettings:
   - clips:
-    - {fileID: 8300000, guid: 3ae0738be1d30b046a02a1f8c7447aab, type: 2}
-    - {fileID: 8300000, guid: dbe067e0ed379ff48a65c72fa3715db8, type: 2}
+    - {fileID: 8300000, guid: 3ae0738be1d30b046a02a1f8c7447aab, type: 3}
+    - {fileID: 8300000, guid: dbe067e0ed379ff48a65c72fa3715db8, type: 3}
     minBoost: 0.1
     maxBoost: 1
     minVolume: 0.2
@@ -33315,10 +33315,10 @@ MonoBehaviour:
   PlayShootOnAimStart: 0
   boostSoundSettings:
   - clips:
-    - {fileID: 8300000, guid: aa58194db0b5566499091196547b99ca, type: 2}
-    - {fileID: 8300000, guid: f2bb7184792deee4a97a657a47055299, type: 2}
-    - {fileID: 8300000, guid: 4d5c8e1dc163c054ea5a111b73b961cd, type: 2}
-    - {fileID: 8300000, guid: abb8b20e3fdfc9b439d6ed600892a1a9, type: 2}
+    - {fileID: 8300000, guid: aa58194db0b5566499091196547b99ca, type: 3}
+    - {fileID: 8300000, guid: f2bb7184792deee4a97a657a47055299, type: 3}
+    - {fileID: 8300000, guid: 4d5c8e1dc163c054ea5a111b73b961cd, type: 3}
+    - {fileID: 8300000, guid: abb8b20e3fdfc9b439d6ed600892a1a9, type: 3}
     minBoost: 0
     maxBoost: 0.5
     minVolume: 0.2
@@ -33328,10 +33328,10 @@ MonoBehaviour:
     maxPitch: 1
     pitchVariation: 0
   - clips:
-    - {fileID: 8300000, guid: c0a79235d73ba5646a75ac813fce1ee4, type: 2}
-    - {fileID: 8300000, guid: 03f4ad136ec5b8e49bed842776c77a13, type: 2}
-    - {fileID: 8300000, guid: 3decf1e7ab09ab742ad33e45ff9b546a, type: 2}
-    - {fileID: 8300000, guid: 4a10ab4ad3558554cbbf976c385df391, type: 2}
+    - {fileID: 8300000, guid: c0a79235d73ba5646a75ac813fce1ee4, type: 3}
+    - {fileID: 8300000, guid: 03f4ad136ec5b8e49bed842776c77a13, type: 3}
+    - {fileID: 8300000, guid: 3decf1e7ab09ab742ad33e45ff9b546a, type: 3}
+    - {fileID: 8300000, guid: 4a10ab4ad3558554cbbf976c385df391, type: 3}
     minBoost: 0.5
     maxBoost: 1
     minVolume: 0.4
@@ -39784,7 +39784,7 @@ MonoBehaviour:
   clips:
   - {fileID: 8300000, guid: 0610a96b7171c264db960a435a4391ea, type: 3}
   - {fileID: 8300000, guid: 422703d55260c41409b09a9db0f64633, type: 3}
-  - {fileID: 8300000, guid: d1f537f2ba08de34480d7cbf04d5933e, type: 2}
+  - {fileID: 8300000, guid: d1f537f2ba08de34480d7cbf04d5933e, type: 3}
   baseVolume: 0.2
   volumeDeviance: 0.18
   basePitch: 0.8

@@ -9967,7 +9967,7 @@ MonoBehaviour:
         max: 0
     PlayMode: 1
     Clips:
-    - clip: {fileID: 8300000, guid: bec6457eb4ad471478b8b21fd614b945, type: 2}
+    - clip: {fileID: 8300000, guid: bec6457eb4ad471478b8b21fd614b945, type: 3}
       voice: 0
       Volume:
         Value: 1
@@ -10035,7 +10035,7 @@ MonoBehaviour:
   PlayShootOnAimStart: 0
   boostSoundSettings:
   - clips:
-    - {fileID: 8300000, guid: d3ced1a8c0a0a5b42a878f9e7cd66576, type: 2}
+    - {fileID: 8300000, guid: d3ced1a8c0a0a5b42a878f9e7cd66576, type: 3}
     minBoost: 0
     maxBoost: 1
     minVolume: 0.2
@@ -10424,7 +10424,7 @@ MonoBehaviour:
   animationRoot: {fileID: 184}
   scaleRoot: {fileID: 216}
   pickupClip:
-    clip: {fileID: 8300000, guid: e1e27c9c1c814c14b85e6f6fb07007ed, type: 2}
+    clip: {fileID: 8300000, guid: e1e27c9c1c814c14b85e6f6fb07007ed, type: 3}
     voice: 0
     Volume:
       Value: 0.5
@@ -10441,7 +10441,7 @@ MonoBehaviour:
   collisionSFX_WithoutCharacter: {fileID: 413}
   collisionSFX_WithCharacter: {fileID: 383}
   respawnSound: {fileID: 8300000, guid: 23985901c60734a4da84272fd56bbddf, type: 3}
-  burstSound: {fileID: 8300000, guid: 6e7f9a98f4c64334ba720602096e368f, type: 2}
+  burstSound: {fileID: 8300000, guid: 6e7f9a98f4c64334ba720602096e368f, type: 3}
   bubbleShadowProjector: {fileID: 441}
   burstParticleSystem: {fileID: 358}
   burstParticleAmount: 10
@@ -10634,7 +10634,7 @@ MonoBehaviour:
         max: 0
     PlayMode: 1
     Clips:
-    - clip: {fileID: 8300000, guid: 012138ca46657d94e81813f05a33ed52, type: 2}
+    - clip: {fileID: 8300000, guid: 012138ca46657d94e81813f05a33ed52, type: 3}
       voice: 0
       Volume:
         Value: 1
@@ -12888,14 +12888,14 @@ MonoBehaviour:
   fadeTime: 1
   timeScalePitchAmount: 0.5
   oneShotAmbients:
-  - {fileID: 8300000, guid: 42eb54e2040fc41479f12b6aa23c7d6e, type: 2}
-  - {fileID: 8300000, guid: 119fd1330aabe9e4ea793c5db5de0968, type: 2}
+  - {fileID: 8300000, guid: 42eb54e2040fc41479f12b6aa23c7d6e, type: 3}
+  - {fileID: 8300000, guid: 119fd1330aabe9e4ea793c5db5de0968, type: 3}
   - {fileID: 8300000, guid: ede87ba758766ed4c894e86a016c014f, type: 3}
-  - {fileID: 8300000, guid: 853d9ec722789454391f3e254419644c, type: 2}
-  - {fileID: 8300000, guid: b066c79eeca38cb4692a802040adabc8, type: 2}
-  - {fileID: 8300000, guid: 119fd1330aabe9e4ea793c5db5de0968, type: 2}
+  - {fileID: 8300000, guid: 853d9ec722789454391f3e254419644c, type: 3}
+  - {fileID: 8300000, guid: b066c79eeca38cb4692a802040adabc8, type: 3}
+  - {fileID: 8300000, guid: 119fd1330aabe9e4ea793c5db5de0968, type: 3}
   - {fileID: 8300000, guid: a5c6979bffda22b4bbd39d22b9742ddf, type: 3}
-  - {fileID: 8300000, guid: 76028e3f5acefcb449d7c3dd3fbffc07, type: 2}
+  - {fileID: 8300000, guid: 76028e3f5acefcb449d7c3dd3fbffc07, type: 3}
   - {fileID: 8300000, guid: ede87ba758766ed4c894e86a016c014f, type: 3}
   - {fileID: 8300000, guid: cdd18f6c9a459be459262afff023b5f1, type: 3}
   - {fileID: 8300000, guid: 07814276ad483d44b9b486e85fc52aef, type: 3}

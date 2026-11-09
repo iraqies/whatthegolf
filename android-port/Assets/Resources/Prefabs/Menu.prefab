@@ -34285,7 +34285,7 @@ MonoBehaviour:
         max: 0
     PlayMode: 0
     Clips:
-    - clip: {fileID: 8300000, guid: 20b17abf7050df4459a2a4c5921414e9, type: 2}
+    - clip: {fileID: 8300000, guid: 20b17abf7050df4459a2a4c5921414e9, type: 3}
       voice: 0
       Volume:
         Value: 1

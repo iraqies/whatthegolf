@@ -26,7 +26,7 @@ public class SmartCarAgent : MonoBehaviour
 
 	private void Awake()
 	{
-		IgnoreLayers = (int)IgnoreLayers | gameObject.layer;
+		IgnoreLayers = (int)IgnoreLayers | (1 << gameObject.layer);
 		rigid = GetComponent<Rigidbody>();
 		if (rigid != null)
 			rigid.useGravity = false;

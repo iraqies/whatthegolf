@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Chronos;
 using UnityEngine;
 
@@ -30,10 +31,10 @@ public class WindArea2D : MonoBehaviour
 	public bool isUsingTargetAsGravity;
 	public Transform gravityTarget;
 	public bool isMinimizingDrag;
-	public float inZoneDragMultiplier = 1f;
+	public float inZoneDragMultiplier = 0.3f;
 	public float OverrideDragValue;
 	public float OverrideMassValue;
-	public int inAirShots;
+	public int inAirShots = 1;
 	public bool playGravitySwitchSfxOnBall;
 	public List<SpecialCaseWind> SpecialCases;
 	private List<RigidbodyAdded> added = new List<RigidbodyAdded>();
@@ -41,7 +42,7 @@ public class WindArea2D : MonoBehaviour
 	private float baseBallDrag;
 	private float baseBallMass;
 	private float targetDrag;
-	private List<Timeline> destroyedTimelines;
+	private List<Timeline> destroyedTimelines = new List<Timeline>();
 
 	private void Awake()
 	{
@@ -51,15 +52,52 @@ public class WindArea2D : MonoBehaviour
 
 	private IEnumerator Start()
 	{
-		yield break;
+		yield return null;
+		if (OverworldBallManager.Instance != null)
+		{
+			OverworldBallManager.Instance.OnNewBall -= Instance_OnNewBall;
+			OverworldBallManager.Instance.OnNewBall += Instance_OnNewBall;
+			if (OverworldBallManager.Instance.CurrentBall != null)
+			{
+				var rb = OverworldBallManager.Instance.CurrentBall.GetComponent<Rigidbody2D>();
+				if (rb != null)
+				{
+					baseBallDrag = rb.drag;
+					baseBallMass = rb.mass;
+				}
+				OverworldBallManager.Instance.CurrentBall.OnDisabled -= Ball_OnDisabled;
+				OverworldBallManager.Instance.CurrentBall.OnDisabled += Ball_OnDisabled;
+			}
+		}
 	}
 
 	private void Ball_OnDisabled(OverworldBall2D ball)
 	{
+		if (ball == null) return;
+		var rb = ball.GetComponent<Rigidbody2D>();
+		if (rb != null && added != null)
+			added.RemoveAll(r => r != null && r.rigidbody == rb);
+		var tl = ball.GetComponent<Timeline>();
+		if (tl != null && addedTimelines != null)
+			addedTimelines.RemoveAll(t => t != null && t.timeline == tl);
+		var grav = ball.GetComponent<OverworldBallInGravityHelper>();
+		if (grav != null)
+			grav.ExitGravityZone(this);
 	}
 
 	private void Instance_OnNewBall(Transmogrif.BALLSHAPES newShape)
 	{
+		if (OverworldBallManager.Instance != null && OverworldBallManager.Instance.CurrentBall != null)
+		{
+			var rb = OverworldBallManager.Instance.CurrentBall.GetComponent<Rigidbody2D>();
+			if (rb != null)
+			{
+				baseBallDrag = rb.drag;
+				baseBallMass = rb.mass;
+			}
+			OverworldBallManager.Instance.CurrentBall.OnDisabled -= Ball_OnDisabled;
+			OverworldBallManager.Instance.CurrentBall.OnDisabled += Ball_OnDisabled;
+		}
 	}
 
 	private Vector2 GetWindForce(Vector2 from)
@@ -74,21 +112,51 @@ public class WindArea2D : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		if (added == null || added.Count == 0)
-			return;
-		for (int i = added.Count - 1; i >= 0; i--)
+		if (added != null)
 		{
-			var item = added[i];
-			if (item == null || item.rigidbody == null)
+			for (int i = added.Count - 1; i >= 0; i--)
 			{
-				added.RemoveAt(i);
-				continue;
+				var item = added[i];
+				if (item == null || item.rigidbody == null)
+				{
+					added.RemoveAt(i);
+					continue;
+				}
+				item.rigidbody.AddForce(GetWindForce(item.rigidbody.position) * item.forceRatio, ForceMode);
 			}
-			item.rigidbody.AddForce(GetWindForce(item.rigidbody.position) * item.forceRatio, ForceMode);
+		}
+		if (addedTimelines != null)
+		{
+			for (int i = addedTimelines.Count - 1; i >= 0; i--)
+			{
+				var item = addedTimelines[i];
+				if (item == null || item.timeline == null || item.timeline.rigidbody2D == null)
+				{
+					addedTimelines.RemoveAt(i);
+					continue;
+				}
+				Vector2 pos = item.timeline.transform.position;
+				item.timeline.rigidbody2D.AddForce(GetWindForce(pos) * item.forceRatio, ForceMode);
+				if (OverrideDragValue != 0f)
+					item.timeline.rigidbody2D.drag = OverrideDragValue;
+				else if (isMinimizingDrag && targetDrag > 0f)
+					item.timeline.rigidbody2D.drag = targetDrag;
+				if (OverrideMassValue != 0f)
+					item.timeline.rigidbody2D.mass = OverrideMassValue;
+			}
 		}
 	}
 
-	private bool IsAdded(Timeline timeline) => false;
+	private bool IsAdded(Timeline timeline)
+	{
+		if (addedTimelines == null || timeline == null) return false;
+		for (int i = 0; i < addedTimelines.Count; i++)
+		{
+			if (addedTimelines[i] != null && addedTimelines[i].timeline == timeline)
+				return true;
+		}
+		return false;
+	}
 
 	private bool IsAdded(Rigidbody2D rigidbody)
 	{
@@ -103,44 +171,91 @@ public class WindArea2D : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D other)
 	{
-		if (other == null) return;
-		var rb = other.attachedRigidbody ?? other.GetComponent<Rigidbody2D>();
-		if (rb != null && !IsAdded(rb))
+		if (other == null || other.attachedRigidbody == null) return;
+		if (other.attachedRigidbody.isKinematic && !other.CompareTag("Player")) return;
+
+		float ratio = 1f;
+		if (SpecialCases != null)
 		{
-			float ratio = 1f;
-			if (SpecialCases != null)
-			{
-				int mask = 1 << other.gameObject.layer;
-				for (int i = 0; i < SpecialCases.Count; i++)
-				{
-					if (SpecialCases[i] != null && (SpecialCases[i].Layer.value & mask) != 0)
-						ratio *= SpecialCases[i].ForceMod;
-				}
-			}
-			added.Add(new RigidbodyAdded { rigidbody = rb, forceRatio = ratio });
+			int mask = 1 << other.gameObject.layer;
+			var sc = SpecialCases.FirstOrDefault(s => s != null && (s.Layer.value & mask) != 0);
+			if (sc != null)
+				ratio = sc.ForceMod;
 		}
+
+		var tl = other.GetComponent<Timeline>() ?? other.attachedRigidbody.GetComponent<Timeline>();
+		if (tl != null)
+		{
+			if (!IsAdded(tl))
+			{
+				if (baseBallDrag <= 0f && other.attachedRigidbody != null)
+					baseBallDrag = other.attachedRigidbody.drag;
+				if (baseBallMass <= 0f && other.attachedRigidbody != null)
+					baseBallMass = other.attachedRigidbody.mass;
+				if (isMinimizingDrag)
+				{
+					targetDrag = baseBallDrag * inZoneDragMultiplier;
+					if (tl.rigidbody2D != null)
+						tl.rigidbody2D.drag = targetDrag;
+				}
+				else
+				{
+					targetDrag = baseBallDrag;
+				}
+				addedTimelines.Add(new TimelineAdded { timeline = tl, forceRatio = ratio });
+			}
+		}
+		else if (!IsAdded(other.attachedRigidbody))
+		{
+			added.Add(new RigidbodyAdded { rigidbody = other.attachedRigidbody, forceRatio = ratio });
+		}
+
+		var grav = other.attachedRigidbody.GetComponent<OverworldBallInGravityHelper>();
+		if (grav != null)
+			grav.EnterGravityZone(this, inAirShots);
+
+		if (OverrideDragValue != 0f && other.attachedRigidbody != null)
+			other.attachedRigidbody.drag = OverrideDragValue;
 	}
 
 	private IEnumerator DelayedDrag(RigidbodyTimeline2D rigid)
 	{
-		yield break;
+		yield return null;
+		if (rigid != null)
+		{
+			baseBallDrag = rigid.drag;
+			targetDrag = baseBallDrag * inZoneDragMultiplier;
+			rigid.drag = targetDrag;
+		}
 	}
 
 	private void OnDisable()
 	{
-		if (added != null)
-			added.Clear();
+		added?.Clear();
+		addedTimelines?.Clear();
 	}
 
 	private void OnTriggerExit2D(Collider2D other)
 	{
-		if (other == null || added == null) return;
-		var rb = other.attachedRigidbody ?? other.GetComponent<Rigidbody2D>();
-		if (rb == null) return;
-		for (int i = added.Count - 1; i >= 0; i--)
+		if (other == null || other.attachedRigidbody == null || other.attachedRigidbody.isKinematic) return;
+		if (added != null)
+			added.RemoveAll(r => r != null && r.rigidbody == other.attachedRigidbody);
+		var tl = other.GetComponent<Timeline>() ?? other.attachedRigidbody.GetComponent<Timeline>();
+		if (tl != null)
 		{
-			if (added[i] != null && added[i].rigidbody == rb)
-				added.RemoveAt(i);
+			if (isMinimizingDrag && baseBallDrag > 0f && tl.rigidbody2D != null)
+			{
+				tl.rigidbody2D.drag = baseBallDrag;
+				targetDrag = baseBallDrag;
+			}
+			addedTimelines?.RemoveAll(t => t != null && t.timeline == tl);
 		}
+		var grav = other.attachedRigidbody.GetComponent<OverworldBallInGravityHelper>();
+		if (grav != null)
+			grav.ExitGravityZone(this);
+		if (OverrideDragValue != 0f && baseBallDrag > 0f)
+			other.attachedRigidbody.drag = baseBallDrag;
+		if (OverrideMassValue != 0f && baseBallMass > 0f)
+			other.attachedRigidbody.mass = baseBallMass;
 	}
 }

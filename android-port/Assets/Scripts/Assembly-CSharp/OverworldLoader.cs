@@ -61,6 +61,7 @@ public class OverworldLoader : MonoBehaviour
 
 		bool finishedTunnel = false;
 		bool canFinishSwitch = true;
+		bool startedSplash = false;
 		if (tunnel != null)
 		{
 			var routine = tunnel.PlayAnimationRoutine(
@@ -79,8 +80,11 @@ public class OverworldLoader : MonoBehaviour
 				() =>
 				{
 					bool ready = IsOverworldReadyToActivate();
-					if (ready)
+					if (ready && !startedSplash)
+					{
+						startedSplash = true;
 						StartCoroutine(LogoSplashRoutine());
+					}
 					return ready;
 				}
 			);

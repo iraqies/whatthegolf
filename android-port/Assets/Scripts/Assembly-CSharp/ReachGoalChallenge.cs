@@ -12,15 +12,24 @@ public class ReachGoalChallenge : Challenge
 
 	public override string GetDescription()
 	{
-		return null;
+		string key = !string.IsNullOrEmpty(DescriptionLocalizationId) ? DescriptionLocalizationId : "ID_CHALLENGE_DESC_REACH_GOAL";
+		return Localization.Instance != null ? Localization.Instance.GetString(key) : key;
 	}
 
 	public override string GetWinMessageID()
 	{
-		return null;
+		return !string.IsNullOrEmpty(WinMessageLocalizationId) ? WinMessageLocalizationId : "ID_WIN_MESSAGE_CHALLENGE";
 	}
 
 	public override void OnLevelComplete(Level.CompletedState completedState)
 	{
+		if (CompleteAfterDelay)
+		{
+			StartCoroutine(pTween.To(delay, _ => { }).Then(Complete));
+		}
+		else
+		{
+			Complete();
+		}
 	}
 }

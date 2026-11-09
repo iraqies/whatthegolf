@@ -13,17 +13,17 @@ namespace Audio
 
 		public AudioClip clip;
 
-		public float baseTimeInterval;
+		public float baseTimeInterval = 0.2f;
 
-		public int baseNote;
+		public int baseNote = 60;
 
 		public bool ascendingOnEachPlay;
 
-		public int minStartNote;
+		public int minStartNote = -1;
 
-		public int maxStartNote;
+		public int maxStartNote = 4;
 
-		public int StopOnIncrement;
+		public int StopOnIncrement = -1;
 
 		public MusicMathUtils.Scale scale;
 
@@ -41,38 +41,107 @@ namespace Audio
 
 		public bool isPlaying { get; private set; }
 
-		public float speedMultiplier { get; set; }
+		public float speedMultiplier { get; set; } = 1f;
 
 		public int m_NoteIncrement { get; private set; }
 
 		private void Start()
 		{
+			scheduler = new ScheduleAudio(transform);
+			m_NoteIncrement = minStartNote;
+			init = true;
 		}
 
 		public void StartScheduleLoop()
 		{
+			int startNote;
+			if (ascendingOnEachPlay)
+			{
+				m_IncrementPerPlay++;
+				int range = Mathf.Max(1, maxStartNote - minStartNote);
+				m_IncrementPerPlay %= range;
+				startNote = minStartNote + m_IncrementPerPlay;
+			}
+			else
+			{
+				startNote = Random.Range(minStartNote, maxStartNote);
+			}
+			m_BaseNote = startNote;
+			m_NoteIncrement = 0;
+			isPlaying = true;
 		}
 
 		public void StopScheduleLoop()
 		{
+			isPlaying = false;
 		}
 
 		private void FixedUpdate()
 		{
+			if (!isPlaying) return;
+			float interval = baseTimeInterval;
+			float lookahead = interval - 0.1f;
+			if (Time.fixedTime <= nextEventTime - lookahead)
+				return;
+
+			float spd = Mathf.Max(0.1f, speedMultiplier);
+			nextEventTime = Time.fixedTime + lookahead + interval / spd;
+
+			int noteIdx = m_BaseNote + (playMode == PlayMode.Descending ? -m_NoteIncrement : m_NoteIncrement);
+			int midiNote = ReturnNote(noteIdx);
+			float pitch = MusicMathUtils.MidiNoteToPitch(midiNote, 60);
+
+			if (scheduler != null && clip != null)
+			{
+				scheduler.ScheduleNew(clip, AudioSettings.dspTime + (double)lookahead, src =>
+				{
+					if (src != null) src.pitch = pitch;
+				});
+			}
+
+			m_NoteIncrement++;
+			if (StopOnIncrement >= 0 && m_NoteIncrement == StopOnIncrement)
+				isPlaying = false;
 		}
 
 		private int NoteByPlaymode()
 		{
+			if (playMode == PlayMode.Ascending)
+				return ReturnNote(m_BaseNote + m_NoteIncrement);
+			if (playMode == PlayMode.Descending)
+				return ReturnNote(m_BaseNote - m_NoteIncrement);
 			return 0;
 		}
 
 		private int ReturnNote(int index)
 		{
-			return 0;
+			int[] notes = MusicMathUtils.ReturnScaleNotes(scale);
+			if (notes == null || notes.Length == 0)
+				return baseNote + index;
+			int octave = 0;
+			while (index < 0)
+			{
+				index += notes.Length;
+				octave--;
+			}
+			while (index >= notes.Length)
+			{
+				index -= notes.Length;
+				octave++;
+			}
+			return baseNote + octave * 12 + notes[index];
 		}
 
 		public void SetVolume(float v)
 		{
+			if (scheduler != null && scheduler.sources != null)
+			{
+				for (int i = 0; i < scheduler.sources.Length; i++)
+				{
+					if (scheduler.sources[i] != null)
+						scheduler.sources[i].volume = v;
+				}
+			}
 		}
 	}
 }

@@ -82,8 +82,6 @@ public class LevelManager : AddressableSingleton<LevelManager>
 			onAbort?.Invoke();
 			yield break;
 		}
-		if (!string.IsNullOrEmpty(challengeID))
-			m_ChallengeSelected?.Invoke(challengeID);
 
 		currentLevel = levelData;
 		bool onTheSide = levelData.GetWindowType() == LevelData.WindowType.TwoD;
@@ -137,8 +135,9 @@ public class LevelManager : AddressableSingleton<LevelManager>
 			if (shouldLoadScene)
 			{
 				yield return StartCoroutine(LoadLevel(levelData, discardLoadedScenes, l => loadedLevel = l, multiplayerConfiguration));
-				onLevelLoaded?.Invoke(levelData);
 				m_OnLevelLoaded?.Invoke(levelData);
+				onLevelLoaded?.Invoke(levelData);
+				m_ChallengeSelected?.Invoke(challengeID);
 			}
 			else if (loadedLevel != null)
 			{

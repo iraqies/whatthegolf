@@ -44,15 +44,23 @@ public class FollowTransform : MonoBehaviour
 	private Vector3 GetPosition()
 	{
 		if (Target == null) return transform.position;
-		Vector3 offset = TransformPositionOffset ? Target.TransformVector(PositionOffset) : PositionOffset;
-		Vector3 targetPos = Target.position + offset;
 		Vector3 cur = transform.position;
-		Vector3 next = new Vector3(
-			FollowAxis.x != 0f ? targetPos.x : cur.x,
-			FollowAxis.y != 0f ? targetPos.y : cur.y,
-			FollowAxis.z != 0f ? targetPos.z : cur.z
+		Vector3 tpos = Target.position;
+		Vector3 scaledTarget = new Vector3(tpos.x * FollowAxis.x, tpos.y * FollowAxis.y, tpos.z * FollowAxis.z);
+		Vector3 off = PositionOffset;
+		if (TransformPositionOffset)
+			off = Target.InverseTransformDirection(PositionOffset);
+		else if (InverseTransformPositionOffset)
+			off = Target.TransformDirection(PositionOffset);
+		Vector3 desired = scaledTarget + off;
+		Vector3 moved = Vector3.MoveTowards(cur, desired, Time.deltaTime * FollowSpeed);
+		if (HeightRange.x != 0f || HeightRange.y != 0f)
+			moved.y = Mathf.Clamp(moved.y, HeightRange.x, HeightRange.y);
+		return new Vector3(
+			FollowAxis.x != 0f ? moved.x : cur.x,
+			FollowAxis.y != 0f ? moved.y : cur.y,
+			FollowAxis.z != 0f ? moved.z : cur.z
 		);
-		return FollowSpeed > 0f ? Vector3.Lerp(cur, next, Time.deltaTime * FollowSpeed) : next;
 	}
 
 	private Quaternion GetRotation()

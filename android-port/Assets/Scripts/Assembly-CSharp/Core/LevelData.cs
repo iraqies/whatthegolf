@@ -96,10 +96,10 @@ namespace Core
 
 		public bool IsCompletedInSaveGame
 		{
-			get => SaveGame.GetIsLevelCompleted(GetID());
+			get => SaveGame.GetIsLevelCompleted(!string.IsNullOrEmpty(ID) ? ID : GetID());
 			set
 			{
-				if (value) SaveGame.SetLevelCompleted(GetID());
+				if (value) SaveGame.SetLevelCompleted(!string.IsNullOrEmpty(ID) ? ID : GetID());
 			}
 		}
 
@@ -119,17 +119,37 @@ namespace Core
 		public void HandleSceneDataUpdate(Dictionary<string, float> data) { }
 		public void DeleteData() { }
 		public WindowType GetWindowType() => window;
-		public string GetID() => !string.IsNullOrEmpty(ID) ? ID : name;
+		public string GetID()
+		{
+			if (string.IsNullOrEmpty(convertedLevelId))
+				convertedLevelId = "LEVEL_" + (name ?? string.Empty).Trim().ToUpperInvariant().Replace(' ', '_');
+			return convertedLevelId;
+		}
 		public string GetCompletionTextID() => !string.IsNullOrEmpty(completionID) ? completionID : CompletionText;
 		public string GetWeightID() => GetID() + "_WEIGHT";
 		public List<string> GetChallengeLocalizationIDs() => levelChallenges != null ? levelChallenges.Select(c => c.LocalizationID).ToList() : new List<string>();
 		public bool HasCompletedAllChallenges()
 		{
-			var ids = LevelChallengeIds();
-			if (ids.Count == 0) return IsCompletedInSaveGame;
-			return CompletedChallenges.Count >= ids.Count;
+			if (levelChallenges == null || levelChallenges.Count == 0)
+				return true;
+			var completed = CompletedChallenges;
+			return levelChallenges.All(t => t == null || string.IsNullOrEmpty(t.ID) || (completed != null && completed.Contains(t.ID)));
 		}
-		public int GetCurrentChallengeIndex() => CompletedChallenges.Count;
+		public int GetCurrentChallengeIndex()
+		{
+			if (!IsCompletedInSaveGame)
+				return 0;
+			if (levelChallenges == null || levelChallenges.Count == 0)
+				return -1;
+			var completed = CompletedChallenges;
+			for (int i = 0; i < levelChallenges.Count; i++)
+			{
+				var ch = levelChallenges[i];
+				if (ch != null && !string.IsNullOrEmpty(ch.ID) && (completed == null || !completed.Contains(ch.ID)))
+					return i + 1;
+			}
+			return -1;
+		}
 		public void ZeroWeight() { }
 		public void IncrementWeight() { }
 		public void DeleteWeight() { }

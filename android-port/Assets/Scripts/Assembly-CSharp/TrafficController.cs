@@ -202,7 +202,8 @@ public class TrafficController : MonoBehaviour
 		if (chosenCar == null) return;
 
 		Vector3 spawnPos;
-		int carLayer = LayerMask.NameToLayer("Car");
+		int carLayer = LayerMask.NameToLayer("Car (OW Low)");
+		if (carLayer < 0) carLayer = LayerMask.NameToLayer("Car");
 		int carLayerMask = carLayer >= 0 ? (1 << carLayer) : 0;
 
 		if (prePopulate)

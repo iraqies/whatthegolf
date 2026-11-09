@@ -67,7 +67,37 @@ public static class WTGAndroidBuilder
 			else
 				PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
 
-			AssetDatabase.Refresh();
+			AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+
+			const string iconAssetPath = "Assets/Resources/AppIcon.png";
+			if (File.Exists(iconAssetPath))
+			{
+				AssetDatabase.ImportAsset(iconAssetPath, ImportAssetOptions.ForceSynchronousImport);
+				TextureImporter ti = AssetImporter.GetAtPath(iconAssetPath) as TextureImporter;
+				if (ti != null)
+				{
+					ti.textureType = TextureImporterType.Default;
+					ti.isReadable = true;
+					ti.alphaIsTransparency = true;
+					ti.mipmapEnabled = false;
+					ti.npotScale = TextureImporterNPOTScale.None;
+					ti.SaveAndReimport();
+				}
+				Texture2D appIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(iconAssetPath);
+				if (appIcon != null)
+				{
+					PlayerSettings.SetIconsForTargetGroup(BuildTargetGroup.Unknown, new Texture2D[] { appIcon });
+					int[] iconSizes = PlayerSettings.GetIconSizesForTargetGroup(BuildTargetGroup.Android);
+					if (iconSizes != null && iconSizes.Length > 0)
+					{
+						Texture2D[] androidIcons = new Texture2D[iconSizes.Length];
+						for (int i = 0; i < iconSizes.Length; i++)
+							androidIcons[i] = appIcon;
+						PlayerSettings.SetIconsForTargetGroup(BuildTargetGroup.Android, androidIcons);
+					}
+					Debug.Log("[WTGAndroidBuilder] Applied original WHAT THE GOLF? AppIcon.png to PlayerSettings.");
+				}
+			}
 
 			var scenes = EditorBuildSettings.scenes
 				.Where(s => s != null && s.enabled && File.Exists(s.path))

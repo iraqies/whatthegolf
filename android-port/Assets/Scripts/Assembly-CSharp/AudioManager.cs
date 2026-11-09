@@ -271,13 +271,30 @@ public class AudioManager : MonoBehaviour
 
 	public static void SetMusicGain(float volume)
 	{
-		if (Instance != null && Instance.music != null)
-			Instance.music.SetUserVolume(volume);
+		float clamped = Mathf.Clamp01(volume);
+		if (Instance != null)
+		{
+			if (Instance.music != null)
+				Instance.music.SetUserVolume(clamped);
+			if (Instance.musicMixer != null)
+			{
+				float dB = AudioUtility.LinearToDecibel(clamped, -80f);
+				Instance.musicMixer.SetFloat("MSiwOwH", dB);
+				Instance.musicMixer.SetFloat(Music_Volume, dB);
+			}
+		}
 	}
 
 	public static void SetSoundGain(float volume)
 	{
-		AudioListener.volume = Mathf.Clamp01(volume);
+		float clamped = Mathf.Clamp01(volume);
+		AudioListener.volume = 1f;
+		if (Instance != null && Instance.sfxMixer != null)
+		{
+			float dB = AudioUtility.LinearToDecibel(clamped, -80f);
+			Instance.sfxMixer.SetFloat("hwllJLL", dB);
+			Instance.sfxMixer.SetFloat(SFX_Volume, dB);
+		}
 	}
 
 	public void SetMixerSnapshot(AudioMixerSnapshot snapshot, float time = 0.4f)

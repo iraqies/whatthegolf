@@ -93,6 +93,12 @@ public class GridFiller : GolfBehaviour
 	public Tilemap currentGroundMap => currentTileMap != null && currentTileMap.ground != null ? currentTileMap.ground : groundMap;
 	public Rigidbody2D currentRigid => currentTileMap != null ? currentTileMap.GetComponent<Rigidbody2D>() : GetComponentInChildren<Rigidbody2D>();
 
+	private void Awake()
+	{
+		ShowGridAndDecorationsOnly();
+		ActivateOnlyNeededTilemap();
+	}
+
 	public void Init()
 	{
 		if (AllRenders == null || AllRenders.Count == 0)
@@ -175,8 +181,45 @@ public class GridFiller : GolfBehaviour
 	public void CreateCompositeCollider(GameObject target) { }
 	private TileBase CheckSectionsForTile(Vector3Int pos) => null;
 	private bool CheckTile(TileMapData tiles, Vector3Int tilePos, HubSection currentSection, bool isRotated) => false;
-	public bool IsTileTarget(Vector3Int pos) => false;
-	public bool IsTileTarget(TileMapData tiles, Vector3Int pos) => false;
+
+	public bool IsTileTarget(Vector3Int pos)
+	{
+		if (tileMaps != null && tileMaps.Count > 0)
+		{
+			bool any = false;
+			for (int i = 0; i < tileMaps.Count; i++)
+			{
+				if (IsTileTarget(tileMaps[i], pos))
+					any = true;
+			}
+			if (any)
+				return true;
+		}
+		Tilemap gMap = currentGroundMap;
+		if (gMap != null && gMap.GetTile(pos) != null)
+			return true;
+		return false;
+	}
+
+	public bool IsTileTarget(TileMapData tiles, Vector3Int pos)
+	{
+		if (tiles == null) return false;
+		Tilemap gMap = currentGroundMap;
+		if (gMap != null)
+		{
+			TileBase t = gMap.GetTile(pos);
+			if (t != null && (t == tiles.targetTile || t == tiles.targetTileAlt))
+				return true;
+		}
+		if (hubBlueprint != null)
+		{
+			TileBase bt = hubBlueprint.GetTile(pos);
+			if (bt != null && (bt == tiles.targetTile || bt == tiles.targetTileAlt))
+				return true;
+		}
+		return false;
+	}
+
 	public bool IsRound(TileMapData tiles, TileBase tile) => false;
 	public bool IsTileTargetOrDiagonalOrRound(TileMapData tiles, TileBase tile) => false;
 	public bool IsTileTargetOrOrRound(TileMapData tiles, TileBase tile) => false;

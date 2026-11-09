@@ -744,17 +744,61 @@ public class OverworldManager2d : GolfBehaviour
 	private Vector3 GetSafeBallPosition(OverworldGoal goal, Vector3 hitPos)
 	{
 		if (goal == null) return hitPos;
+		if (gridfiller != null && gridfiller.currentGroundMap != null)
+		{
+			Tilemap gMap = gridfiller.currentGroundMap;
+			Vector3 goalPos = goal.transform.position;
+			Vector3Int goalCell = gMap.WorldToCell(goalPos);
+			Vector3Int left = goalCell + new Vector3Int(-1, 0, 0);
+			Vector3Int right = goalCell + new Vector3Int(1, 0, 0);
+			Vector3Int down = goalCell + new Vector3Int(0, -1, 0);
+			Vector3Int up = goalCell + new Vector3Int(0, 1, 0);
+
+			var candidates = new List<Vector3Int>();
+			if (hitPos.x > goalPos.x)
+			{
+				candidates.Add(right);
+				candidates.Add(left);
+			}
+			else
+			{
+				candidates.Add(left);
+				candidates.Add(right);
+			}
+			if (hitPos.y > goalPos.y)
+			{
+				candidates.Add(up);
+				candidates.Add(down);
+			}
+			else
+			{
+				candidates.Add(down);
+				candidates.Add(up);
+			}
+
+			Vector3 cellSize = gridfiller.groundMap != null ? gridfiller.groundMap.cellSize : gMap.cellSize;
+			foreach (var cell in candidates)
+			{
+				if (gridfiller.IsTileTarget(cell))
+				{
+					Vector3 wp = gMap.CellToWorld(cell);
+					return new Vector3(wp.x + cellSize.x * 0.5f, wp.y + cellSize.x * 0.5f, 0f);
+				}
+			}
+		}
+
 		Vector3 dir = (hitPos - goal.transform.position).normalized;
 		if (dir.sqrMagnitude < 1e-4f) dir = Vector3.down;
-		return goal.transform.position + dir * 1.5f;
+		Vector3 gp = goal.transform.position;
+		return new Vector3(gp.x + dir.x * 0.35f, gp.y + dir.y * 0.35f, 0f);
 	}
 
 	private void StopBallNextToFlag(OverworldGoal goal, Vector3 hitPos)
 	{
+		ballStartPosition = GetSafeBallPosition(goal, hitPos);
 		if (ball != null)
 		{
-			ball.StopBall(false);
-			ball.transform.position = GetSafeBallPosition(goal, hitPos);
+			ball.StopAndSleep();
 		}
 	}
 

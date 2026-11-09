@@ -264,9 +264,14 @@ public class SpeechBubbleUI : MonoBehaviour
 
 	private Vector2 GetArrowPositionOnBubble(Vector2 arrowPosition_local, Vector2 bubblePosition, Vector2 targetSize)
 	{
-		Vector2 safeSize = new Vector2(Mathf.Max(0.01f, targetSize.x), Mathf.Max(0.01f, targetSize.y));
-		Vector2 normalized = (arrowPosition_local - bubblePosition) / safeSize * 2f;
-		return OnUnitBox(normalized) * (safeSize * 0.5f - arrowOffset) + bubblePosition;
+		float halfW = Mathf.Max(0.01f, targetSize.x * 0.5f * 0.7f);
+		float halfH = Mathf.Max(0.01f, targetSize.y * 0.5f * 0.7f);
+		Vector2 inBubbleSpace = new Vector2((arrowPosition_local.x - bubblePosition.x) / halfW, (arrowPosition_local.y - bubblePosition.y) / halfH);
+		Vector2 normDir = inBubbleSpace.normalized;
+		Vector2 unitBox = OnUnitBox(normDir * 2f);
+		Vector2 pCircle = new Vector2(normDir.x * halfW, normDir.y * halfH);
+		Vector2 pBox = new Vector2(unitBox.x * halfW, unitBox.y * halfH);
+		return bubblePosition + Vector2.Lerp(pCircle, pBox, 1f);
 	}
 
 	private Vector2 OnUnitBox(Vector2 dir)

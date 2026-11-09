@@ -44,12 +44,15 @@ public class TunnelToOverworld : MonoBehaviour
 		if (piperollSource != null)
 			piperollSource.Play();
 		if (followCamera != null && ballTransform != null)
+		{
 			currentOffset = followCamera.transform.position - ballTransform.position;
-		StartCoroutine(pTween.To(1.5f, 0f, 1f, t2 =>
+		}
+		Vector3 startOffset = currentOffset;
+		StartCoroutine(pTween.To(1.5f, t2 =>
 		{
 			if (BallFollower != null)
-				BallFollower.PositionOffset = new Vector3(0f, Mathf.Sin(t2 * Mathf.PI * 0.5f), 1f);
-			currentOffset = Vector3.Lerp(currentOffset, offset, Mathf.Clamp01(t2));
+				BallFollower.FollowAxis = new Vector3(0f, Mathf.Sin(t2 * Mathf.PI * 0.5f), 1f);
+			currentOffset = Vector3.Lerp(startOffset, offset, Mathf.Clamp01(t2));
 		}));
 	}
 

@@ -204,13 +204,14 @@ public class OverworldButton2D : GolfBehaviour
 			}
 			if (DoorBubbleTransform != null)
 			{
-				Vector3 cornerDir = isTilted ? new Vector3(-1f, 0f, 0f) : new Vector3(1f, 0f, 0f);
+				Vector3 cornerDir = isTilted ? new Vector3(1f, -1f, 0f) : new Vector3(1f, 1f, 0f);
 				DoorBubbleTransform.position = door.GetCornerInThatDirection(cornerDir) - Vector3.forward;
 				float bubbleZRot = isTilted ? (transform.localEulerAngles.z + 270f) : 0f;
 				DoorBubbleTransform.localRotation = Quaternion.Euler(0f, 0f, bubbleZRot);
 				doorBubble = DoorBubbleTransform.gameObject.GetComponent<DoorBubble>();
-				if (doorBubble != null)
-					doorBubble.Init();
+				if (doorBubble == null)
+					doorBubble = DoorBubbleTransform.gameObject.AddComponent<DoorBubble>();
+				doorBubble.Init();
 			}
 			if (openIndicator != null)
 			{

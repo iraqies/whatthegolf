@@ -11069,7 +11069,7 @@ MonoBehaviour:
   endCircleTransform: {fileID: 4707028937131035}
   endCircleRenderer: {fileID: 23163605978837200}
   transitionClips:
-  - {fileID: 8300000, guid: be16fb1399c7d614d8c3b17bf488bf9d, type: 2}
+  - {fileID: 8300000, guid: be16fb1399c7d614d8c3b17bf488bf9d, type: 3}
 --- !u!4 &4707028937131035
 Transform:
   m_ObjectHideFlags: 0
@@ -15193,7 +15193,7 @@ MonoBehaviour:
         max: 0
     PlayMode: 0
     Clips:
-    - clip: {fileID: 8300000, guid: be16fb1399c7d614d8c3b17bf488bf9d, type: 2}
+    - clip: {fileID: 8300000, guid: be16fb1399c7d614d8c3b17bf488bf9d, type: 3}
       voice: 0
       Volume:
         Value: 0
@@ -15220,7 +15220,7 @@ MonoBehaviour:
         max: 0
     PlayMode: 0
     Clips:
-    - clip: {fileID: 8300000, guid: be16fb1399c7d614d8c3b17bf488bf9d, type: 2}
+    - clip: {fileID: 8300000, guid: be16fb1399c7d614d8c3b17bf488bf9d, type: 3}
       voice: 0
       Volume:
         Value: 0
@@ -22417,7 +22417,7 @@ MonoBehaviour:
         m_MethodName: PlayOneShot
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: c58f3fbb35d04b841be55d8412457a51, type: 2}
+          m_ObjectArgument: {fileID: 8300000, guid: c58f3fbb35d04b841be55d8412457a51, type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -22711,7 +22711,7 @@ MonoBehaviour:
         m_MethodName: PlayOneShot
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: c58f3fbb35d04b841be55d8412457a51, type: 2}
+          m_ObjectArgument: {fileID: 8300000, guid: c58f3fbb35d04b841be55d8412457a51, type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -23020,7 +23020,7 @@ MonoBehaviour:
         m_MethodName: PlayOneShot
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: c58f3fbb35d04b841be55d8412457a51, type: 2}
+          m_ObjectArgument: {fileID: 8300000, guid: c58f3fbb35d04b841be55d8412457a51, type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -24031,7 +24031,7 @@ MonoBehaviour:
     nonRepeating: 0
     playInOrder: 0
     clips:
-    - {fileID: 8300000, guid: d55698cbc93c9f947abd63c9c5b52860, type: 2}
+    - {fileID: 8300000, guid: d55698cbc93c9f947abd63c9c5b52860, type: 3}
     collection:
       Volume:
         Value: 1
@@ -24069,7 +24069,7 @@ MonoBehaviour:
     delay: 0
     reverse: 0
     voice: 0
-  DisappearClip: {fileID: 8300000, guid: be16fb1399c7d614d8c3b17bf488bf9d, type: 2}
+  DisappearClip: {fileID: 8300000, guid: be16fb1399c7d614d8c3b17bf488bf9d, type: 3}
 --- !u!224 &224653046042846128
 RectTransform:
   m_ObjectHideFlags: 0
@@ -24385,7 +24385,7 @@ MonoBehaviour:
     nonRepeating: 0
     playInOrder: 0
     clips:
-    - {fileID: 8300000, guid: d55698cbc93c9f947abd63c9c5b52860, type: 2}
+    - {fileID: 8300000, guid: d55698cbc93c9f947abd63c9c5b52860, type: 3}
     collection:
       Volume:
         Value: 1
@@ -24423,7 +24423,7 @@ MonoBehaviour:
     delay: 0
     reverse: 0
     voice: 0
-  DisappearClip: {fileID: 8300000, guid: be16fb1399c7d614d8c3b17bf488bf9d, type: 2}
+  DisappearClip: {fileID: 8300000, guid: be16fb1399c7d614d8c3b17bf488bf9d, type: 3}
 --- !u!224 &224003750907562392
 RectTransform:
   m_ObjectHideFlags: 0
@@ -24754,7 +24754,7 @@ MonoBehaviour:
         max: 0
     PlayMode: 0
     Clips:
-    - clip: {fileID: 8300000, guid: faf95a43ab8f36746977cdc92bf2663e, type: 2}
+    - clip: {fileID: 8300000, guid: faf95a43ab8f36746977cdc92bf2663e, type: 3}
       voice: 0
       Volume:
         Value: 1
@@ -24781,7 +24781,7 @@ MonoBehaviour:
         max: 0
     PlayMode: 0
     Clips:
-    - clip: {fileID: 8300000, guid: 3955aa0a095ceb84fa93bf161a64c89e, type: 2}
+    - clip: {fileID: 8300000, guid: 3955aa0a095ceb84fa93bf161a64c89e, type: 3}
       voice: 0
       Volume:
         Value: 1
@@ -25106,7 +25106,7 @@ MonoBehaviour:
         max: 0
     PlayMode: 0
     Clips:
-    - clip: {fileID: 8300000, guid: faf95a43ab8f36746977cdc92bf2663e, type: 2}
+    - clip: {fileID: 8300000, guid: faf95a43ab8f36746977cdc92bf2663e, type: 3}
       voice: 0
       Volume:
         Value: 1
@@ -25133,7 +25133,7 @@ MonoBehaviour:
         max: 0
     PlayMode: 0
     Clips:
-    - clip: {fileID: 8300000, guid: 3955aa0a095ceb84fa93bf161a64c89e, type: 2}
+    - clip: {fileID: 8300000, guid: 3955aa0a095ceb84fa93bf161a64c89e, type: 3}
       voice: 0
       Volume:
         Value: 1

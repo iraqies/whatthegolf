@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Core;
 using UnityEngine;
 
@@ -9,7 +11,7 @@ namespace GolfCourse
 		[SerializeField] private bool useTrigger = true;
 		[SerializeField] private bool useOtherTriggers;
 		[SerializeField] private bool useCustomWinDelay;
-		[SerializeField] private float winDelay = 0.8f;
+		[SerializeField] private float winDelay;
 		[SerializeField] private float preWinDelay;
 		[SerializeField] private bool checkRootForController = true;
 		[SerializeField] private bool bendFlagOnHit = true;
@@ -28,6 +30,8 @@ namespace GolfCourse
 
 		private void Awake()
 		{
+			golfBallsInGoal = new List<Transform>();
+			controllersInGoal = new List<GolfBallController>();
 			golfGoal = GetComponent<GolfGoal>() ?? GetComponentInParent<GolfGoal>() ?? FindObjectOfType<GolfGoal>();
 			particles = GetComponentInChildren<ParticleSystem>();
 			if (RequiredBallsInGoal <= 0) RequiredBallsInGoal = 1;
@@ -40,7 +44,9 @@ namespace GolfCourse
 
 		private void OnTriggerEnter(Collider other)
 		{
-			if (other != null) CheckObject(other.transform, false);
+			if (!useTrigger || other == null) return;
+			if (!useOtherTriggers && other.isTrigger) return;
+			CheckObject(other.transform, false);
 		}
 
 		public void AddBall()
@@ -52,35 +58,107 @@ namespace GolfCourse
 
 		public void CheckObject(Transform trans, bool fromCollision = false)
 		{
-			if (trans == null || golfBallsInGoal.Contains(trans)) return;
-			var ctrl = checkRootForController ? trans.GetComponentInParent<GolfBallController>() : trans.GetComponent<GolfBallController>();
-			var winBall = trans.GetComponentInParent<WinnableGolfBall>();
-			if ((!DontAcceptController && ctrl != null) || winBall != null || trans.CompareTag("Player") || trans.CompareTag("Ball"))
+			if (trans == null || trans.gameObject == null || trans.gameObject.isStatic || !enabled)
+				return;
+
+			Transform checkTrans = checkRootForController ? trans.root : trans;
+			GolfBallController ctrl = checkTrans != null ? checkTrans.GetComponentInChildren<GolfBallController>() : null;
+			Vector3 hitDir = Vector3.zero;
+
+			if (!DontAcceptController && ctrl != null && !golfBallsInGoal.Contains(trans.root))
 			{
-				golfBallsInGoal.Add(trans);
-				if (ctrl != null && !controllersInGoal.Contains(ctrl))
-				{
-					controllersInGoal.Add(ctrl);
-					ctrl.GoalReached();
-				}
-				PlayFlagAnimation(GetHitDir(trans));
-				AddBall();
+				hitDir = GetHitDir(trans);
+				golfBallsInGoal.Add(trans.root);
+				ballsInGoal++;
 			}
-		}
 
-		private Vector3 GetHitDir(Transform ballTrans) => (transform.position - ballTrans.position).normalized;
+			WinnableGolfBall winBall = trans.GetComponentInChildren<WinnableGolfBall>();
+			if (winBall != null)
+			{
+				GolfBallController[] allCtrls = FindObjectsOfType<GolfBallController>();
+				if (allCtrls != null && allCtrls.Length > 0)
+				{
+					GolfBallController ownerCtrl = allCtrls.FirstOrDefault(g => g != null && g.PlayerIndex == winBall.PlayerIndex);
+					if (ownerCtrl != null && golfGoal != null)
+					{
+						golfGoal.GoalProgress(ownerCtrl.PlayerIndex);
+						ballsInGoal++;
+					}
+				}
+			}
 
-		private void PlayFlagAnimation(Vector3 hitDir)
-		{
-			if (emitParticles && !didPlayParticles && particles != null)
+			if (trans.CompareTag("AdditionalGolfThing") && !golfBallsInGoal.Contains(trans.root))
+			{
+				hitDir = GetHitDir(trans);
+				golfBallsInGoal.Add(trans.root);
+				ballsInGoal++;
+			}
+
+			if (!DontAcceptController && ctrl != null && !controllersInGoal.Contains(ctrl))
+			{
+				hitDir = GetHitDir(trans);
+				controllersInGoal.Add(ctrl);
+				if (golfGoal != null)
+				{
+					golfGoal.GoalProgress(ctrl.PlayerIndex);
+				}
+				if (emitParticles && particles != null)
+				{
+					particles.Play();
+				}
+			}
+
+			if (ballsInGoal >= Mathf.Max(1, RequiredBallsInGoal))
+			{
+				Complete();
+				ballsInGoal = 0;
+				golfBallsInGoal.Clear();
+				controllersInGoal.Clear();
+			}
+
+			if (fromCollision && bendFlagOnHit && !didBend)
+			{
+				didBend = true;
+				PlayFlagAnimation(hitDir);
+			}
+
+			if (emitParticles && particles != null && !didPlayParticles)
 			{
 				didPlayParticles = true;
 				particles.Play();
 			}
 		}
 
+		private Vector3 GetHitDir(Transform ballTrans)
+		{
+			if (ballTrans != null)
+				return transform.position - ballTrans.position;
+			return Vector3.zero;
+		}
+
+		private void PlayFlagAnimation(Vector3 hitDir)
+		{
+			Vector3 targetUp = Vector3.Slerp(Vector3.up, new Vector3(hitDir.x, 0f, hitDir.z), 0.2f);
+			Quaternion start = transform.rotation;
+			Quaternion end = Quaternion.FromToRotation(Vector3.up, targetUp) * start;
+			StartCoroutine(pTween.To(0.5f, t =>
+			{
+				float eased = TweenFunctions.EaseOutBounce(0f, 1f, t);
+				transform.rotation = Quaternion.Lerp(start, end, eased);
+			}));
+		}
+
 		private void Complete()
 		{
+			if (preWinDelay > 0f)
+			{
+				StartCoroutine(pTween.To(preWinDelay, _ => { }).Then(() =>
+				{
+					preWinDelay = 0f;
+					Complete();
+				}));
+				return;
+			}
 			if (golfGoal == null) golfGoal = FindObjectOfType<GolfGoal>();
 			if (golfGoal != null)
 			{

@@ -12,23 +12,32 @@ public class Collectable : ScriptableObject
 	public Action OnUnlocked;
 
 	[SerializeField]
-	private bool requireUnlock;
+	public bool requireUnlock;
 
 	public bool IsUnlocked()
 	{
-		return false;
+		if (!requireUnlock)
+			return true;
+		return SaveGame.GetValue(serializationId + "_UNLOCKED", false);
 	}
 
 	public void Unlock()
 	{
+		if (!IsUnlocked())
+		{
+			SaveGame.SetValue(serializationId + "_UNLOCKED", true, true);
+			OnUnlocked?.Invoke();
+		}
 	}
 
 	public bool WasCollected(string id)
 	{
-		return false;
+		return SaveGame.IsElementInList(serializationId, id);
 	}
 
 	public void Collect(string id)
 	{
+		SaveGame.AddToSet(serializationId, id, false);
+		SaveGame.Save(false);
 	}
 }
