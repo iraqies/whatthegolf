@@ -1,7 +1,5 @@
 Shader "Custom/GolfLambertParticles" {
 	Properties {
-
-
 		_Color ("Color", Vector) = (1,1,1,1)
 		_ShadowColor ("Shadow Color", Vector) = (0,0,0,1)
 		_MainTex ("Albedo (RGB)", 2D) = "white" {}
@@ -10,9 +8,11 @@ Shader "Custom/GolfLambertParticles" {
 		_HighlightAngle ("Highlight Width", Range(0, 1)) = 1
 	}
 	SubShader {
-		Tags { "RenderType"="Opaque" "Queue"="Geometry" }
+		Tags { "RenderType"="Transparent" "Queue"="Transparent" "IgnoreProjector"="True" }
 		LOD 200
 		Cull Off
+		ZWrite Off
+		Blend SrcAlpha OneMinusSrcAlpha
 		Pass {
 			Tags { "LightMode"="ForwardBase" }
 			CGPROGRAM
@@ -56,20 +56,22 @@ Shader "Custom/GolfLambertParticles" {
 			}
 
 			fixed4 frag(v2f i) : SV_Target {
+				float4 tex = tex2D(_MainTex, i.uv);
 				float3 n = normalize(i.wnorm);
 				float3 l = any(_WorldSpaceLightPos0.xyz) ? normalize(_WorldSpaceLightPos0.xyz) : normalize(float3(0.35, 0.85, -0.4));
 				float3 lc = any(_LightColor0.rgb) ? _LightColor0.rgb : float3(1.0, 1.0, 1.0);
 				float ndotl = dot(n, l);
 				float ha = max(_HighlightAngle, 0.001);
 				float hl = saturate((ndotl - (1.0 - ha)) / ha);
-				float3 lit = ((tex2D(_MainTex, i.uv).rgb * (_Color.rgb * i.color.rgb)) + _HighlightColor.rgb * hl * _HighlightAmount) * lc;
+				float3 lit = ((tex.rgb * (_Color.rgb * i.color.rgb)) + _HighlightColor.rgb * hl * _HighlightAmount) * lc;
 				float back = saturate(-ndotl);
 				float3 shade = lerp(float3(1.0, 1.0, 1.0), _ShadowColor.rgb, back);
 				fixed atten = SHADOW_ATTENUATION(i);
-				return fixed4(lit * shade * atten, 1.0);
+				fixed alpha = saturate(tex.a * _Color.a * i.color.a);
+				return fixed4(lit * shade * atten, alpha);
 			}
 			ENDCG
 		}
 	}
-	FallBack "Diffuse"
+	FallBack "Particles/Alpha Blended"
 }

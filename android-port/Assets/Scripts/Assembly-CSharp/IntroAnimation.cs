@@ -76,9 +76,9 @@ public class IntroAnimation : MonoBehaviour
 	{
 		if (DarknessRenderer == null)
 			return;
+		DarknessRenderer.color = new Color(0f, 0f, 0f, 1f);
 		if (DarknessRenderer.material != null)
 			DarknessRenderer.material.color = c;
-		DarknessRenderer.color = c;
 	}
 
 	private void Awake()
@@ -204,6 +204,16 @@ public class IntroAnimation : MonoBehaviour
 
 			yield return new WaitForSeconds(skipTunnelWait ? 0.05f : 5f);
 
+			if (DarknessRenderer != null)
+			{
+				SetDarknessMaterialColor(DarknessLight);
+				DarknessRenderer.enabled = true;
+				StartCoroutine(pTween.To(skipTunnelWait ? 0.05f : 1.5f, t =>
+				{
+					SetDarknessMaterialColor(Color.Lerp(DarknessLight, DarknessDark, t));
+				}));
+			}
+
 			while (!atEndOfTunnel)
 			{
 				yield return null;
@@ -252,9 +262,8 @@ public class IntroAnimation : MonoBehaviour
 
 			if (DarknessRenderer != null)
 			{
-				SetDarknessMaterialColor(DarknessLight);
 				DarknessRenderer.enabled = true;
-				StartCoroutine(pTween.To(0.05f, t =>
+				StartCoroutine(pTween.To(0.0475f, t =>
 				{
 					SetDarknessMaterialColor(Color.Lerp(DarknessDark, DarknessLight, t));
 				}));
@@ -262,24 +271,6 @@ public class IntroAnimation : MonoBehaviour
 
 			yield return new WaitForSeconds(0.25f);
 
-			if (DarknessRenderer != null)
-			{
-				SetDarknessMaterialColor(DarknessLight);
-				DarknessRenderer.enabled = true;
-				StartCoroutine(pTween.To(1.5f, t =>
-				{
-					SetDarknessMaterialColor(Color.Lerp(DarknessLight, DarknessDark, t));
-				}));
-			}
-
-			yield return new WaitForSeconds(0.1f);
-
-			StartCoroutine(pTween.To(0.0475f, t =>
-			{
-				SetDarknessMaterialColor(Color.Lerp(DarknessDark, DarknessLight, t));
-			}));
-			yield return new WaitForSeconds(0.1f);
-
 			StartCoroutine(pTween.To(0.0475f, t =>
 			{
 				SetDarknessMaterialColor(Color.Lerp(DarknessLight, DarknessDark, t));
@@ -290,7 +281,7 @@ public class IntroAnimation : MonoBehaviour
 			{
 				SetDarknessMaterialColor(Color.Lerp(DarknessDark, DarknessLight, t));
 			}));
-			yield return new WaitForSeconds(0.05f);
+			yield return new WaitForSeconds(0.1f);
 
 			StartCoroutine(pTween.To(0.0475f, t =>
 			{
@@ -307,18 +298,24 @@ public class IntroAnimation : MonoBehaviour
 			StartCoroutine(pTween.To(0.0475f, t =>
 			{
 				SetDarknessMaterialColor(Color.Lerp(DarknessLight, DarknessDark, t));
+			}));
+			yield return new WaitForSeconds(0.05f);
+
+			StartCoroutine(pTween.To(0.0475f, t =>
+			{
+				SetDarknessMaterialColor(Color.Lerp(DarknessDark, DarknessLight, t));
 			}));
 			yield return new WaitForSeconds(0.3f);
 
 			StartCoroutine(pTween.To(0.0475f, t =>
 			{
-				SetDarknessMaterialColor(Color.Lerp(DarknessDark, DarknessLight, t));
+				SetDarknessMaterialColor(Color.Lerp(DarknessLight, DarknessDark, t));
 			}));
 			yield return new WaitForSeconds(0.05f);
 
 			StartCoroutine(pTween.To(0.0475f, t =>
 			{
-				SetDarknessMaterialColor(Color.Lerp(DarknessLight, DarknessDark, t));
+				SetDarknessMaterialColor(Color.Lerp(DarknessDark, DarknessLight, t));
 			}));
 			yield return new WaitForSeconds(0.15f);
 
