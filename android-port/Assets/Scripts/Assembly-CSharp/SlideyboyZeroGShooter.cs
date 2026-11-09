@@ -84,7 +84,8 @@ public class SlideyboyZeroGShooter : GolfBall2DShooterBase
 
 	public override void OnShoot(Vector3 boost)
 	{
-	StandardShoot(boost, 20f, 18f, 5f);
+	base.OnShoot(boost);
+		StandardShoot(boost, pitch, (minShootVelocity > 0f ? minShootVelocity : 5f), (fullShootVelocity > 0f ? fullShootVelocity : 22f), spin);
 	}
 
 	private void OnDrawGizmos()

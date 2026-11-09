@@ -32,13 +32,8 @@ namespace Chronos
 
 		public float localTimeScale
 		{
-			get
-			{
-				return 0f;
-			}
-			set
-			{
-			}
+			get => _localTimeScale > 0f ? _localTimeScale : 1f;
+			set { _localTimeScale = value; timeScale = value; }
 		}
 
 		public float timeScale { get; protected set; }

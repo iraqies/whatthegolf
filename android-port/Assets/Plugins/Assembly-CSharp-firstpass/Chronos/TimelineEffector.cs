@@ -10,21 +10,16 @@ namespace Chronos
 		private bool enabledOnce;
 
 		[SerializeField]
-		private float _recordingInterval;
+		private float _recordingInterval = 0.5f;
 
-		internal List<IComponentTimeline> components;
+		internal List<IComponentTimeline> components = new List<IComponentTimeline>();
 
 		protected abstract Timeline timeline { get; }
 
 		public float recordingInterval
 		{
-			get
-			{
-				return 0f;
-			}
-			set
-			{
-			}
+			get => _recordingInterval;
+			set => _recordingInterval = value;
 		}
 
 		public AnimationTimeline animation { get; protected set; }
@@ -55,14 +50,20 @@ namespace Chronos
 
 		protected virtual void Awake()
 		{
+			CacheComponents();
 		}
 
 		private void Start()
 		{
+			OnStartOrReEnable();
+			enabledOnce = true;
 		}
 
 		private void OnEnable()
 		{
+			CacheComponents();
+			if (enabledOnce)
+				OnStartOrReEnable();
 		}
 
 		protected virtual void OnStartOrReEnable()
@@ -83,6 +84,12 @@ namespace Chronos
 
 		public virtual void CacheComponents()
 		{
+			var rb = GetComponent<Rigidbody>();
+			if (rb != null && rigidbody == null)
+				rigidbody = new RigidbodyTimeline3D(timeline, rb);
+			var rb2d = GetComponent<Rigidbody2D>();
+			if (rb2d != null && rigidbody2D == null)
+				rigidbody2D = new RigidbodyTimeline2D(timeline, rb2d);
 		}
 
 		public virtual void Reset()

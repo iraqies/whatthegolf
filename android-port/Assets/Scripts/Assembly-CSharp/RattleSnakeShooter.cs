@@ -34,6 +34,7 @@ public class RattleSnakeShooter : GolfBallShooterStandard
 
 	protected override void Awake()
 	{
+		base.Awake();
 	}
 
 	private void EatCone()
@@ -80,5 +81,6 @@ public class RattleSnakeShooter : GolfBallShooterStandard
 
 	public override void OnShoot(Vector3 boost)
 	{
+		base.OnShoot(boost);
 	}
 }

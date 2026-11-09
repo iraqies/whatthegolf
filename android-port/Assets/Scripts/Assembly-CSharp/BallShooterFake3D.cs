@@ -4,23 +4,29 @@ using UnityEngine;
 
 public class BallShooterFake3D : GolfBallShooterBase
 {
-	public float offsetDistance;
+	public float offsetDistance = 0.5f;
 
 	public bool didShoot;
 
-	public Action<Vector2> OnShootEvent;
-
-	protected override void Awake()
-	{
-	base.Awake();
-	}
-
-	private void GolfBallControllerOverride_OnAimUpdate(Vector3 boost, bool arg2)
-	{
-	}
+	public Action<Vector3> OnShootEvent;
 
 	public override void OnShoot(Vector3 boost)
 	{
-	StandardShoot(boost, 20f, 18f, 5f);
+		base.OnShoot(boost);
+		if (OnShootEvent != null)
+		{
+			if (GolfBallController != null)
+			{
+				GolfBallController.enabled = false;
+				if (GolfBallController.shootArrow != null)
+					GolfBallController.shootArrow.Hide();
+			}
+			didShoot = true;
+			OnShootEvent.Invoke(boost);
+		}
+		else
+		{
+			StandardShoot(boost, 15f, 5f, 22f, 5f);
+		}
 	}
 }

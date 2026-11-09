@@ -60,6 +60,7 @@ public class Karaoke2DShooter : ShooterBase
 
 	public override void OnShoot(Vector3 boost)
 	{
+		base.OnShoot(boost);
 	}
 
 	private float GetGroundY(float checkX)

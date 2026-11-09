@@ -17,7 +17,8 @@ namespace BeatFighter
 		private BeatTrackAction currentAction;
 
 		public override void OnShoot(Vector3 boost)
-		{
-		}
+	{
+		base.OnShoot(boost);
+	}
 	}
 }

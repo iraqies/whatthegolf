@@ -11,6 +11,7 @@ public class StraightLineProjector2D : TrajectoryProjector
 
 	protected override void Awake()
 	{
+		base.Awake();
 	}
 
 	protected override void Start()

@@ -41,7 +41,7 @@ namespace Chronos
 		[SerializeField]
 		private float _recordingDuration;
 
-		protected override Timeline timeline => null;
+		protected override Timeline timeline => this;
 
 		public TimelineMode mode
 		{

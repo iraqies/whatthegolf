@@ -34,7 +34,7 @@ namespace Chronos
 		public float availableRewindDuration => 0f;
 
 		public RecorderTimeline(Timeline timeline, TComponent component)
-			: base((Timeline)null, (TComponent)null)
+			: base(timeline, component)
 		{
 		}
 

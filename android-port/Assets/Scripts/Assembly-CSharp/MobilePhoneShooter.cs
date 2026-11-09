@@ -29,6 +29,7 @@ public class MobilePhoneShooter : GolfBallShooterExperimental
 
 	protected override void Awake()
 	{
+		base.Awake();
 	}
 
 	private new void FixedUpdate()
@@ -37,5 +38,6 @@ public class MobilePhoneShooter : GolfBallShooterExperimental
 
 	public override void OnShoot(Vector3 boost)
 	{
+		base.OnShoot(boost);
 	}
 }

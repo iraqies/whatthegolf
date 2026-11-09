@@ -10,6 +10,8 @@ namespace Chronos
 
 		public ComponentTimeline(Timeline timeline, T component)
 		{
+			this.timeline = timeline;
+			this.component = component;
 		}
 
 		public void Initialize()

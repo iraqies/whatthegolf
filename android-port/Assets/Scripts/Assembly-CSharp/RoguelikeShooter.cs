@@ -18,6 +18,7 @@ public class RoguelikeShooter : GolfBallShooterExperimental
 
 	public override void OnShoot(Vector3 boost)
 	{
+		base.OnShoot(boost);
 	}
 
 	public void TakeDamage()

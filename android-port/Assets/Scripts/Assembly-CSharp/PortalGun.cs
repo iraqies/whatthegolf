@@ -55,7 +55,8 @@ public class PortalGun : GolfBallShooterBase
 
 	public override void OnShoot(Vector3 boost)
 	{
-	StandardShoot(boost, 20f, 18f, 5f);
+	base.OnShoot(boost);
+		StandardShoot(boost, 15f, 5f, 22f, 5f);
 	}
 
 	private void HasShot(bool hasHit, Vector3 point, Vector3 normal)

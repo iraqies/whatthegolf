@@ -33,6 +33,7 @@ public class BossBehaviourFollowNodes : BossBehaviour
 
 	protected override void Awake()
 	{
+		base.Awake();
 	}
 
 	private void OnIslandDestroyed(BossIslandPart bossIslandPart)

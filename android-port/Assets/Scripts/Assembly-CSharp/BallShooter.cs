@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BallShooter : GolfBall2DShooterBase
 {
-	public float offsetDistance;
+	public float offsetDistance = 0.5f;
 
 	public bool didShoot;
 
@@ -12,6 +12,21 @@ public class BallShooter : GolfBall2DShooterBase
 
 	public override void OnShoot(Vector3 boost)
 	{
-	StandardShoot(boost, 20f, 18f, 5f);
+		base.OnShoot(boost);
+		if (OnShootEvent != null)
+		{
+			if (GolfBallController != null)
+			{
+				GolfBallController.enabled = false;
+				if (GolfBallController.shootArrow != null)
+					GolfBallController.shootArrow.Hide();
+			}
+			didShoot = true;
+			OnShootEvent.Invoke(new Vector2(boost.x, boost.y));
+		}
+		else
+		{
+			StandardShoot(boost, 0f, 5f, 22f, 5f);
+		}
 	}
 }

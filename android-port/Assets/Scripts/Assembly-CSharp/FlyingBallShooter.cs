@@ -20,6 +20,7 @@ public class FlyingBallShooter : BallShooter
 
 	protected override void Awake()
 	{
+		base.Awake();
 	}
 
 	private void Controller_OnAimUpdate(Vector3 boost, bool arg2)
@@ -28,6 +29,7 @@ public class FlyingBallShooter : BallShooter
 
 	public override void OnShoot(Vector3 boost)
 	{
+		base.OnShoot(boost);
 	}
 
 	private void ClampVelocity()
@@ -36,5 +38,6 @@ public class FlyingBallShooter : BallShooter
 
 	protected override void FixedUpdate()
 	{
+		base.FixedUpdate();
 	}
 }

@@ -4,20 +4,24 @@ using UnityEngine;
 public class Katamari2DShooter : GolfBall2DShooterBase
 {
 	[SerializeField]
-	public float minShootVelocity;
+	public float minShootVelocity = 5f;
 
 	[SerializeField]
-	public float fullShootVelocity;
+	public float fullShootVelocity = 25f;
 
 	[SerializeField]
-	public float directionalSpin;
+	public float directionalSpin = 10f;
 
 	public override void OnActivate()
 	{
+		base.OnActivate();
+		if (rigidbodyC != null)
+			rigidbodyC.isKinematic = false;
 	}
 
 	public override void OnShoot(Vector3 boost)
 	{
-	StandardShoot(boost, 20f, 18f, 5f);
+		base.OnShoot(boost);
+		StandardShoot(boost, 0f, minShootVelocity, fullShootVelocity, directionalSpin);
 	}
 }

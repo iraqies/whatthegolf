@@ -93,8 +93,9 @@ namespace GolfCourse
 		}
 
 		public override void OnShoot(Vector3 boost)
-		{
-		}
+	{
+		base.OnShoot(boost);
+	}
 
 		private void FixedUpdate()
 		{

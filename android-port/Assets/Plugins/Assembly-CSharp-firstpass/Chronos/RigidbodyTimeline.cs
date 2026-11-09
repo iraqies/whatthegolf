@@ -56,7 +56,7 @@ namespace Chronos
 		}
 
 		public RigidbodyTimeline(Timeline timeline, TComponent component)
-			: base((Timeline)null, (TComponent)null)
+			: base(timeline, component)
 		{
 		}
 

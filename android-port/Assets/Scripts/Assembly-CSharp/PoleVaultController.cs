@@ -98,7 +98,8 @@ public class PoleVaultController : GolfBallShooterBase
 
 	public override void OnShoot(Vector3 boost)
 	{
-	StandardShoot(boost, 20f, 18f, 5f);
+	base.OnShoot(boost);
+		StandardShoot(boost, 15f, (MinTargetVelocity > 0f ? MinTargetVelocity : 5f), (MaxTargetVelocity > 0f ? MaxTargetVelocity : 22f), 5f);
 	}
 
 	protected override void FixedUpdate()

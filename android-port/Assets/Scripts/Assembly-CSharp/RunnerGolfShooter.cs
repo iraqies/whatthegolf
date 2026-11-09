@@ -31,10 +31,12 @@ public class RunnerGolfShooter : GolfBallShooterExperimental
 
 	protected override void Awake()
 	{
+		base.Awake();
 	}
 
 	public override void OnShoot(Vector3 boost)
 	{
+		base.OnShoot(boost);
 	}
 
 	private void OnCollisionStay(Collision col)

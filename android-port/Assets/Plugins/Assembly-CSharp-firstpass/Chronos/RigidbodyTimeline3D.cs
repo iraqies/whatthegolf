@@ -29,96 +29,67 @@ namespace Chronos
 
 		protected override bool bodyIsManual
 		{
-			get
-			{
-				return false;
-			}
-			set
-			{
-			}
+			get => component != null && component.isKinematic;
+			set { if (component != null) component.isKinematic = value; }
 		}
 
 		protected override float bodyMass
 		{
-			set
-			{
-			}
+			set { if (component != null) component.mass = value; }
 		}
 
 		protected override Vector3 bodyVelocity
 		{
-			get
-			{
-				return default;
-			}
-			set
-			{
-			}
+			get => component != null ? component.velocity : Vector3.zero;
+			set { if (component != null) component.velocity = value; }
 		}
 
 		protected override Vector3 bodyAngularVelocity
 		{
-			get
-			{
-				return default;
-			}
-			set
-			{
-			}
+			get => component != null ? component.angularVelocity : Vector3.zero;
+			set { if (component != null) component.angularVelocity = value; }
 		}
 
 		protected override float bodyDrag
 		{
-			get
-			{
-				return 0f;
-			}
-			set
-			{
-			}
+			get => component != null ? component.drag : 0f;
+			set { if (component != null) component.drag = value; }
 		}
 
 		protected override float bodyAngularDrag
 		{
-			get
-			{
-				return 0f;
-			}
-			set
-			{
-			}
+			get => component != null ? component.angularDrag : 0f;
+			set { if (component != null) component.angularDrag = value; }
 		}
 
-		public bool isKinematic { get; set; }
+		public bool isKinematic
+		{
+			get => component != null && component.isKinematic;
+			set { if (component != null) component.isKinematic = value; }
+		}
 
-		protected override bool isManual => false;
+		protected override bool isManual => isKinematic;
 
-		public bool useGravity { get; set; }
+		public bool useGravity
+		{
+			get => component != null && component.useGravity;
+			set { if (component != null) component.useGravity = value; }
+		}
 
 		public Vector3 velocity
 		{
-			get
-			{
-				return default;
-			}
-			set
-			{
-			}
+			get => component != null ? component.velocity : Vector3.zero;
+			set { if (component != null) component.velocity = value; }
 		}
 
 		public Vector3 angularVelocity
 		{
-			get
-			{
-				return default;
-			}
-			set
-			{
-			}
+			get => component != null ? component.angularVelocity : Vector3.zero;
+			set { if (component != null) component.angularVelocity = value; }
 		}
 
 		public RigidbodyTimeline3D(Timeline timeline, Rigidbody component)
-			: base((Timeline)null, (Rigidbody)null)
+			: base(timeline, component)
 		{
 		}
 
@@ -151,22 +122,27 @@ namespace Chronos
 
 		protected override void WakeUp()
 		{
+			if (component != null) component.WakeUp();
 		}
 
 		public void AddForce(Vector3 force, ForceMode mode = ForceMode.Force)
 		{
+			if (component != null) component.AddForce(force, mode);
 		}
 
 		public void AddForceAtPosition(Vector3 force, Vector3 position, ForceMode mode = ForceMode.Force)
 		{
+			if (component != null) component.AddForceAtPosition(force, position, mode);
 		}
 
 		public void AddTorque(Vector3 torque, ForceMode mode = ForceMode.Force)
 		{
+			if (component != null) component.AddTorque(torque, mode);
 		}
 
 		public void AddRelativeTorque(Vector3 torque, ForceMode mode = ForceMode.Force)
 		{
+			if (component != null) component.AddRelativeTorque(torque, mode);
 		}
 	}
 }

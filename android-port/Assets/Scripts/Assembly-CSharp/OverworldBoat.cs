@@ -24,5 +24,6 @@ public class OverworldBoat : OverworldBall2D
 
 	public override void OnShoot(Vector3 boost)
 	{
+		base.OnShoot(boost);
 	}
 }

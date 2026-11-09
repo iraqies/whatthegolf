@@ -46,6 +46,7 @@ public class GrapplingHookShooter2D : GolfBallShooterExperimental
 
 	public override void OnShoot(Vector3 boost)
 	{
+		base.OnShoot(boost);
 	}
 
 	private void Update()
@@ -54,6 +55,7 @@ public class GrapplingHookShooter2D : GolfBallShooterExperimental
 
 	protected override void FixedUpdate()
 	{
+		base.FixedUpdate();
 	}
 
 	public void LateUpdate()

@@ -25,8 +25,9 @@ namespace Rewired.Demos
 		}
 
 		protected override void Awake()
-		{
-		}
+	{
+		base.Awake();
+	}
 
 		private void Update()
 		{

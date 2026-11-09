@@ -41,6 +41,15 @@ namespace Core
 			lastUnderVelocityShootingThreshold = Time.time - shootThresholdMinimumTime - 1f;
 		}
 
+		public override void OnActivate()
+		{
+			base.OnActivate();
+			if (rigidbodyC == null)
+				rigidbodyC = rigidbodyOverride != null ? rigidbodyOverride : (GetComponent<Rigidbody>() ?? GetComponentInChildren<Rigidbody>());
+			if (rigidbodyC != null)
+				rigidbodyC.isKinematic = false;
+		}
+
 		public override void OnShoot(Vector3 boost)
 		{
 			base.OnShoot(boost);

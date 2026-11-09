@@ -50,7 +50,8 @@ public class FirstPersonFisher : GolfBallShooterBase
 
 	public override void OnShoot(Vector3 boost)
 	{
-	StandardShoot(boost, 20f, 18f, 5f);
+	base.OnShoot(boost);
+		StandardShoot(boost, 15f, (minShootVelocity > 0f ? minShootVelocity : 5f), (fullShootVelocity > 0f ? fullShootVelocity : 22f), 5f);
 	}
 
 	private void TryShoot(Vector3 boost)

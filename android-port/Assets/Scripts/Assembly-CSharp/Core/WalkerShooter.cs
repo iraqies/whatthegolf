@@ -45,7 +45,8 @@ namespace Core
 
 		public override void OnShoot(Vector3 boost)
 		{
-		StandardShoot(boost, 20f, 18f, 5f);
+		base.OnShoot(boost);
+		StandardShoot(boost, 15f, (minShootVelocity > 0f ? minShootVelocity : 5f), (maxShootVelocity > 0f ? maxShootVelocity : 22f), 5f);
 	}
 
 		protected override void FixedUpdate()

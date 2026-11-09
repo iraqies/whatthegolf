@@ -62,7 +62,8 @@ public class SwingGolfer : GolfBallShooterBase
 
 	public override void OnShoot(Vector3 boost)
 	{
-	StandardShoot(boost, 20f, 18f, 5f);
+	base.OnShoot(boost);
+		StandardShoot(boost, 15f, 5f, (FullVelocity > 0f ? FullVelocity : 22f), 5f);
 	}
 
 	private void Update()

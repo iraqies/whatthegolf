@@ -14,8 +14,9 @@ namespace DanceOff
 		private Vector2[] possibleDirections;
 
 		public override void OnShoot(Vector3 boost)
-		{
-		}
+	{
+		base.OnShoot(boost);
+	}
 
 		private Vector2 GetBestMatch(Vector2 rawDir)
 		{

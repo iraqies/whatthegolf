@@ -12,8 +12,9 @@ namespace Arena
 		private bool didCheckHits;
 
 		protected override void Awake()
-		{
-		}
+	{
+		base.Awake();
+	}
 
 		protected override void OnEnable()
 		{

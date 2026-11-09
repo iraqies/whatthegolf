@@ -41,8 +41,9 @@ namespace GolfHero
 		}
 
 		public override void OnShoot(Vector3 boost)
-		{
-		}
+	{
+		base.OnShoot(boost);
+	}
 
 		public void Update()
 		{

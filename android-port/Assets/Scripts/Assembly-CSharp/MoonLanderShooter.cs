@@ -67,6 +67,7 @@ public class MoonLanderShooter : ShooterBase
 
 	public override void OnShoot(Vector3 boost)
 	{
+		base.OnShoot(boost);
 	}
 
 	public void FixedUpdate()

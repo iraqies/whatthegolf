@@ -25,6 +25,15 @@ namespace Core
 			}
 		}
 
+		public override void OnActivate()
+		{
+			base.OnActivate();
+			if (rigidbodyC == null)
+				rigidbodyC = GetComponent<Rigidbody2D>() ?? GetComponentInChildren<Rigidbody2D>();
+			if (rigidbodyC != null)
+				rigidbodyC.isKinematic = false;
+		}
+
 		protected virtual void FixedUpdate()
 		{
 			if (rigidbodyC == null) rigidbodyC = GetComponent<Rigidbody2D>() ?? GetComponentInChildren<Rigidbody2D>();

@@ -30,6 +30,7 @@ public class HitscanProjectile2D : SuperGolfBullet
 
 	protected override void Awake()
 	{
+		base.Awake();
 	}
 
 	protected override void OnEnable()

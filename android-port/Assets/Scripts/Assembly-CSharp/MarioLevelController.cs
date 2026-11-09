@@ -74,7 +74,8 @@ public class MarioLevelController : GolfBallShooterBase
 
 	public override void OnShoot(Vector3 boost)
 	{
-	StandardShoot(boost, 20f, 18f, 5f);
+	base.OnShoot(boost);
+		StandardShoot(boost, pitch, 5f, (fullShootVelocity > 0f ? fullShootVelocity : 22f), spin);
 	}
 
 	protected override void FixedUpdate()

@@ -56,5 +56,6 @@ public class BoatSail : OverworldBall2D
 
 	protected override void FixedUpdate()
 	{
+		base.FixedUpdate();
 	}
 }

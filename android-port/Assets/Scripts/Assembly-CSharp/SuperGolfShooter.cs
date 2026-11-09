@@ -73,6 +73,7 @@ public class SuperGolfShooter : GolfBallShooterExperimental
 
 	protected override void Awake()
 	{
+		base.Awake();
 	}
 
 	private void Start()
@@ -85,10 +86,12 @@ public class SuperGolfShooter : GolfBallShooterExperimental
 
 	protected override void FixedUpdate()
 	{
+		base.FixedUpdate();
 	}
 
 	public override void OnShoot(Vector3 boost)
 	{
+		base.OnShoot(boost);
 	}
 
 	public override void OnAimUpdate(Vector3 boost, bool onlyAimArrow)

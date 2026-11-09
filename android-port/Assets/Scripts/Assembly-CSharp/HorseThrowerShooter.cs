@@ -17,10 +17,12 @@ public class HorseThrowerShooter : GolfBall2DShooterExperimental
 
 	public override void OnShoot(Vector3 boost)
 	{
+		base.OnShoot(boost);
 	}
 
 	protected override void FixedUpdate()
 	{
+		base.FixedUpdate();
 	}
 
 	private void OnDrawGizmosSelected()

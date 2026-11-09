@@ -10,6 +10,7 @@ public class AimAssistedPuppetCarLikeController : PuppetCarLikeController
 
 	public override void OnShoot(Vector3 boost)
 	{
+		base.OnShoot(boost);
 	}
 
 	protected override void Update()

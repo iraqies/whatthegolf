@@ -12,13 +12,16 @@ public class FroggerShooter : BallShooter
 
 	protected override void Awake()
 	{
+		base.Awake();
 	}
 
 	public override void OnShoot(Vector3 boost)
 	{
+		base.OnShoot(boost);
 	}
 
 	protected override void FixedUpdate()
 	{
+		base.FixedUpdate();
 	}
 }

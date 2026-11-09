@@ -11,6 +11,7 @@ public class GolfyRoadShooter : RunnerGolfShooter
 
 	protected override void Awake()
 	{
+		base.Awake();
 	}
 
 	protected override void Jump()

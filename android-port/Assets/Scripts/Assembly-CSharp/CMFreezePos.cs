@@ -20,6 +20,7 @@ public class CMFreezePos : CinemachineExtension
 
 	protected override void Awake()
 	{
+		base.Awake();
 	}
 
 	public void Lock(bool b)

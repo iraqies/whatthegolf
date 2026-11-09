@@ -33,6 +33,7 @@ public class UIParticles : MaskableGraphic
 
 	protected override void Awake()
 	{
+		base.Awake();
 	}
 
 	protected override void OnPopulateMesh(VertexHelper vh)

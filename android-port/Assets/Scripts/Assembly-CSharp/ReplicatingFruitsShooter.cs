@@ -45,6 +45,7 @@ public class ReplicatingFruitsShooter : ShooterBase
 
 	public override void OnShoot(Vector3 boost)
 	{
+		base.OnShoot(boost);
 	}
 
 	private IEnumerator ShootFruits(Vector3 boost)

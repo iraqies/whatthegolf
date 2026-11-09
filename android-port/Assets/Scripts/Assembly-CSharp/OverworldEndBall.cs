@@ -43,6 +43,7 @@ public class OverworldEndBall : OverworldBall2D
 
 	protected override void Awake()
 	{
+		base.Awake();
 	}
 
 	protected override void Controller_OnAimUpdate(Vector3 dir, bool onlyLine)
@@ -67,6 +68,7 @@ public class OverworldEndBall : OverworldBall2D
 
 	public override void OnShoot(Vector3 boost)
 	{
+		base.OnShoot(boost);
 	}
 
 	protected override void Controller_OnCancel()
