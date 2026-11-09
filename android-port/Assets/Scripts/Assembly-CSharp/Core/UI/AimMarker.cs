@@ -117,7 +117,7 @@ namespace Core.UI
 		{
 			if (controller == null)
 				return;
-			Vector2 startMouse = controller.StartAimMousePosition;
+			Vector2 startMouse = controller.AimStartMousePosition;
 			transform.position = new Vector3(startMouse.x, startMouse.y, 0f);
 			Vector2 mousePos = Input.mousePosition;
 			Vector2 dir = (startMouse - mousePos).normalized;
