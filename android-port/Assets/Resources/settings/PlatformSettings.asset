@@ -39,7 +39,7 @@ MonoBehaviour:
     UseControllerDisconnectedPopup: 0
     CanChangeGyroControlsInLevel: 0
     isMultiplayerSupported: 0
-    UseAimMarker: 1
+    UseAimMarker: 0
     useChallengeIconDescriptions: 1
     ChallengeWindowScale: 1
     UseLoadingAnimation: 1
@@ -88,7 +88,7 @@ MonoBehaviour:
     UseControllerDisconnectedPopup: 0
     CanChangeGyroControlsInLevel: 0
     isMultiplayerSupported: 0
-    UseAimMarker: 1
+    UseAimMarker: 0
     useChallengeIconDescriptions: 1
     ChallengeWindowScale: 1
     UseLoadingAnimation: 1
@@ -186,7 +186,7 @@ MonoBehaviour:
     UseControllerDisconnectedPopup: 0
     CanChangeGyroControlsInLevel: 0
     isMultiplayerSupported: 0
-    UseAimMarker: 1
+    UseAimMarker: 0
     useChallengeIconDescriptions: 1
     ChallengeWindowScale: 1
     UseLoadingAnimation: 1

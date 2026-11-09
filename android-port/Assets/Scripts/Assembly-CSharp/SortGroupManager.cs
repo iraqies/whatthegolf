@@ -16,8 +16,11 @@ public class SortGroupManager : GolfBehaviour
 
 	public void PreCache()
 	{
-		var all = GetComponentsInChildren<SortByY>(true);
-		sortingByYObjects = new List<SortByY>(all);
+		if (sortingByYObjects == null || sortingByYObjects.Count == 0)
+		{
+			var all = GetComponentsInChildren<SortByY>(true);
+			sortingByYObjects = new List<SortByY>(all);
+		}
 		if (sceneSortingGroups == null)
 			sceneSortingGroups = new List<SortByY>();
 		else
@@ -26,17 +29,15 @@ public class SortGroupManager : GolfBehaviour
 		{
 			var s = sortingByYObjects[i];
 			if (s == null) continue;
-			var sg = s.GetComponent<SortingGroup>();
+			var sg = s.group != null ? s.group : s.GetComponent<SortingGroup>();
 			if (sg != null)
 			{
 				s.group = sg;
 				sceneSortingGroups.Add(s);
-				if (s.isSorting)
-					sg.sortingOrder = Mathf.RoundToInt(s.transform.position.y * -5f) + 5000;
 			}
 		}
 		int div = divideSortingOverFrames > 0 ? divideSortingOverFrames : 5;
-		maxSortingPerFrame = Mathf.Max(1, sceneSortingGroups.Count / div);
+		maxSortingPerFrame = sceneSortingGroups.Count / div;
 	}
 
 	public void UpdateSorting()
@@ -44,7 +45,9 @@ public class SortGroupManager : GolfBehaviour
 		if (sceneSortingGroups == null || sceneSortingGroups.Count == 0)
 			return;
 		int count = sceneSortingGroups.Count;
-		int toSort = maxSortingPerFrame > 0 ? maxSortingPerFrame : Mathf.Max(1, count / 5);
+		int toSort = maxSortingPerFrame;
+		if (toSort <= 0)
+			toSort = 1;
 		int start = offset;
 		int end = start + toSort;
 		offset = end;

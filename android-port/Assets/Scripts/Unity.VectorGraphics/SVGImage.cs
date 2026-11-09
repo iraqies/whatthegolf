@@ -73,17 +73,46 @@ public class SVGImage : MaskableGraphic
 		if (m_Sprite == null || vh == null)
 			return;
 
-		float spriteW = m_Sprite.rect.width;
-		float spriteH = m_Sprite.rect.height;
-		if (spriteW <= 0f || spriteH <= 0f)
+		Vector2[] vertices = m_Sprite.vertices;
+		if (vertices == null || vertices.Length == 0)
 			return;
 
-		Vector2 spritePivot = m_Sprite.pivot;
-		Vector2 rtPivot = rectTransform.pivot;
-		Vector2 dims = GetDrawingDimensions(m_PreserveAspect);
+		float minX = float.MaxValue, maxX = float.MinValue;
+		float minY = float.MaxValue, maxY = float.MinValue;
+		for (int i = 0; i < vertices.Length; i++)
+		{
+			Vector2 v = vertices[i];
+			if (v.x < minX) minX = v.x;
+			if (v.x > maxX) maxX = v.x;
+			if (v.y < minY) minY = v.y;
+			if (v.y > maxY) maxY = v.y;
+		}
+
+		float vWidth = Mathf.Max(maxX - minX, 0.0001f);
+		float vHeight = Mathf.Max(maxY - minY, 0.0001f);
+		float ppu = m_Sprite.pixelsPerUnit > 0.01f ? m_Sprite.pixelsPerUnit : 100f;
+
+		float spriteW = m_Sprite.rect.width;
+		float spriteH = m_Sprite.rect.height;
+		if (!float.IsFinite(spriteW) || spriteW <= 0.001f)
+			spriteW = vWidth * ppu;
+		if (!float.IsFinite(spriteH) || spriteH <= 0.001f)
+			spriteH = vHeight * ppu;
+
 		Vector2 boundsSize = m_Sprite.bounds.size;
-		if (boundsSize.x <= 0f || boundsSize.y <= 0f)
-			return;
+		if (!float.IsFinite(boundsSize.x) || boundsSize.x <= 0.0001f)
+			boundsSize.x = vWidth;
+		if (!float.IsFinite(boundsSize.y) || boundsSize.y <= 0.0001f)
+			boundsSize.y = vHeight;
+
+		Vector2 spritePivot = m_Sprite.pivot;
+		float pivNormX = (float.IsFinite(spritePivot.x) && spriteW > 0.001f) ? (spritePivot.x / spriteW) : (-minX / vWidth);
+		float pivNormY = (float.IsFinite(spritePivot.y) && spriteH > 0.001f) ? (spritePivot.y / spriteH) : (-minY / vHeight);
+		if (!float.IsFinite(pivNormX)) pivNormX = 0.5f;
+		if (!float.IsFinite(pivNormY)) pivNormY = 0.5f;
+
+		Vector2 rtPivot = rectTransform.pivot;
+		Vector2 dims = GetDrawingDimensions(m_PreserveAspect, spriteW, spriteH);
 
 		bool hasColors = m_Sprite.HasVertexAttribute(VertexAttribute.Color);
 		if (hasColors)
@@ -94,14 +123,11 @@ public class SVGImage : MaskableGraphic
 			s_TextCord2 = m_Sprite.GetVertexAttribute<Vector2>(VertexAttribute.TexCoord2);
 
 		vh.Clear();
-		Vector2[] vertices = m_Sprite.vertices;
 		Vector2[] uvs = m_Sprite.uv;
-		if (vertices == null || vertices.Length == 0)
-			return;
 
 		Vector2 origin = new Vector2(
-			(rtPivot.x - spritePivot.x / spriteW) * dims.x,
-			(rtPivot.y - spritePivot.y / spriteH) * dims.y
+			(rtPivot.x - pivNormX) * dims.x,
+			(rtPivot.y - pivNormY) * dims.y
 		);
 
 		Color baseColor = color;
@@ -136,11 +162,15 @@ public class SVGImage : MaskableGraphic
 		}
 	}
 
-	private Vector2 GetDrawingDimensions(bool shouldPreserveAspect)
+	private Vector2 GetDrawingDimensions(bool shouldPreserveAspect, float spriteW = 0f, float spriteH = 0f)
 	{
 		if (m_Sprite == null)
 			return Vector2.zero;
-		Vector2 size = new Vector2(Mathf.RoundToInt(m_Sprite.rect.width), Mathf.RoundToInt(m_Sprite.rect.height));
+		if (spriteW <= 0f) spriteW = m_Sprite.rect.width;
+		if (spriteH <= 0f) spriteH = m_Sprite.rect.height;
+		Vector2 size = new Vector2(Mathf.RoundToInt(spriteW), Mathf.RoundToInt(spriteH));
+		if (size.x <= 0f || size.y <= 0f)
+			size = new Vector2(Mathf.Max(spriteW, 1f), Mathf.Max(spriteH, 1f));
 		Rect r = GetPixelAdjustedRect();
 		if (shouldPreserveAspect && size.sqrMagnitude > 0f && r.width > 0f && r.height > 0f)
 		{

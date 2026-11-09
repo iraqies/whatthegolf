@@ -172,7 +172,7 @@ namespace Core
 				android.useRotatedOverworldAndCameraInLevels = true;
 				android.useFileSave = true;
 				android.usesKeyboardAndControllerInput = true;
-				android.UseAimMarker = true;
+				android.UseAimMarker = false;
 				return android;
 			}
 			if (iPhone != null)

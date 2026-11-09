@@ -43,7 +43,7 @@ public class OverworldLoader : MonoBehaviour
 		yield return StartCoroutine(Cleanup(!PlatformSettings.IsConsole, true));
 		if (logoAnimator != null)
 			logoAnimator.SetBool("Instant", false);
-		bool skipTunnel = SaveGame.IsIntroAnimationComplete && SaveGame.GetCompletedPercentage(ECampaignType.Main, null, true) > 0;
+		bool skipTunnel = SaveGame.IsIntroAnimationComplete;
 		if (AudioManager.Instance != null && AudioManager.Instance.music != null)
 			AudioManager.Instance.music.InitializeBank(null, false);
 		StartCoroutine(OverworldStartLoadingAsync_(skipTunnel));
@@ -121,7 +121,7 @@ public class OverworldLoader : MonoBehaviour
 		if (blockingUnloadedAssets && op != null)
 			yield return op;
 		if (useGC)
-			GC.Collect(0, GCCollectionMode.Default, blockingUnloadedAssets);
+			GC.Collect(0, GCCollectionMode.Optimized, false);
 	}
 
 	private IEnumerator OverworldStartLoadingAsync_(bool skipTunnel)

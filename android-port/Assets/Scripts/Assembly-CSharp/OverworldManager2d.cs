@@ -352,7 +352,7 @@ public class OverworldManager2d : GolfBehaviour
 		if (Camera != null && Camera.ActiveBehavior is CBOrthographicFollow2D orthoFollow && cameraTarget != null)
 			orthoFollow.SetFollowTarget(cameraTarget);
 
-		bool introDone = SaveGame.IsIntroAnimationComplete && SaveGame.GetCompletedPercentage(ECampaignType.Main, null, true) > 0;
+		bool introDone = SaveGame.IsIntroAnimationComplete;
 		if (introDone || isHub || introTunnel == null)
 		{
 			if (!isHub || (HubSceneLoader.Instance != null && !HubSceneLoader.Instance.HasBeenLoadedBefore))
@@ -674,14 +674,12 @@ public class OverworldManager2d : GolfBehaviour
 		}
 		if (gridRigid != null)
 			gridRigid.simulated = isOverworldActive;
-		if (gridfiller != null)
+		if (gridfiller != null && gridfiller.AllRenders != null)
 		{
-			foreach (var col in gridfiller.transform.GetComponentsInChildren<Collider2D>(true))
-				if (col != null) col.enabled = isOverworldActive;
-			if (gridfiller.AllRenders != null)
+			for (int i = 0; i < gridfiller.AllRenders.Count; i++)
 			{
-				foreach (var r in gridfiller.AllRenders)
-					if (r != null) r.enabled = isOverworldActive;
+				var r = gridfiller.AllRenders[i];
+				if (r != null) r.enabled = isOverworldActive;
 			}
 		}
 		if (ui != null && ui.gameObject != null)

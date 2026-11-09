@@ -42,7 +42,7 @@ public class CullWhenHidden : GolfBehaviour
 		{
 			foreach (var s in GetComponentsInChildren<MonoBehaviour>(true))
 			{
-				if (s != null && s != this && !(s is InvisibleCullingObject) && !(s is IgnoreSectionCulling))
+				if (s != null && s != this && s != cullingObject && s.enabled)
 					currentDisableSpecificScripts.Add(s);
 			}
 		}
@@ -56,7 +56,14 @@ public class CullWhenHidden : GolfBehaviour
 
 	public void Init()
 	{
-		if (cullingObject == null)
+		bool needsInit = (currentDisableSpecificScripts == null || currentDisableSpecificScripts.Count == 0)
+			&& (rigids == null || rigids.Length == 0)
+			&& (audiosources == null || audiosources.Length == 0)
+			&& (animators == null || animators.Length == 0)
+			&& (particles == null || particles.Length == 0)
+			&& (sorties == null || sorties.Length == 0)
+			&& (lineRenders == null || lineRenders.Length == 0);
+		if (cullingObject == null && needsInit)
 			OnPrePlayOrPreCompile();
 		isVisible = false;
 		UpdateState();
