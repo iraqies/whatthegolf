@@ -4,5 +4,7 @@ public class GenericButtonPropRain : GenericButton
 
 	protected override void OnToggle()
 	{
+		if (Rain != null)
+			Rain.Raining = isPressed;
 	}
 }

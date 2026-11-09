@@ -204,9 +204,10 @@ namespace Core
 		private void Awake()
 		{
 			instance = this;
-			controllers = FindObjectsOfType<GolfBallController>().ToList();
-			if (music == null) music = GetComponent<LevelMusic>() ?? FindObjectOfType<LevelMusic>();
-			if (music != null) music.InitializeForCurrentLevel(Goal, Ball, this);
+			MainAudioListener.CreateInstanceIfNeeded();
+			_ = AudioManager.Instance;
+			if (controllers == null || controllers.Count == 0)
+				controllers = FindObjectsOfType<GolfBallController>().ToList();
 		}
 
 		public int GetLevelStartStrokes(int id) => LevelStartStrokes;
@@ -217,9 +218,14 @@ namespace Core
 		{
 			levelManager = lm;
 			instance = this;
+			_ = AudioManager.Instance;
 			controllers = FindObjectsOfType<GolfBallController>().ToList();
-			if (music == null) music = GetComponent<LevelMusic>() ?? FindObjectOfType<LevelMusic>();
-			if (music != null) music.InitializeForCurrentLevel(Goal, Ball, this);
+			if (music == null)
+				music = GetComponent<LevelMusic>() ?? FindObjectOfType<LevelMusic>() ?? gameObject.AddComponent<LevelMusic>();
+			if (music != null)
+				music.InitializeForCurrentLevel(Goal, Ball, this);
+			if (AudioManager.Instance != null && AudioManager.Instance.music != null)
+				AudioManager.Instance.music.OnLevelLoaded();
 		}
 
 		public void SetupMultiplayer(MultiplayerConfiguration config) => multiplayerConfiguration = config;
@@ -257,6 +263,10 @@ namespace Core
 			}
 			else if (state is FailState fs)
 			{
+				if (fs.PlayFailSFX)
+				{
+					AkSoundEngine.PostTrigger(AK.TRIGGERS.OFF_THE_MAP_SHORT, gameObject);
+				}
 				m_OnFail?.Invoke(Ball, fs.Message, fs);
 				m_OnOutOfBounds?.Invoke();
 			}

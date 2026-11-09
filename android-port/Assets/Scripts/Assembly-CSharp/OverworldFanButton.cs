@@ -5,61 +5,87 @@ using UnityEngine;
 public class OverworldFanButton : MonoBehaviour
 {
 	public List<OverworldFan> connectedFans;
-
-	public bool onFanState;
-
+	public bool onFanState = true;
 	public SpriteRenderer RendererButtonUp;
-
 	public Transform buttonTop;
-
 	public List<SpriteRenderer> sprites;
-
 	public InvisibleCullingObject culling;
-
-	public float buttonTopUpPositionY;
-
+	public float buttonTopUpPositionY = 0.1f;
 	public float buttonTopDownPositionY;
-
 	public AudioClipSettings downClip;
-
 	public AudioClipSettings upClip;
-
-	private bool visible;
-
+	private bool visible = true;
 	private int count;
-
 	private BoxCollider2D col;
-
-	private List<OverworldFanButtonActivator> rigidsOnButton;
-
+	private List<OverworldFanButtonActivator> rigidsOnButton = new List<OverworldFanButtonActivator>();
 	public OverworldFanButtonActivator defaultObject;
 
 	private void SetFans(bool state)
 	{
+		if (connectedFans == null) return;
+		foreach (var f in connectedFans)
+		{
+			if (f != null)
+				f.SetState(state);
+		}
 	}
 
 	private void Awake()
 	{
+		col = GetComponent<BoxCollider2D>();
+		if (rigidsOnButton == null)
+			rigidsOnButton = new List<OverworldFanButtonActivator>();
+		if (defaultObject != null)
+			AddObject(defaultObject);
 	}
 
 	private void OnEnable()
 	{
+		PokeObjectsAndHopePhysicsSolvedIssues();
 	}
 
 	private void PokeObjectsAndHopePhysicsSolvedIssues()
 	{
+		if (rigidsOnButton == null) return;
+		foreach (var r in rigidsOnButton)
+		{
+			if (r != null)
+			{
+				var rb = r.GetComponent<Rigidbody2D>();
+				if (rb != null) rb.WakeUp();
+			}
+		}
 	}
 
 	public void AddAObject()
 	{
+		if (defaultObject != null)
+			AddObject(defaultObject);
 	}
 
 	private void AddObject(OverworldFanButtonActivator buttonActivator)
 	{
+		if (buttonActivator == null) return;
+		if (rigidsOnButton == null)
+			rigidsOnButton = new List<OverworldFanButtonActivator>();
+		if (!rigidsOnButton.Contains(buttonActivator))
+		{
+			rigidsOnButton.Add(buttonActivator);
+			count = rigidsOnButton.Count;
+			if (count == 1)
+				SetButtonDown();
+		}
 	}
 
 	private void RemoveObject(OverworldFanButtonActivator buttonActivator)
 	{
+		if (buttonActivator == null || rigidsOnButton == null) return;
+		if (rigidsOnButton.Remove(buttonActivator))
+		{
+			count = rigidsOnButton.Count;
+			if (count == 0)
+				SetButtonUp();
+		}
 	}
 
 	private void OnDrawGizmosSelected()
@@ -68,17 +94,63 @@ public class OverworldFanButton : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
+		if (collision == null) return;
+		var act = collision.GetComponent<OverworldFanButtonActivator>() ?? collision.GetComponentInParent<OverworldFanButtonActivator>();
+		if (act != null)
+		{
+			AddObject(act);
+		}
+		else if (collision.GetComponent<OverworldBall2D>() != null || collision.attachedRigidbody != null)
+		{
+			count++;
+			if (count == 1)
+				SetButtonDown();
+		}
 	}
 
 	private void SetButtonDown()
 	{
+		if (buttonTop != null)
+		{
+			Vector3 p = buttonTop.localPosition;
+			p.y = buttonTopDownPositionY;
+			buttonTop.localPosition = p;
+		}
+		if (RendererButtonUp != null)
+			RendererButtonUp.enabled = false;
+		if (downClip != null)
+			downClip.Play(transform.position);
+		SetFans(onFanState);
 	}
 
 	private void OnTriggerExit2D(Collider2D collision)
 	{
+		if (collision == null) return;
+		var act = collision.GetComponent<OverworldFanButtonActivator>() ?? collision.GetComponentInParent<OverworldFanButtonActivator>();
+		if (act != null)
+		{
+			RemoveObject(act);
+		}
+		else if (collision.GetComponent<OverworldBall2D>() != null || collision.attachedRigidbody != null)
+		{
+			count = Mathf.Max(0, count - 1);
+			if (count == 0)
+				SetButtonUp();
+		}
 	}
 
 	private void SetButtonUp()
 	{
+		if (buttonTop != null)
+		{
+			Vector3 p = buttonTop.localPosition;
+			p.y = buttonTopUpPositionY;
+			buttonTop.localPosition = p;
+		}
+		if (RendererButtonUp != null)
+			RendererButtonUp.enabled = true;
+		if (upClip != null)
+			upClip.Play(transform.position);
+		SetFans(!onFanState);
 	}
 }

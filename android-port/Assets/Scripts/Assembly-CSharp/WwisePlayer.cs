@@ -34,7 +34,7 @@ public class WwisePlayer : MonoBehaviour
 	private static WwisePlayer instance;
 	public AudioClip offTheMapShort;
 	public AudioClip offTheMapLong;
-	private float lastOffTheMapTrigger;
+	private float lastOffTheMapTrigger = -10f;
 	public List<LevelSong> songs;
 	private Dictionary<uint, LevelSong> songDict;
 	private AudioSource[] sources;
@@ -120,11 +120,13 @@ public class WwisePlayer : MonoBehaviour
 		}
 		else if (triggerID == AK.TRIGGERS.OFF_THE_MAP_SHORT || triggerID == 0x0C410B24u)
 		{
-			if (Time.unscaledTime > lastOffTheMapTrigger + 1.5f)
+			if (Time.unscaledTime > lastOffTheMapTrigger + 0.35f)
 			{
-				if (offTheMapShort != null && AudioManager.Instance != null && AudioManager.Instance.uiEffects != null)
+				if (offTheMapShort != null && AudioManager.Instance != null)
 				{
-					AudioManager.Instance.uiEffects.PlaySimple(offTheMapShort, 0.5f, 1f, Vector3.zero);
+					var pool = AudioManager.Instance.uiEffects ?? AudioManager.Instance.shortEffects;
+					if (pool != null)
+						pool.PlaySimple(offTheMapShort, 0.65f, 1f, Vector3.zero);
 				}
 				lastOffTheMapTrigger = Time.unscaledTime;
 			}

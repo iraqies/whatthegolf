@@ -156,6 +156,7 @@ public class OverworldManager2d : GolfBehaviour
 			Camera = FindObjectOfType<OverworldCamera>();
 		if (Camera != null && Camera.MainCamera != null)
 			mainCameraCullingMask = Camera.MainCamera.cullingMask;
+		HintEffect.Initialize(Camera);
 
 		var currentCfg = PlatformSettings.Instance != null ? PlatformSettings.Instance.GetCurrent() : null;
 		if (currentCfg != null && currentCfg.useRotatedOverworldAndCameraInLevels)

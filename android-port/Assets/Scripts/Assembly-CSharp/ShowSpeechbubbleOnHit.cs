@@ -8,35 +8,20 @@ using UnityEngine;
 public class ShowSpeechbubbleOnHit : ShowSpeechBubble
 {
 	public SpeechbubbleList TextList;
-
 	public List<string> ActivatorTags;
-
 	public List<AudioClip> OnHitClip;
-
 	public float delay;
-
 	public float bounceFactor = 0.5f;
-
 	public Vector2 bubbleDir;
-
 	public Vector2 localBubblePivot;
-
 	public float bubbleRotation;
-
 	public bool ignoreActivatorTags;
-
 	public bool UseRestartTimeLimit;
-
 	public float ConversationRestartTimeLimit = 10f;
-
 	public bool isAbleToTalk = true;
-
 	public Transform speechBubblePreferredCenterTransform;
-
 	public Action onHit;
-
 	private IConversation conversation;
-
 	private float lastConversationTime;
 
 	public bool textDisplayed { get; set; }
@@ -104,8 +89,13 @@ public class ShowSpeechbubbleOnHit : ShowSpeechBubble
 		}
 
 		float rot = bubbleRotation;
-		if (PlatformSettings.IsPortraitByDefault && Mathf.Abs(rot) < 1f)
-			rot = -90f;
+		var section = GetComponentInParent<HubSection>();
+		if (section != null && section.shouldRotateTilesForMobile && PlatformSettings.Instance != null)
+		{
+			var cur = PlatformSettings.Instance.GetCurrent();
+			if (cur != null && cur.useRotatedOverworldAndCameraInLevels && Mathf.Abs(rot) < 1f)
+				rot = -90f;
+		}
 		if (SpeechBubble != null)
 			SpeechBubble.transform.rotation = Quaternion.Euler(0f, 0f, rot);
 
@@ -145,6 +135,8 @@ public class ShowSpeechbubbleOnHit : ShowSpeechBubble
 				);
 				while (task != null && !task.isDone && !IsInterrupted)
 				{
+					if (speechAudio != null)
+						speechAudio.UpdateSpeech();
 					yield return null;
 				}
 			}
@@ -153,8 +145,7 @@ public class ShowSpeechbubbleOnHit : ShowSpeechBubble
 				anim.SetBool("Talking", false);
 			while (!IsInterrupted && SpeechBubble != null && SpeechBubble.gameObject.activeSelf)
 			{
-				yield return new WaitForSeconds(0.2f);
-				break;
+				yield return null;
 			}
 			if (SpeechBubble != null)
 				SpeechBubble.Hide(true);

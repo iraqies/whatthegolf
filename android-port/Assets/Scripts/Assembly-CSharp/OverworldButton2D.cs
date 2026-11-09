@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Audio;
 using CameraStack;
@@ -48,8 +49,8 @@ public class OverworldButton2D : GolfBehaviour
 	public SpriteRenderer BubbleSprite;
 	public SpriteRenderer SubObjectiveSprite;
 	public bool isSnappingToGrid;
-	public bool isShowingHintLines;
-	public int maxHintLinesToShow;
+	public bool isShowingHintLines = true;
+	public int maxHintLinesToShow = 15;
 	public bool onlyIncludeFlagsBelowThis;
 	public bool useOpenIndicator;
 	public Collectable subObjective;
@@ -290,7 +291,25 @@ public class OverworldButton2D : GolfBehaviour
 
 	private IEnumerator FlagHintRoutine()
 	{
-		yield break;
+		SetButtonColors(UnlockedColors);
+		if (requireGoals != null && HintEffect.Instance != null)
+		{
+			var positions = requireGoals
+				.Where(g => g != null && (OnlyAcceptCrowns ? !g.IsFullyCompleted() : !g.IsCompleted()) && g.IsVisible())
+				.Select(g => g.transform.position)
+				.Take(maxHintLinesToShow > 0 ? maxHintLinesToShow : 15)
+				.ToArray();
+			if (positions.Length > 0)
+			{
+				Vector3 center = (ButtonRenderers != null && ButtonRenderers.Length > 0 && ButtonRenderers[0] != null)
+					? ButtonRenderers[0].transform.position
+					: transform.position;
+				HintEffect.Instance.Play(center, positions);
+			}
+		}
+		yield return new WaitForSeconds(0.3f);
+		if (!openOrOpening)
+			SetButtonColors(LockedColors);
 	}
 
 	private IEnumerator BlinkRoutine()
@@ -450,6 +469,8 @@ public class OverworldButton2D : GolfBehaviour
 			UpdateStatus();
 		if (GetFlagsLeft() > 0)
 		{
+			if (isShowingHintLines && gameObject.activeInHierarchy)
+				StartCoroutine(FlagHintRoutine());
 			if (doorBubble != null)
 				doorBubble.Hit();
 			return;
@@ -457,31 +478,7 @@ public class OverworldButton2D : GolfBehaviour
 		if (openOrOpening)
 			return;
 
-		m_OnStartingToOpen?.Invoke();
-		openOrOpening = true;
-		if (overworldID != null && !string.IsNullOrEmpty(overworldID.ID))
-			SaveGame.SetDoorOpen(overworldID.ID);
-		if (openParticles != null)
-			openParticles.Emit(40);
-		ToggleBlinkRoutine(false);
-		SetButtonColors(OpenColors);
-		if (useOpenIndicator && openIndicator != null)
-			openIndicator.gameObject.SetActive(false);
-		if (missingFlagsText != null && missingFlagsText.transform.parent != null)
-			missingFlagsText.transform.parent.gameObject.SetActive(false);
-		if (doorBubble != null)
-			doorBubble.State = DoorBubbleState.Hidden;
-		if (door != null)
-		{
-			door.OpenDoor(() =>
-			{
-				m_OnOpen?.Invoke();
-			}, false);
-		}
-		else
-		{
-			m_OnOpen?.Invoke();
-		}
+		OpenDoor();
 	}
 
 	private void OnOpenDoorAnalytcis() { }
@@ -491,7 +488,37 @@ public class OverworldButton2D : GolfBehaviour
 	public void OpenDoor()
 	{
 		if (openOrOpening) return;
-		CheckOpen();
+		m_OnStartingToOpen?.Invoke();
+		openOrOpening = true;
+		if (overworldID != null && !string.IsNullOrEmpty(overworldID.ID))
+			SaveGame.SetDoorOpen(overworldID.ID);
+		if (openParticles != null)
+			openParticles.Emit(40);
+		if (sfxOpen != null && AudioManager.Instance != null)
+			sfxOpen.Play(AudioManager.Instance.sfx, transform.position, 0f);
+		ToggleBlinkRoutine(false);
+		SetButtonColors(OpenColors);
+		if (useOpenIndicator && openIndicator != null)
+			openIndicator.gameObject.SetActive(false);
+		if (missingFlagsText != null && missingFlagsText.transform.parent != null)
+			missingFlagsText.transform.parent.gameObject.SetActive(false);
+		if (doorBubble != null)
+			doorBubble.State = DoorBubbleState.Hidden;
+		if (ConsoleButton != null)
+			ConsoleButton.SetBlinking();
+		if (door != null)
+		{
+			door.OpenDoor(() =>
+			{
+				if (sfxAfterOpen != null && AudioManager.Instance != null)
+					sfxAfterOpen.Play(AudioManager.Instance.sfx, transform.position, 0f);
+				m_OnOpen?.Invoke();
+			}, false);
+		}
+		else
+		{
+			m_OnOpen?.Invoke();
+		}
 	}
 
 	public void RemoveButton()
@@ -527,8 +554,22 @@ public class OverworldButton2D : GolfBehaviour
 
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
-		if (collision != null && collision.collider != null && collision.collider.GetComponentInParent<OverworldBall2D>() != null)
-			CheckOpen();
+		if (openOrOpening || !canOpen || collision == null || collision.collider == null)
+			return;
+		var ball = collision.collider.GetComponent<OverworldBall2D>() ?? collision.collider.GetComponentInParent<OverworldBall2D>();
+		if (ball == null)
+			return;
+		if (!ball.CheckUseInteractiveThing())
+			return;
+
+		CheckOpen();
+
+		var rb = collision.collider.GetComponent<Rigidbody2D>();
+		if (rb != null && openIndicator != null)
+		{
+			Vector2 pushOut = (openIndicator.position - transform.position).normalized;
+			rb.velocity = (pushOut + rb.velocity.normalized) * rb.velocity.magnitude * 0.16f;
+		}
 	}
 
 	private Vector3 GetSnappedPosition()

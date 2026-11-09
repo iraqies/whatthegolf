@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Audio
 {
 	public abstract class SpeechAudioByInterval : SpeechAudioBase
@@ -8,6 +10,7 @@ namespace Audio
 
 		protected override void PlayClip()
 		{
+			m_nextSoundTime = Time.time + interval.GetResult;
 		}
 	}
 }

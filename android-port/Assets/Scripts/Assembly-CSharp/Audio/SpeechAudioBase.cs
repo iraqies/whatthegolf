@@ -8,6 +8,7 @@ namespace Audio
 
 		protected virtual void Awake()
 		{
+			m_audioSource = GetComponent<AudioSource>();
 		}
 
 		public virtual void UpdateSpeech()

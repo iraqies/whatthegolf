@@ -114,8 +114,12 @@ public class AudioManager : MonoBehaviour
 		if (golfAudioManager == null)
 			golfAudioManager = GetComponentInChildren<GolfAudioManager>(true);
 		golfAudio = golfAudioManager;
+		golfAudio?.Initialize();
 		if (music == null)
 			music = GetComponentInChildren<MusicManager>(true) ?? gameObject.AddComponent<MusicManager>();
+		var wp = GetComponentInChildren<WwisePlayer>(true);
+		if (wp != null && !wp.gameObject.activeSelf)
+			wp.gameObject.SetActive(true);
 		EnsureLevelManagerSubscription();
 		AudioListener.volume = 1f;
 		AudioListener.pause = false;

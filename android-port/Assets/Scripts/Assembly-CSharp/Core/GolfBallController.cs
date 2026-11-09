@@ -674,27 +674,22 @@ namespace Core
 		{
 			if (tag == "OutOfBounds" || tag == "BoundsFail" || tag == "KillZone")
 			{
-				_ballVelocity = Vector3.zero;
-				HideShootArrow();
+				RaiseOnOutOfBoundsEvent();
 				FailLevel(false);
 			}
 			else if (tag == "OutOfBoundsReset" || tag == "BoundsReset")
 			{
-				_ballVelocity = Vector3.zero;
-				HideShootArrow();
+				RaiseOnOutOfBoundsEvent();
 				Reset(0f);
 			}
 			else if (tag == "OutOfBoundsReload" || tag == "BoundsReload")
 			{
-				_ballVelocity = Vector3.zero;
-				HideShootArrow();
+				RaiseOnOutOfBoundsEvent();
 				FailLevel(true);
 			}
 			else if (tag == "BoundsTrigger" || tag == "OutOfBoundsTrigger")
 			{
-				_ballVelocity = Vector3.zero;
-				HideShootArrow();
-				m_OnOutOfBoundsEvent?.Invoke();
+				RaiseOnOutOfBoundsEvent();
 			}
 		}
 

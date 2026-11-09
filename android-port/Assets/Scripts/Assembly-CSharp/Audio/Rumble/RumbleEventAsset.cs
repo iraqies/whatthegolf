@@ -16,7 +16,7 @@ namespace Audio.Rumble
 		{
 		}
 
-		public void Play(int playerIndex, float volume = 1f)
+		public void Play(int playerIndex = 0, float volume = 1f)
 		{
 		}
 
