@@ -57,16 +57,16 @@ public class WindArea2D : MonoBehaviour
 		{
 			OverworldBallManager.Instance.OnNewBall -= Instance_OnNewBall;
 			OverworldBallManager.Instance.OnNewBall += Instance_OnNewBall;
-			if (OverworldBallManager.Instance.CurrentBall != null)
+			if (OverworldBallManager.Instance.Ball != null)
 			{
-				var rb = OverworldBallManager.Instance.CurrentBall.GetComponent<Rigidbody2D>();
+				var rb = OverworldBallManager.Instance.Ball.GetComponent<Rigidbody2D>();
 				if (rb != null)
 				{
 					baseBallDrag = rb.drag;
 					baseBallMass = rb.mass;
 				}
-				OverworldBallManager.Instance.CurrentBall.OnDisabled -= Ball_OnDisabled;
-				OverworldBallManager.Instance.CurrentBall.OnDisabled += Ball_OnDisabled;
+				OverworldBallManager.Instance.Ball.OnDisabled -= Ball_OnDisabled;
+				OverworldBallManager.Instance.Ball.OnDisabled += Ball_OnDisabled;
 			}
 		}
 	}
@@ -87,16 +87,16 @@ public class WindArea2D : MonoBehaviour
 
 	private void Instance_OnNewBall(Transmogrif.BALLSHAPES newShape)
 	{
-		if (OverworldBallManager.Instance != null && OverworldBallManager.Instance.CurrentBall != null)
+		if (OverworldBallManager.Instance != null && OverworldBallManager.Instance.Ball != null)
 		{
-			var rb = OverworldBallManager.Instance.CurrentBall.GetComponent<Rigidbody2D>();
+			var rb = OverworldBallManager.Instance.Ball.GetComponent<Rigidbody2D>();
 			if (rb != null)
 			{
 				baseBallDrag = rb.drag;
 				baseBallMass = rb.mass;
 			}
-			OverworldBallManager.Instance.CurrentBall.OnDisabled -= Ball_OnDisabled;
-			OverworldBallManager.Instance.CurrentBall.OnDisabled += Ball_OnDisabled;
+			OverworldBallManager.Instance.Ball.OnDisabled -= Ball_OnDisabled;
+			OverworldBallManager.Instance.Ball.OnDisabled += Ball_OnDisabled;
 		}
 	}
 
@@ -135,7 +135,7 @@ public class WindArea2D : MonoBehaviour
 					addedTimelines.RemoveAt(i);
 					continue;
 				}
-				Vector2 pos = item.timeline.transform.position;
+				Vector2 pos = item.timeline.gameObject.transform.position;
 				item.timeline.rigidbody2D.AddForce(GetWindForce(pos) * item.forceRatio, ForceMode);
 				if (OverrideDragValue != 0f)
 					item.timeline.rigidbody2D.drag = OverrideDragValue;

@@ -25,14 +25,14 @@ public class TiltChallenge : Challenge
 			foreach (var go in ObjectsToTilt)
 			{
 				if (go == null) continue;
-				var tip2d = go.GetComponent<Tip2D>();
+				var tip2d = go.GetComponent<TipObject2D>();
 				if (tip2d != null)
 				{
 					tip2d.OnTip += OnTip;
 				}
 				else
 				{
-					var tip = go.GetComponent<Tip>() ?? go.AddComponent<Tip>();
+					var tip = go.GetComponent<TipObject>() ?? go.AddComponent<TipObject>();
 					tip.OnTip += OnTip;
 				}
 			}
@@ -40,7 +40,7 @@ public class TiltChallenge : Challenge
 		SFX = GetComponentInChildren<TiltChallengeSFX>();
 		if (LevelManager.Exists && LevelManager.Instance != null && LevelManager.Instance.InGameMenu != null && ObjectsToTilt != null)
 		{
-			LevelManager.Instance.InGameMenu.SetStrokeCounterSettings(ObjectsToTilt.Count, true, true, StrokeCounter.CounterTypes.CardsAppearing, null);
+			LevelManager.Instance.InGameMenu.SetStrokeCounterSettings(ObjectsToTilt.Count, StrokeCounter.CounterTypes.CardsAppearing, true);
 		}
 	}
 

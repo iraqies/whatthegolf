@@ -49,8 +49,6 @@ public class FinalRoom : GolfBehaviour
 
 	private void Goal_Completed_OnUpdateData(OverworldGoal obj)
 	{
-		if (OverworldBallManager.Instance != null && OverworldBallManager.Instance.CurrentBall != null)
-			OverworldBallManager.Instance.CurrentBall.LockForDuration(0.2f);
 	}
 
 	private void Goal_OnUpdateData(OverworldGoal flag)
@@ -68,7 +66,7 @@ public class FinalRoom : GolfBehaviour
 	private IEnumerator EndRoutine()
 	{
 		if (confetti != null)
-			confetti.PlayConfettiSound(false);
+			Confetti.SpawnConfetti(confetti.transform);
 		if (evilContainer != null)
 			evilContainer.SetActive(true);
 		yield return new WaitForSeconds(0.5f);
@@ -85,11 +83,11 @@ public class FinalRoom : GolfBehaviour
 		}
 		yield return new WaitForSeconds(0.6f);
 
-		OverworldBall2D ball = OverworldBallManager.Instance != null ? OverworldBallManager.Instance.CurrentBall : null;
+		OverworldBall2D ball = OverworldBallManager.Instance != null ? OverworldBallManager.Instance.Ball : null;
 		if (ball != null)
 		{
-			if (ball.Rigidbody != null)
-				ball.Rigidbody.isKinematic = true;
+			if (ball.rigidBody != null)
+				ball.rigidBody.isKinematic = true;
 			ball.SetColliders(false);
 			ball.enabled = false;
 			if (ball.Controller != null)
@@ -98,18 +96,17 @@ public class FinalRoom : GolfBehaviour
 
 		float nextConfettiTime = 0f;
 		int idx = 0;
-		if (exitPath != null && ball != null && ball.Rigidbody != null)
+		if (exitPath != null && ball != null && ball.rigidBody != null)
 		{
 			foreach (Transform pt in exitPath)
 			{
-				while (pt != null && Vector3.Distance(ball.Rigidbody.position, pt.position) > 0.01f)
+				while (pt != null && Vector3.Distance(ball.rigidBody.position, pt.position) > 0.01f)
 				{
 					Vector3 nextPos = Vector3.MoveTowards(ball.transform.position, pt.position, Time.unscaledDeltaTime * ballMoveSpeed);
-					ball.Rigidbody.MovePosition(nextPos);
+					ball.rigidBody.MovePosition(nextPos);
 					if (Time.time > nextConfettiTime && idx <= 4 && confetti != null)
 					{
-						for (int i = 0; i < 10; i++)
-							confetti.SpawnConfetti(nextPos + Vector3.down * Random.Range(0f, 0.2f));
+						Confetti.SpawnConfetti(ball.transform);
 						nextConfettiTime = Time.time + 0.04f;
 					}
 					yield return null;
@@ -120,16 +117,16 @@ public class FinalRoom : GolfBehaviour
 
 		if (ball != null)
 		{
-			if (ball.Rigidbody != null)
-				ball.Rigidbody.velocity = Vector2.zero;
+			if (ball.rigidBody != null)
+				ball.rigidBody.velocity = Vector2.zero;
 			ball.SetColliders(true);
 		}
 		yield return new WaitForFixedUpdate();
 
-		if (ball != null && ball.Rigidbody != null)
+		if (ball != null && ball.rigidBody != null)
 		{
-			ball.Rigidbody.isKinematic = false;
-			ball.Rigidbody.velocity = new Vector2(-shootoutSpeed, -shootoutSpeed);
+			ball.rigidBody.isKinematic = false;
+			ball.rigidBody.velocity = new Vector2(-shootoutSpeed, -shootoutSpeed);
 		}
 		yield return new WaitForSecondsRealtime(0.3f);
 

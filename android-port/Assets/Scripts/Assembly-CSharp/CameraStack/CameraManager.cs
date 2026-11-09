@@ -117,19 +117,12 @@ namespace CameraStack
 							break;
 						}
 					}
-					if (found != null && (found.cameraBehaviour != null || found.desktopCameraBehaviour != null || found.cameraTarget != null))
+					if (found != null && (found.CustomCameraBehaviour != null || found.CustomDesktopOverrideBehaviour != null))
 					{
-						if (found.cameraBehaviour != null || found.desktopCameraBehaviour != null)
-						{
-							bool useRot = PlatformSettings.Instance != null && PlatformSettings.Instance.GetCurrent() != null && PlatformSettings.Instance.GetCurrent().useRotatedOverworldAndCameraInLevels;
-							var next = (useRot || found.desktopCameraBehaviour == null) ? found.cameraBehaviour : found.desktopCameraBehaviour;
-							if (next != null)
-								SwitchBehavior(next);
-						}
-						if (found.cameraTarget != null && ActiveBehavior is ICameraBehaviourFollowing following)
-						{
-							following.SetFollowTarget(found.cameraTarget);
-						}
+						bool useRot = PlatformSettings.Instance != null && PlatformSettings.Instance.GetCurrent() != null && PlatformSettings.Instance.GetCurrent().useRotatedOverworldAndCameraInLevels;
+						var next = (useRot || found.CustomDesktopOverrideBehaviour == null) ? found.CustomCameraBehaviour : found.CustomDesktopOverrideBehaviour;
+						if (next != null)
+							SwitchBehavior(next);
 						OnReset();
 						return;
 					}

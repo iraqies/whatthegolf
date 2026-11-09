@@ -105,7 +105,7 @@ public class LevelChallenges : MonoBehaviour
 			tc.TogglePause(true);
 		string winMsg = challenge.GetWinMessageID();
 		if (Level.HasInstance && Level.Instance != null)
-			Level.Instance.Complete(winMsg, 2f, null, false);
+			Level.Instance.Complete(winMsg, 2f, null, 0);
 	}
 
 	private void Fail(Challenge challenge)

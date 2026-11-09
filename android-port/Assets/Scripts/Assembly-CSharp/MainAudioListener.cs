@@ -73,10 +73,10 @@ public class MainAudioListener : MonoBehaviour
 		cameraTransform = cb.transform;
 
 		var follow = cb.GetComponent<ICameraBehaviourFollowing>();
-		if (follow != null && follow.GetFollowTransform() != null)
+		if (follow != null && follow.GetFollowTarget() != null)
 		{
 			follower = follow;
-			followTransform = follow.GetFollowTransform();
+			followTransform = follow.GetFollowTarget();
 		}
 		else if (CinemachineCore.Instance != null && CinemachineCore.Instance.BrainCount > 0)
 		{
@@ -181,8 +181,8 @@ public class MainAudioListener : MonoBehaviour
 			if (cameraTransform != null)
 				transform.rotation = cameraTransform.rotation;
 			transform.position = followTransform.position;
-			if (follower != null && follower.GetFollowTransform() != null)
-				transform.position = follower.GetFollowTransform().position;
+			if (follower != null && follower.GetFollowTarget() != null)
+				transform.position = follower.GetFollowTarget().position;
 		}
 	}
 }

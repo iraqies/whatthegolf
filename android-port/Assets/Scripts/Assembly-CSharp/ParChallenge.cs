@@ -73,7 +73,7 @@ public class ParChallenge : Challenge
 		}
 		if (LevelManager.Exists && LevelManager.Instance != null && LevelManager.Instance.InGameMenu != null)
 		{
-			LevelManager.Instance.InGameMenu.SetStrokeCounterSettings(ScoreToBeat, true, true, StrokeCounter.CounterTypes.CardsAppearing, null);
+			LevelManager.Instance.InGameMenu.SetStrokeCounterSettings(ScoreToBeat, StrokeCounter.CounterTypes.CardsAppearing, true);
 		}
 		strokeCount = 0;
 	}
@@ -111,7 +111,7 @@ public class ParChallenge : Challenge
 				ctrl.BlockShooting = true;
 			if (m_customAutoFail != null && m_customAutoFail.enabled)
 			{
-				m_customAutoFail.isWaitingForEnd = true;
+				m_customAutoFail.CheckAutoFail = true;
 				return;
 			}
 			if (AutoFail)

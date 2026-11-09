@@ -37,7 +37,7 @@ public class Collectable : ScriptableObject
 
 	public void Collect(string id)
 	{
-		SaveGame.AddToSet(serializationId, id, false);
+		SaveGame.AddToSet(serializationId, id);
 		SaveGame.Save(false);
 	}
 }

@@ -191,7 +191,7 @@ public class SimplePortal : MonoBehaviour
 
 		if (portalSFX != null)
 		{
-			portalSFX.Play(false, transform.position);
+			portalSFX.Play(transform.position);
 		}
 		blockTimer = BlockTimer;
 		OtherEvents?.Invoke();
@@ -224,7 +224,7 @@ public class SimplePortal : MonoBehaviour
 				LinkedPortal.RecieveObject(other.gameObject);
 		}
 		if (portalSFX != null)
-			portalSFX.Play(false, transform.position);
+			portalSFX.Play(transform.position);
 		blockTimer = BlockTimer;
 	}
 
@@ -253,8 +253,8 @@ public class SimplePortal : MonoBehaviour
 			if (tm != null)
 			{
 				tm.TransmogrifBall(tm, sendThroughTransmogrif);
-				if (OverworldBallManager.Instance != null && OverworldBallManager.Instance.CurrentBall != null)
-					go = OverworldBallManager.Instance.CurrentBall.gameObject;
+				if (OverworldBallManager.Instance != null && OverworldBallManager.Instance.Ball != null)
+					go = OverworldBallManager.Instance.Ball.gameObject;
 			}
 		}
 

@@ -71,7 +71,7 @@ public class EvilFlagJump : MonoBehaviour, IFlagMovable
 		if (m_TravelTimer != 0f && m_TravelTimer < TravelTime)
 			return;
 		if (jumpStartSFX != null)
-			jumpStartSFX.Play(null, 1f, 1f, transform.position, 0f);
+			jumpStartSFX.Play(null, transform.position, 1f, 1f, 0f);
 		playedEndSFX = false;
 		SetNextPoint();
 		m_TravelTimer = 0f;
@@ -96,7 +96,7 @@ public class EvilFlagJump : MonoBehaviour, IFlagMovable
 			{
 				playedEndSFX = true;
 				if (jumpEndSFX != null)
-					jumpEndSFX.Play(null, 1f, 1f, transform.position, 0f);
+					jumpEndSFX.Play(null, transform.position, 1f, 1f, 0f);
 			}
 		}
 		m_TravelTimer += Time.fixedDeltaTime;

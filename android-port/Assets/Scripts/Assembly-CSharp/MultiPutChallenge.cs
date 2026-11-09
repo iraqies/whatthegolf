@@ -33,7 +33,7 @@ public class MultiPutChallenge : Challenge
 	{
 		_multiBallFlag = FindObjectOfType<MultiBallFlag>();
 		if (_multiBallFlag != null)
-			_multiBallFlag.OnMultiBallHit += OnMultiballFlagHit;
+			_multiBallFlag.OnAnyHit += OnMultiballFlagHit;
 
 		if (isManualSet)
 		{
@@ -43,8 +43,8 @@ public class MultiPutChallenge : Challenge
 				{
 					if (objectsToPut[i] != null)
 					{
-						var destroyable = objectsToPut[i].AddComponent<ObjectDestroyable>();
-						destroyable.OnWillDestroy += OnObjectWillDestroy;
+						var destroyable = objectsToPut[i].AddComponent<ObjectDestroyTrigger>();
+						destroyable.onDestroyObject += OnObjectWillDestroy;
 					}
 				}
 				_activeBallCount = objectsToPut.Count;
@@ -62,8 +62,8 @@ public class MultiPutChallenge : Challenge
 					if (_controllers[i] != null)
 					{
 						objectsToPut.Add(_controllers[i].gameObject);
-						var destroyable = _controllers[i].gameObject.AddComponent<ObjectDestroyable>();
-						destroyable.OnWillDestroy += OnObjectWillDestroy;
+						var destroyable = _controllers[i].gameObject.AddComponent<ObjectDestroyTrigger>();
+						destroyable.onDestroyObject += OnObjectWillDestroy;
 					}
 				}
 				_activeBallCount = _controllers.Length;
@@ -88,7 +88,7 @@ public class MultiPutChallenge : Challenge
 		if (LevelManager.Exists && LevelManager.Instance != null)
 		{
 			if (LevelManager.Instance.InGameMenu != null)
-				LevelManager.Instance.InGameMenu.SetStrokeCounterSettings(ballsToWin, true, true, StrokeCounter.CounterTypes.CardsAppearing, null);
+				LevelManager.Instance.InGameMenu.SetStrokeCounterSettings(ballsToWin, StrokeCounter.CounterTypes.CardsAppearing, true);
 			LevelManager.Instance.OnLevelWillUnload += OnLevelWillUnload;
 		}
 	}
@@ -112,7 +112,7 @@ public class MultiPutChallenge : Challenge
 	private void OnDestroy()
 	{
 		if (_multiBallFlag != null && isManualSet)
-			_multiBallFlag.OnMultiBallHit -= OnMultiballFlagHit;
+			_multiBallFlag.OnAnyHit -= OnMultiballFlagHit;
 		if (LevelManager.Exists && LevelManager.Instance != null)
 			LevelManager.Instance.OnLevelWillUnload -= OnLevelWillUnload;
 	}
@@ -123,7 +123,7 @@ public class MultiPutChallenge : Challenge
 			return;
 		_currentPutCount++;
 		if (LevelManager.Exists && LevelManager.Instance != null && LevelManager.Instance.InGameMenu != null)
-			LevelManager.Instance.InGameMenu.SetStrokeCounterSettings(ballsToWin - _currentPutCount, true, true, StrokeCounter.CounterTypes.CardsAppearing, null);
+			LevelManager.Instance.InGameMenu.SetStrokeCounterSettings(ballsToWin - _currentPutCount, StrokeCounter.CounterTypes.CardsAppearing, true);
 		if (_currentPutCount == ballsToWin)
 			Complete();
 		if (SFX != null)

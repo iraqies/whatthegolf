@@ -34,7 +34,7 @@ namespace Audio
 			hitFlag = true;
 			if (moving && SFX_OnHitFlag != null)
 			{
-				SFX_OnHitFlag.Play(AudioUtility.GetVoice(VoiceType.Sfx), transform.position, 0f);
+				SFX_OnHitFlag.Play(AudioUtility.GetVoice(AudioUtility.AudioManagerVoice.ShortEffects), transform.position, 0f);
 			}
 		}
 
@@ -64,9 +64,9 @@ namespace Audio
 					moving = true;
 					if (SFX_OnSlide_Start != null)
 					{
-						SFX_OnSlide_Start.Play(AudioUtility.GetVoice(VoiceType.Sfx), transform.position, 0f);
-						if (AudioManager.Instance != null && SFX_OnSlide_Start.AudioSourceUsed != null)
-							AudioManager.Instance.AudioSourceFollowTransform(SFX_OnSlide_Start.AudioSourceUsed, transform, 0.5f);
+						SFX_OnSlide_Start.Play(AudioUtility.GetVoice(AudioUtility.AudioManagerVoice.ShortEffects), transform.position, 0f);
+						if (AudioManager.Instance != null && SFX_OnSlide_Start.LastAudioSource != null)
+							AudioManager.Instance.AudioSourceFollowTransform(SFX_OnSlide_Start.LastAudioSource, transform, 0.5f);
 					}
 				}
 				if (moving && velMag < 0.1f)
@@ -74,12 +74,12 @@ namespace Audio
 					moving = false;
 					if (!hitFlag && SFX_OnStop_NoHit != null)
 					{
-						SFX_OnStop_NoHit.Play(AudioUtility.GetVoice(VoiceType.Sfx), transform.position, 0f);
+						SFX_OnStop_NoHit.Play(AudioUtility.GetVoice(AudioUtility.AudioManagerVoice.ShortEffects), transform.position, 0f);
 					}
 				}
-				if (SFX_OnStop_NoHit != null && SFX_OnStop_NoHit.AudioSourceUsed != null && SFX_OnStop_NoHit.AudioSourceUsed.isPlaying && hitFlag)
+				if (SFX_OnStop_NoHit != null && SFX_OnStop_NoHit.LastAudioSource != null && SFX_OnStop_NoHit.LastAudioSource.isPlaying && hitFlag)
 				{
-					SFX_OnStop_NoHit.AudioSourceUsed.Stop();
+					SFX_OnStop_NoHit.LastAudioSource.Stop();
 				}
 			}
 

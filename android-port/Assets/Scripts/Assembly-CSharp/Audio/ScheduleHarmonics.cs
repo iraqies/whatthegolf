@@ -134,12 +134,12 @@ namespace Audio
 
 		public void SetVolume(float v)
 		{
-			if (scheduler != null && scheduler.sources != null)
+			if (scheduler != null && scheduler.Players != null)
 			{
-				for (int i = 0; i < scheduler.sources.Length; i++)
+				for (int i = 0; i < scheduler.Players.Length; i++)
 				{
-					if (scheduler.sources[i] != null)
-						scheduler.sources[i].volume = v;
+					if (scheduler.Players[i] != null)
+						scheduler.Players[i].volume = v;
 				}
 			}
 		}
