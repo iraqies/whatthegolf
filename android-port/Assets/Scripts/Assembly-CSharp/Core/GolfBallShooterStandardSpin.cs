@@ -4,15 +4,30 @@ namespace Core
 {
 	public class GolfBallShooterStandardSpin : GolfBallShooterBase
 	{
-		[SerializeField] private float fullShootVelocity = 18f;
+		[SerializeField] private float fullShootVelocity = 25f;
 		[SerializeField] private float pitch;
-		[SerializeField] private float spin = 5f;
+		[SerializeField] private float spin;
 
-		public override void OnActivate() => StartAndWakeup();
+		public override void OnActivate()
+		{
+			base.OnActivate();
+			if (rigidbodyC != null)
+				rigidbodyC.isKinematic = false;
+		}
 
 		public override void OnShoot(Vector3 boost)
 		{
-			StandardShoot(boost, pitch, fullShootVelocity > 0f ? fullShootVelocity : 18f, spin);
+			base.OnShoot(boost);
+			Vector3 cross = Vector3.Cross(boost, Vector3.up);
+			if (cross.sqrMagnitude > 1e-6f)
+				boost = Quaternion.AngleAxis(pitch, cross) * boost;
+			if (rigidbodyC != null)
+			{
+				rigidbodyC.isKinematic = false;
+				rigidbodyC.velocity = Vector3.zero;
+				rigidbodyC.AddForce(boost * fullShootVelocity, ForceMode.VelocityChange);
+				rigidbodyC.AddTorque(-cross * spin, ForceMode.VelocityChange);
+			}
 		}
 	}
 }

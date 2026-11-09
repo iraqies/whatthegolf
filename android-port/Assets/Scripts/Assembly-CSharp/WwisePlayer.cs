@@ -1,105 +1,219 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class WwisePlayer : MonoBehaviour
 {
 	[Serializable]
-	public class PreloadData
+	public class LevelSong : ISerializationCallbackReceiver
 	{
-		public MusicState state;
-		public MusicTransition transition;
+		public string wwiseState;
+		[HideInInspector] public uint wwiseStateID;
+		public AudioClip clip;
+		[Range(0f, 1f)] public float volume = 1f;
+		[Range(0f, 20f)] public float fadeIn;
+		[Range(0f, 20f)] public float fadeOut;
+		public bool ignoreFirstPlayCall;
+		public bool customLoop;
+		public float loopPointSeconds;
+		public float startSkipSeconds;
+		public AudioClip stingerClip;
+		[Range(0f, 1f)] public float stingerVolume = 1f;
+		[HideInInspector] public int playCalls;
+		[HideInInspector] public float lastPosition;
+
+		public void OnBeforeSerialize() { }
+		public void OnAfterDeserialize()
+		{
+			if (!string.IsNullOrEmpty(wwiseState))
+				wwiseStateID = AkSoundEngine.GetIDFromString(wwiseState);
+		}
 	}
 
-	public enum MusicTime
-	{
-		beat = 0,
-		bar = 1,
-		exitcue = 2
-	}
-
-	private bool isVerbose;
-	public MusicState currentState;
-	public MusicPlaylist currentPlaylist;
-	public MusicPlaylist nextPlayList;
-	public MusicTransition currentTransition;
+	private static WwisePlayer instance;
 	public AudioClip offTheMapShort;
 	public AudioClip offTheMapLong;
-	public bool isInTransition;
-	private Wwise wwise;
-	private double minBufferTime = 0.05;
-	public bool isDebugStart;
-	public static WwisePlayer Instance;
-	public WwiseClipLoader clipLoader;
-	public bool isChangingState;
-	public bool isNextStateFromLoading;
-	public MusicTransition nextTransition;
-	public List<PreloadData> preloadMusicData;
 	private float lastOffTheMapTrigger;
-	private MusicState queuedState;
-	public MusicTransition ignoreTransitionFadeTransition;
+	public List<LevelSong> songs;
+	private Dictionary<uint, LevelSong> songDict;
+	private AudioSource[] sources;
+	private int currentSource;
+	private LevelSong currentSong;
+	private Coroutine switchSongR;
+	private uint currentMusicState;
+	private float currentFadeFactor = 1f;
+	private float currentRTPCFactor = 1f;
+	private float userVolume = 1f;
+	private float fadeBeforeEndingTime = 4f;
+	private Coroutine customLoopR;
+	private Coroutine fadeOutBeforeClipEndR;
 
-	private void Awake()
+	public static WwisePlayer Instance => instance ?? (instance = FindObjectOfType<WwisePlayer>());
+	public AudioSource CurrentSource => (sources != null && currentSource >= 0 && currentSource < sources.Length) ? sources[currentSource] : null;
+	private AudioSource OtherSource => (sources != null && sources.Length > 1) ? sources[1 - (currentSource % 2)] : CurrentSource;
+
+	private void OnEnable()
 	{
-		Instance = this;
-		if (wwise == null) wwise = GetComponent<Wwise>();
+		instance = this;
+		sources = GetComponents<AudioSource>();
+		if (sources == null || sources.Length == 0)
+			sources = GetComponentsInChildren<AudioSource>();
+		if (songDict == null && songs != null)
+		{
+			songDict = new Dictionary<uint, LevelSong>();
+			foreach (var s in songs)
+			{
+				if (s == null) continue;
+				if (s.wwiseStateID == 0 && !string.IsNullOrEmpty(s.wwiseState))
+					s.wwiseStateID = AkSoundEngine.GetIDFromString(s.wwiseState);
+				if (s.wwiseStateID != 0 && !songDict.ContainsKey(s.wwiseStateID))
+					songDict[s.wwiseStateID] = s;
+			}
+		}
+	}
+
+	private void Update()
+	{
+		if (CurrentSource != null && currentSong != null)
+		{
+			CurrentSource.volume = currentSong.volume * currentFadeFactor * currentRTPCFactor * userVolume;
+		}
+	}
+
+	public void PostEvent(string eventName)
+	{
+		if (string.IsNullOrEmpty(eventName)) return;
+		PostEvent(AkSoundEngine.GetIDFromString(eventName));
+	}
+
+	public void PostEvent(uint eventID)
+	{
+		if (eventID == 4258653052u)
+		{
+			if (CurrentSource != null) CurrentSource.Stop();
+			if (OtherSource != null) OtherSource.Stop();
+			return;
+		}
+		if (eventID == AK.TRIGGERS.OFF_THE_MAP_LONG || eventID == AK.TRIGGERS.OFF_THE_MAP_SHORT)
+		{
+			PostTrigger(eventID);
+			return;
+		}
+		SetState(0u, eventID);
+	}
+
+	public void PostTrigger(string triggerName)
+	{
+		if (string.IsNullOrEmpty(triggerName)) return;
+		PostTrigger(AkSoundEngine.GetIDFromString(triggerName));
 	}
 
 	public void PostTrigger(uint triggerID)
 	{
+		if (triggerID == AK.TRIGGERS.OFF_THE_MAP_LONG || triggerID == 0xB00A1A9Cu)
+		{
+			if (offTheMapLong != null && AudioManager.Instance != null && AudioManager.Instance.uiEffects != null)
+			{
+				AudioManager.Instance.uiEffects.PlaySimple(offTheMapLong, 0.5f, 1f, Vector3.zero);
+			}
+		}
+		else if (triggerID == AK.TRIGGERS.OFF_THE_MAP_SHORT || triggerID == 0x0C410B24u)
+		{
+			if (Time.unscaledTime > lastOffTheMapTrigger + 1.5f)
+			{
+				if (offTheMapShort != null && AudioManager.Instance != null && AudioManager.Instance.uiEffects != null)
+				{
+					AudioManager.Instance.uiEffects.PlaySimple(offTheMapShort, 0.5f, 1f, Vector3.zero);
+				}
+				lastOffTheMapTrigger = Time.unscaledTime;
+			}
+		}
 	}
 
-	public void Init(bool startsWithOnboarding, Action OnPreloadDone)
+	public void SetRTPC(string rtpcName, float value)
 	{
-		Instance = this;
-		if (wwise == null) wwise = GetComponent<Wwise>();
-		OnPreloadDone?.Invoke();
+		if (!string.IsNullOrEmpty(rtpcName))
+			SetRTPC(AkSoundEngine.GetIDFromString(rtpcName), value);
 	}
 
-	private IEnumerator Preload(bool startsWithOnboarding, Action OnPreloadDone)
+	public void SetRTPC(uint rtpcID, float value)
 	{
-		OnPreloadDone?.Invoke();
+		if (rtpcID == 3695994288u)
+		{
+			currentRTPCFactor = Mathf.Clamp01(value / 100f);
+		}
+	}
+
+	public void ResetRTPC(string rtpcName, float time = 0f)
+	{
+		if (!string.IsNullOrEmpty(rtpcName))
+			ResetRTPC(AkSoundEngine.GetIDFromString(rtpcName), time);
+	}
+
+	public void ResetRTPC(uint rtpcID, float time = 0f)
+	{
+		if (rtpcID == 3695994288u)
+		{
+			currentRTPCFactor = 1f;
+		}
+	}
+
+	public void SetState(string stateGroup, string state)
+	{
+		uint g = string.IsNullOrEmpty(stateGroup) ? 0u : AkSoundEngine.GetIDFromString(stateGroup);
+		uint s = string.IsNullOrEmpty(state) ? 0u : AkSoundEngine.GetIDFromString(state);
+		SetState(g, s);
+	}
+
+	public void SetState(uint stateGroup, uint state)
+	{
+		if (state == 0) return;
+		OnEnable();
+		LevelSong target = null;
+		if (songDict != null)
+			songDict.TryGetValue(state, out target);
+		if (target == null && songs != null)
+		{
+			foreach (var s in songs)
+			{
+				if (s != null && (s.wwiseStateID == state || (!string.IsNullOrEmpty(s.wwiseState) && AkSoundEngine.GetIDFromString(s.wwiseState) == state)))
+				{
+					target = s;
+					break;
+				}
+			}
+		}
+		if (target == null || target.clip == null) return;
+		if (currentSong == target && CurrentSource != null && CurrentSource.isPlaying) return;
+		currentMusicState = state;
+		currentSong = target;
+		var src = CurrentSource;
+		if (src != null)
+		{
+			src.clip = target.clip;
+			src.volume = target.volume * userVolume;
+			src.loop = true;
+			src.Play();
+		}
+	}
+
+	private IEnumerator SwitchSong(LevelSong nextSong)
+	{
 		yield break;
 	}
 
-	private void Log(string message) { }
-	public double GetFutureTime(MusicTime time) => AudioSettings.dspTime + 0.1;
-	private double GetNextPossibleDSPTime(double offset = 0.0) => AudioSettings.dspTime + offset;
-
-	public void SetState(uint wwiseState, bool fromLoading, Action onLoaded = null, bool ignoreTransition = false)
+	private IEnumerator CustomLoop(LevelSong song, AudioSource src)
 	{
-		if (wwise == null) wwise = GetComponent<Wwise>();
-		if (wwise == null)
-		{
-			onLoaded?.Invoke();
-			return;
-		}
-		if (wwise.musicStates == null || wwise.musicStates.Count == 0)
-			wwise.musicStates = GetComponentsInChildren<MusicState>(true).ToList();
-
-		var target = wwise.musicStates.FirstOrDefault(s => s != null && s.shortID == wwiseState);
-		if (target == null && wwise.musicStates.Count > 0)
-			target = wwise.musicStates.FirstOrDefault(s => s != null && s.gameObject.name.Contains("Overworld_A")) ?? wwise.musicStates[0];
-
-		if (target != null && target != currentState)
-		{
-			currentPlaylist?.StopInstant();
-			currentState = target;
-			currentPlaylist = target.playlist;
-			if (currentPlaylist != null)
-				StartCoroutine(currentPlaylist.Play(AudioSettings.dspTime, false, MusicTransition.DestinationSyncTo.EntryCue, 0.0, null));
-		}
-		onLoaded?.Invoke();
+		yield break;
 	}
 
-	public void SetRTPC(uint rtpc, float value) { }
-	public void SetRTPC(uint rtpc, float value, int timeMS) { }
-	public float GetRTPC(uint rtcp) => 0f;
-	public void ResetRTPC(uint rtpc, int timeInMs) { }
-	private void PlayTransition(double entryCue, MusicTransition transition, Action<double, double> OnSetNext) { }
-	private void State_OnPlay(MusicState state, bool fromLoading, Action onLoaded, bool ignoreTransition) { }
-	private IEnumerator ChangeStateRoutine() { yield break; }
-	private MusicTransition GetTransitionFromPlaylists(MusicPlaylist source, MusicPlaylist destination, bool ignoreTransition) => null;
+	private IEnumerator FadeOutBeforeClipEnd(LevelSong song, AudioSource src)
+	{
+		yield break;
+	}
+
+	private void OnDisable()
+	{
+	}
 }

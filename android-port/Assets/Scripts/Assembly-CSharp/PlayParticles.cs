@@ -2,13 +2,18 @@ using UnityEngine;
 
 public class PlayParticles : MonoBehaviour
 {
-	public ParticleSystem ps;
+	private ParticleSystem particles;
 
-	public void PlayParticleSystem()
+	private void Start()
 	{
+		particles = GetComponent<ParticleSystem>();
 	}
 
-	public void StopParticleSystem()
+	public void Play()
 	{
+		if (particles == null)
+			particles = GetComponent<ParticleSystem>();
+		if (particles != null)
+			particles.Play(true);
 	}
 }

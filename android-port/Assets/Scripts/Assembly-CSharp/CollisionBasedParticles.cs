@@ -3,22 +3,17 @@ using UnityEngine;
 
 public class CollisionBasedParticles : MonoBehaviour
 {
-	[SerializeField]
-	private List<ParticleSystem> particleSystems;
+	public List<Collider> collidersToNotRespondTo;
 
-	[SerializeField]
-	private float minImpuleMagnitude;
+	private float collisionThreshold = 5f;
 
-	[SerializeField]
-	private int particlesToEmit;
-
-	[SerializeField]
-	private bool rotateWithCollision;
-
-	[SerializeField]
-	private bool moveToCollision;
-
-	private void OnCollisionEnter(Collision c)
+	private void OnCollisionEnter(Collision collision)
 	{
+		if (collision == null) return;
+		if (collidersToNotRespondTo != null && collidersToNotRespondTo.Contains(collision.collider)) return;
+		if (collision.relativeVelocity.magnitude > collisionThreshold && collision.contacts != null && collision.contacts.Length > 0)
+		{
+			Effects.EmitDustPuff(collision.contacts[0].point, 1);
+		}
 	}
 }

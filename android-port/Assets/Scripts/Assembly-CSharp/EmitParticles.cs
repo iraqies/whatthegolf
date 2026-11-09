@@ -2,19 +2,15 @@ using UnityEngine;
 
 public class EmitParticles : MonoBehaviour
 {
-	public int particleCount;
+	public ParticleSystem particles;
 
-	public int totalEmitCount;
+	public int amount = 5;
 
-	private ParticleSystem particles;
-
-	private int currentCount;
-
-	private void Start()
+	public void Emit()
 	{
-	}
-
-	private void OnCollisionEnter(Collision other)
-	{
+		if (particles == null)
+			particles = GetComponent<ParticleSystem>();
+		if (particles != null)
+			particles.Emit(amount);
 	}
 }

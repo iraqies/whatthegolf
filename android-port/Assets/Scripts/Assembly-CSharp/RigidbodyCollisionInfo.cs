@@ -9,6 +9,11 @@ public class RigidbodyCollisionInfo : MonoBehaviour
 	public Action<HitInfo> onCollision;
 	public Action<TriggerInfo> onTrigger;
 	public Action<Collider> OnTrigger3D;
+	public Action<Collider> OnTriggerEnterEvent
+	{
+		get => OnTrigger3D;
+		set => OnTrigger3D = value;
+	}
 	public Action<Collider2D> OnTrigger2D;
 	public Action<Collision> CollisionEnter3D;
 	public Action<Collision2D> CollisionEnter2D;

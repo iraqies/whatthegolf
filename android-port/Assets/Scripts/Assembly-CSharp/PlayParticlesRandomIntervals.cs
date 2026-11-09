@@ -1,29 +1,29 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class PlayParticlesRandomIntervals : MonoBehaviour
 {
+	public float minInterval = 2f;
+
+	public float maxInterval = 6f;
+
 	private ParticleSystem particles;
 
-	private bool canPlay;
-
-	public float minInterval;
-
-	public float maxInterval;
-
-	public UnityEvent OnPlay;
-
-	private void Start()
+	private void OnEnable()
 	{
+		if (particles == null)
+			particles = GetComponent<ParticleSystem>();
+		StopAllCoroutines();
+		StartCoroutine(PlayRoutine());
 	}
 
-	private void Update()
+	private IEnumerator PlayRoutine()
 	{
-	}
-
-	private IEnumerator PlayingParticles()
-	{
-		return null;
+		while (true)
+		{
+			yield return new WaitForSeconds(Random.Range(minInterval, maxInterval));
+			if (particles != null)
+				particles.Play();
+		}
 	}
 }

@@ -2,29 +2,23 @@ using UnityEngine;
 
 public class EmitParticlesWhenGrounded : MonoBehaviour
 {
-	public Vector3 Offset;
+	public Transform positionOfEmitter;
 
-	public float Distance;
+	public float checkDistance = 0.25f;
 
-	public LayerMask GroundLayers;
+	private ParticleSystem.EmissionModule emissionModule;
 
-	public float ParticlesToEmitPerUnit;
-
-	private RealCar[] cars;
-
-	private ParticleSystem particles;
-
-	private Vector3[] lastPositions;
-
-	private void Awake()
+	private void Start()
 	{
+		ParticleSystem ps = GetComponent<ParticleSystem>();
+		if (ps != null)
+			emissionModule = ps.emission;
 	}
 
 	private void Update()
 	{
-	}
-
-	private void EmitForWheel(Transform wheel, int i)
-	{
+		if (positionOfEmitter != null)
+			transform.position = positionOfEmitter.position;
+		emissionModule.enabled = Physics.Raycast(transform.position, Vector3.down, checkDistance, ~2048);
 	}
 }

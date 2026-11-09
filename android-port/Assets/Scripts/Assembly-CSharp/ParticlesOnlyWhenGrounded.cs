@@ -1,25 +1,25 @@
-using Chronos;
+using Core;
 using UnityEngine;
 
 public class ParticlesOnlyWhenGrounded : MonoBehaviour
 {
-	public LayerMask layer;
+	private ParticleSystem.EmissionModule emissionModule;
 
-	public float distanceToGroundThreshold;
-
-	public bool StopInsteadOfPause;
-
-	private ParticleSystem ps;
-
-	private ParticleSystem.EmissionModule emission;
-
-	private TimelineChild timeline;
+	private GolfBallController golfBallController;
 
 	private void Start()
 	{
+		golfBallController = GetComponentInParent<GolfBallController>();
+		ParticleSystem ps = GetComponent<ParticleSystem>();
+		if (ps != null)
+			emissionModule = ps.emission;
 	}
 
 	private void Update()
 	{
+		if (golfBallController != null)
+		{
+			emissionModule.enabled = golfBallController.IsGrounded;
+		}
 	}
 }

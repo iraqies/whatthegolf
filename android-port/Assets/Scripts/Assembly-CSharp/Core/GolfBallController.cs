@@ -124,6 +124,12 @@ namespace Core
 			set => blockShooting = value;
 		}
 
+		public bool isBlocking
+		{
+			get => BlockShooting;
+			set => BlockShooting = value;
+		}
+
 		public Vector3 Velocity => _ballVelocity;
 
 		public Transform ArrowPosition

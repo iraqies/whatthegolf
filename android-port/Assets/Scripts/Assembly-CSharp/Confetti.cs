@@ -1,61 +1,78 @@
 using System.Collections.Generic;
+using Core;
 using UnityEngine;
 
 public class Confetti : MonoBehaviour
 {
-	[SerializeField]
-	private Rigidbody2D rigidbody;
+	public int amount = 2;
 
-	[SerializeField]
-	private Renderer renderer;
+	private static Confetti instance;
 
-	[SerializeField]
-	private List<Material> materials;
+	public float randomPitch = 0.05f;
 
-	[SerializeField]
-	private float lifeTime;
+	public List<AudioClip> clips;
 
-	[SerializeField]
-	private Vector2 shootForceRange;
+	public List<ParticleSystem> particles;
 
-	[SerializeField]
-	private float minVelocity;
-
-	private float spawnTime;
-
-	private float startDrag;
-
-	private int preventionzoneDepth;
-
-	private ConfettiPrevention lastPrevention;
-
-	private float lifeTimeLeft;
-
-	private Vector3 startScale;
-
-	private float originalDrag;
-
-	private void Awake()
+	private static Confetti Instance
 	{
+		get
+		{
+			if (instance == null)
+			{
+				GameObject prefab = Resources.Load<GameObject>("Prefabs/ConfettiParticles");
+				if (prefab != null)
+				{
+					GameObject go = Instantiate(prefab);
+					if (go != null)
+						instance = go.GetComponent<Confetti>();
+				}
+			}
+			return instance;
+		}
 	}
 
-	public void Initiate()
+	private void OnEnable()
 	{
+		instance = this;
 	}
 
-	private void OnTriggerEnter2D(Collider2D collision)
+	public static void SpawnConfetti(Transform trans)
 	{
+		if (Instance != null)
+			Instance.SpawnInternal(trans);
 	}
 
-	private void OnTriggerExit2D(Collider2D collision)
+	private void SpawnInternal(Transform trans)
 	{
-	}
+		if (particles == null || trans == null) return;
+		transform.position = trans.position + Vector3.up * 0.5f;
+		int count = Mathf.Clamp(amount, 1, particles.Count);
+		List<int> indices = new List<int>();
+		for (int i = 0; i < count; i++)
+		{
+			int idx = Random.Range(0, particles.Count);
+			int guard = 0;
+			while (indices.Contains(idx) && guard < 20)
+			{
+				idx = Random.Range(0, particles.Count);
+				guard++;
+			}
+			indices.Add(idx);
+			if (particles[idx] != null)
+				particles[idx].Play();
+		}
 
-	private void Kill()
-	{
-	}
-
-	private void FixedUpdate()
-	{
+		if (clips != null && clips.Count >= 1)
+		{
+			int clipIdx = Random.Range(0, clips.Count);
+			AudioClip clip = clips[clipIdx];
+			if (clip != null && AudioManager.Instance != null && AudioManager.Instance.shortEffects != null)
+			{
+				float pitch = Random.Range(-randomPitch, randomPitch) + 1f;
+				bool nonSpatial = !Level.HasInstance || Level.Instance == null || !Level.Instance.IsMultiplayer;
+				AudioManager.Instance.shortEffects.PlaySimple(clip, 0.7f, pitch, trans.position, 50f, nonSpatial);
+			}
+		}
 	}
 }

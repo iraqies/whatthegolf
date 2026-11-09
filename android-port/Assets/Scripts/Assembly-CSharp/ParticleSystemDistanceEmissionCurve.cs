@@ -2,25 +2,31 @@ using UnityEngine;
 
 public class ParticleSystemDistanceEmissionCurve : MonoBehaviour
 {
-	public AnimationCurve EmissionCurve;
+	public float minRate;
 
-	private ParticleSystem particles;
+	public float maxRate;
 
-	private float timer;
+	public float minDistance;
 
-	private ParticleSystem.EmissionModule emission;
+	public float maxDistance;
 
-	private float maxTime;
+	private ParticleSystem.EmissionModule emissionModule;
 
-	private void Awake()
+	private Vector3 prevPos;
+
+	private void Start()
 	{
-	}
-
-	private void OnEnable()
-	{
+		ParticleSystem ps = GetComponent<ParticleSystem>();
+		if (ps != null)
+			emissionModule = ps.emission;
+		prevPos = transform.position;
 	}
 
 	private void Update()
 	{
+		float speed = Time.deltaTime > 0f ? Vector3.Distance(transform.position, prevPos) / Time.deltaTime : 0f;
+		prevPos = transform.position;
+		float t = maxDistance > minDistance ? Mathf.InverseLerp(minDistance, maxDistance, speed) : 1f;
+		emissionModule.rateOverDistanceMultiplier = Mathf.Lerp(minRate, maxRate, t);
 	}
 }

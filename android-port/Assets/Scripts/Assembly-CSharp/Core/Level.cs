@@ -205,6 +205,8 @@ namespace Core
 		{
 			instance = this;
 			controllers = FindObjectsOfType<GolfBallController>().ToList();
+			if (music == null) music = GetComponent<LevelMusic>() ?? FindObjectOfType<LevelMusic>();
+			if (music != null) music.InitializeForCurrentLevel(Goal, Ball, this);
 		}
 
 		public int GetLevelStartStrokes(int id) => LevelStartStrokes;
@@ -216,6 +218,8 @@ namespace Core
 			levelManager = lm;
 			instance = this;
 			controllers = FindObjectsOfType<GolfBallController>().ToList();
+			if (music == null) music = GetComponent<LevelMusic>() ?? FindObjectOfType<LevelMusic>();
+			if (music != null) music.InitializeForCurrentLevel(Goal, Ball, this);
 		}
 
 		public void SetupMultiplayer(MultiplayerConfiguration config) => multiplayerConfiguration = config;

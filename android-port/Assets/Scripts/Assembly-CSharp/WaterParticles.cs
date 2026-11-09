@@ -1,39 +1,25 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WaterParticles : MonoBehaviour
 {
-	public ParticleSystem SplashParticles;
-
-	public ParticleSystem WaterSplash;
-
-	public Vector3 SplashOffset;
-
-	public int ParticlesToEmit;
-
-	public List<AudioClip> SplashClips;
-
-	public float SplashVolume;
-
-	public float SizeMod;
-
-	public Vector2 SizeRange;
-
-	private ParticleSystem.EmitParams emitParams;
-
-	private ParticleSystem.EmitParams waterParams;
-
-	private Transform root;
-
-	private void Awake()
-	{
-	}
-
 	private void OnTriggerEnter(Collider other)
 	{
-	}
-
-	public void DoSplash(Vector3 position, Bounds bounds, bool onlyRings = false, bool ignoreSound = false)
-	{
+		if (other == null) return;
+		Bounds b = other.bounds;
+		float size = b.size.x * b.size.z;
+		if (size < 1.2f)
+		{
+			Effects.EmitWaterSplash(other.transform.position, 25);
+			return;
+		}
+		int count = (int)Mathf.Min(100f, size * 20f);
+		for (int i = 0; i < count; i++)
+		{
+			Vector3 pos = other.transform.position + new Vector3(
+				Random.Range(-b.extents.x, b.extents.x),
+				0f,
+				Random.Range(-b.extents.z, b.extents.z));
+			Effects.EmitWaterSplash(pos, 1);
+		}
 	}
 }

@@ -1,19 +1,26 @@
-using Audio;
 using UnityEngine;
 
 public class ParticlesOnTriggerEnter : MonoBehaviour
 {
-	public ParticleSystem particles;
+	public ParticleSystem system;
 
-	public ClipSettingsCollection sfx;
+	public int emitAmount = 50;
 
-	public bool onlyTriggerOnPlayerTag;
+	public bool placeInRoot = true;
 
 	private void Start()
 	{
+		if (placeInRoot && system != null)
+		{
+			system.transform.parent = null;
+		}
 	}
 
 	private void OnTriggerEnter(Collider other)
 	{
+		if (system != null)
+		{
+			system.Emit(emitAmount);
+		}
 	}
 }

@@ -7,15 +7,15 @@ namespace Core
 		protected Rigidbody rigidbodyC;
 		[SerializeField] protected float goalPullForce = 5f;
 		[SerializeField] protected float goalPullDistance = 1.5f;
-		[SerializeField] protected float angleThreshold = 45f;
+		[SerializeField] protected float angleThreshold = 30f;
 		[SerializeField] private GolfBallController golfBallControllerOverride;
 		[SerializeField] private Rigidbody rigidbodyOverride;
 		[SerializeField] public bool isblockedIfNotGrounded;
-		public float sqrVelocityShootingThreshold = 0.25f;
-		public float shootThresholdMinimumTime = 0.05f;
+		public float sqrVelocityShootingThreshold = float.PositiveInfinity;
+		public float shootThresholdMinimumTime = 0.2f;
 		protected float lastUnderVelocityShootingThreshold;
 		private float currentStillTime;
-		private float stillTimeThreshold = 0.05f;
+		private float stillTimeThreshold = 0.09f;
 
 		public Rigidbody RigidbodyOverride
 		{
@@ -25,7 +25,6 @@ namespace Core
 
 		protected virtual void Awake()
 		{
-			rigidbodyC = rigidbodyOverride != null ? rigidbodyOverride : (GetComponent<Rigidbody>() ?? GetComponentInChildren<Rigidbody>());
 			GolfBallController = golfBallControllerOverride != null ? golfBallControllerOverride : (GetComponent<GolfBallController>() ?? GetComponentInParent<GolfBallController>());
 			if (GolfBallController != null)
 			{
@@ -34,9 +33,13 @@ namespace Core
 				GolfBallController.OnShoot += GolfBallController_OnShoot;
 				GolfBallController.AddBlockingFunction(IsBlocking);
 			}
+			rigidbodyC = rigidbodyOverride != null ? rigidbodyOverride : (GetComponent<Rigidbody>() ?? GetComponentInChildren<Rigidbody>());
 		}
 
-		private void GolfBallController_OnShoot(Vector3 obj) => OnShoot(obj);
+		private void GolfBallController_OnShoot(Vector3 obj)
+		{
+			lastUnderVelocityShootingThreshold = Time.time - shootThresholdMinimumTime - 1f;
+		}
 
 		public override void OnShoot(Vector3 boost)
 		{
@@ -52,43 +55,72 @@ namespace Core
 
 		protected virtual void FixedUpdate()
 		{
-			if (rigidbodyC == null) rigidbodyC = GetComponent<Rigidbody>() ?? GetComponentInChildren<Rigidbody>();
+			if (rigidbodyC == null) rigidbodyC = rigidbodyOverride != null ? rigidbodyOverride : (GetComponent<Rigidbody>() ?? GetComponentInChildren<Rigidbody>());
+			if (goalPullDistance > 0f && Level.HasInstance && Level.Instance != null && rigidbodyC != null && GolfBallController != null && GolfBallController.enabled)
+			{
+				if (rigidbodyC.velocity.magnitude > 5f && Level.Instance.Goal != null)
+				{
+					Vector3 toGoal = Level.Instance.Goal.transform.position - transform.position;
+					if (toGoal.magnitude <= goalPullDistance && Vector3.Angle(rigidbodyC.velocity, toGoal) < angleThreshold)
+					{
+						rigidbodyC.AddForce(toGoal.normalized * goalPullForce);
+					}
+				}
+			}
+			if (GolfBallController != null && rigidbodyC != null && !float.IsInfinity(sqrVelocityShootingThreshold) && !float.IsNaN(sqrVelocityShootingThreshold))
+			{
+				GolfBallController.isBlocking = IsBlocking();
+			}
 		}
 
 		protected virtual bool IsBlocking()
 		{
+			if (rigidbodyC == null) return false;
+			float sqrVel = rigidbodyC.velocity.sqrMagnitude;
+			if (sqrVel < sqrVelocityShootingThreshold)
+				currentStillTime += Time.unscaledDeltaTime;
+			else
+				currentStillTime = 0f;
+
+			if (currentStillTime >= stillTimeThreshold)
+				lastUnderVelocityShootingThreshold = Time.time;
+
+			bool blocked = (Time.time < lastUnderVelocityShootingThreshold + shootThresholdMinimumTime) && (currentStillTime < stillTimeThreshold);
 			if (isblockedIfNotGrounded && GolfBallController != null && !GolfBallController.IsGrounded)
-				return true;
-			if (rigidbodyC != null && sqrVelocityShootingThreshold > 0f)
-				return rigidbodyC.velocity.sqrMagnitude > sqrVelocityShootingThreshold;
-			return false;
+				blocked = true;
+			return blocked;
 		}
 
 		protected void StandardShoot(Vector3 boost, float pitch, float fullShootVelocity, float spin)
 		{
-			StandardShoot(boost, pitch, 0f, fullShootVelocity, spin);
+			if (Mathf.Abs(pitch) > 0.001f)
+			{
+				Vector3 planeNormal = GolfBallController != null ? GolfBallController.GetPlane(GolfBallController.AimPlane).normal : Vector3.up;
+				Vector3 axis = Vector3.Cross(boost, planeNormal);
+				if (axis.sqrMagnitude > 1e-6f)
+					boost = Quaternion.AngleAxis(pitch, axis) * boost;
+			}
+			StandardShoot(boost, pitch, 5f, fullShootVelocity, spin);
 		}
 
 		protected virtual void StandardShoot(Vector3 boost, float pitch, float minShootVelocity, float fullShootVelocity, float spin)
 		{
-			if (rigidbodyC == null) rigidbodyC = GetComponent<Rigidbody>() ?? GetComponentInChildren<Rigidbody>();
+			if (rigidbodyC == null) rigidbodyC = rigidbodyOverride != null ? rigidbodyOverride : (GetComponent<Rigidbody>() ?? GetComponentInChildren<Rigidbody>());
 			if (rigidbodyC == null) return;
 			rigidbodyC.isKinematic = false;
 			rigidbodyC.WakeUp();
 
-			float mag = Mathf.Clamp01(boost.magnitude);
-			if (mag <= 1e-4f) return;
+			Vector3 planeNormal = GolfBallController != null ? GolfBallController.GetPlane(GolfBallController.AimPlane).normal : Vector3.up;
+			Vector3 cross = Vector3.Cross(boost, planeNormal);
+			rigidbodyC.angularVelocity = Vector3.zero;
+			rigidbodyC.velocity = Vector3.zero;
+
 			Vector3 dir = boost.normalized;
-			if (Mathf.Abs(pitch) > 0.01f)
-			{
-				Vector3 right = Vector3.Cross(Vector3.up, dir).normalized;
-				if (right.sqrMagnitude < 1e-4f) right = Vector3.right;
-				dir = Quaternion.AngleAxis(-pitch * mag, right) * dir;
-			}
-			float speed = Mathf.Lerp(minShootVelocity, fullShootVelocity > 0f ? fullShootVelocity : 18f, mag);
-			rigidbodyC.velocity = dir.normalized * speed;
-			if (Mathf.Abs(spin) > 0.01f)
-				rigidbodyC.AddTorque(Vector3.Cross(Vector3.up, dir) * spin * mag, ForceMode.Impulse);
+			float mag = boost.magnitude;
+			Vector3 minVel = dir * minShootVelocity;
+			Vector3 maxVel = dir * fullShootVelocity;
+			rigidbodyC.velocity = minVel + (maxVel - minVel) * mag;
+			rigidbodyC.AddTorque(-cross * spin, ForceMode.VelocityChange);
 		}
 
 		public void StopAndSleep()
