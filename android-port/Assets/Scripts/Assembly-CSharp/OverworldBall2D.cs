@@ -79,7 +79,6 @@ public class OverworldBall2D : GolfBall2DShooterBase
 			controller.shooter = this;
 			controller.OnShoot -= OnShoot;
 			controller.OnShoot -= Shooter_OnShoot;
-			controller.OnShoot += Shooter_OnShoot;
 			controller.OnAimStart -= Controller_OnAimStart;
 			controller.OnAimStart += Controller_OnAimStart;
 			controller.OnAimUpdate -= Controller_OnAimUpdate;

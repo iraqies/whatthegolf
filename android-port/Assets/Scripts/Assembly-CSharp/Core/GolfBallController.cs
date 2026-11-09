@@ -244,10 +244,16 @@ namespace Core
 			_startRot = transform.rotation;
 			_lastBallPosition = transform.position;
 			if (Scale <= 0f) Scale = 1f;
-			var col = GetComponent<Collider>();
+			var col = GetComponent<Collider>() ?? GetComponentInChildren<Collider>();
 			if (col != null) distToGround = col.bounds.extents.y;
-			var col2d = GetComponent<Collider2D>();
-			if (col2d != null) distToGround = col2d.bounds.extents.y;
+			if (distToGround <= 0f)
+			{
+				var rend = GetComponent<Renderer>() ?? GetComponentInChildren<Renderer>();
+				if (rend != null) distToGround = rend.bounds.extents.y;
+			}
+			var col2d = GetComponent<Collider2D>() ?? GetComponentInChildren<Collider2D>();
+			if (col2d != null && col2d.bounds.extents.y > 0f) distToGround = col2d.bounds.extents.y;
+			if (distToGround <= 0f) distToGround = 1f;
 			if (m_Shooter == null) m_Shooter = GetComponent<ShooterBase>();
 			timeControl = _timeControll != null ? _timeControll : FindObjectOfType<TimeControl>();
 		}
@@ -324,12 +330,15 @@ namespace Core
 
 		public bool IsGroundedWithHeight(float height)
 		{
+			int mask = (ignoreOwnLayerForGroundDetection && groundLayer.value != 0) ? groundLayer.value : ~0;
 			if (GetComponent<Rigidbody2D>() != null)
 			{
-				var hit2d = Physics2D.Raycast(transform.position, Vector2.down, height + 0.15f, groundLayer);
+				var hit2d = Physics2D.Raycast(transform.position, Vector2.down, height + 0.5f, mask);
 				return hit2d.collider != null;
 			}
-			return Physics.Raycast(transform.position + Vector3.up * 0.05f, Vector3.down, height + 0.15f, groundLayer, QueryTriggerInteraction.Ignore);
+			Vector3 downDir = -GetPlane(AimPlane).normal;
+			if (downDir.sqrMagnitude < 1e-4f) downDir = Vector3.down;
+			return Physics.Raycast(transform.position + (-downDir * 0.05f), downDir, height + 0.5f, mask, QueryTriggerInteraction.Ignore);
 		}
 
 		public void TimedBlockShot(float duration) => shootCoolTimer = Mathf.Max(shootCoolTimer, duration);
@@ -516,11 +525,12 @@ namespace Core
 				float remapped = Mathf.Clamp01((mag - thresh) / Mathf.Max(0.01f, 1f - thresh));
 				finalAim = finalAim.normalized * remapped;
 			}
-			shootCoolTimer = Mathf.Max(0.05f, shootCoolDown);
-			CountShot();
 			m_OnPreShoot?.Invoke(finalAim);
+			shootCoolTimer = Mathf.Max(0.05f, shootCoolDown);
+			shooter?.OnShoot(finalAim);
 			m_OnShoot?.Invoke(finalAim);
 			OnShootEvent?.Invoke();
+			CountShot();
 		}
 
 		private bool CheckPreviousAimVectorsForDifference() => true;

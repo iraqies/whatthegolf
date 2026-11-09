@@ -21,8 +21,6 @@ namespace Core
 			if (GolfBallController != null)
 			{
 				GolfBallController.shooter = this;
-				GolfBallController.OnShoot -= OnShoot;
-				GolfBallController.OnShoot += OnShoot;
 				GolfBallController.AddBlockingFunction(IsBlocking);
 			}
 		}
