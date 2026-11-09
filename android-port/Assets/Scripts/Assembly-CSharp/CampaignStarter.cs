@@ -54,7 +54,8 @@ public class CampaignStarter : BasePackStarter
 		if (LevelManager.Exists)
 			yield return StartCoroutine(LevelManager.Instance.StartTransition(Color.black, null, false, false, false, effect, null));
 		SaveThrobber.HideThrobber();
-		OverworldSceneLoader.LoadOverworld(pack, false);
+		bool useTunnel = !SaveGame.IsIntroAnimationComplete && pack.campaignType == ECampaignType.Main;
+		OverworldSceneLoader.LoadOverworld(pack, useTunnel);
 		StartCoroutine(WaitAfterLevelLoaded());
 	}
 

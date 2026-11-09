@@ -197,6 +197,9 @@ public class IntroTunnelInOverworld : MonoBehaviour
 		lastPipeIndex = 0;
 		if (!startAtLogo)
 		{
+			Animator logoAnim = GetComponentInChildren<Animator>(true);
+			if (logoAnim != null)
+				logoAnim.SetBool("QuickSplash", false);
 			StartCoroutine(pTween.To(tweenTimeToLogo, t =>
 			{
 				SetPositionOnPath(pathToLogo, TweenFunctions.EaseIn(t), i =>
@@ -211,6 +214,9 @@ public class IntroTunnelInOverworld : MonoBehaviour
 
 			while (OnABitBeforeLogo != null && !OnABitBeforeLogo())
 				yield return null;
+
+			if (logoAnim != null)
+				logoAnim.SetTrigger("Splash");
 
 			yield return new WaitForSeconds(IsSnowIntro ? 0.1f : 1.5f);
 

@@ -111,6 +111,7 @@ public class ShortcutTunnel : MonoBehaviour
 	{
 		thing.nextTravelTime = Time.time + 20f;
 		var ball2d = thing.GetComponent<OverworldBall2D>();
+		bool isOpaquePipe = name.IndexOf("mario", StringComparison.OrdinalIgnoreCase) >= 0;
 		if (ball2d != null)
 		{
 			m_OnBallEnterTunnel?.Invoke(this);
@@ -119,7 +120,8 @@ public class ShortcutTunnel : MonoBehaviour
 				ball2d.Controller.CancelShooting();
 				ball2d.Controller.enabled = false;
 			}
-			ball2d.Hide();
+			if (isOpaquePipe)
+				ball2d.Hide();
 			if (OverworldManager2d.HasInstance && OverworldManager2d.Instance != null && OverworldManager2d.Instance.ui != null)
 				OverworldManager2d.Instance.ui.DisableUI();
 		}

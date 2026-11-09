@@ -27,7 +27,7 @@ public class OverworldLoader : MonoBehaviour
 		Application.backgroundLoadingPriority = ThreadPriority.Low;
 		yield return null;
 		if (logoAnimator != null)
-			logoAnimator.SetTrigger("Show");
+			logoAnimator.SetTrigger("Splash");
 		yield return new WaitForSecondsRealtime(3.05f);
 		didPlayAnimation = true;
 	}
@@ -42,7 +42,7 @@ public class OverworldLoader : MonoBehaviour
 		startTunnelTime = Time.realtimeSinceStartup;
 		yield return StartCoroutine(Cleanup(!PlatformSettings.IsConsole, true));
 		if (logoAnimator != null)
-			logoAnimator.SetBool("Instant", false);
+			logoAnimator.SetBool("QuickSplash", false);
 		bool skipTunnel = SaveGame.IsIntroAnimationComplete;
 		if (AudioManager.Instance != null && AudioManager.Instance.music != null)
 			AudioManager.Instance.music.InitializeBank(null, false);

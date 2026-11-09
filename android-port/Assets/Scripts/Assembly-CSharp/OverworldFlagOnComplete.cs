@@ -11,9 +11,20 @@ public class OverworldFlagOnComplete : MonoBehaviour
 
 	private void Start()
 	{
+		thisFlag = GetComponent<OverworldGoal>();
+		if (thisFlag != null && thisFlag.IsCompleted())
+		{
+			flagIsCompleted = true;
+			onFlagComplete?.Invoke();
+		}
 	}
 
 	private void Update()
 	{
+		if (!flagIsCompleted && thisFlag != null && thisFlag.IsCompleted())
+		{
+			flagIsCompleted = true;
+			onFlagComplete?.Invoke();
+		}
 	}
 }
