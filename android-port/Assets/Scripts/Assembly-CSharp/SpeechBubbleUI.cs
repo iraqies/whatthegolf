@@ -200,14 +200,36 @@ public class SpeechBubbleUI : MonoBehaviour
 
 		if (task.camera != null)
 		{
-			Vector2 minLocal = ViewportToLocal(new Vector3(0.1f, 0.1f, 0f)) + targetSize * 0.5f;
-			Vector2 maxLocal = ViewportToLocal(new Vector3(0.9f, 0.9f, 0f)) - targetSize * 0.5f;
-			float minX = Mathf.Min(minLocal.x, maxLocal.x);
-			float maxX = Mathf.Max(minLocal.x, maxLocal.x);
-			float minY = Mathf.Min(minLocal.y, maxLocal.y);
-			float maxY = Mathf.Max(minLocal.y, maxLocal.y);
-			bubbleTarget.x = Mathf.Clamp(bubbleTarget.x, minX, maxX);
-			bubbleTarget.y = Mathf.Clamp(bubbleTarget.y, minY, maxY);
+			float minX = float.PositiveInfinity;
+			float maxX = float.NegativeInfinity;
+			float minY = float.PositiveInfinity;
+			float maxY = float.NegativeInfinity;
+
+			Vector3[] vpCorners = new Vector3[4]
+			{
+				new Vector3(0.1f, 0.1f, 0f),
+				new Vector3(0.9f, 0.1f, 0f),
+				new Vector3(0.9f, 0.9f, 0f),
+				new Vector3(0.1f, 0.9f, 0f)
+			};
+
+			for (int i = 0; i < 4; i++)
+			{
+				Vector3 wp = task.camera.ViewportToWorldPoint(vpCorners[i]);
+				Vector3 lp = transform.InverseTransformPoint(wp);
+				if (lp.x < minX) minX = lp.x;
+				if (lp.x > maxX) maxX = lp.x;
+				if (lp.y < minY) minY = lp.y;
+				if (lp.y > maxY) maxY = lp.y;
+			}
+
+			minX += targetSize.x * 0.5f;
+			maxX -= targetSize.x * 0.5f;
+			minY += targetSize.y * 0.5f;
+			maxY -= targetSize.y * 0.5f;
+
+			bubbleTarget.x = (minX <= maxX) ? Mathf.Clamp(bubbleTarget.x, minX, maxX) : (minX + maxX) * 0.5f;
+			bubbleTarget.y = (minY <= maxY) ? Mathf.Clamp(bubbleTarget.y, minY, maxY) : (minY + maxY) * 0.5f;
 		}
 
 		Vector2 bubbleStart = (!isVisible || bubbleTransform == null) ? bubbleTarget : (Vector2)bubbleTransform.localPosition;

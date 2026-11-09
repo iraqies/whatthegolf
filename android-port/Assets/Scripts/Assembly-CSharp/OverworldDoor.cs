@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Audio;
+using Audio.Rumble;
 using CameraStack;
+using Core;
 using UnityEngine;
 
 public class OverworldDoor : MonoBehaviour
@@ -12,15 +14,15 @@ public class OverworldDoor : MonoBehaviour
 	public Transform RightDoor;
 	public GameObject Button;
 	public AnimationCurve animationCurve;
-	public float RoutineLength = 0.5f;
-	public float DoorExtend = 2f;
+	public float RoutineLength = 0.6f;
+	public float DoorExtend = 1.5f;
 	public GameObject DoorSides;
 	public List<Collider2D> Colliders = new List<Collider2D>();
 	public bool DebugThisDoor;
 	public Vector3[] corners;
-	public float BallDistanceThreshold = 3f;
-	public float Speed = 5f;
-	public float Magnitude = 1f;
+	public float BallDistanceThreshold = 15f;
+	public float Speed = 20f;
+	public float Magnitude = 0.1f;
 	public bool canPlaySound = true;
 	public PlayClipOnAudioEvent SFX;
 
@@ -39,71 +41,95 @@ public class OverworldDoor : MonoBehaviour
 		if (RightDoor != null) rightStart = RightDoor.localPosition;
 	}
 
-	public void OpenDoor(Action onOpen, bool instant = false)
+	public async void OpenDoor(Action onOpen, bool instant = false)
 	{
 		Init();
 		float dur = instant ? 0f : RoutineLength;
-		if (dur <= 0f || !gameObject.activeInHierarchy)
-		{
-			if (Button != null) Button.SetActive(false);
-			Vector3 localRight = transform.InverseTransformDirection(transform.right);
-			if (LeftDoor != null) LeftDoor.localPosition = leftStart - localRight * DoorExtend;
-			if (RightDoor != null) RightDoor.localPosition = rightStart + localRight * DoorExtend;
-			if (Colliders != null)
-			{
-				foreach (var c in Colliders)
-					if (c != null) c.enabled = false;
-			}
-			onOpen?.Invoke();
-		}
-		else
-		{
-			StartCoroutine(OpenDoorRoutineInternal(onOpen, dur, true));
-		}
+		await OpenDoorAsync(onOpen, dur, !instant);
 	}
 
-	private IEnumerator OpenDoorRoutineInternal(Action onOpen, float duration, bool playEndSounds)
+	public async Task OpenDoorAsync(Action onOpen, float duration, bool playEndSounds = true)
 	{
-		if (Button != null) Button.SetActive(false);
-		if (duration > 0f && canPlaySound && SFX != null)
-		{
-			SFX.Play(transform.position);
-		}
-		if (duration > 0f)
-			yield return new WaitForSeconds(0.5f);
+		Init();
+		if (Button != null)
+			Button.SetActive(false);
 
-		Vector3 localRight = transform.InverseTransformDirection(transform.right);
-		Vector3 leftEnd = leftStart - localRight * DoorExtend;
-		Vector3 rightEnd = rightStart + localRight * DoorExtend;
-
-		float elapsed = 0f;
-		while (elapsed < duration && duration > 0f)
+		bool hasDuration = duration > 0f;
+		if (hasDuration)
 		{
-			elapsed += Time.deltaTime;
-			float t = Mathf.Clamp01(elapsed / duration);
-			float eval = animationCurve != null && animationCurve.length > 0 ? animationCurve.Evaluate(t) : t;
-			if (LeftDoor != null) LeftDoor.localPosition = Vector3.Lerp(leftStart, leftEnd, eval);
-			if (RightDoor != null) RightDoor.localPosition = Vector3.Lerp(rightStart, rightEnd, eval);
-			yield return null;
+			if (canPlaySound && SFX != null)
+				SFX.Play(transform.position);
+			await Task.Delay(500);
 		}
-		if (LeftDoor != null) LeftDoor.localPosition = leftEnd;
-		if (RightDoor != null) RightDoor.localPosition = rightEnd;
+
+		var curCfg = PlatformSettings.Instance != null ? PlatformSettings.Instance.GetCurrent() : null;
+		if (curCfg != null && curCfg.useRumble && hasDuration)
+		{
+			if (TryGetComponent<OverworldDoorRumble>(out var doorRumble) && doorRumble != null)
+				doorRumble.OpenDoorRumble(duration);
+		}
+		if (curCfg != null && curCfg.useSaveThrobber)
+		{
+			SaveThrobber.ShowThrobber(0.5f);
+		}
+
+		await MoveDoorsOpen(duration);
+
+		if (hasDuration && playEndSounds)
+		{
+			var ballMgr = OverworldBallManager.Instance;
+			if (ballMgr != null && ballMgr.Ball != null)
+			{
+				float dist = Vector3.Distance(ballMgr.Ball.transform.position, transform.position);
+				if (dist < BallDistanceThreshold)
+				{
+					var targetCam = cam != null ? cam : OverworldCamera.Instance;
+					if (targetCam != null)
+						targetCam.Shake(0.2f, Speed, Magnitude);
+				}
+			}
+		}
 
 		if (Colliders != null)
 		{
 			foreach (var c in Colliders)
-				if (c != null) c.enabled = false;
+			{
+				if (c != null)
+					c.enabled = false;
+			}
 		}
+
 		onOpen?.Invoke();
 	}
 
-	public Task OpenDoorAsync(Action onOpen, float duration, bool playEndSounds = true)
+	private async Task MoveDoorsOpen(float duration)
 	{
-		OpenDoor(onOpen, duration <= 0f);
-		return Task.CompletedTask;
-	}
+		float startTime = Time.time;
+		float endTime = startTime + duration;
+		float curTime = startTime;
 
-	private Task MoveDoorsOpen(float duration) => Task.CompletedTask;
+		do
+		{
+			curTime = Time.time;
+			float eval = 1f;
+			if (duration != 0f)
+			{
+				float t = Mathf.InverseLerp(startTime, endTime, curTime);
+				eval = animationCurve != null && animationCurve.length > 0 ? animationCurve.Evaluate(t) : t;
+			}
+			float ct = Mathf.Clamp01(eval);
+			Vector3 localRight = transform.InverseTransformDirection(transform.right);
+			if (LeftDoor != null)
+				LeftDoor.localPosition = Vector3.Lerp(leftStart, leftStart - localRight * DoorExtend, ct);
+			if (RightDoor != null)
+				RightDoor.localPosition = Vector3.Lerp(rightStart, rightStart + localRight * DoorExtend, ct);
+
+			if (duration <= 0f)
+				break;
+			await Task.Delay(16);
+		}
+		while (curTime <= endTime);
+	}
 
 	public void RemoveButton()
 	{

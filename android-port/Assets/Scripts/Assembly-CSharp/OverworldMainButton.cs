@@ -85,7 +85,7 @@ public class OverworldMainButton : MonoBehaviour
 		if (cable != null)
 			cable.Toggle(false);
 
-		if (doorplate != null && doorplate.isOn)
+		if (doorplate == null || doorplate.isOn)
 		{
 			isEnabled = true;
 			if (cable != null)
@@ -161,8 +161,21 @@ public class OverworldMainButton : MonoBehaviour
 		if (isEnabled && !isReusable) return;
 		if (buttonCollider != null && collision.contacts != null && collision.contacts.Length > 0)
 		{
-			if (collision.contacts[0].otherCollider != buttonCollider)
-				return;
+			bool hitBtn = false;
+			for (int i = 0; i < collision.contacts.Length; i++)
+			{
+				if (collision.contacts[i].otherCollider == buttonCollider || collision.contacts[i].collider == buttonCollider)
+				{
+					hitBtn = true;
+					break;
+				}
+			}
+			if (!hitBtn && button != null)
+			{
+				float dist = Vector2.Distance(ball.transform.position, button.transform.position);
+				if (dist > 1.5f)
+					return;
+			}
 		}
 		isEnabled = true;
 		if (currentBlinkRoutine != null)

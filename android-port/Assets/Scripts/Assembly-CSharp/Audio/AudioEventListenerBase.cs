@@ -12,6 +12,21 @@ namespace Audio
 
 		protected virtual void Awake()
 		{
+			if (!listen)
+				return;
+			IAudioEvent audioEvent = null;
+			if (findFirstTransmitterInParent)
+			{
+				audioEvent = GetComponentInParent<IAudioEvent>();
+			}
+			else if (listenComponent != null)
+			{
+				audioEvent = listenComponent as IAudioEvent;
+			}
+			if (audioEvent != null)
+			{
+				audioEvent.OnAudioEvent = (System.Action<Vector3>)System.Delegate.Combine(audioEvent.OnAudioEvent, new System.Action<Vector3>(Play));
+			}
 		}
 
 		public virtual void Play()

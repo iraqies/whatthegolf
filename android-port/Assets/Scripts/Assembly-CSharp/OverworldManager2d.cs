@@ -584,7 +584,6 @@ public class OverworldManager2d : GolfBehaviour
 		if (culling != null)
 			culling.UpdateCulling();
 		IsIntroAnimationComplete = true;
-		SaveGame.IsIntroAnimationComplete = true;
 		SaveGame.Save(false);
 	}
 

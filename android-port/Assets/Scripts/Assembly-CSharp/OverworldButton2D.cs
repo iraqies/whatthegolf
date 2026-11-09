@@ -233,7 +233,13 @@ public class OverworldButton2D : GolfBehaviour
 			if (door != null)
 			{
 				door.Init();
-				door.OpenDoor(() => m_OnOpen?.Invoke(), true);
+				door.OpenDoor(() =>
+				{
+					if (door != null)
+						door.transform.SetParent(transform.parent, true);
+					gameObject.SetActive(false);
+					m_OnOpen?.Invoke();
+				}, true);
 			}
 		}
 
@@ -495,7 +501,16 @@ public class OverworldButton2D : GolfBehaviour
 		if (openParticles != null)
 			openParticles.Emit(40);
 		if (sfxOpen != null && AudioManager.Instance != null)
-			sfxOpen.Play(AudioManager.Instance.sfx, transform.position, 0f);
+		{
+			if (sfxOpen.Clips != null && sfxOpen.Clips.Count > 0)
+				sfxOpen.Play(AudioManager.Instance.sfx, transform.position, 0f);
+			else if (sfxOnOpen != null)
+				AudioManager.Instance.sfx.PlaySimple(sfxOnOpen, volumeMultiplier > 0f ? volumeMultiplier : 1f, 1f, transform.position);
+		}
+		else if (sfxOnOpen != null && AudioManager.Instance != null)
+		{
+			AudioManager.Instance.sfx.PlaySimple(sfxOnOpen, volumeMultiplier > 0f ? volumeMultiplier : 1f, 1f, transform.position);
+		}
 		ToggleBlinkRoutine(false);
 		SetButtonColors(OpenColors);
 		if (useOpenIndicator && openIndicator != null)
@@ -512,6 +527,9 @@ public class OverworldButton2D : GolfBehaviour
 			{
 				if (sfxAfterOpen != null && AudioManager.Instance != null)
 					sfxAfterOpen.Play(AudioManager.Instance.sfx, transform.position, 0f);
+				if (door != null)
+					door.transform.SetParent(transform.parent, true);
+				gameObject.SetActive(false);
 				m_OnOpen?.Invoke();
 			}, false);
 		}
@@ -541,7 +559,15 @@ public class OverworldButton2D : GolfBehaviour
 		if (doorBubble != null)
 			doorBubble.State = DoorBubbleState.Hidden;
 		if (door != null)
-			door.OpenDoor(() => m_OnOpen?.Invoke(), instant);
+		{
+			door.OpenDoor(() =>
+			{
+				if (door != null)
+					door.transform.SetParent(transform.parent, true);
+				gameObject.SetActive(false);
+				m_OnOpen?.Invoke();
+			}, instant);
+		}
 		else
 			m_OnOpen?.Invoke();
 	}

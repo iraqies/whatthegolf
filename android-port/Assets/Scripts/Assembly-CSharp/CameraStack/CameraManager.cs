@@ -23,7 +23,7 @@ namespace CameraStack
 		private bool activeBehaviourAttachedToThis;
 		public float gyroSenseMagnitude;
 
-		public static CameraManager Instance => _instance;
+		public static CameraManager Instance => _instance ?? (_instance = FindObjectOfType<CameraManager>());
 		public Camera[] Cameras => _cameras ?? (_cameras = GetComponentsInChildren<Camera>(true));
 		public Camera MainCamera => GetComponent<Camera>() ?? (Cameras.Length > 0 ? Cameras[0] : Camera.main);
 		public CameraBehavior ActiveBehavior { get; private set; }
@@ -35,7 +35,7 @@ namespace CameraStack
 			remove => m_OnActiveBehaviourChanged = (Action<CameraBehavior>)Delegate.Remove(m_OnActiveBehaviourChanged, value);
 		}
 
-		public void Reset() => SetCurrentBehaviour();
+		public void Reset() => OnReset();
 
 		public void SetChallengeBehaviour(CameraBehavior arg1, CameraBehavior arg2)
 		{
@@ -47,11 +47,31 @@ namespace CameraStack
 		{
 			_instance = this;
 			_cameras = GetComponentsInChildren<Camera>(true);
-			SetCurrentBehaviour();
+			if (challengeSetup)
+			{
+				if (OnChallengeCameraBehavior != null)
+					OnPlayCameraBehavior = OnChallengeCameraBehavior;
+				if (DesktopChallengeCameraOverrideBehaviour != null)
+					DesktopCameraOverrideBehaviour = DesktopChallengeCameraOverrideBehaviour;
+				SetCurrentBehaviour();
+				challengeSetup = false;
+			}
+			if (Level.HasInstance && Level.Instance != null)
+			{
+				Level.Instance.OnComplete -= OnGoal;
+				Level.Instance.OnComplete += OnGoal;
+				Level.Instance.OnReset -= OnReset;
+				Level.Instance.OnReset += OnReset;
+			}
 		}
 
 		private void OnDestroy()
 		{
+			if (Level.HasInstance && Level.Instance != null)
+			{
+				Level.Instance.OnComplete -= OnGoal;
+				Level.Instance.OnReset -= OnReset;
+			}
 			if (_instance == this) _instance = null;
 		}
 
@@ -66,23 +86,47 @@ namespace CameraStack
 
 		private void Start()
 		{
-			_started = true;
-			SetCurrentBehaviour();
+			if (!_started)
+			{
+				SetCurrentBehaviour();
+				OnReset();
+				_started = true;
+			}
 		}
 
 		private void StartCheckingForAirPlay() { }
-		private void OnReset() { }
+
+		private void OnReset()
+		{
+			if (ActiveBehavior == null) return;
+			for (int i = 0; i < 200; i++)
+			{
+				ActiveBehavior.OutOfBounds();
+				transform.position = ActiveBehavior.Position;
+				transform.rotation = ActiveBehavior.Rotation;
+				ActiveBehavior.transform.position = transform.position;
+				ActiveBehavior.transform.rotation = transform.rotation;
+			}
+		}
 
 		private void Update() => ManualUpdate();
 
 		public void SwitchBehavior(CameraBehavior newCameraBehavior)
 		{
-			if (newCameraBehavior == null) return;
-			ActiveBehavior?.Cleanup();
+			if (ActiveBehavior != null)
+				ActiveBehavior.Cleanup();
 			ActiveBehavior = newCameraBehavior;
-			ActiveBehavior.Cameras = Cameras;
-			ActiveBehavior.Init();
-			m_OnActiveBehaviourChanged?.Invoke(ActiveBehavior);
+			if (ActiveBehavior != null)
+			{
+				ActiveBehavior.IsAttachedToCameraManager = (ActiveBehavior.gameObject == gameObject);
+				if (!ActiveBehavior.IsAttachedToCameraManager)
+					ActiveBehavior.transform.SetParent(transform);
+				ActiveBehavior.Cameras = Cameras;
+				ActiveBehavior.Init();
+				m_OnActiveBehaviourChanged?.Invoke(ActiveBehavior);
+				if (MainAudioListener.Instance != null)
+					MainAudioListener.Instance.OnCameraBehaviourChanged(ActiveBehavior);
+			}
 		}
 
 		private void OnGoal(Level.CompletedState s) => ActiveBehavior?.GoalComplete();
@@ -91,8 +135,12 @@ namespace CameraStack
 		{
 			if (ActiveBehavior == null) return;
 			ActiveBehavior.PreUpdate();
-			transform.position = ActiveBehavior.Position;
+			Vector3 pos = ActiveBehavior.Position;
+			if (!float.IsNaN(pos.x) && !float.IsNaN(pos.y) && !float.IsNaN(pos.z))
+				transform.position = pos;
 			transform.rotation = ActiveBehavior.Rotation;
+			ActiveBehavior.transform.position = transform.position;
+			ActiveBehavior.transform.rotation = transform.rotation;
 		}
 
 		public void Shake(float duration, float speed, float magnitude) { }

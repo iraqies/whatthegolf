@@ -100,6 +100,14 @@ namespace GolfCourse
 
 			if (followCamera == null && CameraManager.Instance != null)
 				followCamera = CameraManager.Instance.GetComponent<CBFollow>() ?? CameraManager.Instance.GetComponentInChildren<CBFollow>();
+			if (followCamera == null)
+				followCamera = FindObjectOfType<CBFollow>();
+			if (followCamera != null && followCamera.FollowTarget == null)
+			{
+				GolfBallController gbcInit = GolfBallController != null ? GolfBallController : GetComponentInParent<GolfBallController>();
+				if (gbcInit != null)
+					followCamera.FollowTarget = gbcInit.ArrowPosition != null ? gbcInit.ArrowPosition : (hips != null ? hips.transform : transform);
+			}
 
 			if (rigidbodies != null)
 			{
@@ -340,6 +348,10 @@ namespace GolfCourse
 				GolfBallController.CheckpointHit(oldPosition, oldRotation);
 			if (GolfClub != null && ClubRoot != null)
 				GolfClub.transform.SetParent(ClubRoot);
+			if (followCamera == null && CameraManager.Instance != null)
+				followCamera = CameraManager.Instance.GetComponent<CBFollow>() ?? CameraManager.Instance.GetComponentInChildren<CBFollow>();
+			if (followCamera == null)
+				followCamera = FindObjectOfType<CBFollow>();
 			if (followCamera != null && hips != null)
 				followCamera.FollowTarget = hips.transform;
 			if (GolfBallController != null)

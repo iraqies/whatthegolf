@@ -9,11 +9,15 @@ namespace Audio.Rumble
 
 		public void OpenDoorRumble(float duration)
 		{
+			StartCoroutine(OpenRumbleCoroutine(duration));
+			if (rumble != null)
+				rumble.Play(0, 1f);
 		}
 
 		private IEnumerator OpenRumbleCoroutine(float openDuration)
 		{
-			return null;
+			if (openDuration > 0f)
+				yield return new WaitForSeconds(openDuration);
 		}
 	}
 }

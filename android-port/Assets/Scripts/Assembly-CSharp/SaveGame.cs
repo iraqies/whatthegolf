@@ -728,8 +728,24 @@ public class SaveGame
 
 	public static List<string> GetStringList(string key, int? saveSlot = null)
 	{
-		if (TryGetValue<List<string>>(key, out var list, null, saveSlot) && list != null)
-			return list;
+		int slotIdx = saveSlot ?? activeSaveSlot;
+		var dict = EnsureSlotExists(slotIdx);
+		if (dict != null && dict.TryGetValue(key, out var raw) && raw != null)
+		{
+			if (raw is List<string> sList)
+				return sList;
+			if (raw is System.Collections.IList rawList)
+			{
+				var converted = new List<string>(rawList.Count);
+				for (int i = 0; i < rawList.Count; i++)
+				{
+					if (rawList[i] != null)
+						converted.Add(rawList[i].ToString());
+				}
+				dict[key] = converted;
+				return converted;
+			}
+		}
 		var empty = new List<string>();
 		SetValue(key, empty, false, saveSlot);
 		return empty;

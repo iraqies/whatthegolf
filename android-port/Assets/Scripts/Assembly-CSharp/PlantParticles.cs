@@ -21,14 +21,17 @@ public class PlantParticles : MonoBehaviour
 		[CompilerGenerated]
 		add
 		{
+			m_OnParticles = (Action<PlantParticles, int>)Delegate.Combine(m_OnParticles, value);
 		}
 		[CompilerGenerated]
 		remove
 		{
+			m_OnParticles = (Action<PlantParticles, int>)Delegate.Remove(m_OnParticles, value);
 		}
 	}
 
 	public void Emit(int amount)
 	{
+		m_OnParticles?.Invoke(this, amount);
 	}
 }

@@ -23,30 +23,39 @@ namespace Audio
 			nextSoundTime = 0f;
 		}
 
+		public void Play()
+		{
+			Play(Vector3.zero, 1f, 1f);
+		}
+
 		public void Play(Vector3 position, float volumeMultiplier = 1f, float pitchMultiplier = 1f, bool disableSpatial = false)
 		{
-			if (Time.unscaledTime < nextSoundTime) return;
-			nextSoundTime = Time.unscaledTime + cooldown;
-			var v = AudioUtility.GetVoice(voice);
-			clips?.Play(v, position, volumeMultiplier, pitchMultiplier, 0f, disableSpatial);
+			if (Time.time < nextSoundTime) return;
+			if (m_useVoice == null)
+				m_useVoice = AudioUtility.GetVoice(voice);
+			clips?.Play(m_useVoice, position, volumeMultiplier, pitchMultiplier, 0f, disableSpatial);
+			nextSoundTime = Time.time + cooldown;
 		}
 
 		public void Play(Vector3 position, PlayClipOnAudioEvent.Overrides _override, float volumeMultiplier = 1f, float pitchMultiplier = 1f, bool disableSpatial = false)
 		{
 			float cd = (_override != null && _override.overrideCooldown) ? _override.cooldown : cooldown;
-			if (Time.unscaledTime < nextSoundTime) return;
-			nextSoundTime = Time.unscaledTime + cd;
-			var v = (_override != null && _override.overrideVoice) ? AudioUtility.GetVoice(_override.voice) : AudioUtility.GetVoice(voice);
+			if (Time.time < nextSoundTime) return;
+			var v = (_override != null && _override.overrideVoice) ? AudioUtility.GetVoice(_override.voice) : (m_useVoice ?? (m_useVoice = AudioUtility.GetVoice(voice)));
 			float vol = (_override != null && _override.overrideVolume) ? _override.volume.GetResult * volumeMultiplier : volumeMultiplier;
 			float pit = (_override != null && _override.overridePitch) ? _override.pitch.GetResult * pitchMultiplier : pitchMultiplier;
 			float del = (_override != null && _override.overrideDelay) ? _override.delay : 0f;
 			clips?.Play(v, position, vol, pit, del, disableSpatial);
+			nextSoundTime = Time.time + cd;
 		}
 
 		public void PlayDelayed(Vector3 position, float delay, float volumeMultiplier = 1f, float pitchMultiplier = 1f)
 		{
-			var v = AudioUtility.GetVoice(voice);
-			clips?.Play(v, position, volumeMultiplier, pitchMultiplier, delay, false);
+			if (Time.time < nextSoundTime) return;
+			if (m_useVoice == null)
+				m_useVoice = AudioUtility.GetVoice(voice);
+			clips?.Play(m_useVoice, position, volumeMultiplier, pitchMultiplier, delay, false);
+			nextSoundTime = Time.time + cooldown;
 		}
 	}
 }

@@ -34,7 +34,12 @@ public class ShowSpeechbubbleOnHit : ShowSpeechBubble
 			return;
 		if (!ignoreActivatorTags && ActivatorTags != null && ActivatorTags.Count > 0)
 		{
-			if (other.gameObject == null || !ActivatorTags.Contains(other.gameObject.tag))
+			bool matched = other.gameObject != null && ActivatorTags.Contains(other.gameObject.tag);
+			if (!matched && other.rigidbody != null && other.rigidbody.gameObject != null && ActivatorTags.Contains(other.rigidbody.gameObject.tag))
+				matched = true;
+			if (!matched && other.gameObject != null && other.gameObject.GetComponentInParent<OverworldBall2D>() != null && ActivatorTags.Contains("Ball"))
+				matched = true;
+			if (!matched)
 				return;
 		}
 		StartCoroutine(HandleHit());

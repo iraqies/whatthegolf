@@ -10,20 +10,20 @@ namespace CameraStack
 		[SerializeField] protected Transform orbitTarget;
 		[SerializeField] protected Transform followTarget;
 		[SerializeField] protected bool followGoalOnWin = true;
-		[SerializeField] public Vector3 rotation = new Vector3(45f, 0f, 0f);
-		[SerializeField] public float elevation = 15f;
+		[SerializeField] public Vector3 rotation = new Vector3(30f, 0f, 0f);
+		[SerializeField] public float elevation = 40f;
 		[SerializeField] public bool shouldFollow = true;
-		[SerializeField] protected float startSmoothTime = 0.25f;
-		[SerializeField] protected float continuousSmoothTime = 0.15f;
+		[SerializeField] protected float startSmoothTime = 1.2f;
+		[SerializeField] protected float continuousSmoothTime = 0.4f;
 		[SerializeField] protected float aimSmoothTime = 0.2f;
-		[SerializeField] protected float continousTrackingTimer = 0.5f;
-		[SerializeField] public Vector2 screenPosition = new Vector2(0.5f, 0.5f);
+		[SerializeField] protected float continousTrackingTimer = 0.4f;
+		[SerializeField] public Vector2 screenPosition = new Vector2(0.5f, 0.33f);
 		[SerializeField] protected float sideTrackPadding = 0.2f;
 		[SerializeField] protected float upperTrackPadding = 0.2f;
 		[SerializeField] protected float lowerTrackPadding = 0.2f;
 
 		public LocalClock Clock;
-		protected float elevationSmoothTime = 0.15f;
+		protected float elevationSmoothTime = 0.4f;
 		protected Vector2 velocity;
 		protected Vector2 adjustedScreenPosition;
 		public float groundedElevation;
@@ -38,45 +38,53 @@ namespace CameraStack
 
 		public Transform FollowTarget
 		{
-			get => GetFollowTarget();
-			set => followTarget = value;
+			get => followTarget;
+			set
+			{
+				followTarget = value;
+				if (MainAudioListener.Instance != null)
+					MainAudioListener.Instance.OnCameraBehaviourChanged(this);
+			}
 		}
 
 		protected virtual Vector3 ballAtElevation
 		{
 			get
 			{
-				var t = GetFollowTarget();
-				if (t == null) return Vector3.zero;
-				Vector3 p = t.position;
+				if (followTarget == null)
+					return Vector3.zero;
+				Vector3 p = followTarget.position;
 				return new Vector3(p.x, groundedElevation, p.z);
 			}
 		}
 
-		public Transform GetFollowTarget()
-		{
-			if (followTarget != null) return followTarget;
-			var b = Ball;
-			return b != null ? b.transform : orbitTarget;
-		}
+		public Transform GetFollowTarget() => followTarget;
 
 		public override void Init()
 		{
 			base.Init();
+			if (gameObject.activeInHierarchy)
+				StartCoroutine(WaitForActiveBall());
 			if (followTarget == null)
 			{
-				var b = Ball;
-				if (b != null) followTarget = b.transform;
+				if (Ball != null)
+				{
+					followTarget = Ball.transform;
+					if (MainAudioListener.Instance != null)
+						MainAudioListener.Instance.OnCameraBehaviourChanged(this);
+				}
+				else
+				{
+					enabled = false;
+					return;
+				}
 			}
-			StartCoroutine(WaitForActiveBall());
 			UpdateWidthAndHeight();
+			transform.position = ScreenToWorld(screenPosition);
 			if (followTarget != null)
 			{
 				groundedElevation = followTarget.position.y;
 				targetGroundedElevation = followTarget.position.y;
-				adjustedScreenPosition = screenPosition;
-				transform.rotation = CalculateRotation();
-				transform.position = ScreenToWorld(screenPosition);
 			}
 		}
 
@@ -86,13 +94,7 @@ namespace CameraStack
 				yield return null;
 			Ball.OnShoot += _ =>
 			{
-				if (Ball != null)
-					FollowTarget = Ball.ArrowPosition != null ? Ball.ArrowPosition : Ball.transform;
-			};
-			Ball.OnAimStart += () =>
-			{
-				if (Ball != null)
-					FollowTarget = Ball.ArrowPosition != null ? Ball.ArrowPosition : Ball.transform;
+				continousTrackingTimerCountDown = continousTrackingTimer;
 			};
 		}
 
@@ -127,29 +129,21 @@ namespace CameraStack
 
 		protected Vector3 ScreenToWorld(Vector2 screenPos)
 		{
-			if (!shouldFollow || followTarget == null) return transform.position;
+			if (!shouldFollow || followTarget == null)
+				return transform.position;
 			var cams = Cameras;
 			Camera cam = (cams != null && cams.Length > 0 && cams[0] != null) ? cams[0] : Camera.main;
 			if (cam == null)
-			{
-				Quaternion rot = CalculateRotation();
-				float sinPitch = Mathf.Max(0.15f, Mathf.Sin(Mathf.Abs(rotation.x) * Mathf.Deg2Rad));
-				float dist = Mathf.Max(2f, elevation / sinPitch);
-				return ballAtElevation - (rot * Vector3.forward) * dist;
-			}
+				return transform.position;
+
 			Vector3 vpZero = cam.ViewportToWorldPoint(new Vector3(screenPos.x, screenPos.y, 0f));
 			Vector3 targetPos = ballAtElevation;
 			Vector3 delta = new Vector3(vpZero.x - targetPos.x, groundedElevation - targetPos.y, vpZero.z - targetPos.z);
 			diff = delta.magnitude;
 			distance = Mathf.Sqrt(diff * diff + elevation * elevation);
-			if (distance < 1f)
-			{
-				float sinPitch = Mathf.Max(0.15f, Mathf.Sin(Mathf.Abs(rotation.x) * Mathf.Deg2Rad));
-				distance = Mathf.Max(2f, elevation / sinPitch);
-			}
 			Vector3 worldAtDist = cam.ViewportToWorldPoint(new Vector3(screenPos.x, screenPos.y, distance));
 			Vector3 camOffset = transform.position - worldAtDist;
-			return targetPos + camOffset;
+			return ballAtElevation + camOffset;
 		}
 
 		protected void UpdateWidthAndHeight()
@@ -170,7 +164,8 @@ namespace CameraStack
 
 		protected override Vector3 CalculatePosition()
 		{
-			if (followTarget == null) return transform.position;
+			if (followTarget == null)
+				return Vector3.zero;
 			var cams = Cameras;
 			Camera cam = (cams != null && cams.Length > 0 && cams[0] != null) ? cams[0] : Camera.main;
 			UpdateWidthAndHeight();
@@ -181,7 +176,7 @@ namespace CameraStack
 				return followTarget.position - dir * 100f;
 			}
 
-			if (IsPointOutsideOfBox(followTarget.position) || followTarget.position.y < targetGroundedElevation)
+			if (!IsPointOutsideOfBox(followTarget.position) || followTarget.position.y < targetGroundedElevation)
 				targetGroundedElevation = followTarget.position.y;
 
 			float dt = Clock != null ? Clock.deltaTime : Time.unscaledDeltaTime;
@@ -191,8 +186,8 @@ namespace CameraStack
 			{
 				Vector3 vp = cam.WorldToViewportPoint(ballAtElevation);
 				adjustedScreenPosition = new Vector2(vp.x, vp.y);
-				float px = vp.x * width;
-				float py = vp.y * height;
+				float px = vp.x * cam.pixelWidth;
+				float py = vp.y * cam.pixelHeight;
 				float leftPad = sideTrackPadding * width;
 				float rightPad = (1f - sideTrackPadding) * width;
 				if (px < leftPad || px > rightPad)

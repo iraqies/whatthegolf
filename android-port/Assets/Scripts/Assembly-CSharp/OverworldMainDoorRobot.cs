@@ -142,12 +142,23 @@ public class OverworldMainDoorRobot : MonoBehaviour
 		if (plates == null || plates.Count == 0)
 			plates = GetComponentsInChildren<OverworldMainDoorPlate>(true).ToList();
 
+		bool savedCompleted = overworldID != null && !string.IsNullOrEmpty(overworldID.ID) && SaveGame.GetIsMainDoorOpen(overworldID.ID);
+		string idPrefix = overworldID != null && !string.IsNullOrEmpty(overworldID.ID) ? overworldID.ID : name;
+
 		foreach (var plate in plates)
 		{
 			if (plate == null) continue;
 			plate.Initialize(this);
+			string plateKey = string.Format(saveFormatUnlockedPlate, idPrefix, plate.name);
+			bool plateUnlocked = savedCompleted || SaveGame.GetValue(plateKey, false);
+			if (plateUnlocked)
+				plate.SetState(true, true);
 			plate.OnStateChange += (on, isLoad) =>
 			{
+				if (on && !isLoad)
+				{
+					SaveGame.SetValue(plateKey, true, true);
+				}
 				m_OnPlateChanged?.Invoke();
 				if (on && !isLoad)
 				{
@@ -157,7 +168,6 @@ public class OverworldMainDoorRobot : MonoBehaviour
 			};
 		}
 
-		bool savedCompleted = overworldID != null && !string.IsNullOrEmpty(overworldID.ID) && SaveGame.GetIsMainDoorOpen(overworldID.ID);
 		State initialState = State.Closed;
 		if (savedCompleted)
 		{
@@ -211,6 +221,15 @@ public class OverworldMainDoorRobot : MonoBehaviour
 		{
 			ball.transform.position = plate.returningBallTransform.position;
 			ball.ShowAndEnable();
+			ball.enabled = true;
+			if (ball.rigidBody != null)
+				ball.rigidBody.isKinematic = false;
+			ball.SetColliders(true);
+			if (ball.Controller != null)
+			{
+				ball.Controller.enabled = true;
+				ball.Controller.Activate();
+			}
 			ball.Velocity = plate.returningBallTransform.right * 6f;
 		}
 		if (sfxShootOutBall != null && AudioManager.Instance != null)
