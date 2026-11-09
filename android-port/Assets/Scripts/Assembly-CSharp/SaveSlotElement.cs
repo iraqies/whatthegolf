@@ -20,9 +20,15 @@ public class SaveSlotElement : MonoBehaviour
 
 	public void SetState(bool created)
 	{
+		if (SaveSlotCreatedObject != null)
+			SaveSlotCreatedObject.SetActive(created);
+		if (SaveSlotNotCreatedObject != null)
+			SaveSlotNotCreatedObject.SetActive(!created);
 	}
 
 	public void Toggle(bool state)
 	{
+		if (Container != null)
+			Container.SetActive(state);
 	}
 }

@@ -266,10 +266,42 @@ namespace Menu
 		}
 
 		public void SetOrientation(LevelData.WindowType window) { }
-		public void ChallengeCompleted(string title) { }
-		public void ChallengeFailed(string title) { }
-		public void ShowChallengeInfo(string text) { }
-		public void ShowChallengeInfo(string text, Sprite[] icons) { }
+		public void ChallengeCompleted(string title)
+		{
+			if (ChallengeUI != null)
+			{
+				ChallengeUI.gameObject.SetActive(true);
+				ChallengeUI.ChallengeCompleted(title, true);
+			}
+		}
+
+		public void ChallengeFailed(string title)
+		{
+			if (ChallengeFailedUI != null)
+			{
+				ChallengeFailedUI.gameObject.SetActive(true);
+				ChallengeFailedUI.ChallengeCompleted(title, false);
+			}
+		}
+
+		public void ShowChallengeInfo(string text)
+		{
+			if (ChallengeInfo != null)
+			{
+				ChallengeInfo.gameObject.SetActive(true);
+				ChallengeInfo.Show(text);
+			}
+		}
+
+		public void ShowChallengeInfo(string text, Sprite[] icons)
+		{
+			if (ChallengeInfo != null)
+			{
+				ChallengeInfo.gameObject.SetActive(true);
+				ChallengeInfo.Show(text, icons);
+			}
+		}
+
 		public IEnumerator ShowText(string text, float duration)
 		{
 			if (currentWinScreen != null)
@@ -283,14 +315,34 @@ namespace Menu
 				currentWinScreen.SetActive(false);
 		}
 
-		public void ShowUndockMessage() { }
+		public void ShowUndockMessage()
+		{
+			if (UndockMessage != null)
+				UndockMessage.gameObject.SetActive(true);
+		}
+
 		public void HideUndockMessage() { if (UndockMessage != null) UndockMessage.gameObject.SetActive(false); }
-		public void EnableBuildText() { }
-		public void DisableBuildText() { }
-		public void SetActiveBuildText(bool enable) { }
+		public void EnableBuildText() { SetActiveBuildText(true); }
+		public void DisableBuildText() { SetActiveBuildText(false); }
+		public void SetActiveBuildText(bool enable)
+		{
+			if (buildText != null)
+				buildText.gameObject.SetActive(enable);
+		}
 		private void FindBuildText() { }
-		public void ShowFullScreenText(string text, float duration) { }
-		public void ShowInformationText(string text, float duration, bool aboveTransition = false) { }
+		public void ShowFullScreenText(string text, float duration)
+		{
+			if (fullScreenText != null)
+			{
+				fullScreenText.Prepare(text);
+				fullScreenText.Show(duration);
+			}
+		}
+		public void ShowInformationText(string text, float duration, bool aboveTransition = false)
+		{
+			if (informationText != null)
+				informationText.ShowText(text, duration);
+		}
 		public void SetChallengeInfoToShowForMinSeconds(bool show) { }
 	}
 }

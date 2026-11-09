@@ -26,6 +26,9 @@ public class SaveThrobber : SingletonBehaviour<SaveThrobber>
 
 	protected override void OnAwake()
 	{
+		_holderCanvas = GetComponentInChildren<Canvas>(true);
+		_animator = GetComponentInChildren<Animator>(true);
+		SetObjectsActive(false);
 	}
 
 	private void Start()
@@ -38,14 +41,22 @@ public class SaveThrobber : SingletonBehaviour<SaveThrobber>
 
 	private void Update()
 	{
+		if (!_displaying) return;
+		_timeLeft -= Time.unscaledDeltaTime;
+		if (_timeLeft <= 0f)
+			Hide();
 	}
 
 	public static void ShowThrobber(float duration = 1f)
 	{
+		if (Instance != null)
+			Instance.ShowIt(duration);
 	}
 
 	public static void HideThrobber()
 	{
+		if (Instance != null)
+			Instance.Hide();
 	}
 
 	public static void PreLoad()
@@ -54,21 +65,31 @@ public class SaveThrobber : SingletonBehaviour<SaveThrobber>
 
 	private static void LoadAndInvoke(Action callback)
 	{
+		callback?.Invoke();
 	}
 
 	private void ShowIt(float duration = 1f)
 	{
+		_displayDuration = duration;
+		_timeLeft = duration;
+		_displaying = true;
+		SetObjectsActive(true);
 	}
 
 	private void Hide()
 	{
+		_displaying = false;
+		SetObjectsActive(false);
 	}
 
 	private void SetObjectsActive(bool state)
 	{
+		if (_holderCanvas != null)
+			_holderCanvas.enabled = state;
 	}
 
 	public void Show()
 	{
+		ShowIt(1f);
 	}
 }

@@ -8,13 +8,13 @@ public class BossIntro : MonoBehaviour
 
 	public Transform Target;
 
-	public float InDuration;
+	public float InDuration = 0.5f;
 
-	public float MidDuration;
+	public float MidDuration = 1f;
 
-	public float OutDuration;
+	public float OutDuration = 0.5f;
 
-	public float VisibleAreaPercentage;
+	public float VisibleAreaPercentage = 0.7f;
 
 	public RectTransform TopBar;
 
@@ -26,15 +26,27 @@ public class BossIntro : MonoBehaviour
 
 	public void PlayIntro(Action onFinished)
 	{
+		if (!gameObject.activeInHierarchy)
+			gameObject.SetActive(true);
+		if (Is2D)
+			StartCoroutine(IntroRoutine2D(onFinished));
+		else
+			StartCoroutine(IntroRoutine(onFinished));
 	}
 
 	private IEnumerator IntroRoutine(Action onFinished)
 	{
-		return null;
+		if (InDuration > 0f)
+			yield return new WaitForSeconds(InDuration);
+		if (MidDuration > 0f)
+			yield return new WaitForSeconds(MidDuration);
+		if (OutDuration > 0f)
+			yield return new WaitForSeconds(OutDuration);
+		onFinished?.Invoke();
 	}
 
 	private IEnumerator IntroRoutine2D(Action onFinished)
 	{
-		return null;
+		yield return StartCoroutine(IntroRoutine(onFinished));
 	}
 }

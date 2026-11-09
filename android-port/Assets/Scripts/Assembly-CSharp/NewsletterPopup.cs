@@ -14,32 +14,40 @@ public class NewsletterPopup : MonoBehaviour
 
 	private bool _shouldEnableInteraction;
 
-	public Task ShowAndAwait()
+	public async Task ShowAndAwait()
 	{
-		return null;
+		tcs = new TaskCompletionSource<bool>();
+		ShowPopup();
+		await tcs.Task;
 	}
 
 	public void ShowPopup()
 	{
+		gameObject.SetActive(true);
+		tcs?.TrySetResult(true);
 	}
 
 	private void ShowPopupWithLinks(Sprite QR, string link, string popupTextID)
 	{
+		if (!string.IsNullOrEmpty(link))
+			Application.OpenURL(link);
+		tcs?.TrySetResult(true);
 	}
 
 	private void Agree(string link)
 	{
+		if (!string.IsNullOrEmpty(link))
+			Application.OpenURL(link);
+		gameObject.SetActive(false);
+		tcs?.TrySetResult(true);
 	}
 
 	private void Disagree()
 	{
+		gameObject.SetActive(false);
+		tcs?.TrySetResult(false);
 	}
 
-	private void EnableInteraction()
-	{
-	}
-
-	private void DisableInteraction()
-	{
-	}
+	private void EnableInteraction() { }
+	private void DisableInteraction() { }
 }

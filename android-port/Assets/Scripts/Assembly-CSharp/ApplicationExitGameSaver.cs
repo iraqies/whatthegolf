@@ -14,39 +14,58 @@ public class ApplicationExitGameSaver : MonoBehaviour
 
 	private void Awake()
 	{
+		timeOverworldLoaded = Time.realtimeSinceStartup;
 	}
 
 	private void Start()
 	{
+		completion = FindObjectOfType<OverworldCompletionPercentage>();
+		timePlayed = GetPreviousPlayedTime();
 	}
 
 	private void Update()
 	{
+		if (paused) return;
+		if (skipFrame)
+		{
+			skipFrame = false;
+			return;
+		}
+		timePlayed += Time.unscaledDeltaTime;
 	}
 
 	private void OnApplicationPause(bool pause)
 	{
+		paused = pause;
+		if (pause)
+			Save(false);
+		else
+			skipFrame = true;
 	}
 
 	private void OnDestroy()
 	{
+		Save(true);
 	}
 
 	private void Save(bool gameClosing = false)
 	{
+		SaveGame.TimePlayed = Mathf.RoundToInt(timePlayed);
+		SaveGame.Save(false);
 	}
 
 	public int GetPreviousPlayedTime()
 	{
-		return 0;
+		return SaveGame.TimePlayed;
 	}
 
 	public void Pause(bool pause = true)
 	{
+		paused = pause;
 	}
 
 	public float GetTimePlayedThisSession()
 	{
-		return 0f;
+		return Time.realtimeSinceStartup - timeOverworldLoaded;
 	}
 }

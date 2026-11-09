@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Audio;
 using Core;
+using I2.Loc;
 using Menu;
 using TMPro;
 using Triband.Core;
 using Unity.Notifications.iOS;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SettingsMenu : AddressableSingleton<SettingsMenu>
@@ -70,8 +72,8 @@ public class SettingsMenu : AddressableSingleton<SettingsMenu>
 	public NewsletterPopup helpPopup;
 	public NewsletterPopup termsOfUsePopup;
 	public CampaignStarter CampaignStarter;
-	public List<SettingsMenuCommon> orderUI;
-	public List<SettingsMenuCommon> allOrderUI;
+	public List<SettingsMenuCommon> orderUI = new List<SettingsMenuCommon>();
+	public List<SettingsMenuCommon> allOrderUI = new List<SettingsMenuCommon>();
 	public MenuSettingsCrossPromotionAppleArcade CrossPromotion;
 	private int selectedLine;
 	private bool selectedLineLockedIn;
@@ -86,6 +88,7 @@ public class SettingsMenu : AddressableSingleton<SettingsMenu>
 	private bool isInited;
 	private bool bla;
 	public ScrollRect scrollRect;
+	private List<string> _languages = new List<string>();
 
 	public bool IsOpen => gameObject != null && gameObject.activeSelf;
 	private AuthorizationStatus NotificationPermissionStatus => AuthorizationStatus.NotDetermined;
@@ -93,6 +96,8 @@ public class SettingsMenu : AddressableSingleton<SettingsMenu>
 
 	public override void Initialize()
 	{
+		if (scrollRect == null)
+			scrollRect = _scrollRect ?? GetComponentInChildren<ScrollRect>(true);
 		if (gameObject != null)
 			gameObject.SetActive(false);
 	}
@@ -103,8 +108,116 @@ public class SettingsMenu : AddressableSingleton<SettingsMenu>
 	{
 		if (isInited) return;
 		isInited = true;
+		if (scrollRect == null)
+			scrollRect = _scrollRect ?? GetComponentInChildren<ScrollRect>(true);
+		if (allOrderUI == null)
+			allOrderUI = new List<SettingsMenuCommon>();
+		if (orderUI == null)
+			orderUI = new List<SettingsMenuCommon>();
+
 		if (versionText != null)
 			versionText.text = "v" + Application.version;
+		if (debugStart != null)
+			debugStart.SetActive(false);
+
+		_languages = LocalizationManager.GetAllLanguages();
+		if (_languages == null || _languages.Count == 0)
+			_languages = new List<string> { "English" };
+
+		getAsDropdown(ref language)?.Init(
+			() => _languages,
+			() => Mathf.Max(0, _languages.IndexOf(LocalizationManager.CurrentLanguage)),
+			OnChangeLanguage,
+			true,
+			this);
+
+		getAsSlider(ref music)?.Init(
+			() => SaveGame.GetValue(AudioManager.Music_Volume, 5f),
+			OnChangeMusic,
+			true,
+			this);
+
+		getAsSlider(ref sfx)?.Init(
+			() => SaveGame.GetValue(AudioManager.SFX_Volume, 5f),
+			OnChangeSFX,
+			true,
+			this);
+
+		getAsSlider(ref quality)?.Init(
+			() => QualitySettings.GetQualityLevel(),
+			OnChangeQuality,
+			true,
+			this);
+
+		getAsToggle(ref analytics)?.Init(
+			() => SaveGame.GetValue("ANALYTICS_ENABLED", true),
+			OnChangeAnalytics,
+			false,
+			this);
+
+		getAsToggle(ref fullscreen)?.Init(
+			() => Screen.fullScreen,
+			() => OnChangeFullscreen(Screen.fullScreen ? 0 : 1),
+			false,
+			this);
+
+		getAsDropdown(ref resolution)?.Init(
+			() => new List<string>(),
+			() => 0,
+			OnChangeResolution,
+			false,
+			this);
+
+		getAsToggle(ref notifications)?.Init(
+			NotificationToggleState,
+			OnChangeNotifications,
+			false,
+			this);
+
+		getAsToggle(ref switchGyroOn)?.Init(
+			() => SaveGame.SwitchUseGyro,
+			OnSwitchGyroChanged,
+			false,
+			this);
+
+		getAsToggle(ref useGyroShake)?.Init(
+			() => SaveGame.GetValue("USE_GYRO_SHAKE", true),
+			OnGyroShakeChanged,
+			true,
+			this);
+
+		getAsButtonRow(ref saveslot)?.Init(
+			OnChangeSaveSlot,
+			() => ClampSaveSlot(SaveGame.GetSaveSlot()),
+			() => SaveGame.GetSaveSlotCount(),
+			true,
+			this,
+			RefreshSaveSlot);
+
+		getAsButton(ref savefile)?.Init(OnResetSaveSlotPressed, true, this);
+		getAsButton(ref credits)?.Init(OnCreditsButtonPressed, true, this);
+		getAsButton(ref tutorial)?.Init(OnTutorialPressed, true, this);
+		getAsButton(ref help)?.Init(OnHelpPressed, false, this);
+		getAsButton(ref termsOfUse)?.Init(OnTermsOfUsePressed, false, this);
+		getAsButton(ref seeMore)?.Init(OnSeeMoreButtonPressed, false, this);
+		getAsButton(ref ReconfigureController)?.Init(OnReconfigureController, false, this);
+
+		getAsToggle(ref useDebugNotifications)?.Init(() => false, OnUseDebugNotifications, false, this);
+		getAsButton(ref debugAddDays)?.Init(null, false, this);
+		getAsButton(ref debugSetWeek)?.Init(null, false, this);
+		getAsButton(ref debugSetWeek5)?.Init(null, false, this);
+		getAsDropdown(ref debugReceptionistIndex)?.Init(() => new List<string>(), () => 0, SetReceptionistIndex, false, this);
+		getAsDropdown(ref debugBoothTurtleIndex)?.Init(() => new List<string>(), () => 0, SetBoothTurtleIndex, false, this);
+		getAsButton(ref reloadHubButton)?.Init(ReloadHub, false, this);
+		getAsButton(ref incrementSessionCountButton)?.Init(null, false, this);
+		getAsButton(ref debugNotifications)?.Init(null, false, this);
+		getAsButton(ref resetAchivements)?.Init(null, false, this);
+		getAsButton(ref addAchivement)?.Init(null, false, this);
+		getAsButton(ref thanksgiving)?.Init(null, false, this);
+		getAsButton(ref secondOnboarding)?.Init(PlaySecondOnboardingLevels, false, this);
+		getAsButton(ref leaderBoardDebug)?.Init(null, false, this);
+
+		RefreshSaveSlot();
 	}
 
 	private bool NotificationToggleState() => false;
@@ -172,8 +285,16 @@ public class SettingsMenu : AddressableSingleton<SettingsMenu>
 		if (SettingsBlocker != null)
 			SettingsBlocker.SetActive(false);
 		SetInteractable(true);
-		if (CloseButtonAnimator != null && PlatformSettings.Instance != null && PlatformSettings.Instance.GetCurrent() != null)
-			CloseButtonAnimator.gameObject.SetActive(PlatformSettings.Instance.GetCurrent().useBackButtonInMenus);
+		if (CloseButtonAnimator != null)
+		{
+			CloseButtonAnimator.gameObject.SetActive(true);
+			var closeBtn = CloseButtonAnimator.GetComponentInChildren<Button>(true);
+			if (closeBtn != null)
+			{
+				closeBtn.onClick.RemoveAllListeners();
+				closeBtn.onClick.AddListener(() => Close(true));
+			}
+		}
 		if (animators != null)
 		{
 			foreach (var a in animators)
@@ -182,7 +303,10 @@ public class SettingsMenu : AddressableSingleton<SettingsMenu>
 		gameObject.SetActive(true);
 		if (!isInited)
 			InitAll();
+		RefreshSaveSlot();
 		EnableContentByLocation(GetLocation());
+		if (snapToTop && scrollRect != null)
+			scrollRect.verticalNormalizedPosition = 1f;
 		await Task.Yield();
 		if (animators != null)
 		{
@@ -200,38 +324,186 @@ public class SettingsMenu : AddressableSingleton<SettingsMenu>
 		return Location.Overworld;
 	}
 
-	private void EnableContentByLocation(Location location) { }
-	public void PlaySoundOnUpdateValue() { }
-	private void OnChangeFullscreen(int selected) { }
+	private void EnableContentByLocation(Location location)
+	{
+		if (allOrderUI == null) return;
+		foreach (var item in allOrderUI)
+		{
+			if (item != null)
+			{
+				item.EnableByLocation(location);
+				item.Refresh();
+			}
+		}
+	}
+
+	public void PlaySoundOnUpdateValue()
+	{
+		if (Time.unscaledTime < playSoundDelay) return;
+		playSoundDelay = Time.unscaledTime + 0.08f;
+		if (volumeSliderSFX != null && AudioManager.Instance != null)
+			volumeSliderSFX.Play(AudioManager.Instance.uiEffects, Vector3.zero, 0f);
+	}
+
+	private void OnChangeFullscreen(int selected)
+	{
+		Screen.fullScreen = selected != 0;
+	}
+
 	private IEnumerator SetResolution() { yield break; }
-	private int ClampSaveSlot(int s) => Mathf.Clamp(s, 0, 3);
-	public void OnChangeSaveSlot(int selected) { }
-	private void ChangeSaveSlot(int selected) { }
-	private void ResetAll() { }
-	private void OnResetSaveSlotPressed() { }
-	private void ResetSaveSlot(int selected) { }
+	private int ClampSaveSlot(int s) => Mathf.Clamp(s, 0, 2);
+
+	public void OnChangeSaveSlot(int selected)
+	{
+		ChangeSaveSlot(ClampSaveSlot(selected));
+	}
+
+	private void ChangeSaveSlot(int selected)
+	{
+		int clamped = ClampSaveSlot(selected);
+		if (SaveGame.GetSaveSlot() == clamped)
+		{
+			RefreshSaveSlot();
+			return;
+		}
+		SaveGame.SetSaveSlot(clamped);
+		SaveGame.Save(false);
+		RefreshSaveSlot();
+		if (OverworldManager2d.HasInstance && OverworldManager2d.Instance != null)
+		{
+			OverworldManager2d.Instance.RefreshDoorsAndGoals();
+		}
+	}
+
+	private void ResetAll()
+	{
+		if (allOrderUI == null) return;
+		foreach (var item in allOrderUI)
+			item?.ResetValues();
+		RefreshSaveSlot();
+	}
+
+	private void OnResetSaveSlotPressed()
+	{
+		ResetSaveSlot(SaveGame.GetSaveSlot());
+	}
+
+	private void ResetSaveSlot(int selected)
+	{
+		SaveGame.SetSaveSlot(ClampSaveSlot(selected));
+		SaveGame.ClearSaveSlot();
+		RefreshSaveSlot();
+		if (OverworldManager2d.HasInstance && OverworldManager2d.Instance != null)
+		{
+			OverworldManager2d.Instance.RefreshDoorsAndGoals();
+		}
+	}
+
 	private void SaveSlotWindowClosed() { }
-	public void OnGyroShakeChanged() { }
+
+	public void OnGyroShakeChanged()
+	{
+		bool next = !SaveGame.GetValue("USE_GYRO_SHAKE", true);
+		SaveGame.SetValue("USE_GYRO_SHAKE", next, true);
+	}
+
 	private void OnReconfigureController() { }
-	public void OnSwitchGyroChanged() { }
-	private void OnTutorialPressed() { }
-	private void OnHelpPressed() { }
-	private void OnTermsOfUsePressed() { }
+
+	public void OnSwitchGyroChanged()
+	{
+		SaveGame.SwitchUseGyro = !SaveGame.SwitchUseGyro;
+	}
+
+	private async void OnTutorialPressed()
+	{
+		await CloseAsync(false);
+		var onboarding = FindObjectOfType<Onboarding>();
+		if (onboarding != null)
+		{
+			onboarding.StartOnBoarding(null, true);
+		}
+		else if (LevelManager.Exists && LevelManager.Instance != null && OverworldManager2d.HasInstance && OverworldManager2d.Instance != null && OverworldManager2d.Instance.onboardingLevels != null)
+		{
+			var lvls = OverworldManager2d.Instance.onboardingLevels.GetLevelDatas();
+			if (lvls != null && lvls.Count > 0)
+			{
+				StartCoroutine(LevelManager.Instance.Play(lvls[0]));
+			}
+		}
+	}
+
+	private void OnHelpPressed()
+	{
+		if (helpPopup != null)
+			helpPopup.ShowPopup();
+	}
+
+	private void OnTermsOfUsePressed()
+	{
+		if (termsOfUsePopup != null)
+			termsOfUsePopup.ShowPopup();
+	}
+
 	private void OnSeeMoreButtonPressed() { }
-	private void OnChangeLanguage(int selected) { }
+
+	private void OnChangeLanguage(int selected)
+	{
+		if (_languages != null && selected >= 0 && selected < _languages.Count)
+		{
+			string lang = _languages[selected];
+			if (LocalizationManager.HasLanguage(lang))
+			{
+				LocalizationManager.CurrentLanguage = lang;
+				SaveGame.SetValue("LANGUAGE", lang, true);
+			}
+		}
+	}
+
 	private void OnChangeResolution(int selected) { }
-	private void OnChangeQuality(float val) { }
-	public void OnCreditsButtonPressed() { }
-	private void OnChangeMusic(float val) => AudioManager.SetMusicGain(val);
-	private void OnChangeSFX(float val) => AudioManager.SetSoundGain(val);
-	private void OnChangeAnalytics() { }
+
+	private void OnChangeQuality(float val)
+	{
+		int q = Mathf.Clamp(Mathf.RoundToInt(val), 0, Mathf.Max(0, QualitySettings.names.Length - 1));
+		QualitySettings.SetQualityLevel(q);
+		SaveGame.SetValue("QUALITY_LEVEL", q, true);
+	}
+
+	public void OnCreditsButtonPressed()
+	{
+		if (CreditsMenu.Exists || CreditsMenu.Instance != null)
+		{
+			SetInteractable(false);
+			CreditsMenu.Instance.ShowCredits(() => SetInteractable(true));
+		}
+	}
+
+	private void OnChangeMusic(float val)
+	{
+		SaveGame.SetValue(AudioManager.Music_Volume, val, false);
+		float norm = val > 1.01f ? Mathf.Clamp01(val / 5f) : Mathf.Clamp01(val);
+		AudioManager.SetMusicGain(norm);
+	}
+
+	private void OnChangeSFX(float val)
+	{
+		SaveGame.SetValue(AudioManager.SFX_Volume, val, false);
+		float norm = val > 1.01f ? Mathf.Clamp01(val / 5f) : Mathf.Clamp01(val);
+		AudioManager.SetSoundGain(norm);
+	}
+
+	private void OnChangeAnalytics()
+	{
+		bool next = !SaveGame.GetValue("ANALYTICS_ENABLED", true);
+		SaveGame.SetValue("ANALYTICS_ENABLED", next, true);
+	}
+
 	internal void OnUseDebugNotifications() { }
 	private void OnChangeNotifications() { }
 	private void OnApplicationFocus(bool focus) { }
 	private void SetPermission() { }
 	public void OpenSettings() => Show(true);
-	private int GetNewSelectedLine() => 0;
-	private void OnSelectedLineChanged(int newActive, bool immediate) { }
+	private int GetNewSelectedLine() => selectedLine;
+	private void OnSelectedLineChanged(int newActive, bool immediate) { selectedLine = newActive; }
 
 	private void SetInteractable(bool interactable)
 	{
@@ -242,13 +514,34 @@ public class SettingsMenu : AddressableSingleton<SettingsMenu>
 		}
 	}
 
-	public void OnDropdownSelected(bool lockedIn) { }
-	private static List<string> GetFullscreenOptions() => new List<string>();
-	private void RefreshSaveSlot() { }
+	public void OnDropdownSelected(bool lockedIn) { selectedLineLockedIn = lockedIn; }
+	private static List<string> GetFullscreenOptions() => new List<string> { "Windowed", "Fullscreen" };
+
+	private void RefreshSaveSlot()
+	{
+		if (SaveSlots == null) return;
+		for (int i = 0; i < SaveSlots.Count; i++)
+		{
+			var el = SaveSlots[i];
+			if (el == null) continue;
+			string pct = SaveSlotInfo.TotalPercentageComplete(i);
+			bool hasProgress = pct != "0%";
+			el.SetState(hasProgress);
+			if (el.PercentageCompletedText != null)
+				el.PercentageCompletedText.text = pct;
+			el.Toggle(i < SaveGame.GetSaveSlotCount());
+		}
+	}
+
 	private SettingsMenuSlider getAsSlider(ref SettingsMenuCommon s) => s as SettingsMenuSlider;
 	private SettingsMenuDropdown getAsDropdown(ref SettingsMenuCommon s) => s as SettingsMenuDropdown;
 	private SettingsMenuToggle getAsToggle(ref SettingsMenuCommon s) => s as SettingsMenuToggle;
 	private SettingsMenuButton getAsButton(ref SettingsMenuCommon s) => s as SettingsMenuButton;
 	private SettingsMenuButtonRow getAsButtonRow(ref SettingsMenuCommon s) => s as SettingsMenuButtonRow;
-	public void Register(SettingsMenuCommon settingsMenuCommon) { }
+
+	public void Register(SettingsMenuCommon settingsMenuCommon)
+	{
+		if (settingsMenuCommon != null && allOrderUI != null && !allOrderUI.Contains(settingsMenuCommon))
+			allOrderUI.Add(settingsMenuCommon);
+	}
 }
