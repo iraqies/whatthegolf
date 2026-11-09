@@ -49,7 +49,7 @@ public class ShortcutTunnelTraversable : MonoBehaviour
 			rb.velocity = new Vector2(dir.x, dir.y) * (15f * speed);
 			rb.angularVelocity = 40f;
 		}
-		if (Singleton<Menu.Menu>.Exists && Singleton<Menu.Menu>.Instance != null && Singleton<Menu.Menu>.Instance.IsOpen())
+		if (Menu.Menu.Exists && Menu.Menu.Instance != null && Menu.Menu.Instance.IsOpen())
 			return;
 		var col = GetComponent<Collider2D>();
 		if (col != null)
