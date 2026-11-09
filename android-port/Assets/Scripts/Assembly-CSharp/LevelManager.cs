@@ -128,6 +128,7 @@ public class LevelManager : AddressableSingleton<LevelManager>
 
 		bool keepPlaying = true;
 		bool shouldLoadScene = true;
+		bool levelCompleted = false;
 		Level loadedLevel = null;
 
 		while (keepPlaying)
@@ -165,7 +166,10 @@ public class LevelManager : AddressableSingleton<LevelManager>
 
 			if (finalState is Level.CompletedState cs)
 			{
+				levelCompleted = true;
 				levelData.IsCompletedInSaveGame = true;
+				if (!string.IsNullOrEmpty(challengeID))
+					SaveGame.AddCompletedChallenges(new System.Collections.Generic.List<string> { challengeID });
 				m_OnLevelComplete?.Invoke();
 				onComplete?.Invoke(cs);
 				keepPlaying = false;
@@ -204,6 +208,7 @@ public class LevelManager : AddressableSingleton<LevelManager>
 			}
 			else
 			{
+				levelCompleted = false;
 				onAbort?.Invoke();
 				keepPlaying = false;
 				if (!skipTransitionOut && transition != null)
@@ -220,10 +225,10 @@ public class LevelManager : AddressableSingleton<LevelManager>
 			inGameMenu.ToggleLookUp(false);
 		}
 
-		if (finalStateIsCompleted(loadedLevel) && onTransitionAfterCoroutineIfComplete != null)
+		if (levelCompleted && onTransitionAfterCoroutineIfComplete != null)
 			yield return StartCoroutine(onTransitionAfterCoroutineIfComplete);
 
-		onTransitionCoverAfter?.Invoke(true);
+		onTransitionCoverAfter?.Invoke(levelCompleted);
 		wasLastPlayedLevelOnTheSide = onTheSide;
 		SaveGame.Save();
 		yield return StartCoroutine(UnloadLevel(levelData));

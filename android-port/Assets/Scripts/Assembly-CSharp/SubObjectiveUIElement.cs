@@ -52,22 +52,48 @@ public class SubObjectiveUIElement : MonoBehaviour
 
 	private void Awake()
 	{
+		if (ChallengedLocked != null)
+			lockedImage = ChallengedLocked.GetComponent<SVGImage>();
 	}
 
 	public void Init(bool isLast)
 	{
+		IsLast = isLast;
 	}
 
 	public void Lock()
 	{
+		if (ElementAnimator != null)
+			ElementAnimator.enabled = false;
+		if (lockedImage != null)
+			lockedImage.color = LockedColor;
+		if (ChallengedLocked != null)
+			ChallengedLocked.SetActive(true);
 	}
 
 	public void Unlock(float duration)
 	{
+		if (routineRunning)
+			return;
+		if (duration > 0f && gameObject.activeInHierarchy)
+		{
+			StartCoroutine(UnlockRoutine(duration));
+			return;
+		}
+		if (lockedImage != null)
+			lockedImage.color = UnlockedColor;
+		if (ChallengedLocked != null)
+			ChallengedLocked.SetActive(false);
 	}
 
 	private IEnumerator UnlockRoutine(float duration)
 	{
-		return null;
+		routineRunning = true;
+		yield return new WaitForSecondsRealtime(duration);
+		if (lockedImage != null)
+			lockedImage.color = UnlockedColor;
+		if (ChallengedLocked != null)
+			ChallengedLocked.SetActive(false);
+		routineRunning = false;
 	}
 }

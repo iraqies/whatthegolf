@@ -156,68 +156,271 @@ public class OverworldUI : MonoBehaviour
 		this.goal = goal;
 		this.onPlayLevelCallback = onPlayLevelCallback;
 		this.onCloseCallback = onCloseCallback;
-		string challengeId = null;
-		if (goal != null && goal.levelData != null)
+		isClosing = false;
+
+		if (PlayAgainDialogContainer == null)
 		{
-			var ids = goal.levelData.GetChallengeLocalizationIDs();
-			if (ids != null && ids.Count > 0)
-				challengeId = ids[0];
+			onCloseCallback?.Invoke();
+			return;
 		}
-		onPlayLevelCallback?.Invoke(challengeId);
+
+		PlayAgainDialogContainer.SetActive(true);
+		bool isRotated = goal != null && goal.IsRotated2D();
+		if (PlayAgainAnimator != null)
+		{
+			PlayAgainAnimator.keepAnimatorControllerStateOnDisable = true;
+			PlayAgainAnimator.SetBool("Rotated", isRotated);
+			PlayAgainAnimator.Play("Show");
+		}
+		if (KeyboardAnimator != null)
+			KeyboardAnimator.SetBool("Show", !isRotated);
+		if (ExitOverworldButton != null)
+			ExitOverworldButton.interactable = false;
+
+		if (MenuContainer != null)
+		{
+			if (PlatformSettings.IsMobile)
+				MenuContainer.rotation = Quaternion.Euler(0f, 0f, isRotated ? -90f : 0f);
+			else
+				MenuContainer.rotation = Quaternion.identity;
+		}
+		if (CloseButtonRect != null)
+			CloseButtonRect.gameObject.SetActive(!isRotated);
+		if (CloseButtonRectRotated != null)
+			CloseButtonRectRotated.gameObject.SetActive(isRotated);
+
+		if (AudioManager.Instance != null && AudioManager.Instance.sfx != null && PopupClips != null && PopupClips.Count > 0)
+			AudioManager.Instance.sfx.Play(PopupClips, s => { if (s != null) s.volume = volume; }, true, 0f, false);
+
+		AddCancelListeners();
+		allLevels = goal != null ? goal.GetAllGoalLevels() : new List<LevelData>();
+		RefreshElements();
+		previousGoal = goal;
+		shouldUpdate = true;
+		closeTimer = closeTimerMax;
 	}
 
-	public void RefreshElements() { }
+	public void RefreshElements()
+	{
+		closeTimer = closeTimerMax;
+		if (ChallengeElement == null || ChallengeElement.Count == 0)
+			return;
+
+		for (int i = 1; i < ChallengeElement.Count; i++)
+		{
+			if (ChallengeElement[i] != null)
+			{
+				ChallengeElement[i].ChallengeID = null;
+				ChallengeElement[i].ChallengeTitleID = null;
+				ChallengeElement[i].gameObject.SetActive(false);
+			}
+		}
+
+		if (NextUpRectTransform != null)
+			NextUpRectTransform.gameObject.SetActive(false);
+
+		var firstElem = ChallengeElement[0];
+		if (firstElem != null)
+		{
+			firstElem.ChallengeID = null;
+			firstElem.gameObject.SetActive(true);
+			if (firstElem.Button != null)
+			{
+				firstElem.Button.interactable = true;
+				firstElem.Button.onClick.RemoveAllListeners();
+				firstElem.Button.onClick.AddListener(() =>
+				{
+					var cb = onPlayLevelCallback;
+					selectedChallengeIndex = 0;
+					if (firstElem.sfxOnSelect != null && AudioManager.Instance != null)
+						firstElem.sfxOnSelect.Play(AudioManager.Instance.sfx, Vector3.zero, 0f);
+					RemoveAllListeners();
+					CloseInstant();
+					cb?.Invoke(firstElem.ChallengeID);
+				});
+			}
+		}
+
+		if (allLevels == null && goal != null)
+			allLevels = goal.GetAllGoalLevels();
+
+		int elemIdx = 1;
+		if (allLevels != null)
+		{
+			foreach (var lvl in allLevels)
+			{
+				if (lvl == null || lvl.levelChallenges == null || lvl.levelChallenges.Count == 0)
+					continue;
+				var completed = lvl.CompletedChallenges ?? new List<string>();
+				for (int c = 0; c < lvl.levelChallenges.Count && elemIdx < ChallengeElement.Count; c++)
+				{
+					var ch = lvl.levelChallenges[c];
+					var elem = ChallengeElement[elemIdx];
+					if (ch == null || elem == null) continue;
+					elem.ChallengeID = ch.ID;
+					elem.ChallengeTitleID = ch.LocalizationID;
+					elem.gameObject.SetActive(true);
+					bool isDone = completed.Contains(ch.ID);
+					if (isDone) elem.Unlock(0f);
+					else elem.Lock();
+
+					if (elem.Button != null)
+					{
+						string capturedId = ch.ID;
+						int capturedIdx = elemIdx;
+						var capturedElem = elem;
+						elem.Button.interactable = true;
+						elem.Button.onClick.RemoveAllListeners();
+						elem.Button.onClick.AddListener(() =>
+						{
+							var cb = onPlayLevelCallback;
+							selectedChallengeIndex = capturedIdx;
+							if (capturedElem.sfxOnSelect != null && AudioManager.Instance != null)
+								capturedElem.sfxOnSelect.Play(AudioManager.Instance.sfx, Vector3.zero, 0f);
+							RemoveAllListeners();
+							CloseInstant();
+							cb?.Invoke(capturedId);
+						});
+					}
+					elemIdx++;
+				}
+			}
+		}
+
+		bool allDone = goal != null && goal.IsFullyCompleted();
+		if (CrownLocked != null) CrownLocked.SetActive(!allDone);
+		if (CrownWon != null) CrownWon.SetActive(allDone);
+	}
+
 	public bool IsMenuActive() => Menu.Menu.Exists && Menu.Menu.Instance.IsOpen();
 	private bool GetGoalUsedLandscape(OverworldGoal goal) => true;
-	public void ChallengeCompleted(string challengeID) { }
+
+	public void ChallengeCompleted(string challengeID)
+	{
+		if (ChallengeElement != null)
+		{
+			foreach (var elem in ChallengeElement)
+			{
+				if (elem != null && elem.ChallengeID == challengeID)
+					elem.Unlock(0.4f);
+			}
+		}
+		if (goal != null && goal.IsFullyCompleted())
+		{
+			crownWon = true;
+			goal.ForceShowCrown();
+		}
+	}
+
 	public void CloseUI() => Close();
 
 	private void Close()
 	{
-		if (PlayAgainDialogContainer != null)
-			PlayAgainDialogContainer.SetActive(false);
-		onCloseCallback?.Invoke();
+		if (isClosing) return;
+		isClosing = true;
+		ClearPlayagainDialog();
 	}
 
 	public void DisableUI()
 	{
 		if (ExitOverworldButton != null)
 			ExitOverworldButton.gameObject.SetActive(false);
+		shouldUpdate = false;
 	}
 
 	public void EnableUI()
 	{
 		if (ExitOverworldButton != null)
 			ExitOverworldButton.gameObject.SetActive(true);
+		shouldUpdate = true;
 	}
 
-	private void Update() { }
+	private void Update()
+	{
+		if (!shouldUpdate) return;
+		if (PlayAgainDialogContainer != null && PlayAgainDialogContainer.activeInHierarchy)
+		{
+			if (closeTimer > 0f)
+			{
+				closeTimer = Mathf.Max(0f, closeTimer - Time.unscaledDeltaTime);
+				if (closeTimer == 0f)
+				{
+					ClearPlayagainDialog();
+					closeTimer = -1f;
+				}
+			}
+		}
+	}
+
 	private void ListenToCloseButton() { }
 	private void UpdatePlayAgainDialog() { }
-	private void StartCloseTimer() { }
-	private void StopCloseTimer() { }
+	private void StartCloseTimer() => closeTimer = closeTimerMax;
+	private void StopCloseTimer() => closeTimer = -1f;
 	private void UpdateAndHandleCloseTimer() { }
 
 	public void ClearPlayagainDialog()
 	{
-		if (PlayAgainDialogContainer != null)
-			PlayAgainDialogContainer.SetActive(false);
+		RemoveAllListeners();
+		if (PlayAgainDialogContainer != null && PlayAgainDialogContainer.activeSelf)
+		{
+			StartCoroutine(HideRoutine());
+		}
+		else
+		{
+			CloseInstant();
+		}
 	}
 
-	private void AddCancelListeners() { }
-	private void RemoveAllListeners() { }
+	private void AddCancelListeners()
+	{
+		if (buttonCancel == null) return;
+		foreach (var btn in buttonCancel)
+		{
+			if (btn != null && btn.onClick != null)
+			{
+				btn.onClick.RemoveAllListeners();
+				btn.onClick.AddListener(CloseUI);
+			}
+		}
+	}
+
+	private void RemoveAllListeners()
+	{
+		if (buttonCancel != null)
+		{
+			foreach (var btn in buttonCancel)
+				if (btn != null && btn.onClick != null) btn.onClick.RemoveAllListeners();
+		}
+		if (ChallengeElement != null)
+		{
+			foreach (var elem in ChallengeElement)
+				if (elem != null && elem.Button != null && elem.Button.onClick != null) elem.Button.onClick.RemoveAllListeners();
+		}
+	}
+
 	private IEnumerator ShowRoutine() { yield break; }
 	private bool NoneIsNull() => true;
 
 	public void CloseInstant()
 	{
+		RemoveAllListeners();
+		var cb = onCloseCallback;
+		onCloseCallback = null;
+		goal = null;
 		if (PlayAgainDialogContainer != null)
 			PlayAgainDialogContainer.SetActive(false);
+		EnableReturnButton();
+		isClosing = false;
+		crownWon = false;
+		cb?.Invoke();
 	}
 
 	private IEnumerator HideRoutine()
 	{
+		StopCloseTimer();
+		if (PlayAgainAnimator != null)
+			PlayAgainAnimator.SetTrigger("Hide");
+		yield return new WaitForSecondsRealtime(0.15f);
 		CloseInstant();
-		yield break;
 	}
 }

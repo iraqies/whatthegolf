@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Core;
 using UnityEngine;
@@ -144,11 +145,45 @@ public class OverworldGoal : MonoBehaviour
 
 	public IEnumerator UpdatePlayerTracking(bool force = false)
 	{
-		yield break;
+		if (force)
+			trackPlayerDistance = true;
+		playerSize = Mathf.Max(playerSize, 0.5f);
+		while (trackPlayerDistance)
+		{
+			if (playerTransform == null || transform == null)
+			{
+				PlayerOutOfRange();
+				yield break;
+			}
+			float dist = Vector2.Distance(playerTransform.position, transform.position);
+			float threshold = playerSize * (IsStuckToWall ? 1.5f : 1.2f);
+			if (dist >= threshold)
+			{
+				PlayerOutOfRange();
+				yield break;
+			}
+			yield return null;
+		}
 	}
 
-	private void PlayerOutOfRange() => PlayerOutOfRangeAgain?.Invoke(this);
-	public void SetNewBallShape(Transmogrif.BALLSHAPES newShape) => currentBallShape = newShape;
+	private void PlayerOutOfRange()
+	{
+		if (circleCollider != null)
+			circleCollider.enabled = !IsStuckToWall;
+		if (boxCollider != null)
+			boxCollider.enabled = IsStuckToWall;
+		trackPlayerDistance = false;
+		PlayerOutOfRangeAgain?.Invoke(this);
+	}
+
+	public void SetNewBallShape(Transmogrif.BALLSHAPES newShape)
+	{
+		if (!gameObject.activeInHierarchy || currentBallShape == newShape)
+			return;
+		currentBallShape = newShape;
+		RefreshState();
+		RefreshVisuals();
+	}
 
 	private IEnumerator OneFrameDelayedSetStatus()
 	{
@@ -160,10 +195,10 @@ public class OverworldGoal : MonoBehaviour
 	public bool IsUnlocked()
 	{
 		if (requireGoalToUnlock == null) return true;
-		return requireGoalToUnlock.IsCompleted();
+		return requireGoalToUnlock.IsUnlocked() && requireGoalToUnlock.IsCompleted();
 	}
 
-	public bool IsCompleted() => levelData != null && levelData.IsCompletedInSaveGame;
+	public bool IsCompleted() => levelData == null || levelData.IsCompletedInSaveGame;
 
 	public bool IsRotated2D()
 	{
@@ -182,21 +217,31 @@ public class OverworldGoal : MonoBehaviour
 		if (ExcludeFromSequence != null)
 		{
 			foreach (var ex in ExcludeFromSequence)
-				if (ex != null) res.Remove(ex);
+				if (ex != null && !res.Contains(ex)) res.Add(ex);
 		}
 		return res;
 	}
 
-	public bool HasChallenges() => AdditionalLevelData != null && AdditionalLevelData.Count > 0;
-	public bool IsVisible() => state != States.Hidden;
+	public bool HasChallenges()
+	{
+		return GetAllGoalLevels().Any(g => g != null && g.levelChallenges != null && g.levelChallenges.Count > 0);
+	}
+
+	public bool IsVisible()
+	{
+		if (requireGoalToUnlock == null) return true;
+		return requireGoalToUnlock.IsCompleted();
+	}
 
 	public bool IsFullyCompleted()
 	{
+		if (levelData == null) return true;
+		if (!IsCompleted()) return false;
 		var all = GetAllGoalLevels();
 		if (all == null || all.Count == 0) return false;
 		for (int i = 0; i < all.Count; i++)
 		{
-			if (all[i] == null || !all[i].IsCompletedInSaveGame)
+			if (all[i] != null && !all[i].HasCompletedAllChallenges())
 				return false;
 		}
 		return true;
@@ -204,13 +249,14 @@ public class OverworldGoal : MonoBehaviour
 
 	public void ForceShowCrownOutline()
 	{
+		if (visualCrown != null) visualCrown.SetActive(false);
 		if (visualCrownOutline != null) visualCrownOutline.SetActive(true);
 	}
 
 	public void ForceShowCrown()
 	{
-		state = States.Crown;
-		RefreshVisuals();
+		if (visualCrown != null) visualCrown.SetActive(true);
+		if (visualCrownOutline != null) visualCrownOutline.SetActive(false);
 		m_OnCrownWon?.Invoke(this);
 	}
 
@@ -276,12 +322,30 @@ public class OverworldGoal : MonoBehaviour
 
 	public virtual void OnCollisionEnter2D(Collision2D collision)
 	{
-		if (collision == null || collision.collider == null) return;
-		var ball = collision.collider.GetComponentInParent<OverworldBall2D>();
-		if (ball != null)
+		if (collision == null || collision.collider == null || levelData == null) return;
+		if (collision.collider != null)
 		{
-			m_OnHit?.Invoke(this, collision.transform.position, ball);
+			Vector3 s = collision.collider.bounds.size;
+			playerSize = Mathf.Max(0.5f, (s.x + s.y) * 0.5f);
 		}
+		var ball = collision.rigidbody != null
+			? collision.rigidbody.GetComponent<OverworldBall2D>()
+			: collision.collider.GetComponentInParent<OverworldBall2D>();
+		if (ball == null)
+			ball = collision.collider.GetComponentInParent<OverworldBall2D>();
+		if (ball == null || !ball.CheckUseInteractiveThing())
+			return;
+
+		ball.HitFlag();
+		Vector3 hitPoint = collision.contacts != null && collision.contacts.Length > 0
+			? (Vector3)collision.contacts[0].point
+			: collision.transform.position;
+		m_OnHit?.Invoke(this, hitPoint, ball);
+		if (circleCollider != null) circleCollider.enabled = false;
+		if (boxCollider != null) boxCollider.enabled = false;
+		playerTransform = collision.transform;
+		trackPlayerDistance = true;
+		StartCoroutine(UpdatePlayerTracking(false));
 	}
 
 	private void OnDrawGizmosSelected() { }

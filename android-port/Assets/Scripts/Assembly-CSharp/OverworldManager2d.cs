@@ -592,7 +592,18 @@ public class OverworldManager2d : GolfBehaviour
 		if (culling != null && (state == STATES.active || state == STATES.inOnboarding || state == STATES.inAnimation || state == STATES.inDialog))
 			culling.UpdateCulling();
 	}
-	private IEnumerator ShowBallDelayed(OverworldGoal goalHit) { yield break; }
+	private IEnumerator ShowBallDelayed(OverworldGoal goalHit)
+	{
+		if (ball != null)
+		{
+			ball.ShowAndEnable();
+			if (goalHit == null || goalHit.MoveBallWhenHit)
+				ball.transform.position = ballStartPosition;
+			ball.StopAndSleep();
+			ball.StartAndWakeup();
+		}
+		yield return null;
+	}
 
 	public void StartMusicWithoutTransition()
 	{
@@ -602,8 +613,56 @@ public class OverworldManager2d : GolfBehaviour
 
 	private void ReturnToOverworld(List<LevelData> levelData, bool isCompleted, List<Level.CompletedState> completeState, OverworldGoal goalHit, bool clearPlayAgainDialog = true, OverworldBall2D ballThatHit = null, List<Level.FailState> failStates = null)
 	{
+		state = STATES.active;
+		if (overworldMusic != null)
+		{
+			LevelData lastLvl = (levelData != null && levelData.Count > 0) ? levelData[levelData.Count - 1] : null;
+			if (lastLvl != null && lastLvl.music != null && lastLvl.music.isUsingCustomOverworldMusic && lastLvl.music.customReturnMusic != null)
+				overworldMusic.StartWithoutTransition(lastLvl.music.customReturnMusic);
+			else
+				overworldMusic.StartWithoutTransition();
+		}
 		ToggleOverworld(true);
+		if (culling != null)
+			culling.ReturnToOverworld();
 		RefreshDoorsAndGoals();
+		StartCoroutine(ShowBallDelayed(goalHit));
+
+		if (isCompleted)
+		{
+			if (levelData != null)
+			{
+				for (int i = 0; i < levelData.Count; i++)
+				{
+					if (levelData[i] != null)
+						levelData[i].IsCompletedInSaveGame = true;
+				}
+			}
+			bool allChallengesDone = levelData != null && levelData.All(l => l != null && l.HasCompletedAllChallenges());
+			if (currentGoal != null)
+				currentGoal.ReloadData();
+			RefreshDoorsAndGoals();
+			OnlevelCompleted?.Invoke(currentGoal ?? goalHit, allChallengesDone);
+			if (clearPlayAgainDialog && ui != null)
+				ui.ClearPlayagainDialog();
+			if (allChallengesDone)
+			{
+				if (clearLevelCrownClips != null && AudioManager.Instance != null)
+					clearLevelCrownClips.PlayRandomClip((currentGoal ?? goalHit) != null ? (currentGoal ?? goalHit).transform.position : Vector3.zero);
+			}
+			else if (clearLevelClips != null && AudioManager.Instance != null)
+			{
+				clearLevelClips.PlayRandomClip((currentGoal ?? goalHit) != null ? (currentGoal ?? goalHit).transform.position : Vector3.zero);
+			}
+		}
+		else
+		{
+			if (currentGoal != null)
+				currentGoal.ReloadData();
+			OnlevelAbandoned?.Invoke(currentGoal ?? goalHit);
+			if (clearPlayAgainDialog && ui != null)
+				ui.ClearPlayagainDialog();
+		}
 	}
 
 	private void Maindoor_OnEnter(OverworldMainDoorRobot door, Vector3 pos, Action<bool> shouldPlayLevel)
@@ -618,10 +677,67 @@ public class OverworldManager2d : GolfBehaviour
 	{
 		if (goal == null || state != STATES.active) return;
 		currentGoal = goal;
-		StopBallNextToFlag(goal, hitPos);
-		if (goal.levelData != null)
+		if (goal.MoveBallWhenHit)
 		{
-			StartCoroutine(StartGoalLevel(goal, null, ballHit));
+			ballStartPosition = GetSafeBallPosition(goal, hitPos);
+			if (ball != null)
+				ball.HideAndStop();
+		}
+
+		if (goal.IsCompleted() && goal.HasChallenges() && ui != null)
+		{
+			if (flagHitClips != null)
+				flagHitClips.PlayRandomClip(hitPos);
+			if (rumbleEventAssetFlagCompleted != null)
+				rumbleEventAssetFlagCompleted.Play(0, 1f);
+			if (goal.MoveBallWhenHit && ball != null)
+				ball.SetColliders(false);
+
+			state = STATES.inDialog;
+			bool prevCtrlEnabled = ballHit != null && ballHit.Controller != null && ballHit.Controller.enabled;
+			if (ballHit != null && ballHit.Controller != null)
+				ballHit.Controller.enabled = false;
+
+			ui.ShowPlayagainDialog(
+				goal,
+				challengeID =>
+				{
+					StartCoroutine(StartGoalLevel(goal, challengeID, ballHit, _ =>
+					{
+						if (ui != null)
+							ui.RefreshElements();
+					}));
+				},
+				() =>
+				{
+					if (ballHit != null && ballHit.Controller != null)
+						ballHit.Controller.enabled = forceBallOn || prevCtrlEnabled;
+					Time.timeScale = 1f;
+					state = STATES.active;
+					if (ball != null)
+						ball.ShowAndEnable();
+					StartCoroutine(goal.UpdatePlayerTracking(true));
+				}
+			);
+		}
+		else
+		{
+			if (ballHit != null && ballHit.Controller != null)
+				ballHit.Controller.enabled = false;
+			if (flagHitFirstPlayClips != null)
+				flagHitFirstPlayClips.PlayRandomClip(hitPos);
+			if (rumbleEventAssetFlagNotCompleted != null)
+				rumbleEventAssetFlagNotCompleted.Play(0, 1f);
+			if (ui != null)
+				ui.DisableUI();
+			if (goal.levelData != null)
+			{
+				StartCoroutine(StartGoalLevel(goal, null, ballHit, _ =>
+				{
+					if (ui != null)
+						ui.EnableUI();
+				}));
+			}
 		}
 	}
 
@@ -702,20 +818,102 @@ public class OverworldManager2d : GolfBehaviour
 	private IEnumerator StartGoalLevel(OverworldGoal goal, string challengeID, OverworldBall2D ballHit = null, UnityAction<bool> afterLevelCallback = null)
 	{
 		if (goal == null || goal.levelData == null) yield break;
-		ToggleOverworld(false);
-		bool completed = false;
-		yield return LevelManager.Instance.Play(
-			goal.levelData,
-			challengeID: challengeID,
-			onComplete: _ => completed = true
-		);
-		ToggleOverworld(true);
-		RefreshDoorsAndGoals();
-		if (completed)
-			OnlevelCompleted?.Invoke(goal, true);
+		state = STATES.inlevel;
+		var allGoalLevels = goal.GetAllGoalLevels();
+		OnLevelStarting?.Invoke(allGoalLevels);
+		currentGoal = goal;
+
+		List<LevelData> levelsToPlay = allGoalLevels;
+		bool wasChallengeAlreadyCompleted = true;
+		if (string.IsNullOrEmpty(challengeID))
+		{
+			if (goal.ExcludeFromSequence != null && goal.ExcludeFromSequence.Count > 0)
+				levelsToPlay = allGoalLevels.Except(goal.ExcludeFromSequence).ToList();
+		}
 		else
-			OnlevelAbandoned?.Invoke(goal);
-		afterLevelCallback?.Invoke(completed);
+		{
+			var targetLevel = allGoalLevels.FirstOrDefault(l => l != null && l.levelChallenges != null && l.levelChallenges.Any(c => c != null && c.ID == challengeID));
+			if (targetLevel != null)
+			{
+				levelsToPlay = new List<LevelData> { targetLevel };
+				wasChallengeAlreadyCompleted = targetLevel.CompletedChallenges != null && targetLevel.CompletedChallenges.Contains(challengeID);
+			}
+		}
+
+		if (levelsToPlay == null || levelsToPlay.Count == 0)
+			levelsToPlay = new List<LevelData> { goal.levelData };
+
+		var completedStates = new List<Level.CompletedState>();
+		var failStates = new List<Level.FailState>();
+
+		for (int i = 0; i < levelsToPlay.Count; i++)
+		{
+			var lvlData = levelsToPlay[i];
+			if (lvlData == null) continue;
+			bool isLast = i == levelsToPlay.Count - 1;
+			bool leaveSequence = false;
+			int prevStrokes = completedStates.Count > 0 ? completedStates[completedStates.Count - 1].Strokes : 0;
+
+			yield return StartCoroutine(LevelManager.Instance.Play(
+				lvlData,
+				onTransitionCoverBefore: () => ToggleOverworld(false),
+				onComplete: cs =>
+				{
+					completedStates.Add(cs);
+					if (cs != null && cs.LeaveLevel)
+					{
+						leaveSequence = true;
+						i = levelsToPlay.Count;
+					}
+					else if (cs != null && cs.LevelSkips != 0)
+					{
+						i = Mathf.Clamp(i + cs.LevelSkips, -1, levelsToPlay.Count - 2);
+					}
+					if (leaveSequence || isLast)
+					{
+						if (overworldMusic != null)
+							overworldMusic.StartWithoutTransition();
+						foreach (var ld in levelsToPlay)
+						{
+							if (ld != null)
+								ld.IsCompletedInSaveGame = true;
+						}
+					}
+				},
+				onFail: fs =>
+				{
+					if (fs != null)
+						failStates.Add(fs);
+				},
+				onAbort: () =>
+				{
+					leaveSequence = true;
+					i = levelsToPlay.Count;
+				},
+				onTransitionCoverAfter: isCompleted =>
+				{
+					if (leaveSequence || isLast)
+					{
+						ReturnToOverworld(levelsToPlay, isCompleted, completedStates, goal, string.IsNullOrEmpty(challengeID), ballHit, failStates);
+						if (isCompleted && !wasChallengeAlreadyCompleted && ui != null && !string.IsNullOrEmpty(challengeID))
+							ui.ChallengeCompleted(challengeID);
+						afterLevelCallback?.Invoke(isCompleted);
+						if (isCompleted && lastFlag != null && lastFlag.levelData != null && currentGoal != null && currentGoal.levelData == lastFlag.levelData)
+							m_OnLastFlagExit?.Invoke(lastFlag.levelData);
+					}
+				},
+				skipTransitionIn: i > 0,
+				skipTransitionOut: !isLast && !leaveSequence,
+				strokesFromPreviousLevels: prevStrokes,
+				resetStrokesWhenFinished: isLast,
+				showStrokeCounter: !string.IsNullOrEmpty(challengeID),
+				challengeID: challengeID
+			));
+		}
+
+		if (currentGoal != null)
+			StartCoroutine(currentGoal.UpdatePlayerTracking(true));
+		SaveGame.Save();
 	}
 
 	public void DisableInteraction(bool hide = true)
