@@ -149,11 +149,12 @@ namespace CameraStack
 
 		private void Start()
 		{
-			if (LevelManager.Exists && LevelManager.Instance != null && LevelManager.Instance.SelectedChallenge != null)
-				return;
-			SetCurrentBehaviour();
-			OnReset();
-			_started = true;
+			if (!_started)
+			{
+				SetCurrentBehaviour();
+				OnReset();
+				_started = true;
+			}
 		}
 
 		private void StartCheckingForAirPlay() { }
@@ -222,7 +223,7 @@ namespace CameraStack
 				shake.duration = duration;
 				shake.speed = speed;
 				shake.magnitude = magnitude;
-				shake.PlayShake();
+				shake.Shake();
 			}
 		}
 

@@ -79,7 +79,8 @@ public class ObjectShatter : MonoBehaviour
 				if (r == null) return;
 				if (UnparentAllRigidbodies && r.component != null)
 					r.component.transform.SetParent(null);
-				r.AddExplosionForce(force, impactPoint, explosionRadius, upwardsModifier, forceMode);
+				if (r.component != null)
+					r.component.AddExplosionForce(force, impactPoint, explosionRadius, upwardsModifier, forceMode);
 			});
 		}
 		else
