@@ -37,7 +37,7 @@ namespace GolfGames.Pinball
 				{
 					StartCoroutine(pTween.To(0.3f, delegate(float t)
 					{
-						base.transform.localScale = Vector3.one * (Cubic.Out(t) * -0.3f + 1.3f);
+						base.transform.localScale = Vector3.one * (Easing.Cubic.Out(t) * -0.3f + 1.3f);
 					}));
 				}
 			}

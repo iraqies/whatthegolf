@@ -156,6 +156,71 @@ namespace Core
 			set => BlockShooting = value;
 		}
 
+		public bool canShoot
+		{
+			get => !BlockShooting;
+			set => BlockShooting = !value;
+		}
+
+		public bool didShoot { get; set; }
+
+		public AimPlanes planeType
+		{
+			get => AimPlane;
+			set => AimPlane = value;
+		}
+
+		public bool countStrokes
+		{
+			get => CountStrokes;
+			set => CountStrokes = value;
+		}
+
+		public int playerIndex
+		{
+			get => PlayerIndex;
+			set => PlayerIndex = value;
+		}
+
+		public int playerID => PlayerID;
+
+		public bool IsCharging => GetShootButton(false);
+
+		public bool noCharging
+		{
+			get => FullPowerOnAim;
+			set => FullPowerOnAim = value;
+		}
+
+		public float resetCountdown
+		{
+			get => shootCoolDown;
+			set => shootCoolDown = value;
+		}
+
+		public Player playerInput => player;
+
+		public Vector3 GetAimInputDirection => aimVector;
+
+		public void FlipAim()
+		{
+			ReverseArrow = !ReverseArrow;
+		}
+
+		public bool GetPlayerButton(bool onlyController = false, string shootButtonName = "Shoot") => GetShootButton(onlyController, shootButtonName);
+
+		public bool GetPlayerButton(int playerIdx, string shootButtonName = "Shoot") => GetShootButton(false, shootButtonName);
+
+		public bool GetPlayerButtonDown(bool onlyController = false, string shootButtonName = "Shoot") => GetShootButtonDown(onlyController, shootButtonName);
+
+		public bool GetPlayerButtonDown(int playerIdx, string shootButtonName = "Shoot") => GetShootButtonDown(false, shootButtonName);
+
+		public bool GetPlayerButtonUp(bool onlyController = false, string shootButtonName = "Shoot") => GetShootButtonUp(onlyController, shootButtonName);
+
+		public bool GetPlayerButtonUp(int playerIdx, string shootButtonName = "Shoot") => GetShootButtonUp(false, shootButtonName);
+
+		public Vector2 GetPlayerAxisDirection(int playerIdx, string horizontalName = "Aim Horizontal", string verticalName = "Aim Vertical") => GetPlayerAxisDirection(false, horizontalName, verticalName);
+
 		public Vector3 Velocity => _ballVelocity;
 
 		public Transform ArrowPosition

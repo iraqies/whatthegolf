@@ -60,7 +60,7 @@ public class Spit2D : MonoBehaviour
 			Rigidbody.isKinematic = true;
 		}
 
-		if (hit.gameObject.GetComponent<GolfFlag2D>() != null)
+		if (hit.gameObject.GetComponent<GolfGoal>() != null)
 		{
 			OnHitGoal?.Invoke();
 			if (hitclips != null)

@@ -110,9 +110,14 @@ namespace Utility
 			}
 		}
 
-		public GameObject Get(Vector3 position = default(Vector3), Quaternion rotation = default(Quaternion), Transform parent = null)
+		public GameObject Get(Vector3 position = default(Vector3), Quaternion rotation = default(Quaternion), Transform parent = null, bool setActive = true)
 		{
-			return Retrieve(position, rotation, parent);
+			GameObject go = Retrieve(position, rotation, parent);
+			if (go != null && !setActive)
+			{
+				go.SetActive(false);
+			}
+			return go;
 		}
 
 		public void Return(GameObject obj, bool setParentToPool = true)

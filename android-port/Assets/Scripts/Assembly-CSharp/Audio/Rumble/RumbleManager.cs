@@ -19,6 +19,10 @@ namespace Audio.Rumble
 
 		public RumbleEventAsset LongBuildupRumble;
 
+		public RumbleEventAsset GolfBallBounce => SubtleBump;
+
+		public RumbleEventAsset GolfBallShot => OnShoot;
+
 		[SerializeField]
 		private PS5HapticsAudioPlayer PS5HapticsAudioSources;
 

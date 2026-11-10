@@ -6,6 +6,16 @@ namespace Core
 	public abstract class GolfBall2DShooterBase : ShooterBase
 	{
 		protected Rigidbody2D rigidbodyC;
+		protected Rigidbody2D Rigidbody
+		{
+			get => rigidbodyC;
+			set => rigidbodyC = value;
+		}
+		protected Rigidbody2D rigid
+		{
+			get => rigidbodyC;
+			set => rigidbodyC = value;
+		}
 		[SerializeField] private float goalPullForce = 5f;
 		[SerializeField] private float goalPullDistance = 1.5f;
 		[SerializeField] private bool useCurrentForce;

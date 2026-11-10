@@ -64,7 +64,7 @@ public class Javelin : MonoBehaviour
 		if (CanWin)
 		{
 			bool hitGoal = (hit.attachedRigidbody != null && hit.attachedRigidbody.GetComponent<GolfGoal>() != null)
-				|| hit.gameObject.GetComponent<GolfFlag2D>() != null;
+				|| hit.gameObject.GetComponent<GolfGoal>() != null;
 			if (hitGoal)
 			{
 				OnHitGoal?.Invoke();

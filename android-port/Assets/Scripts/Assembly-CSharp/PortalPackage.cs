@@ -12,6 +12,8 @@ public class PortalPackage
 
 	public SimplePortal ExitPortal => To;
 
+	public SimplePortal otherPortal => To;
+
 	public PortalPackage(SimplePortal from, SimplePortal to, Vector3 entryPoint)
 	{
 		From = from;

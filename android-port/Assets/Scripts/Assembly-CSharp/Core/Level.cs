@@ -309,6 +309,15 @@ namespace Core
 			state = cs;
 		}
 
+		public void Complete(string message, float? delay, TransitionTextEffect transitionTextEffect, bool leaveLevel)
+		{
+			if (state is CompletedState) return;
+			int strokes = GetHighestAmountOfStrokes();
+			float actualDelay = delay ?? postCompletionDelay;
+			var cs = new CompletedState(message, actualDelay, strokes, transitionTextEffect, 0, leaveLevel, controllers.ToArray());
+			state = cs;
+		}
+
 		public void Abort()
 		{
 			state = new AbortState(GetHighestAmountOfStrokes());

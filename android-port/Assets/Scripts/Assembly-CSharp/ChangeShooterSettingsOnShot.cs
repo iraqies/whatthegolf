@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Core;
 using UnityEngine;
 
@@ -25,9 +26,26 @@ public class ChangeShooterSettingsOnShot : MonoBehaviour
 
 	private void Start()
 	{
+		if (Controller != null)
+		{
+			Controller.OnShoot += OnShoot;
+		}
 	}
 
 	private void OnShoot(Vector3 vector3)
 	{
+		shots++;
+		if (ChangeShotDatas == null)
+			return;
+
+		ChangeShotData match = ChangeShotDatas.FirstOrDefault(s => s != null && s.ShotNumber == shots);
+		if (match != null && Controller != null)
+		{
+			Controller.ArrowPosition = match.NewArrowPosition;
+			if (match.NewShooter != null)
+			{
+				Controller.shooter = match.NewShooter;
+			}
+		}
 	}
 }

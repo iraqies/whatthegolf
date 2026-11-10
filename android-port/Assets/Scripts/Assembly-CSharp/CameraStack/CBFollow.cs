@@ -18,6 +18,11 @@ namespace CameraStack
 		[SerializeField] protected float aimSmoothTime = 0.2f;
 		[SerializeField] protected float continousTrackingTimer = 0.4f;
 		[SerializeField] public Vector2 screenPosition = new Vector2(0.5f, 0.33f);
+		public Vector2 screenRelativePivot
+		{
+			get => screenPosition;
+			set => screenPosition = value;
+		}
 		[SerializeField] protected float sideTrackPadding = 0.2f;
 		[SerializeField] protected float upperTrackPadding = 0.2f;
 		[SerializeField] protected float lowerTrackPadding = 0.2f;

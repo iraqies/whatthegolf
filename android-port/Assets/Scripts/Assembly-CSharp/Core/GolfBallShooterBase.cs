@@ -35,6 +35,18 @@ namespace Core
 			set => rigidbodyC = value;
 		}
 
+		protected Rigidbody Rigidbody
+		{
+			get => rigidbodyC;
+			set => rigidbodyC = value;
+		}
+
+		protected float MinRestVelocity => sqrVelocityShootingThreshold;
+
+		protected float minimumAimLength => GolfBallController != null ? GolfBallController.CancelThreshold : 0.03f;
+
+		protected bool IsShootingBlocked() => IsBlocking();
+
 		protected GolfBallController GolfManager => GolfBallController;
 
 		protected virtual void Awake()
