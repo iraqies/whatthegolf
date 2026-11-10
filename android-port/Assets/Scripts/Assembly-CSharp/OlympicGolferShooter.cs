@@ -97,7 +97,7 @@ public class OlympicGolferShooter : GolfBallShooterBase
 
 	private void Start()
 	{
-		if (puppetBehaviour != null && puppetBehaviour.onLoseBalance != null && puppetBehaviour.onLoseBalance.unityEvent != null)
+		if (puppetBehaviour != null && puppetBehaviour.onLoseBalance.unityEvent != null)
 		{
 			puppetBehaviour.onLoseBalance.unityEvent.AddListener(HandlePuppetLoseBalance);
 		}
@@ -142,7 +142,7 @@ public class OlympicGolferShooter : GolfBallShooterBase
 
 		if (GolfBallController != null && GolfBallController.GetIsCharging(0))
 		{
-			if (GolfBallController.GetPlayerAxisDirection(0, "AimHorizontal", "AimVertical").magnitude == 0f)
+			if (GolfBallController.GetPlayerAxisDirection(false, "AimHorizontal", "AimVertical").magnitude == 0f)
 			{
 				targetBlend = Vector3.zero;
 			}
@@ -195,7 +195,7 @@ public class OlympicGolferShooter : GolfBallShooterBase
 			{
 				if (b is BehaviourPuppet bp && bp.masterProps != null)
 				{
-					bp.masterProps.normalMode = BehaviourPuppet.NormalMode.Unpinned;
+					bp.masterProps.normalMode = 0;
 				}
 			}
 		}

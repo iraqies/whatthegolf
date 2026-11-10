@@ -55,7 +55,7 @@ public abstract class FrogKingBaseWave : MonoBehaviour
 		if (oneshotDelay > 0f)
 			oneshot.PlayDelayed(pos, oneshotDelay, 1f, 1f);
 		else
-			oneshot.Play(0, pos, 1f, 1f);
+			oneshot.Play(pos, 1f, 1f, false);
 		return true;
 	}
 }

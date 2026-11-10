@@ -63,7 +63,7 @@ namespace Core
 
 			if (barrel != null)
 			{
-				barrel.disableDestroyOnExplosion = true;
+				barrel.DestroyOnExplosion = false;
 				barrel.Explode(null);
 			}
 			didExplode = true;
@@ -91,16 +91,16 @@ namespace Core
 			if (Level.Instance != null && Level.Instance.IsMultiplayer)
 			{
 				if (barrel != null)
-					barrel.disableDestroyOnExplosion = false;
+					barrel.DestroyOnExplosion = true;
 				yield return new WaitForSeconds(1f);
 				didAim = false;
 				if (barrel != null)
 				{
 					barrel.didExplode = false;
-					if (barrel.barrelDestroyedMesh != null)
-						barrel.barrelDestroyedMesh.enabled = false;
-					if (barrel.barrelMesh != null)
-						barrel.barrelMesh.enabled = true;
+					if (barrel.burnedRender != null)
+						barrel.burnedRender.enabled = false;
+					if (barrel.normalRender != null)
+						barrel.normalRender.enabled = true;
 				}
 				if (rigidbodyC != null)
 					rigidbodyC.drag = 0.25f;

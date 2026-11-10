@@ -138,7 +138,7 @@ namespace Core
 			{
 				rigidbodyC.AddForce(Vector2.right * (dir * Time.fixedDeltaTime * airControlForce), ForceMode2D.Force);
 				if (pedals != null)
-					pedals.RotationVelocity = rigidbodyC.velocity.x * pedalsSpeedMod;
+					pedals.Speed = rigidbodyC.velocity.x * pedalsSpeedMod;
 			}
 		}
 

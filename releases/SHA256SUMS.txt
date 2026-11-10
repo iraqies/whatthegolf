@@ -1,1 +1,2 @@
+e43bdb117f2b743ff3deed6d4ee34440a5517a38f5c9d08e3db78621530364d5  /home/ubuntu/c113work/build/WhatTheGolf-Android-v26.apk
 db5b3af704320afbbacf52f8acb77daeb7bda320065e68a1b8c218871e31a47a  /home/ubuntu/c113work/build/WhatTheGolf-Android-v25.apk

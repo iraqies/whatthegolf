@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Audio;
 using Audio.Rumble;
+using CameraStack;
 using Core;
 using GolfCourse;
 using UnityEngine;
@@ -244,13 +245,7 @@ namespace SpaceGolf
 				}
 				if (liveStep.isBounce || (!wasGrounded && liveStep.isGrounded))
 				{
-					CustomCollision col = new CustomCollision
-					{
-						position = liveStep.position,
-						relativeVelocity = liveStep.velocity,
-						gameObject = gameObject,
-						otherGameObject = gameObject
-					};
+					HitInfo col = new HitInfo(liveStep.position, liveStep.velocity, gameObject, gameObject);
 					if (rumbleImpact != null)
 						rumbleImpact.OnCollisionRemote(col);
 					if (bounceCollisionSFX != null)

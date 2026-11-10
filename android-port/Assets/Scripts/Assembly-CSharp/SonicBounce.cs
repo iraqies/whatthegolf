@@ -7,7 +7,7 @@ public class SonicBounce : MonoBehaviour
 
 	private int startCount;
 
-	public int bounceCount;
+	public int bounceCount = 1;
 
 	private Renderer rend;
 
@@ -19,21 +19,51 @@ public class SonicBounce : MonoBehaviour
 
 	private float cooldown;
 
-	private float requiredCool;
+	private float requiredCool = 0.5f;
 
 	private void Start()
 	{
+		countTxt = GetComponentInChildren<Text>();
+		startCount = bounceCount;
+		if (countTxt != null)
+			countTxt.text = bounceCount.ToString();
+		rend = GetComponent<Renderer>();
 	}
 
 	private void OnCollisionEnter(Collision other)
 	{
+		if (other == null || other.collider == null)
+			return;
+		if (other.collider.CompareTag("Player") && bounceCount >= 1 && cooldown > requiredCool)
+		{
+			cooldown = 0f;
+			bounceCount--;
+			if (rend != null && rend.material != null)
+				rend.material.color = hit;
+		}
 	}
 
 	private void Update()
 	{
+		cooldown += Time.unscaledDeltaTime;
+		if (countTxt != null)
+			countTxt.text = bounceCount.ToString();
+		if (bounceCount > 0)
+		{
+			tag = "Bouncer";
+			if (rend != null && rend.material != null)
+				rend.material.color = Color.Lerp(rend.material.color, bounce, Time.deltaTime * 5f);
+		}
+		else
+		{
+			tag = "Obstacle";
+			if (rend != null && rend.material != null)
+				rend.material.color = Color.Lerp(rend.material.color, noBounce, Time.deltaTime * 5f);
+		}
 	}
 
 	public void Reset()
 	{
+		bounceCount = startCount;
 	}
 }

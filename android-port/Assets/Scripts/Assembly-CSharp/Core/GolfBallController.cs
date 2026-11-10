@@ -134,6 +134,14 @@ namespace Core
 			get => affectTime;
 			set => affectTime = value;
 		}
+		public bool AffectsTimeScale
+		{
+			get => affectTime;
+			set => affectTime = value;
+		}
+		public bool IsChangingTime => IsAiming && affectTime;
+		public bool doReloadSceneWhenOutOfBounds = true;
+		public bool GetIsCharging(int playerIdx = 0) => GetShootButton(false);
 		public bool IsAimingWithOutline { get; private set; }
 
 		public bool BlockShooting

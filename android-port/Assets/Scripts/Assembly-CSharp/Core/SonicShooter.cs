@@ -173,7 +173,7 @@ namespace Core
 				for (int i = 0; i < bouncers.Length; i++)
 				{
 					if (bouncers[i] != null)
-						bouncers[i].hitsLeft = bouncers[i].maxHits;
+						bouncers[i].Reset();
 				}
 			}
 			groundLevel = point.y;

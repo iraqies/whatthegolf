@@ -237,7 +237,7 @@ public class BowlingShooter : GolfBallShooterBase
 		StartCoroutine(pTween.To(AppearTime, t =>
 		{
 			if (ball != null)
-				ball.transform.localScale = Vector3.LerpUnclamped(Vector3.zero, targetScale, TweenFunctions.BackEaseOut(t, Amplitude));
+				ball.transform.localScale = Vector3.LerpUnclamped(Vector3.zero, targetScale, Mathf.Clamp01(t) + TweenFunctions.punch(Amplitude, Mathf.Clamp01(t)));
 		}));
 		return ball;
 	}
@@ -282,7 +282,7 @@ public class BowlingShooter : GolfBallShooterBase
 		if (Pins != null)
 			Pins.Remove(pin);
 
-		AudioTrigger[] triggers = pin.GetComponents<AudioTrigger>();
+		OnCollisionAudioBase[] triggers = pin.GetComponents<OnCollisionAudioBase>();
 		if (triggers != null)
 		{
 			for (int i = 0; i < triggers.Length; i++)
@@ -298,11 +298,11 @@ public class BowlingShooter : GolfBallShooterBase
 		StartCoroutine(pTween.To(waitTime, _ => { }).Then(pTween.To(shrinkTime, t =>
 		{
 			if (pin != null)
-				pin.transform.localScale = Vector3.LerpUnclamped(startScale, Vector3.zero, TweenFunctions.BackEaseIn(t, Amplitude));
+				pin.transform.localScale = Vector3.LerpUnclamped(startScale, Vector3.zero, Mathf.Clamp01(t));
 		}).Then(() =>
 		{
 			if (pin != null)
-				pin.gameObject.SetActive(false);
+				Destroy(pin.gameObject);
 		})));
 	}
 
@@ -400,13 +400,13 @@ public class BowlingShooter : GolfBallShooterBase
 		{
 			string text = GetCompletionTextBasedOnScore.GetText(numberOfShots);
 			if (text != null)
-				Level.Instance.Goal.TriggerWin(text);
+				Level.Instance.Goal.Complete(text);
 			else
-				Level.Instance.Goal.TriggerWin();
+				Level.Instance.Goal.Complete();
 		}
 		else
 		{
-			Level.Instance.Goal.TriggerWin();
+			Level.Instance.Goal.Complete();
 		}
 	}
 }

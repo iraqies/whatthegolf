@@ -479,10 +479,11 @@ public class IntroTunnelInOverworld : MonoBehaviour
 		{
 			Vector3 cur = followCamera.transform.position;
 			followCamera.transform.position = new Vector3(target.x, target.y, cur.z);
-			if (followCamera.follow != null)
+			Transform ft = followCamera.GetFollowTarget();
+			if (ft != null)
 			{
-				Vector3 fcur = followCamera.follow.position;
-				followCamera.follow.position = new Vector3(target.x, target.y, fcur.z);
+				Vector3 fcur = ft.position;
+				ft.position = new Vector3(target.x, target.y, fcur.z);
 			}
 		}
 		if (OverworldManager2d.HasInstance && OverworldManager2d.Instance != null && OverworldManager2d.Instance.cameraTarget != null)

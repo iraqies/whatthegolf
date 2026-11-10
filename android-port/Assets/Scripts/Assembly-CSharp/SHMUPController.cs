@@ -155,7 +155,7 @@ public class SHMUPController : GolfBallShooterBase
 
 		if (GolfBallController != null && GolfBallController.GetIsCharging(0))
 		{
-			if (GolfBallController.GetPlayerAxisDirection(0, "AimHorizontal", "AimVertical").magnitude == 0f)
+			if (GolfBallController.GetPlayerAxisDirection(false, "AimHorizontal", "AimVertical").magnitude == 0f)
 			{
 				targetBlend = Vector3.zero;
 			}
@@ -214,14 +214,14 @@ public class SHMUPController : GolfBallShooterBase
 		{
 			StartCoroutine(PlayShootSequence());
 			if (sfxEventOnShoot != null)
-				sfxEventOnShoot.Play(0, transform.position, 1f, 1f);
+				sfxEventOnShoot.Play(transform.position, 1f, 1f, false);
 		}
 	}
 
 	public void CollectedBalls()
 	{
 		if (sfxEventOnballPickup != null)
-			sfxEventOnballPickup.Play(0, transform.position, 1f, 1f);
+			sfxEventOnballPickup.Play(transform.position, 1f, 1f, false);
 		if (BoatController != null)
 			BoatController.SetBool("GolfReady", true);
 		if (FakeGolfBall != null)
@@ -240,9 +240,9 @@ public class SHMUPController : GolfBallShooterBase
 		OnSinkBefore?.Invoke();
 		yield return new WaitForSeconds(initialWaitTime);
 
-		if (AudioManager.Instance != null && AudioManager.Instance.rumbleManager != null && AudioManager.Instance.rumbleManager.Shoot != null)
+		if (AudioManager.Instance != null && AudioManager.Instance.rumbleManager != null && AudioManager.Instance.rumbleManager.LongBuildupRumble != null)
 		{
-			AudioManager.Instance.rumbleManager.Shoot.Play(0, 1f);
+			AudioManager.Instance.rumbleManager.LongBuildupRumble.Play(0, 1f);
 		}
 
 		Vector3 startP = (rigidbodyC != null) ? rigidbodyC.position : transform.position;
@@ -289,17 +289,17 @@ public class SHMUPController : GolfBallShooterBase
 		if (other == null || other.attachedRigidbody == null)
 			return;
 
-		if (other.attachedRigidbody.TryGetComponent<PushForward>(out var push))
+		if (other.attachedRigidbody.TryGetComponent<PushBoat>(out var push))
 		{
-			externalForce = push.PushVector;
+			externalForce = push.PushForce;
 			if (sfxEventOnPush != null)
-				sfxEventOnPush.Play(0, transform.position, 1f, 1f);
+				sfxEventOnPush.Play(transform.position, 1f, 1f, false);
 		}
 
 		if (other.attachedRigidbody.TryGetComponent<SinkBoat>(out var sink))
 		{
 			if (sfxEventOnSink != null)
-				sfxEventOnSink.Play(0, transform.position, 1f, 1f);
+				sfxEventOnSink.Play(transform.position, 1f, 1f, false);
 			isSinking = true;
 			if (sink.Tentacle != null)
 				sink.Tentacle.SetTrigger("Attack");
@@ -315,7 +315,7 @@ public class SHMUPController : GolfBallShooterBase
 		{
 			barrel.Explode(null);
 			if (sfxEventOnSink != null)
-				sfxEventOnSink.Play(0, transform.position, 1f, 1f);
+				sfxEventOnSink.Play(transform.position, 1f, 1f, false);
 			isSinking = true;
 			if (GolfBallController != null)
 			{
@@ -325,7 +325,7 @@ public class SHMUPController : GolfBallShooterBase
 			StartCoroutine(SinkRoutine(0f, Vector3.down, 0f, 1f, 0.5f));
 		}
 
-		if (other.attachedRigidbody.TryGetComponent<TriggerMouthEnter>(out _))
+		if (other.attachedRigidbody.TryGetComponent<OverworldMouth>(out _))
 		{
 			OnEnterMouth?.Invoke();
 		}

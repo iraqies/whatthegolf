@@ -222,7 +222,7 @@ public class SHMUPFrogKing : MonoBehaviour
 	{
 		if (other == null || other.attachedRigidbody == null)
 			return;
-		if (other.attachedRigidbody.GetComponent<GolfBall>() == null)
+		if (other.attachedRigidbody.GetComponent<BossHurtBall>() == null)
 			return;
 
 		other.attachedRigidbody.gameObject.SetActive(false);
@@ -246,9 +246,9 @@ public class SHMUPFrogKing : MonoBehaviour
 		if (!IsAlive && FrogKingAnimator != null)
 			FrogKingAnimator.SetBool("Dead", true);
 
-		if (AudioManager.Instance != null && AudioManager.Instance.rumbleManager != null && AudioManager.Instance.rumbleManager.Impact != null)
+		if (AudioManager.Instance != null && AudioManager.Instance.rumbleManager != null && AudioManager.Instance.rumbleManager.BumpHard != null)
 		{
-			AudioManager.Instance.rumbleManager.Impact.Play(0, 1f);
+			AudioManager.Instance.rumbleManager.BumpHard.Play(0, 1f);
 		}
 		if (FrogKingAnimator != null)
 			FrogKingAnimator.SetTrigger("Hurt");
