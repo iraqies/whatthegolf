@@ -8,5 +8,10 @@ public class AlwaysPointUpwards2D : MonoBehaviour
 
 	private void LateUpdate()
 	{
+		base.transform.rotation = Quaternion.Euler(OverrideRotation);
+		if (OverrideLocalPosition != Vector3.zero)
+		{
+			base.transform.localPosition = OverrideLocalPosition;
+		}
 	}
 }

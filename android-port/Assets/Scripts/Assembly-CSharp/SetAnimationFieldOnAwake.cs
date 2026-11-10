@@ -9,7 +9,7 @@ public class SetAnimationFieldOnAwake : MonoBehaviour
 		Trigger = 2
 	}
 
-	public bool onAwake;
+	public bool onAwake = true;
 
 	public string FieldName;
 
@@ -21,9 +21,33 @@ public class SetAnimationFieldOnAwake : MonoBehaviour
 
 	private void Awake()
 	{
+		if (onAwake)
+		{
+			SetValue();
+		}
 	}
 
 	public void SetValue()
 	{
+		Animator anim = GetComponent<Animator>();
+		if (anim == null)
+		{
+			return;
+		}
+		switch (FieldType)
+		{
+		case TypeEnum.Bool:
+			if (bool.TryParse(Value, out var b))
+			{
+				anim.SetBool(FieldName, b);
+			}
+			break;
+		case TypeEnum.Float:
+			anim.SetFloat(FieldName, Random.Range(FloatValueRange.x, FloatValueRange.y));
+			break;
+		case TypeEnum.Trigger:
+			anim.SetTrigger(FieldName);
+			break;
+		}
 	}
 }

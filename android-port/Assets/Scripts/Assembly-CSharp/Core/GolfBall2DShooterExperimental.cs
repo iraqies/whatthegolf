@@ -4,20 +4,56 @@ namespace Core
 {
 	public class GolfBall2DShooterExperimental : GolfBall2DShooterBase
 	{
-		[SerializeField] public float minShootVelocity = 2f;
-		[SerializeField] public float fullShootVelocity = 16f;
-		[SerializeField] public float pitch;
-		[SerializeField] public float spin;
-		[SerializeField] public bool zeroPitchIfNotGrouneded;
-		[SerializeField] public bool lookInAimDirection;
+		[SerializeField]
+		public float minShootVelocity = 5f;
 
-		public override void OnActivate() => StartAndWakeup();
-		public override void OnAimUpdate(Vector3 boost, bool onlyAimArrow) { }
+		[SerializeField]
+		public float fullShootVelocity = 25f;
+
+		[SerializeField]
+		public float pitch;
+
+		[SerializeField]
+		public float spin;
+
+		[SerializeField]
+		public bool zeroPitchIfNotGrouneded = true;
+
+		[SerializeField]
+		public bool lookInAimDirection;
+
+		public override void OnActivate()
+		{
+			base.OnActivate();
+			if (rb != null)
+			{
+				rb.isKinematic = false;
+			}
+		}
+
+		public override void OnAimUpdate(Vector3 boost, bool onlyAimArrow)
+		{
+			base.OnAimUpdate(boost, onlyAimArrow);
+			if (lookInAimDirection && rb != null)
+			{
+				float angle = Vector2.SignedAngle(Vector2.up, new Vector2(boost.x, boost.y));
+				rb.MoveRotation(angle);
+			}
+		}
 
 		public override void OnShoot(Vector3 boost)
 		{
-			float p = (zeroPitchIfNotGrouneded && GolfBallController != null && !GolfBallController.IsGrounded) ? 0f : pitch;
-			StandardShoot(boost, p, minShootVelocity, fullShootVelocity > 0f ? fullShootVelocity : 16f, spin);
+			base.OnShoot(boost);
+			if (GolfBallController != null)
+			{
+				Vector3 normal = GolfBallController.GetPlane(GolfBallController.planeType).normal;
+				Vector3 axis = Vector3.Cross(boost, normal);
+				if (!zeroPitchIfNotGrouneded || GolfBallController.IsGrounded)
+				{
+					boost = Quaternion.AngleAxis(pitch, axis) * boost;
+				}
+			}
+			StandardShoot(boost, 0f, minShootVelocity, fullShootVelocity > 0f ? fullShootVelocity : 25f, spin);
 		}
 	}
 }

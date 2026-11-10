@@ -6,5 +6,10 @@ public class SleepOnAwake : MonoBehaviour
 
 	private void Start()
 	{
+		rb = base.gameObject.GetComponent<Rigidbody>();
+		if (rb != null)
+		{
+			rb.Sleep();
+		}
 	}
 }

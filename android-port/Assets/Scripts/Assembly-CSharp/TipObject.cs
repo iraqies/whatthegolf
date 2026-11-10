@@ -2,38 +2,81 @@ using UnityEngine;
 
 public class TipObject : TippableObjectBase
 {
-	public float SleepThreshold = 0.1f;
+	public float SleepThreshold = 1f;
+
 	public float DotThreshold = 0.5f;
+
 	public float CheckTimer = 0.2f;
+
 	public Vector3 AxisToCheck = Vector3.up;
+
 	private bool hasBeenTipped;
+
 	private float timer;
+
 	public bool extremeTip;
 
 	private void Awake()
 	{
-		if (AxisToCheck.sqrMagnitude < 1e-4f) AxisToCheck = Vector3.up;
+		timer = CheckTimer;
+		SleepThreshold *= SleepThreshold;
 	}
 
 	private void FixedUpdate()
 	{
-		if (hasBeenTipped) return;
-		timer += Time.fixedDeltaTime;
-		if (timer >= CheckTimer)
+		if (hasBeenTipped)
 		{
-			timer = 0f;
-			if (Vector3.Dot(transform.TransformDirection(AxisToCheck), Vector3.up) < DotThreshold)
-				Tip();
+			timer = CheckTimer;
+			return;
+		}
+		timer -= Time.deltaTime;
+		if (timer > 0f)
+		{
+			return;
+		}
+		Vector3 gravUp = -Physics.gravity.normalized;
+		if (Vector3.Project(base.transform.up, gravUp).magnitude < DotThreshold)
+		{
+			Tip();
+		}
+		else
+		{
+			timer = CheckTimer;
 		}
 	}
 
-	private void OnCollisionEnter(Collision other) { }
-	private void OnTriggerEnter(Collider other) { }
+	private void OnCollisionEnter(Collision other)
+	{
+		if (!extremeTip || other == null)
+		{
+			return;
+		}
+		if (other.transform.GetComponent<GolfBallController>() != null)
+		{
+			Rigidbody rb = GetComponent<Rigidbody>();
+			if (rb != null)
+			{
+				rb.AddForce(other.impulse * rb.mass, ForceMode.Impulse);
+			}
+			Tip();
+		}
+	}
+
+	private void OnTriggerEnter(Collider other)
+	{
+		if (hasBeenTipped || other == null)
+		{
+			return;
+		}
+		if (other.CompareTag("Player") || other.CompareTag("Ball") || other.CompareTag("Goal"))
+		{
+			Tip();
+		}
+	}
 
 	private void Tip()
 	{
-		if (hasBeenTipped) return;
+		OnTip?.Invoke(base.gameObject);
 		hasBeenTipped = true;
-		OnTip?.Invoke(gameObject);
 	}
 }
