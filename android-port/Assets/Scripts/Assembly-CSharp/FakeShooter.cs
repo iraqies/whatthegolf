@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Core;
 using UnityEngine;
 
 public class FakeShooter : MonoBehaviour
@@ -20,45 +21,89 @@ public class FakeShooter : MonoBehaviour
 	private List<AudioClip> clips;
 
 	[SerializeField]
-	private float baseVolume;
+	private float baseVolume = 1f;
 
 	[SerializeField]
-	private float volumeDeviance;
+	private float volumeDeviance = 0.1f;
 
 	[SerializeField]
-	private float basePitch;
+	private float basePitch = 1f;
 
 	[SerializeField]
-	private float pitchDeviance;
+	private float pitchDeviance = 0.1f;
 
 	[SerializeField]
-	private float minDistance;
+	private float minDistance = 20f;
 
 	[SerializeField]
-	private float maxDistance;
+	private float maxDistance = 100f;
 
 	[SerializeField]
 	private HotdogGolfer golferForContinousAim;
 
 	private void PlaySound()
 	{
+		if (AudioManager.Instance != null && AudioManager.Instance.shortEffects != null)
+		{
+			AudioManager.Instance.shortEffects.Play(clips, delegate(AudioSource s)
+			{
+				if (s != null)
+				{
+					s.transform.position = base.transform.position;
+					s.volume = Random.Range(baseVolume - volumeDeviance, baseVolume + volumeDeviance);
+					s.pitch = Random.Range(basePitch - pitchDeviance, basePitch + pitchDeviance);
+					s.minDistance = minDistance;
+					s.maxDistance = maxDistance;
+				}
+			}, true, 0f, false);
+		}
 	}
 
 	private void Start()
 	{
+		if (PlayOnAwake)
+		{
+			Execute();
+		}
 	}
 
 	public void Execute()
 	{
+		if (ContinousAim)
+		{
+			StartCoroutine(ExecuteCRAim());
+		}
+		else
+		{
+			StartCoroutine(ExecuteCR());
+		}
 	}
 
 	private IEnumerator ExecuteCRAim()
 	{
-		return null;
+		HotdogGolfer golfer = GetComponent<HotdogGolfer>();
+		PlaySound();
+		yield return new WaitUntil(() => golfer == null || golfer.Puppet == null || golfer.Puppet.puppet != null);
+		if (golfer != null)
+		{
+			golfer.OnAimUpdate(aimVector, false);
+		}
+		yield return new WaitForSeconds(ContinousAimTime);
+		if (golfer != null)
+		{
+			golfer.OnShoot(aimVector);
+		}
 	}
 
 	private IEnumerator ExecuteCR()
 	{
-		return null;
+		GolfBallController c = GetComponent<GolfBallController>();
+		yield return new WaitUntil(() => c == null || c.shooter != null);
+		yield return new WaitForSeconds(0.5f);
+		PlaySound();
+		if (c != null && c.shooter != null)
+		{
+			c.shooter.OnShoot(aimVector);
+		}
 	}
 }

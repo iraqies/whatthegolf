@@ -19,9 +19,24 @@ public class BlockIfNotNearStuff : MonoBehaviour
 
 	private void Awake()
 	{
+		controller = GetComponent<GolfBallController>();
 	}
 
 	private void FixedUpdate()
 	{
+		if (controller == null)
+			return;
+
+		if (is2D)
+		{
+			Collider2D col = Physics2D.OverlapCircle(base.transform.position, CheckRadius, groundMask);
+			controller.canShoot = col == null;
+		}
+		else
+		{
+			Collider[] cols = Physics.OverlapSphere(base.transform.position, CheckRadius, groundMask);
+			controller.canShoot = cols != null && cols.Length == 0;
+		}
+		isBlocked = controller.BlockShooting;
 	}
 }
