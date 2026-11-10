@@ -277,8 +277,8 @@ public class IntroTunnelInOverworld : MonoBehaviour
 			{
 				if (i >= 2)
 				{
-					if (AudioManager.Instance != null && AudioManager.Instance.rumbleManager != null && AudioManager.Instance.rumbleManager.Tiny != null)
-						AudioManager.Instance.rumbleManager.Tiny.Play(0, 1f);
+					if (AudioManager.Instance != null && AudioManager.Instance.rumbleManager != null && AudioManager.Instance.rumbleManager.SubtleBump != null)
+						AudioManager.Instance.rumbleManager.SubtleBump.Play(0, 1f);
 					if (SFX_OnPipeTurn != null && AudioManager.Instance != null)
 						SFX_OnPipeTurn.Play(AudioManager.Instance.sfx, Vector3.zero, 0f);
 				}

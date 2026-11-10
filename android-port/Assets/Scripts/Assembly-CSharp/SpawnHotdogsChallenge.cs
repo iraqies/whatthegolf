@@ -28,8 +28,8 @@ public class SpawnHotdogsChallenge : Challenge
 	{
 		if (clip != null && SpawnsToWin > 0)
 		{
-			pitchIncrementPerSpawn = (maxPitch - clip.pitch) / SpawnsToWin;
-			volumeIncrementPerSpawn = (maxVolume - clip.volume) / SpawnsToWin;
+			pitchIncrementPerSpawn = (maxPitch - clip.Pitch.Value) / SpawnsToWin;
+			volumeIncrementPerSpawn = (maxVolume - clip.Volume.Value) / SpawnsToWin;
 		}
 	}
 
@@ -48,8 +48,8 @@ public class SpawnHotdogsChallenge : Challenge
 		count++;
 		if (clip != null)
 		{
-			clip.pitch += pitchIncrementPerSpawn;
-			clip.volume += volumeIncrementPerSpawn;
+			clip.Pitch.Value += pitchIncrementPerSpawn;
+			clip.Volume.Value += volumeIncrementPerSpawn;
 		}
 		if (LevelManager.Exists && LevelManager.Instance != null && LevelManager.Instance.InGameMenu != null)
 		{
@@ -70,7 +70,7 @@ public class SpawnHotdogsChallenge : Challenge
 		}
 		if (LevelManager.Exists && LevelManager.Instance != null && LevelManager.Instance.InGameMenu != null)
 		{
-			LevelManager.Instance.InGameMenu.SetStrokeCounterSettings(SpawnsToWin, StrokeCounter.CounterTypes.Increasing, true, 0);
+			LevelManager.Instance.InGameMenu.SetStrokeCounterSettings(SpawnsToWin, StrokeCounter.CounterTypes.CardsAppearing, true, 0);
 		}
 	}
 }

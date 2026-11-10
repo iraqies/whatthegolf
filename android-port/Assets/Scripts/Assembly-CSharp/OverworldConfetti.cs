@@ -22,7 +22,7 @@ public class OverworldConfetti : MonoBehaviour
 	{
 		if (overworldGoal == null)
 			return;
-		if (overworldGoal.levelData != null && overworldGoal.levelData.disableConfetti)
+		if (overworldGoal.levelData != null && overworldGoal.levelData.isBossBattle)
 			return;
 		if (gameObject.activeInHierarchy)
 			StartCoroutine(DelayedSpawn(overworldGoal, parUnlocked));
