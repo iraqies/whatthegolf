@@ -9,9 +9,10 @@ public class ToggleControllerBasedOnAnotherController : MonoBehaviour
 
 	private void Update()
 	{
-		if (ThisController != null && OtherController != null)
-		{
-			ThisController.enabled = OtherController.enabled;
-		}
+		if (ThisController == null || OtherController == null)
+			return;
+		ThisController.BlockShooting = OtherController.BlockShooting;
+		ThisController.enabled = OtherController.enabled;
+		ThisController.transform.position = OtherController.transform.position;
 	}
 }

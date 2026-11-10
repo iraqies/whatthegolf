@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CarSpawner : MonoBehaviour
 {
-	public float distance;
+	public float distance = 15f;
 
 	public Vector2 dir;
 
@@ -17,10 +17,20 @@ public class CarSpawner : MonoBehaviour
 
 	private IEnumerator Start()
 	{
-		return null;
+		startPos = transform.position;
+		yield return new WaitForSeconds(delay);
+		isMoving = true;
 	}
 
 	private void FixedUpdate()
 	{
+		if (!isMoving || rigid == null)
+			return;
+		rigid.velocity = dir;
+		if (Vector3.Distance(startPos, transform.position) > distance)
+		{
+			rigid.position = new Vector2(startPos.x, startPos.y);
+			transform.position = startPos;
+		}
 	}
 }

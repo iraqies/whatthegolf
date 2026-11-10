@@ -1,17 +1,58 @@
 Shader "Custom/Arrow" {
 	Properties {
-
 		_Color ("Color", Vector) = (1,1,1,1)
-		_LocalLightDir ("Local light direction", Vector) = (0,1,0,0)
-		_ShadowRatio ("Shadow Ratio", Range(0, 1)) = 0.5
+		_LocalLightDir ("Local light direction", Vector) = (0,0,1,0)
+		_ShadowRatio ("Shadow Ratio", Range(0, 1)) = 0.685
 	}
 	SubShader {
-		Tags { "Queue"="Transparent" "RenderType"="Transparent" }
+		Tags { "Queue"="Geometry" "RenderType"="Opaque" }
 		LOD 200
-		Cull Off
-		Blend SrcAlpha OneMinusSrcAlpha
-		ZWrite On
+
 		Pass {
+			Cull Back
+			ZWrite On
+			ZTest LEqual
+			Blend Off
+			CGPROGRAM
+			#pragma vertex vert
+			#pragma fragment frag
+			#include "UnityCG.cginc"
+
+			float4 _Color;
+			float4 _LocalLightDir;
+			float _ShadowRatio;
+
+			struct appdata {
+				float4 vertex : POSITION;
+				float3 normal : NORMAL;
+			};
+
+			struct v2f {
+				float4 pos : SV_POSITION;
+				float3 lnorm : TEXCOORD0;
+			};
+
+			v2f vert(appdata v) {
+				v2f o;
+				o.pos = UnityObjectToClipPos(v.vertex);
+				o.lnorm = v.normal;
+				return o;
+			}
+
+			fixed4 frag(v2f i) : SV_Target {
+				float3 n = normalize(i.lnorm);
+				float3 l = length(_LocalLightDir.xyz) > 0.001 ? normalize(_LocalLightDir.xyz) : float3(0, 0, 1);
+				float shade = dot(n, l) > 0.85 ? 1.0 : (_ShadowRatio > 0.001 ? _ShadowRatio : 0.685);
+				return fixed4(_Color.rgb * shade, 1.0);
+			}
+			ENDCG
+		}
+
+		Pass {
+			Cull Back
+			ZWrite Off
+			ZTest Greater
+			Blend SrcAlpha OneMinusSrcAlpha
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
@@ -21,36 +62,23 @@ Shader "Custom/Arrow" {
 
 			struct appdata {
 				float4 vertex : POSITION;
-				float3 normal : NORMAL;
-				float2 uv : TEXCOORD0;
-				float4 color : COLOR;
 			};
 
 			struct v2f {
 				float4 pos : SV_POSITION;
-				float3 wnorm : TEXCOORD0;
-				float3 wpos : TEXCOORD1;
-				float2 uv : TEXCOORD2;
-				float4 color : COLOR;
 			};
 
 			v2f vert(appdata v) {
 				v2f o;
 				o.pos = UnityObjectToClipPos(v.vertex);
-				o.wnorm = UnityObjectToWorldNormal(v.normal);
-				o.wpos = mul(unity_ObjectToWorld, v.vertex).xyz;
-				o.uv = v.uv;
-				o.color = v.color;
 				return o;
 			}
 
 			fixed4 frag(v2f i) : SV_Target {
-				float4 col = float4(1, 1, 1, 1);
-				col *= _Color;
-				return col;
+				return fixed4(_Color.rgb, _Color.a);
 			}
 			ENDCG
 		}
 	}
-	FallBack "Diffuse"
+	FallBack Off
 }

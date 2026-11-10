@@ -81,14 +81,6 @@ public class SaveAndLoadPositionOnQuit : GolfBehaviour
 		}
 		else if (b != null)
 		{
-			if (OverworldManager2d.HasInstance && OverworldManager2d.Instance != null && OverworldManager2d.Instance.introTunnel != null && (!SaveGame.IsIntroAnimationComplete || (isInHub && HubSceneLoader.Instance != null && !HubSceneLoader.Instance.HasBeenLoadedBefore)))
-			{
-				var tunnel = OverworldManager2d.Instance.introTunnel;
-				bool useFromLogo = OverworldManager2d.Instance.canStartAtLogoWhenStartingOverworld || tunnel.tweenTimeToLogo <= 0.01f;
-				var path = useFromLogo ? tunnel.pathFromLogo : tunnel.pathToLogo;
-				if (path != null && path.Count > 0 && path[0] != null)
-					b.transform.position = path[0].position;
-			}
 			transform.position = b.transform.position;
 			if (follower != null)
 				follower.SetTarget(b.transform);

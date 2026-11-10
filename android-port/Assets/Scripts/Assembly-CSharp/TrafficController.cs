@@ -191,19 +191,23 @@ public class TrafficController : MonoBehaviour
 			return;
 
 		CarAgent chosenCar = null;
+		int inactiveCount = 0;
 		for (int i = 0; i < _cars.Count; i++)
 		{
 			if (_cars[i] != null && !_cars[i].gameObject.activeSelf)
 			{
-				chosenCar = _cars[i];
-				break;
+				inactiveCount++;
+				if (UnityEngine.Random.Range(0, inactiveCount) == 0)
+					chosenCar = _cars[i];
 			}
 		}
 		if (chosenCar == null) return;
 
 		Vector3 spawnPos;
 		int carLayer = LayerMask.NameToLayer("Car (OW Low)");
-		int carLayerMask = carLayer >= 0 ? (1 << carLayer) : 0;
+		if (carLayer < 0) carLayer = LayerMask.NameToLayer("Car");
+		int carLayerMask = carLayer >= 0 ? (1 << carLayer) : (1 << 8);
+		float effectiveCheckRadius = CheckRadius > 0f ? CheckRadius : 8f;
 
 		if (prePopulate)
 		{
@@ -213,9 +217,9 @@ public class TrafficController : MonoBehaviour
 			if (pA == null || pB == null) return;
 			float t = Mathf.Clamp01(UnityEngine.Random.Range(0f, 0.9f));
 			spawnPos = Vector3.Lerp(pA.position, pB.position, t);
-			if (CheckRadius > 0f && carLayerMask != 0)
+			if (effectiveCheckRadius > 0f && carLayerMask != 0)
 			{
-				Collider[] hits = Physics.OverlapSphere(spawnPos, CheckRadius, carLayerMask);
+				Collider[] hits = Physics.OverlapSphere(spawnPos, effectiveCheckRadius, carLayerMask);
 				if (hits != null && hits.Length > 0)
 				{
 					chosenCar.gameObject.SetActive(false);
@@ -227,9 +231,9 @@ public class TrafficController : MonoBehaviour
 		{
 			if (chosenPoint.PathPoints[0] == null) return;
 			spawnPos = chosenPoint.PathPoints[0].position;
-			if (CheckRadius > 0f && carLayerMask != 0)
+			if (effectiveCheckRadius > 0f && carLayerMask != 0)
 			{
-				Collider[] hits = Physics.OverlapSphere(spawnPos, CheckRadius, carLayerMask);
+				Collider[] hits = Physics.OverlapSphere(spawnPos, effectiveCheckRadius, carLayerMask);
 				if (hits != null && hits.Length > 0)
 				{
 					chosenCar.gameObject.SetActive(false);

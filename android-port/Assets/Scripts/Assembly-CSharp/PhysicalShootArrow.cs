@@ -19,83 +19,66 @@ public class PhysicalShootArrow : MonoBehaviour
 
 	private void Awake()
 	{
-		if (Controller == null)
-			Controller = GetComponent<GolfBallController>();
-		if (Controller != null)
-		{
-			Controller.OnAimUpdate -= OnAimUpdate;
-			Controller.OnAimUpdate += OnAimUpdate;
-		}
 		if (ColliderObject != null)
 		{
 			boxCollider = ColliderObject.GetComponent<BoxCollider>();
 			if (boxCollider != null)
-				startSize = boxCollider.size.z;
+				startSize = boxCollider.size.y;
 		}
 	}
 
 	private void Start()
 	{
-		if (Controller != null && Controller.shootArrow != null)
-		{
-			Controller.shootArrow.MoveMethod = ShootArrow.MoveMethodEnum.Physics;
-			Controller.shootArrow.RotateMethod = ShootArrow.MoveMethodEnum.SmoothedPhysics;
-		}
+		if (Controller != null)
+			Controller.OnAimUpdate += OnAimUpdate;
 	}
 
 	private void OnAimUpdate(Vector3 dir, bool blocked)
 	{
-		if (boxCollider != null)
+		if (boxCollider == null)
+			return;
+		if (blocked)
 		{
-			float len = dir.magnitude * 0.125f + startSize;
-			boxCollider.size = new Vector3(boxCollider.size.x, boxCollider.size.y, len);
-			boxCollider.center = new Vector3(boxCollider.center.x, boxCollider.center.y, -len * 0.5f);
+			Vector3 s = boxCollider.size;
+			boxCollider.size = new Vector3(s.x, 0f, s.z);
+			return;
+		}
+		Vector3 sz = boxCollider.size;
+		boxCollider.size = new Vector3(sz.x, startSize * dir.magnitude, sz.z);
+		if (Controller != null && Controller.shootArrow != null && Controller.shootArrow.arrowBaseJoint != null && Controller.shootArrow.arrowHeadJoint != null)
+		{
+			Vector3 basePos = Controller.shootArrow.arrowBaseJoint.position;
+			Vector3 headPos = Controller.shootArrow.arrowHeadJoint.position;
+			Vector3 diff = headPos - basePos;
+			boxCollider.transform.position = basePos + diff.normalized * (diff.magnitude * 0.5f);
 		}
 	}
 
 	private void Update()
 	{
-		if (hasAddedCollider || Controller == null)
+		if (hasAddedCollider || Controller == null || Controller.shootArrow == null)
 			return;
 		ShootArrow arrow = Controller.shootArrow;
-		if (arrow == null || arrow.arrowHeadJoint == null)
-			return;
-
-		Rigidbody rb = arrow.gameObject.AddComponent<Rigidbody>();
-		rb.useGravity = false;
-		rb.isKinematic = true;
-		rb.interpolation = RigidbodyInterpolation.Interpolate;
-
-		if (ArrowAudioMaterial != null)
-		{
-			var ao = arrow.gameObject.GetComponent<AudioMaterialSettings>() ?? arrow.gameObject.AddComponent<AudioMaterialSettings>();
-			ao.material = ArrowAudioMaterial;
-		}
-
-		if (ColliderObject != null)
-		{
-			Transform spawned = Instantiate(ColliderObject, arrow.arrowHeadJoint);
-			spawned.localPosition = Vector3.zero;
-			spawned.localRotation = Quaternion.identity;
-			spawned.localScale = Vector3.one;
-			boxCollider = spawned.GetComponent<BoxCollider>();
-			if (boxCollider != null)
-				startSize = boxCollider.size.z;
-		}
-
-		if (!string.IsNullOrEmpty(ArrowLayer))
-		{
-			int layer = LayerMask.NameToLayer(ArrowLayer);
-			if (layer >= 0)
-			{
-				foreach (Transform t in arrow.GetComponentsInChildren<Transform>(true))
-				{
-					if (t != null)
-						t.gameObject.layer = layer;
-				}
-			}
-		}
+		if (ColliderObject != null && arrow.basePivot != null)
+			ColliderObject.SetParent(arrow.basePivot, false);
 
 		hasAddedCollider = true;
+		arrow.MoveMethod = ShootArrow.MoveMethodEnum.Physics;
+		arrow.RotateMethod = ShootArrow.MoveMethodEnum.Physics;
+
+		Rigidbody rb = arrow.gameObject.GetComponent<Rigidbody>() ?? arrow.gameObject.AddComponent<Rigidbody>();
+		rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+		rb.isKinematic = true;
+
+		AudioMaterialSettings ams = rb.gameObject.GetComponent<AudioMaterialSettings>() ?? rb.gameObject.AddComponent<AudioMaterialSettings>();
+		ams.material = ArrowAudioMaterial;
+
+		int layer = LayerMask.NameToLayer(ArrowLayer);
+		if (layer >= 0)
+			StansExtensions.SetLayerRecursively(arrow.gameObject, layer);
+
+		SkinnedMeshRenderer smr = arrow.GetComponentInChildren<SkinnedMeshRenderer>();
+		if (smr != null)
+			smr.updateWhenOffscreen = true;
 	}
 }

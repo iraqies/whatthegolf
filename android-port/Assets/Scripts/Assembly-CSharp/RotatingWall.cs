@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class RotatingWall : MonoBehaviour
 {
-	public float rotationSpeed;
+	public float rotationSpeed = 5f;
 
 	public float angleOffset;
 
@@ -10,9 +10,14 @@ public class RotatingWall : MonoBehaviour
 
 	private void Start()
 	{
+		rigid = GetComponent<Rigidbody2D>();
+		if (rigid != null)
+			rigid.MoveRotation(angleOffset);
 	}
 
 	private void Update()
 	{
+		if (rigid != null)
+			rigid.angularVelocity = rotationSpeed;
 	}
 }

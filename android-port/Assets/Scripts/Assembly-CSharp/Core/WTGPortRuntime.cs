@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 namespace Core
@@ -7,7 +6,6 @@ namespace Core
 	public class WTGPortRuntime : MonoBehaviour
 	{
 		private static WTGPortRuntime _instance;
-		private static Material _cachedVectorMaterial;
 
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
 		private static void AutoBoot()
@@ -20,16 +18,6 @@ namespace Core
 
 		private void Awake()
 		{
-			if (_instance != null && _instance != this)
-			{
-				Destroy(gameObject);
-				return;
-			}
-			_instance = this;
-			DontDestroyOnLoad(gameObject);
-			QualitySettings.vSyncCount = 0;
-			QualitySettings.antiAliasing = 0;
-			Application.targetFrameRate = 120;
 			Screen.sleepTimeout = SleepTimeout.NeverSleep;
 			SceneManager.sceneLoaded += OnSceneLoaded;
 			EnsureScenePlayable();
@@ -42,86 +30,53 @@ namespace Core
 
 		private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
 		{
-			Game.strokes = 0;
 			EnsureScenePlayable();
 		}
 
-		private static Material GetVectorMaterial()
+		private void Update()
 		{
-			if (_cachedVectorMaterial != null)
-				return _cachedVectorMaterial;
-			Shader sh = Shader.Find("Unlit/Vector");
-			if (sh == null)
-				sh = Shader.Find("Sprites/Default");
-			if (sh != null)
+			if (Input.GetKeyDown(KeyCode.F5))
 			{
-				_cachedVectorMaterial = new Material(sh);
-				_cachedVectorMaterial.mainTexture = Texture2D.whiteTexture;
+				int next = (SceneManager.GetActiveScene().buildIndex + 1) % Mathf.Max(1, SceneManager.sceneCountInBuildSettings);
+				SceneManager.LoadScene(next);
 			}
-			return _cachedVectorMaterial;
+			else if (Input.GetKeyDown(KeyCode.F6))
+			{
+				int prev = (SceneManager.GetActiveScene().buildIndex - 1 + SceneManager.sceneCountInBuildSettings) % Mathf.Max(1, SceneManager.sceneCountInBuildSettings);
+				SceneManager.LoadScene(prev);
+			}
 		}
 
 		private void EnsureScenePlayable()
 		{
 			Screen.sleepTimeout = SleepTimeout.NeverSleep;
-			QualitySettings.vSyncCount = 0;
-			if (Application.targetFrameRate < 60)
-				Application.targetFrameRate = 120;
-			var cfg = PlatformSettings.Instance != null ? PlatformSettings.Instance.GetCurrent() : null;
-			if (cfg != null && cfg.useRotatedOverworldAndCameraInLevels)
+			if (LevelManager.HasInstance && LevelManager.Instance != null && LevelManager.Instance.CurrentLevelData != null)
+				return;
+
+			var levels = FindObjectsOfType<Level>();
+			foreach (var lvl in levels)
 			{
-				if (Screen.orientation != ScreenOrientation.Portrait)
-					Screen.orientation = ScreenOrientation.Portrait;
-			}
-			else
-			{
-				Screen.autorotateToPortrait = false;
-				Screen.autorotateToPortraitUpsideDown = false;
-				if (Screen.orientation == ScreenOrientation.Portrait || Screen.orientation == ScreenOrientation.PortraitUpsideDown)
-					Screen.orientation = ScreenOrientation.LandscapeLeft;
-			}
-			foreach (var es in FindObjectsOfType<EventSystem>())
-			{
-				if (es != null && es.GetComponent<StandaloneInputModule>() == null)
+				if (lvl == null) continue;
+				if (lvl.gameObject.scene.name == "main overworld new" || lvl.gameObject.scene.name == "Hub_Overworld") continue;
+				if (!lvl.IsInitialized)
 				{
-					var sim = es.gameObject.AddComponent<StandaloneInputModule>();
-					sim.forceModuleActive = true;
-				}
-			}
-			foreach (var tr in FindObjectsOfType<Transition>())
-			{
-				if (tr != null && !tr.IsShowing)
-				{
-					var cam = tr.GetComponent<Camera>();
+					var ld = ScriptableObject.CreateInstance<LevelData>();
+					ld.name = lvl.gameObject.scene.name;
+					lvl.Initialize(ld);
+					lvl.Begin();
+					var cam = lvl.GetComponentInChildren<Camera>(true);
 					if (cam != null) cam.enabled = false;
 				}
 			}
-			Material vecMat = GetVectorMaterial();
-			if (vecMat != null)
+			if (!OverworldManager2d.HasInstance)
 			{
-				foreach (var sr in FindObjectsOfType<SpriteRenderer>(true))
+				var ctrls = FindObjectsOfType<GolfBallController>();
+				foreach (var c in ctrls)
 				{
-					if (sr != null && sr.sprite != null && sr.sprite.texture == null)
-					{
-						var shName = sr.sharedMaterial != null && sr.sharedMaterial.shader != null ? sr.sharedMaterial.shader.name : string.Empty;
-						if (shName == "Sprites/Default" || string.IsNullOrEmpty(shName))
-							sr.sharedMaterial = vecMat;
-					}
+					if (c != null && !c.enabled && c.gameObject.name != "RealClubBall")
+						c.Activate();
 				}
 			}
-		}
-
-		private void OnApplicationPause(bool pauseStatus)
-		{
-			if (pauseStatus)
-			{
-				SaveGame.Save(false);
-			}
-		}
-
-		private void OnApplicationQuit()
-		{
-			SaveGame.Save(false);
 		}
 	}
 }

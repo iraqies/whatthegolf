@@ -58,7 +58,8 @@ public class CarAgent : MonoBehaviour
 
 	private void Awake()
 	{
-		IgnoreLayers = (int)IgnoreLayers | gameObject.layer;
+		int selfLayerBit = (gameObject.layer >= 0 && gameObject.layer < 32) ? (1 << gameObject.layer) : 0;
+		IgnoreLayers = (int)IgnoreLayers | selfLayerBit | gameObject.layer;
 		rigid = GetComponent<Rigidbody>();
 		if (rigid != null)
 			rigid.useGravity = false;
@@ -85,12 +86,37 @@ public class CarAgent : MonoBehaviour
 		}
 	}
 
+	private bool TryGetClimbBasis(TrafficController.TrafficPoint point, out Vector3 climbNormal, out Vector3 climbForward)
+	{
+		climbNormal = Vector3.up;
+		climbForward = Vector3.forward;
+		if (point == null || point.PathPoints == null || point.PathPoints.Count < 2 || point.PathPoints[0] == null || point.PathPoints[1] == null)
+			return false;
+		Vector3 pathDir = point.PathPoints[1].position - point.PathPoints[0].position;
+		if (pathDir.y <= 2f || pathDir.sqrMagnitude <= 1f)
+			return false;
+		climbForward = pathDir.normalized;
+		Vector3 side = Vector3.Cross(climbForward, Vector3.up);
+		if (side.sqrMagnitude <= 0.0001f)
+			return false;
+		Vector3 n = Vector3.Cross(side.normalized, climbForward).normalized;
+		if (n.y <= 0f)
+			return false;
+		climbNormal = n;
+		return true;
+	}
+
 	public void Iniitialize(Vector3 position, Vector3 forward, TrafficController aTrafficController, TrafficController.TrafficPoint point)
 	{
 		transform.position = position;
 		smoothedNormal = Vector3.up;
 		Vector3 normal = GetNormal();
-		smoothedFlatForward = Vector3.ProjectOnPlane(transform.forward, smoothedNormal);
+		Vector3 initForward = forward;
+		if (TryGetClimbBasis(point, out Vector3 climbNormal, out Vector3 climbForward))
+		{
+			normal = climbNormal;
+			initForward = climbForward;
+		}
 		trafficController = aTrafficController;
 		trafficPoint = point;
 		_currentPath = point;
@@ -100,10 +126,16 @@ public class CarAgent : MonoBehaviour
 		{
 			rigid.velocity = Vector3.zero;
 			rigid.angularVelocity = Vector3.zero;
+			rigid.MovePosition(position);
 		}
 		smoothedNormal = normal;
-		transform.LookAt(transform.position + forward, smoothedNormal);
-		smoothedFlatForward = Vector3.ProjectOnPlane(transform.forward, smoothedNormal);
+		Vector3 lookDir = Vector3.ProjectOnPlane(initForward, smoothedNormal);
+		if (lookDir.sqrMagnitude < 0.0001f)
+			lookDir = initForward;
+		smoothedFlatForward = lookDir.normalized;
+		transform.LookAt(transform.position + smoothedFlatForward, smoothedNormal);
+		if (rigid != null)
+			rigid.MoveRotation(transform.rotation);
 		isLocked = true;
 		isFalling = false;
 		isSpeedingUp = false;
@@ -123,10 +155,15 @@ public class CarAgent : MonoBehaviour
 
 	protected Vector3 GetNormal()
 	{
-		int mask = ~((int)IgnoreLayers);
-		if (Physics.Raycast(transform.position, -smoothedNormal, out RaycastHit hit, 30f, mask))
+		int mask = ((int)GroundLayer != 0) ? (int)GroundLayer : ~((int)IgnoreLayers);
+		Vector3 origin = transform.position + smoothedNormal * 1.5f;
+		if (Physics.Raycast(origin, -smoothedNormal, out RaycastHit hit, 35f, mask, QueryTriggerInteraction.Ignore))
 		{
 			return hit.normal;
+		}
+		if (Physics.Raycast(transform.position, -smoothedNormal, out RaycastHit hit2, 30f, ~((int)IgnoreLayers), QueryTriggerInteraction.Ignore))
+		{
+			return hit2.normal;
 		}
 		return Vector3.up;
 	}
@@ -145,6 +182,9 @@ public class CarAgent : MonoBehaviour
 	protected bool IsGrounded()
 	{
 		int mask = ~((int)IgnoreLayers);
+		Vector3 origin = transform.position + transform.up * 0.5f;
+		if (Physics.Raycast(origin, -transform.up, out _, groundDist + 0.8f, mask, QueryTriggerInteraction.Ignore))
+			return true;
 		return Physics.Raycast(transform.position, -transform.up, out _, groundDist, mask);
 	}
 
@@ -182,8 +222,26 @@ public class CarAgent : MonoBehaviour
 				rigid.velocity = transform.forward * Speed - smoothedNormal * Gravity;
 			}
 			Vector3 normal = GetNormal();
+			Vector3 desiredFwd = transform.forward;
+			if (!hasBeenFlat && _currentGoal != null && TryGetClimbBasis(_currentPath, out Vector3 climbNormal, out Vector3 climbForward))
+			{
+				if (transform.position.y < _currentGoal.position.y - 1.2f)
+				{
+					if (normal.y > 0.9f || Vector3.Dot(normal, climbNormal) < 0.5f)
+						normal = climbNormal;
+					desiredFwd = climbForward;
+				}
+				else
+				{
+					Vector3 flatPathFwd = Vector3.ProjectOnPlane(climbForward, Vector3.up);
+					if (flatPathFwd.sqrMagnitude > 0.0001f)
+						desiredFwd = flatPathFwd.normalized;
+				}
+			}
 			smoothedNormal = Vector3.MoveTowards(smoothedNormal, normal, Time.fixedDeltaTime * RotateSpeed);
-			Vector3 projForward = Vector3.ProjectOnPlane(transform.forward, smoothedNormal);
+			Vector3 projForward = Vector3.ProjectOnPlane(desiredFwd, smoothedNormal);
+			if (projForward.sqrMagnitude > 0.0001f)
+				projForward.Normalize();
 			smoothedFlatForward = Vector3.MoveTowards(smoothedFlatForward, projForward, Time.fixedDeltaTime * 3f * RotateSpeed);
 			if (smoothedFlatForward.sqrMagnitude > 0.0001f)
 			{

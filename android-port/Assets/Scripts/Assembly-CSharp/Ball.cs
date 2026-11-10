@@ -36,7 +36,7 @@ public class Ball : MonoBehaviour
 		}
 		if (shooter != null)
 		{
-			shooter.OnShoot += Shooter_OnShoot;
+			shooter.OnShootEvent += Shooter_OnShoot;
 		}
 		if (killable != null)
 		{

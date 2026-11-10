@@ -5,6 +5,16 @@ public class EffectsInOne : MonoBehaviour
 {
 	private static EffectsInOne instance;
 
+	public BallCollider ballCollider;
+
+	public ParticleSystem collisionparticles;
+
+	public float amountOfParticles = 0.25f;
+
+	private Collider2D lastCollider;
+
+	private float nextEmitTime;
+
 	[SerializeField]
 	private ParticleSystem dustPuff;
 
@@ -43,6 +53,32 @@ public class EffectsInOne : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	public void FindBall()
+	{
+		if (ballCollider != null)
+			ballCollider.OnCollisionEnter -= BallCollider_OnCollisionEnter;
+		ballCollider = FindObjectOfType<BallCollider>();
+		if (ballCollider != null)
+			ballCollider.OnCollisionEnter += BallCollider_OnCollisionEnter;
+	}
+
+	private void BallCollider_OnCollisionEnter(Vector3 pos, Vector3 normal, float impactMagnitude, Collider2D other)
+	{
+		if (other == null)
+			return;
+		int count = Mathf.RoundToInt(Mathf.Clamp(impactMagnitude * amountOfParticles, 0f, 10f));
+		if (other.attachedRigidbody != null && !other.attachedRigidbody.isKinematic)
+			count /= 2;
+		if (collisionparticles != null)
+		{
+			collisionparticles.transform.position = pos;
+			if (other != lastCollider || Time.time >= nextEmitTime)
+				collisionparticles.Emit(count);
+		}
+		lastCollider = other;
+		nextEmitTime = Time.time + 0.1f;
 	}
 
 	public static void EmitDustPuff(Vector3 position, int count = 1)
