@@ -83,8 +83,9 @@ namespace CameraStack
 			transform.position = ScreenToWorld(screenPosition);
 			if (followTarget != null)
 			{
-				groundedElevation = followTarget.position.y;
-				targetGroundedElevation = followTarget.position.y;
+				float y = followTarget.position.y;
+				groundedElevation = y;
+				targetGroundedElevation = y;
 			}
 		}
 
@@ -104,8 +105,9 @@ namespace CameraStack
 			elevationSmoothVel = 0f;
 			if (followTarget != null)
 			{
-				groundedElevation = followTarget.position.y;
-				targetGroundedElevation = followTarget.position.y;
+				float y = followTarget.position.y;
+				groundedElevation = y;
+				targetGroundedElevation = y;
 				transform.position = ScreenToWorld(screenPosition);
 			}
 		}
@@ -164,6 +166,12 @@ namespace CameraStack
 
 		protected override Vector3 CalculatePosition()
 		{
+			if ((followTarget == null || !followTarget.gameObject.activeInHierarchy) && Ball != null && Ball.gameObject.activeInHierarchy)
+			{
+				followTarget = Ball.transform;
+				groundedElevation = followTarget.position.y;
+				targetGroundedElevation = followTarget.position.y;
+			}
 			if (followTarget == null)
 				return Vector3.zero;
 			var cams = Cameras;

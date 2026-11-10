@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.CompilerServices;
 using Core;
 using UnityEngine;
 
@@ -46,29 +45,9 @@ namespace CameraStack
 		private void Awake()
 		{
 			_instance = this;
-			_cameras = GetComponentsInChildren<Camera>(true);
-			var shakeGo = new GameObject("Shake");
-			shakeGo.transform.SetParent(transform, false);
-			shakeGo.transform.localPosition = Vector3.zero;
-			shakeGo.transform.localRotation = Quaternion.identity;
-			shake = shakeGo.AddComponent<PerlinShake>();
-			if (_cameras != null)
-			{
-				for (int i = 0; i < _cameras.Length; i++)
-				{
-					if (_cameras[i] == null) continue;
-					_cameras[i].transform.SetParent(shakeGo.transform, false);
-					_cameras[i].transform.localPosition = Vector3.zero;
-					_cameras[i].transform.localRotation = Quaternion.identity;
-					_cameras[i].allowMSAA = false;
-					_cameras[i].useOcclusionCulling = false;
-				}
-			}
-			if (LevelManager.Exists && LevelManager.Instance != null)
-			{
-				LevelManager.Instance.ChallengeSelected -= OnChallengeSelected;
-				LevelManager.Instance.ChallengeSelected += OnChallengeSelected;
-			}
+			if (_cameras == null || _cameras.Length == 0)
+				_cameras = GetComponentsInChildren<Camera>(true);
+
 			if (challengeSetup)
 			{
 				if (OnChallengeCameraBehavior != null)
@@ -78,12 +57,36 @@ namespace CameraStack
 				SetCurrentBehaviour();
 				challengeSetup = false;
 			}
+
+			var shakeGo = new GameObject("Shake");
+			shakeGo.transform.SetParent(transform, true);
+			shakeGo.transform.localPosition = Vector3.zero;
+			shakeGo.transform.localRotation = Quaternion.identity;
+			shake = shakeGo.AddComponent<PerlinShake>();
+
+			if (_cameras == null || _cameras.Length == 0)
+				_cameras = GetComponentsInChildren<Camera>(true);
+			if (_cameras != null)
+			{
+				for (int i = 0; i < _cameras.Length; i++)
+				{
+					if (_cameras[i] == null) continue;
+					_cameras[i].transform.SetParent(shakeGo.transform, true);
+					_cameras[i].useOcclusionCulling = false;
+				}
+			}
+
 			if (Level.HasInstance && Level.Instance != null)
 			{
 				Level.Instance.OnComplete -= OnGoal;
 				Level.Instance.OnComplete += OnGoal;
 				Level.Instance.OnReset -= OnReset;
 				Level.Instance.OnReset += OnReset;
+			}
+			if (LevelManager.Exists && LevelManager.Instance != null)
+			{
+				LevelManager.Instance.ChallengeSelected -= OnChallengeSelected;
+				LevelManager.Instance.ChallengeSelected += OnChallengeSelected;
 			}
 		}
 
@@ -119,17 +122,21 @@ namespace CameraStack
 					}
 					if (found != null && (found.CustomCameraBehaviour != null || found.CustomDesktopOverrideBehaviour != null))
 					{
-						bool useRot = PlatformSettings.Instance != null && PlatformSettings.Instance.GetCurrent() != null && PlatformSettings.Instance.GetCurrent().useRotatedOverworldAndCameraInLevels;
-						var next = (useRot || found.CustomDesktopOverrideBehaviour == null) ? found.CustomCameraBehaviour : found.CustomDesktopOverrideBehaviour;
-						if (next != null)
-							SwitchBehavior(next);
-						OnReset();
-						return;
+						if (found.CustomCameraBehaviour != null)
+							OnPlayCameraBehavior = found.CustomCameraBehaviour;
+						else if (OnChallengeCameraBehavior != null)
+							OnPlayCameraBehavior = OnChallengeCameraBehavior;
+
+						if (found.CustomDesktopOverrideBehaviour != null)
+							DesktopCameraOverrideBehaviour = found.CustomDesktopOverrideBehaviour;
+						else if (DesktopChallengeCameraOverrideBehaviour != null)
+							DesktopCameraOverrideBehaviour = DesktopChallengeCameraOverrideBehaviour;
 					}
 				}
 			}
 			SetCurrentBehaviour();
 			OnReset();
+			_started = true;
 		}
 
 		public void SetCurrentBehaviour()
@@ -142,12 +149,11 @@ namespace CameraStack
 
 		private void Start()
 		{
-			if (!_started)
-			{
-				SetCurrentBehaviour();
-				OnReset();
-				_started = true;
-			}
+			if (LevelManager.Exists && LevelManager.Instance != null && LevelManager.Instance.SelectedChallenge != null)
+				return;
+			SetCurrentBehaviour();
+			OnReset();
+			_started = true;
 		}
 
 		private void StartCheckingForAirPlay() { }
@@ -165,7 +171,17 @@ namespace CameraStack
 			}
 		}
 
-		private void Update() => ManualUpdate();
+		private void Update()
+		{
+			if (ActiveBehavior == null) return;
+			ActiveBehavior.PreUpdate();
+			Vector3 pos = ActiveBehavior.Position;
+			if (!float.IsNaN(pos.x))
+				transform.position = ActiveBehavior.Position;
+			transform.rotation = ActiveBehavior.Rotation;
+			ActiveBehavior.transform.position = transform.position;
+			ActiveBehavior.transform.rotation = transform.rotation;
+		}
 
 		public void SwitchBehavior(CameraBehavior newCameraBehavior)
 		{
@@ -176,7 +192,7 @@ namespace CameraStack
 			{
 				ActiveBehavior.IsAttachedToCameraManager = (ActiveBehavior.gameObject == gameObject);
 				if (!ActiveBehavior.IsAttachedToCameraManager)
-					ActiveBehavior.transform.SetParent(transform);
+					ActiveBehavior.transform.SetParent(transform, true);
 				ActiveBehavior.Cameras = Cameras;
 				ActiveBehavior.Init();
 				m_OnActiveBehaviourChanged?.Invoke(ActiveBehavior);
@@ -189,19 +205,34 @@ namespace CameraStack
 
 		public void ManualUpdate()
 		{
-			if (ActiveBehavior == null) return;
-			ActiveBehavior.PreUpdate();
-			Vector3 pos = ActiveBehavior.Position;
-			if (!float.IsNaN(pos.x) && !float.IsNaN(pos.y) && !float.IsNaN(pos.z))
-				transform.position = pos;
-			transform.rotation = ActiveBehavior.Rotation;
-			ActiveBehavior.transform.position = transform.position;
-			ActiveBehavior.transform.rotation = transform.rotation;
+			var b = OnPlayCameraBehavior ?? ActiveBehavior;
+			if (b == null) return;
+			b.Init();
+			b.OutOfBounds();
+			transform.position = b.Position;
+			transform.rotation = b.Rotation;
 		}
 
-		public void Shake(float duration, float speed, float magnitude) { }
-		public void StopShake() { }
-		public float GetShakeMagnitude() => 0f;
+		public void Shake(float duration, float speed, float magnitude)
+		{
+			if (shake == null)
+				shake = gameObject.GetComponentInChildren<PerlinShake>();
+			if (shake != null)
+			{
+				shake.duration = duration;
+				shake.speed = speed;
+				shake.magnitude = magnitude;
+				shake.PlayShake();
+			}
+		}
+
+		public void StopShake()
+		{
+			if (shake != null)
+				shake.StopShake();
+		}
+
+		public float GetShakeMagnitude() => shake != null ? shake.magnitude : 0f;
 		private void OnDrawGizmosSelected() { }
 	}
 }

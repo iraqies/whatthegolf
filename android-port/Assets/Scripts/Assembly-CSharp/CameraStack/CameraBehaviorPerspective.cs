@@ -19,6 +19,17 @@ namespace CameraStack
 			}
 		}
 
-		public override void PreUpdate() { }
+		public override void PreUpdate()
+		{
+			if (Cameras != null)
+			{
+				float fov = FOV;
+				foreach (var c in Cameras)
+				{
+					if (c != null)
+						c.fieldOfView = fov;
+				}
+			}
+		}
 	}
 }

@@ -346,7 +346,7 @@ namespace GolfCourse
 			isCollapsing = false;
 			if (GolfBallController != null)
 				GolfBallController.CheckpointHit(oldPosition, oldRotation);
-			if (GolfClub != null && ClubRoot != null)
+			if (GolfClub != null)
 				GolfClub.transform.SetParent(ClubRoot);
 			if (followCamera == null && CameraManager.Instance != null)
 				followCamera = CameraManager.Instance.GetComponent<CBFollow>() ?? CameraManager.Instance.GetComponentInChildren<CBFollow>();
@@ -355,7 +355,7 @@ namespace GolfCourse
 			if (followCamera != null && hips != null)
 				followCamera.FollowTarget = hips.transform;
 			if (GolfBallController != null)
-				GolfBallController.ArrowPosition = hips != null ? hips.transform : transform;
+				GolfBallController.ArrowPosition = transform;
 		}
 	}
 }

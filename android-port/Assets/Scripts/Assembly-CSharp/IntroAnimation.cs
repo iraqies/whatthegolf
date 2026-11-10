@@ -202,13 +202,23 @@ public class IntroAnimation : MonoBehaviour
 			if (save != null)
 				save.gameObject.SetActive(false);
 
-			yield return new WaitForSeconds(skipTunnelWait ? 0.05f : 5f);
+			if (!skipTunnelWait)
+			{
+				while (!atEndOfTunnel)
+				{
+					yield return null;
+				}
+			}
+			else
+			{
+				yield return new WaitForSeconds(0.05f);
+			}
 
 			if (DarknessRenderer != null)
 			{
 				SetDarknessMaterialColor(DarknessLight);
 				DarknessRenderer.enabled = true;
-				StartCoroutine(pTween.To(skipTunnelWait ? 0.05f : 1.5f, t =>
+				StartCoroutine(pTween.To(skipTunnelWait ? 0.05f : 0.75f, t =>
 				{
 					SetDarknessMaterialColor(Color.Lerp(DarknessLight, DarknessDark, t));
 				}));

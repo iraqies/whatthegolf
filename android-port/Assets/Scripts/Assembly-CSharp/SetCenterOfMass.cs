@@ -6,13 +6,19 @@ public class SetCenterOfMass : MonoBehaviour
 
 	private void Awake()
 	{
-		if (CenterOfMass != null)
-			UpdateCenterOfMass(CenterOfMass.localPosition);
+		Rigidbody rb = GetComponent<Rigidbody>();
+		if (rb != null && CenterOfMass != null)
+		{
+			rb.centerOfMass = transform.InverseTransformPoint(CenterOfMass.position);
+		}
 	}
 
 	public void UpdateCenterOfMass(Vector3 newCoMPosition)
 	{
-		var rb = GetComponent<Rigidbody>();
-		if (rb != null) rb.centerOfMass = newCoMPosition;
+		Rigidbody rb = GetComponent<Rigidbody>();
+		if (rb != null)
+		{
+			rb.centerOfMass = transform.InverseTransformPoint(newCoMPosition);
+		}
 	}
 }

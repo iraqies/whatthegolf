@@ -29,9 +29,9 @@ namespace CameraStack
 		{
 			get
 			{
-				if (Level.HasInstance && Level.Instance.Ball != null)
+				if (Level.HasInstance && Level.Instance.Ball != null && Level.Instance.Ball.gameObject.activeInHierarchy)
 					return Level.Instance.Ball;
-				if (_cachedBall == null)
+				if (_cachedBall == null || !_cachedBall.gameObject.activeInHierarchy)
 					_cachedBall = FindObjectOfType<GolfBallController>();
 				return _cachedBall;
 			}

@@ -181,8 +181,7 @@ public class OverworldLoader : MonoBehaviour
 			}
 		}
 		yield return null;
-		yield return StartCoroutine(Cleanup(true, true));
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < 2; i++)
 			yield return null;
 		Application.backgroundLoadingPriority = ThreadPriority.Normal;
 		shouldContinueTunnel = true;

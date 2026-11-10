@@ -116,10 +116,16 @@ namespace Core
 		{
 			get
 			{
-				if (_ball == null)
+				if (_ball == null || !_ball.gameObject.activeInHierarchy)
 				{
-					if (controllers.Count > 0) _ball = controllers[0];
-					else _ball = FindObjectOfType<GolfBallController>();
+					_ball = controllers.FirstOrDefault(c => c != null && c.gameObject.activeInHierarchy);
+					if (_ball == null)
+					{
+						var all = FindObjectsOfType<GolfBallController>();
+						_ball = all != null ? all.FirstOrDefault(c => c != null && c.gameObject.activeInHierarchy) : null;
+					}
+					if (_ball == null && controllers.Count > 0)
+						_ball = controllers[0];
 				}
 				return _ball;
 			}
@@ -129,7 +135,8 @@ namespace Core
 		{
 			get
 			{
-				if (_goal == null) _goal = FindObjectOfType<GolfGoal>();
+				if (_goal == null || !_goal.gameObject.activeInHierarchy)
+					_goal = FindObjectOfType<GolfGoal>();
 				return _goal;
 			}
 		}

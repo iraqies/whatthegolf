@@ -4,18 +4,18 @@ public class FollowTransform : MonoBehaviour
 {
 	public Transform Target;
 	public Vector3 FollowAxis = Vector3.one;
-	public float FollowSpeed = 20f;
+	public float FollowSpeed = 1f;
 	public bool UsePhysics;
-	public bool FollowUpVector;
+	public bool FollowUpVector = true;
 	public bool FollowRotation;
-	public bool TransformPositionOffset;
+	public bool TransformPositionOffset = true;
 	public bool InverseTransformPositionOffset;
 	public Vector3 RotationOffset;
 	public Vector3 PositionOffset;
 	public Vector3 LookDirectionAxis;
-	public Vector2 HeightRange;
+	public Vector2 HeightRange = new Vector2(-150f, 150f);
 	private Rigidbody rigid;
-	public float LookSpeed = 10f;
+	public float LookSpeed = 1f;
 	public bool LookAtTarget;
 
 	private void Awake()
@@ -25,20 +25,54 @@ public class FollowTransform : MonoBehaviour
 
 	public void ManualFollowUpdate()
 	{
-		if (Target == null) return;
-		transform.position = GetPosition();
-		if (FollowRotation || LookAtTarget)
-			transform.rotation = GetRotation();
+		if (UsePhysics)
+			FixedUpdate();
+		else
+			Update();
 	}
 
 	private void Update()
 	{
-		if (!UsePhysics) ManualFollowUpdate();
+		if (UsePhysics || Target == null)
+			return;
+		transform.position = GetPosition();
+		if (FollowUpVector)
+			transform.up = Target.up;
+		if (FollowRotation)
+		{
+			transform.rotation = LookAtTarget ? GetLookRotation() : GetRotation();
+		}
 	}
 
 	private void FixedUpdate()
 	{
-		if (UsePhysics) ManualFollowUpdate();
+		if (!UsePhysics || Target == null)
+			return;
+		Vector3 desired = GetPosition();
+		if (rigid != null)
+		{
+			if (rigid.isKinematic)
+			{
+				rigid.MovePosition(desired);
+			}
+			else
+			{
+				Vector3 delta = desired - rigid.position;
+				float dt = Time.fixedDeltaTime > 1e-5f ? Time.fixedDeltaTime : 0.02f;
+				rigid.velocity = delta.normalized * (delta.magnitude / dt);
+			}
+		}
+		else
+		{
+			transform.position = desired;
+		}
+		if (FollowUpVector)
+			transform.up = Target.up;
+		if (FollowRotation && rigid != null)
+		{
+			Quaternion rot = LookAtTarget ? GetLookRotation() : (Target.rotation * Quaternion.Euler(RotationOffset));
+			rigid.MoveRotation(rot);
+		}
 	}
 
 	private Vector3 GetPosition()
@@ -66,13 +100,18 @@ public class FollowTransform : MonoBehaviour
 	private Quaternion GetRotation()
 	{
 		if (Target == null) return transform.rotation;
-		if (LookAtTarget) return GetLookRotation();
 		return Target.rotation * Quaternion.Euler(RotationOffset);
 	}
 
 	private Quaternion GetLookRotation()
 	{
-		Vector3 dir = Target.position - transform.position;
-		return dir.sqrMagnitude > 1e-4f ? Quaternion.LookRotation(dir.normalized) : transform.rotation;
+		if (Target == null) return transform.rotation;
+		Vector3 dir = (Target.position - transform.position).normalized;
+		dir = new Vector3(dir.x * LookDirectionAxis.x, dir.y * LookDirectionAxis.y, dir.z * LookDirectionAxis.z);
+		if (dir.sqrMagnitude <= 1e-6f)
+			return rigid != null ? rigid.rotation : transform.rotation;
+		Quaternion targetRot = Quaternion.LookRotation(dir, Vector3.up);
+		Quaternion curRot = rigid != null ? rigid.rotation : transform.rotation;
+		return Quaternion.RotateTowards(curRot, targetRot, LookSpeed * Time.deltaTime);
 	}
 }

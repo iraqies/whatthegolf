@@ -40,33 +40,75 @@ public class SetMaterialColorToPlayerColor : MonoBehaviour
 
 	public void UpdateMaterials(PlayerColors.AvatarData avatar)
 	{
+		Color c = Color.clear;
+		switch (colorType)
+		{
+			case ColorType.BaseColor:
+				if (avatar != null) c = avatar.BaseColor;
+				break;
+			case ColorType.ArrowColor:
+				if (avatar != null) c = avatar.ArrowColor + new Color(0f, 0f, 0f, 1f);
+				break;
+			case ColorType.ArrowColorMin:
+				if (avatar != null) c = avatar.ArrowColorMin;
+				break;
+			case ColorType.StrokeCounterColor:
+				if (avatar != null) c = avatar.StrokeCounterColor;
+				break;
+			case ColorType.IntroBackgroundColor:
+				if (avatar != null) c = avatar.IntroBackgroundColor;
+				break;
+			case ColorType.Custom:
+				c = customColor;
+				break;
+		}
+
+		if (ModifyMethod == ModifyMethods.Materials)
+		{
+			if (renderer != null && materialsIndices != null)
+			{
+				Material[] mats = renderer.materials;
+				if (mats != null)
+				{
+					foreach (int idx in materialsIndices)
+					{
+						if (idx >= 0 && idx < mats.Length && mats[idx] != null)
+							mats[idx].color = c;
+					}
+					renderer.materials = mats;
+				}
+			}
+		}
+		else if (ModifyMethod == ModifyMethods.SpriteColors)
+		{
+			if (renderer is SpriteRenderer sr)
+			{
+				sr.color = new Color(c.r, c.g, c.b, 1f);
+			}
+		}
+		else if (ModifyMethod == ModifyMethods.ParticleSystem)
+		{
+			if (particleSystem != null)
+			{
+				var pr = particleSystem.GetComponent<Renderer>();
+				if (pr != null && pr.material != null)
+					pr.material.color = c;
+			}
+		}
 	}
 
-	public ModifyMethods GetModifyMethod()
-	{
-		return ModifyMethods.Materials;
-	}
+	public ModifyMethods GetModifyMethod() => ModifyMethod;
 
-	public Renderer GetRenderer()
-	{
-		return null;
-	}
+	public Renderer GetRenderer() => renderer;
 
-	public ColorType GetColorType()
-	{
-		return ColorType.BaseColor;
-	}
+	public ColorType GetColorType() => colorType;
 
-	public void SetRenderer(Renderer r)
-	{
-	}
+	public void SetRenderer(Renderer r) => renderer = r;
 
-	public List<int> GetIndices()
-	{
-		return null;
-	}
+	public List<int> GetIndices() => materialsIndices;
 
 	public void CreateList()
 	{
+		materialsIndices = new List<int>();
 	}
 }

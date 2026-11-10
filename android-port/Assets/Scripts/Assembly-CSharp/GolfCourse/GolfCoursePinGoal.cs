@@ -58,12 +58,19 @@ namespace GolfCourse
 
 		public void CheckObject(Transform trans, bool fromCollision = false)
 		{
-			if (trans == null || trans.gameObject == null || trans.gameObject.isStatic || !enabled)
+			if (trans == null || trans.gameObject == null || trans.gameObject.isStatic || !enabled || !gameObject.activeInHierarchy)
 				return;
 
 			Transform checkTrans = checkRootForController ? trans.root : trans;
 			GolfBallController ctrl = checkTrans != null ? checkTrans.GetComponentInChildren<GolfBallController>() : null;
 			Vector3 hitDir = Vector3.zero;
+
+			if (goalObject != null && goalObject.Any(c => c != null))
+			{
+				Collider hitCol = trans.GetComponent<Collider>();
+				if ((hitCol == null || !goalObject.Contains(hitCol)) && ctrl == null && !trans.CompareTag("AdditionalGolfThing"))
+					return;
+			}
 
 			if (!DontAcceptController && ctrl != null && !golfBallsInGoal.Contains(trans.root))
 			{
@@ -108,7 +115,7 @@ namespace GolfCourse
 				}
 			}
 
-			if (ballsInGoal >= Mathf.Max(1, RequiredBallsInGoal))
+			if (ballsInGoal > 0 && ballsInGoal >= Mathf.Max(1, RequiredBallsInGoal))
 			{
 				Complete();
 				ballsInGoal = 0;
