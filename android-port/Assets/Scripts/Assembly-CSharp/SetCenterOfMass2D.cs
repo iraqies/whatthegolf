@@ -6,5 +6,11 @@ public class SetCenterOfMass2D : MonoBehaviour
 
 	private void Awake()
 	{
+		Rigidbody2D rb = GetComponent<Rigidbody2D>();
+		if (rb != null && CenterOfMass != null)
+		{
+			Vector3 local = transform.InverseTransformPoint(CenterOfMass.position);
+			rb.centerOfMass = new Vector2(local.x, local.y);
+		}
 	}
 }
