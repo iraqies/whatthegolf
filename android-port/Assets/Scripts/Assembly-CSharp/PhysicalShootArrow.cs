@@ -68,7 +68,7 @@ public class PhysicalShootArrow : MonoBehaviour
 
 		if (ArrowAudioMaterial != null)
 		{
-			var ao = arrow.gameObject.GetComponent<Audio.AudioMaterialSettings>() ?? arrow.gameObject.AddComponent<Audio.AudioMaterialSettings>();
+			var ao = arrow.gameObject.GetComponent<AudioMaterialSettings>() ?? arrow.gameObject.AddComponent<AudioMaterialSettings>();
 			ao.material = ArrowAudioMaterial;
 		}
 
