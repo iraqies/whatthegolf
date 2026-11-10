@@ -224,8 +224,27 @@ public class SettingsMenu : AddressableSingleton<SettingsMenu>
 	private void SetReceptionistIndex(int arg0) { }
 	private void SetBoothTurtleIndex(int arg0) { }
 	private void SetMenuDialogueIndex(int arg0, MenuDialogueConfig conf) { }
-	private void ReloadHub() { }
-	private void PlaySecondOnboardingLevels() { }
+	private async void ReloadHub()
+	{
+		Close(false);
+		if (HubSceneLoader.Instance != null)
+			await HubSceneLoader.Instance.LoadSceneAsync(LoadSceneMode.Single, null, true);
+	}
+
+	private async void PlaySecondOnboardingLevels()
+	{
+		SetInteractable(false);
+		Close(false);
+		if (OverworldManager2d.HasInstance && OverworldManager2d.Instance != null)
+			OverworldManager2d.Instance.ToggleOverworld(false);
+		if (PackStarterManager.Instance != null && RuntimeStoreData.instance != null && RuntimeStoreData.instance.secondOnboarding != null)
+		{
+			await PackStarterManager.Instance.StartPack(RuntimeStoreData.instance.secondOnboarding, false, false);
+			await PackStarterManager.PackFinishedAsync();
+		}
+		if (OverworldManager2d.HasInstance && OverworldManager2d.Instance != null)
+			OverworldManager2d.Instance.ToggleOverworld(true);
+	}
 
 	private void Update()
 	{
@@ -274,6 +293,14 @@ public class SettingsMenu : AddressableSingleton<SettingsMenu>
 				Menu.Menu.Instance.Show();
 			}
 		}
+		else
+		{
+			if (!ModalWindowSingleton.IsAnyOpen() && (!Menu.Menu.Exists || !Menu.Menu.Instance.IsOpen()))
+			{
+				if (OverworldManager2d.HasInstance && OverworldManager2d.Instance != null)
+					OverworldManager2d.Instance.EnableInteraction();
+			}
+		}
 		if (UIBackgroundFader.Exists || UIBackgroundFader.Instance != null)
 			UIBackgroundFader.Instance.Deregister();
 	}
@@ -287,13 +314,10 @@ public class SettingsMenu : AddressableSingleton<SettingsMenu>
 		SetInteractable(true);
 		if (CloseButtonAnimator != null)
 		{
-			CloseButtonAnimator.gameObject.SetActive(true);
-			var closeBtn = CloseButtonAnimator.GetComponentInChildren<Button>(true);
-			if (closeBtn != null)
-			{
-				closeBtn.onClick.RemoveAllListeners();
-				closeBtn.onClick.AddListener(() => Close(true));
-			}
+			bool showCloseBtn = true;
+			if (PlatformSettings.Instance != null && PlatformSettings.Instance.GetCurrent() != null)
+				showCloseBtn = PlatformSettings.Instance.GetCurrent().useBackButtonInMenus;
+			CloseButtonAnimator.gameObject.SetActive(showCloseBtn);
 		}
 		if (animators != null)
 		{
@@ -304,6 +328,8 @@ public class SettingsMenu : AddressableSingleton<SettingsMenu>
 		if (!isInited)
 			InitAll();
 		RefreshSaveSlot();
+		if (CrossPromotion != null)
+			CrossPromotion.RefreshDate();
 		EnableContentByLocation(GetLocation());
 		if (snapToTop && scrollRect != null)
 			scrollRect.verticalNormalizedPosition = 1f;
@@ -353,9 +379,50 @@ public class SettingsMenu : AddressableSingleton<SettingsMenu>
 	private IEnumerator SetResolution() { yield break; }
 	private int ClampSaveSlot(int s) => Mathf.Clamp(s, 0, 2);
 
-	public void OnChangeSaveSlot(int selected)
+	public async void OnChangeSaveSlot(int selected)
 	{
-		ChangeSaveSlot(ClampSaveSlot(selected));
+		selected = ClampSaveSlot(selected);
+		Close(false);
+		bool isSameSlot = SaveGame.GetSaveSlot() == selected;
+		var mw = ModalWindowSingleton.GetModalWindow(Core.UI.ModalWindowType.SaveSlotInfo);
+		if (mw != null)
+		{
+			var info = mw.GetComponent<SaveSlotInfo>() ?? mw.GetComponentInChildren<SaveSlotInfo>(true);
+			if (info != null)
+			{
+				info.Show(selected);
+				if (SaveSlots != null && selected >= 0 && selected < SaveSlots.Count && SaveSlots[selected] != null)
+					info.InstantiateFlagVisual(SaveSlots[selected].gameObject);
+			}
+			bla = true;
+			string header = isSameSlot ? "ID_MENU_UI_RESET_SAVE_SLOT" : "ID_INGAME_UI_CONFIRM_SAVE_CHANGE";
+			string desc = isSameSlot ? "ID_INGAME_UI_CONFIRM_SAVE_DELETION_DESCRIPTION" : "ID_INGAME_UI_CONFIRM_SAVE_CHANGE_DESCRIPTION";
+			bool confirmed = await mw.ShowMenuAsync(false, false, header, desc, "ID_MENU_UI_YES", "ID_MENU_UI_NO", null, 0);
+			if (isSameSlot)
+			{
+				if (confirmed)
+					OnResetSaveSlotPressed();
+				else
+					Show(false);
+			}
+			else
+			{
+				if (confirmed)
+				{
+					ChangeSaveSlot(selected);
+					ReloadHub();
+				}
+				else
+				{
+					Show(false);
+				}
+			}
+			bla = false;
+		}
+		else
+		{
+			ChangeSaveSlot(selected);
+		}
 	}
 
 	private void ChangeSaveSlot(int selected)
@@ -385,21 +452,47 @@ public class SettingsMenu : AddressableSingleton<SettingsMenu>
 
 	private void OnResetSaveSlotPressed()
 	{
-		ResetSaveSlot(SaveGame.GetSaveSlot());
-	}
-
-	private void ResetSaveSlot(int selected)
-	{
-		SaveGame.SetSaveSlot(ClampSaveSlot(selected));
-		SaveGame.ClearSaveSlot();
-		RefreshSaveSlot();
-		if (OverworldManager2d.HasInstance && OverworldManager2d.Instance != null)
+		var mw = ModalWindowSingleton.GetModalWindow(Core.UI.ModalWindowType.Default);
+		if (mw != null)
 		{
-			OverworldManager2d.Instance.RefreshDoorsAndGoals();
+			mw.ShowMenu(
+				"ID_INGAME_UI_DOUBLE_CONFIRM_SAVE_DELETION",
+				"ID_INGAME_UI_DOUBLE_CONFIRM_SAVE_DELETION_DESCRIPTION",
+				() => ResetSaveSlot(SaveGame.GetSaveSlot()),
+				SaveSlotWindowClosed,
+				"ID_MENU_UI_YES",
+				"ID_MENU_UI_NO",
+				1);
+		}
+		else
+		{
+			ResetSaveSlot(SaveGame.GetSaveSlot());
 		}
 	}
 
-	private void SaveSlotWindowClosed() { }
+	private async void ResetSaveSlot(int selected)
+	{
+		SaveGame.SetSaveSlot(ClampSaveSlot(selected));
+		SaveGame.ClearSaveSlot();
+		if (SaveSlots != null && selected >= 0 && selected < SaveSlots.Count && SaveSlots[selected] != null && SaveSlots[selected].PercentageCompletedText != null)
+			SaveSlots[selected].PercentageCompletedText.text = "0%";
+		bla = false;
+		ResetAll();
+		Close(false);
+		if (OverworldManager2d.HasInstance && OverworldManager2d.Instance != null)
+			OverworldManager2d.Instance.DisableInteraction(true);
+		await Task.Delay(500);
+		if (RuntimeStoreData.instance != null && RuntimeStoreData.instance.mainCampaignPackDef != null && RuntimeStoreData.instance.mainCampaignPackDef.pack != null)
+		{
+			await PackStarterManager.StartPack(RuntimeStoreData.instance.mainCampaignPackDef.pack, false);
+		}
+	}
+
+	private void SaveSlotWindowClosed()
+	{
+		bla = false;
+		Show(false);
+	}
 
 	public void OnGyroShakeChanged()
 	{
@@ -416,35 +509,73 @@ public class SettingsMenu : AddressableSingleton<SettingsMenu>
 
 	private async void OnTutorialPressed()
 	{
-		await CloseAsync(false);
-		var onboarding = FindObjectOfType<Onboarding>();
-		if (onboarding != null)
+		SetInteractable(false);
+		Close(false);
+		if (OverworldManager2d.HasInstance && OverworldManager2d.Instance != null)
+			OverworldManager2d.Instance.ToggleOverworld(false);
+		if (PackStarterManager.Instance != null && RuntimeStoreData.instance != null && RuntimeStoreData.instance.mainOnboardingPack != null)
 		{
-			onboarding.StartOnBoarding(null, true);
+			await PackStarterManager.Instance.StartPack(RuntimeStoreData.instance.mainOnboardingPack, false);
+			await PackStarterManager.PackFinishedAsync();
 		}
-		else if (LevelManager.Exists && LevelManager.Instance != null && OverworldManager2d.HasInstance && OverworldManager2d.Instance != null && OverworldManager2d.Instance.onboardingLevels != null)
+		else
 		{
-			var lvls = OverworldManager2d.Instance.onboardingLevels.GetLevelDatas();
-			if (lvls != null && lvls.Count > 0)
+			var onboarding = FindObjectOfType<Onboarding>();
+			if (onboarding != null)
+				onboarding.StartOnBoarding(null, true);
+		}
+		if (OverworldManager2d.HasInstance && OverworldManager2d.Instance != null)
+		{
+			OverworldManager2d.Instance.ToggleOverworld(true);
+			OverworldManager2d.Instance.EnableInteraction();
+		}
+	}
+
+	private async void OnHelpPressed()
+	{
+		Close(false);
+		SetInteractable(false);
+		if (helpPopup != null)
+			await helpPopup.ShowAndAwait();
+		Show(false);
+		SetInteractable(true);
+	}
+
+	private async void OnTermsOfUsePressed()
+	{
+		Close(false);
+		SetInteractable(false);
+		if (termsOfUsePopup != null)
+			await termsOfUsePopup.ShowAndAwait();
+		Show(false);
+		SetInteractable(true);
+	}
+
+	private async void OnSeeMoreButtonPressed()
+	{
+		await CloseAsync(false);
+		var mw = ModalWindowSingleton.GetModalWindow(Core.UI.ModalWindowType.Default);
+		if (mw != null)
+		{
+			bool confirmed = await mw.ShowMenuAsync(false, false, "ID_MENU_UI_SEEMORE", "ID_MENU_UI_SEEMORE_DESCRIPTION", "ID_MENU_UI_YES", "ID_MENU_UI_NO", null, 0);
+			if (confirmed)
 			{
-				StartCoroutine(LevelManager.Instance.Play(lvls[0]));
+				if (LevelManager.Exists && LevelManager.Instance.IsInLevel())
+				{
+					if (QuickMenu.Instance != null)
+						QuickMenu.Instance.ExitFromSettings();
+					if (Level.HasInstance && Level.Instance != null)
+						Level.Instance.Abort();
+				}
+				if (HubSceneLoader.Instance != null)
+					await HubSceneLoader.Instance.LoadSceneAsync(LoadSceneMode.Single, null, false);
+			}
+			else
+			{
+				Show(false);
 			}
 		}
 	}
-
-	private void OnHelpPressed()
-	{
-		if (helpPopup != null)
-			helpPopup.ShowPopup();
-	}
-
-	private void OnTermsOfUsePressed()
-	{
-		if (termsOfUsePopup != null)
-			termsOfUsePopup.ShowPopup();
-	}
-
-	private void OnSeeMoreButtonPressed() { }
 
 	private void OnChangeLanguage(int selected)
 	{

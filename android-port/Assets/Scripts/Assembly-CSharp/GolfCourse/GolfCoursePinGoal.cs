@@ -34,6 +34,8 @@ namespace GolfCourse
 			controllersInGoal = new List<GolfBallController>();
 			golfGoal = GetComponent<GolfGoal>() ?? GetComponentInParent<GolfGoal>() ?? FindObjectOfType<GolfGoal>();
 			particles = GetComponentInChildren<ParticleSystem>();
+			if (particles != null)
+				particles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
 			if (RequiredBallsInGoal <= 0) RequiredBallsInGoal = 1;
 		}
 
@@ -64,12 +66,23 @@ namespace GolfCourse
 			Transform checkTrans = checkRootForController ? trans.root : trans;
 			GolfBallController ctrl = checkTrans != null ? checkTrans.GetComponentInChildren<GolfBallController>() : null;
 			Vector3 hitDir = Vector3.zero;
+			bool validGoalHit = false;
 
 			if (goalObject != null && goalObject.Any(c => c != null))
 			{
 				Collider hitCol = trans.GetComponent<Collider>();
 				if ((hitCol == null || !goalObject.Contains(hitCol)) && ctrl == null && !trans.CompareTag("AdditionalGolfThing"))
 					return;
+				if (hitCol != null && goalObject.Contains(hitCol))
+				{
+					validGoalHit = true;
+					if (!golfBallsInGoal.Contains(trans.root))
+					{
+						hitDir = GetHitDir(trans);
+						golfBallsInGoal.Add(trans.root);
+						ballsInGoal++;
+					}
+				}
 			}
 
 			if (!DontAcceptController && ctrl != null && !golfBallsInGoal.Contains(trans.root))
@@ -77,6 +90,7 @@ namespace GolfCourse
 				hitDir = GetHitDir(trans);
 				golfBallsInGoal.Add(trans.root);
 				ballsInGoal++;
+				validGoalHit = true;
 			}
 
 			WinnableGolfBall winBall = trans.GetComponentInChildren<WinnableGolfBall>();
@@ -90,6 +104,7 @@ namespace GolfCourse
 					{
 						golfGoal.GoalProgress(ownerCtrl.PlayerIndex);
 						ballsInGoal++;
+						validGoalHit = true;
 					}
 				}
 			}
@@ -99,12 +114,14 @@ namespace GolfCourse
 				hitDir = GetHitDir(trans);
 				golfBallsInGoal.Add(trans.root);
 				ballsInGoal++;
+				validGoalHit = true;
 			}
 
 			if (!DontAcceptController && ctrl != null && !controllersInGoal.Contains(ctrl))
 			{
 				hitDir = GetHitDir(trans);
 				controllersInGoal.Add(ctrl);
+				validGoalHit = true;
 				if (golfGoal != null)
 				{
 					golfGoal.GoalProgress(ctrl.PlayerIndex);
@@ -115,21 +132,23 @@ namespace GolfCourse
 				}
 			}
 
+			bool completedNow = false;
 			if (ballsInGoal > 0 && ballsInGoal >= Mathf.Max(1, RequiredBallsInGoal))
 			{
+				completedNow = true;
 				Complete();
 				ballsInGoal = 0;
 				golfBallsInGoal.Clear();
 				controllersInGoal.Clear();
 			}
 
-			if (fromCollision && bendFlagOnHit && !didBend)
+			if (fromCollision && bendFlagOnHit && !didBend && (validGoalHit || completedNow))
 			{
 				didBend = true;
 				PlayFlagAnimation(hitDir);
 			}
 
-			if (emitParticles && particles != null && !didPlayParticles)
+			if (emitParticles && particles != null && !didPlayParticles && (validGoalHit || completedNow))
 			{
 				didPlayParticles = true;
 				particles.Play();

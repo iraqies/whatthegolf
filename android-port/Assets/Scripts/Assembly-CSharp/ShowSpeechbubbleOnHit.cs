@@ -30,14 +30,14 @@ public class ShowSpeechbubbleOnHit : ShowSpeechBubble
 	{
 		if (!isAbleToTalk || other == null)
 			return;
+		if (other.rigidbody != null && other.rigidbody.GetComponent<GolfBallController>() != null)
+			return;
 		if (TextList == null && conversation == null)
 			return;
 		if (!ignoreActivatorTags && ActivatorTags != null && ActivatorTags.Count > 0)
 		{
 			bool matched = other.gameObject != null && ActivatorTags.Contains(other.gameObject.tag);
 			if (!matched && other.rigidbody != null && other.rigidbody.gameObject != null && ActivatorTags.Contains(other.rigidbody.gameObject.tag))
-				matched = true;
-			if (!matched && other.gameObject != null && other.gameObject.GetComponentInParent<OverworldBall2D>() != null && ActivatorTags.Contains("Ball"))
 				matched = true;
 			if (!matched)
 				return;

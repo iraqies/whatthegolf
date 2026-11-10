@@ -218,7 +218,7 @@ public class AudioManager : MonoBehaviour
 		}
 		else
 		{
-			setting = go.GetComponent<AudioMaterialSettings>() ?? go.GetComponentInParent<AudioMaterialSettings>();
+			setting = go.GetComponent<AudioMaterialSettings>();
 			if (audioMatCache != null)
 			{
 				audioMatCache.Add(key, setting);

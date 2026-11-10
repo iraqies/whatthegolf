@@ -12,7 +12,9 @@ namespace Audio.Conditions
 
 		public bool CheckConditions()
 		{
-			return false;
+			if (conditions == null || conditions.Count == 0)
+				return true;
+			return conditions.CheckConditions();
 		}
 	}
 }

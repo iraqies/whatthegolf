@@ -82,9 +82,22 @@ namespace Core
 			var ctrls = FindObjectsOfType<GolfBallController>();
 			foreach (var c in ctrls)
 			{
-				if (c != null && !c.enabled)
+				if (c != null && !c.enabled && c.gameObject.name != "RealClubBall")
 					c.Activate();
 			}
+		}
+
+		private void OnApplicationPause(bool pauseStatus)
+		{
+			if (pauseStatus)
+			{
+				SaveGame.Save(false);
+			}
+		}
+
+		private void OnApplicationQuit()
+		{
+			SaveGame.Save(false);
 		}
 	}
 }

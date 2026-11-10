@@ -35,7 +35,7 @@ public class Localization
 					{
 						string val = term.Languages[0];
 						if (!string.IsNullOrEmpty(val))
-							_englishLookup[term.Term] = val;
+							_englishLookup[term.Term] = val.Trim() == "---" ? string.Empty : val;
 					}
 				}
 			}
@@ -78,11 +78,18 @@ public class Localization
 	public string GetString(string id, bool suppressWarnings = false, string overrideLanguage = null)
 	{
 		if (string.IsNullOrEmpty(id)) return string.Empty;
+		if (id.Trim() == "---") return string.Empty;
 		EnsureLoaded();
-		if (_englishLookup != null && _englishLookup.TryGetValue(id, out string translated) && !string.IsNullOrEmpty(translated))
+		if (_englishLookup != null && _englishLookup.TryGetValue(id, out string translated))
+		{
+			if (string.IsNullOrEmpty(translated) || translated.Trim() == "---")
+				return string.Empty;
 			return translated;
+		}
 		if (id.StartsWith("ID_"))
 		{
+			if (id.EndsWith("__COMPLETION", StringComparison.OrdinalIgnoreCase) && id.Contains("TRANSITIONTOOVERWORLD"))
+				return string.Empty;
 			int doubleIdx = id.LastIndexOf("__", StringComparison.Ordinal);
 			if (doubleIdx >= 0 && doubleIdx + 2 < id.Length)
 				return id.Substring(doubleIdx + 2).Replace("_", " ");

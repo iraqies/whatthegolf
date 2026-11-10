@@ -143,8 +143,6 @@ public class Loading : MonoBehaviour
 		if (forceSecondOnboarding) return StartingPoint.SECONDONBOARDING;
 		if (!SaveGame.IsOnboardingComplete)
 			return StartingPoint.ONBOARDING;
-		if (IsUserBeginner() && RuntimeStoreData.instance != null && RuntimeStoreData.instance.secondOnboarding != null)
-			return StartingPoint.SECONDONBOARDING;
 		return StartingPoint.HUB;
 	}
 

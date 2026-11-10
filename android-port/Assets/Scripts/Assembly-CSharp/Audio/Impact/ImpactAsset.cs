@@ -10,13 +10,13 @@ namespace Audio.Impact
 		public List<ImpactConditionBase> conditions;
 
 		[SerializeField]
-		private bool affectVolume;
+		private bool affectVolume = true;
 
 		[SerializeField]
 		private AnimationCurve volumeCurve;
 
 		[SerializeField]
-		private bool affectPitch;
+		private bool affectPitch = true;
 
 		[SerializeField]
 		private AnimationCurve pitchCurve;
@@ -39,12 +39,12 @@ namespace Audio.Impact
 		[SerializeField]
 		private float cooldown = 0.05f;
 
-		public SizeModifier CurrentIncomingObjectSize;
+		public SizeModifier CurrentIncomingObjectSize = new SizeModifier(1f, 1f);
 
 		public float m_lastPlayTime { get; private set; }
 
-		private static readonly float[] s_SizeVol = { 0.75f, 1f, 1.25f };
-		private static readonly float[] s_SizePit = { 1.15f, 1f, 0.85f };
+		private static readonly float[] s_SizeVol = { 0.5f, 1.5f, 0.7f };
+		private static readonly float[] s_SizePit = { 1f, 1.1f, 0.9f };
 
 		public float[] SIZE_VOLUME_MULTIPLIER => s_SizeVol;
 
@@ -52,58 +52,73 @@ namespace Audio.Impact
 
 		private void OnEnable()
 		{
-			m_lastPlayTime = -10f;
+			m_lastPlayTime = -2f;
+			CurrentIncomingObjectSize = new SizeModifier(1f, 1f);
 		}
 
 		public void ResetOnSceneLoad()
 		{
-			m_lastPlayTime = -10f;
+			m_lastPlayTime = -2f;
 		}
 
 		public bool OnCollision(HitInfo info, bool sizeAffects = false, ObjectWeight objectWeight = ObjectWeight.Medium, bool disableSpatial = false)
 		{
+			float speed = info.impactOnNormal.sqrMagnitude > 0f ? info.impactOnNormal.magnitude : info.incomingVelocity.magnitude;
+			float normVel = GetNormalizedVelocity(speed);
+
+			bool withinMax = includeAboveMax || speed <= maxVelocity;
+			bool withinMin = includeBelowMin ? withinMax : (speed >= minVelocity ? withinMax : false);
+			if (!withinMin)
+				return false;
+
 			if (Time.time < m_lastPlayTime + cooldown)
 				return false;
-			float speed = info.impactOnNormal.sqrMagnitude > 0f ? info.impactOnNormal.magnitude : info.incomingVelocity.magnitude;
-			if (speed < minVelocity && !includeBelowMin)
-				return false;
-			if (speed > maxVelocity && !includeAboveMax)
-				return false;
 
-			float normVel = GetNormalizedVelocity(speed);
-			var groups = GetVelocityClipGroups(normVel);
-			if (groups == null || groups.Count == 0)
-				return false;
-
-			bool played = false;
-			for (int i = 0; i < groups.Count; i++)
+			CurrentIncomingObjectSize = new SizeModifier(1f, 1f);
+			if (conditions != null)
 			{
-				var g = groups[i];
-				if (g == null) continue;
-				float volMod = GetVolumeMod(normVel, sizeAffects, objectWeight, g.ignoreCurve);
-				float pitMod = GetPitchMod(normVel, sizeAffects, objectWeight, g.ignoreCurve);
-				if (g.asset != null)
+				for (int i = 0; i < conditions.Count; i++)
 				{
-					g.asset.Play(info.point, volMod, pitMod, disableSpatial);
-					played = true;
-				}
-				else if (g.collection != null && g.collection.Count > 0)
-				{
-					g.collection.Play(null, info.point, volMod, pitMod, 0f, disableSpatial);
-					played = true;
+					var cond = conditions[i];
+					if (cond != null && cond.IsEnabled && !cond.CheckCondition(this, info, normVel))
+						return false;
 				}
 			}
 
-			if (played)
-				m_lastPlayTime = Time.time;
-			return played;
+			m_lastPlayTime = Time.time;
+			if (velocityClipGroups == null)
+				return false;
+
+			for (int i = 0; i < velocityClipGroups.Count; i++)
+			{
+				var g = velocityClipGroups[i];
+				if (g == null) continue;
+				bool approxMax = Mathf.Approximately(g.maxVelocityNormalized, normVel);
+				if (normVel <= g.minVelocityNormalized && g.minVelocityNormalized > 0f)
+					continue;
+				if (normVel > g.maxVelocityNormalized && (!approxMax || !includeAboveMax))
+					continue;
+
+				float pitMod = GetPitchMod(normVel, sizeAffects, objectWeight, g.ignoreCurve);
+				float volMod = GetVolumeMod(normVel, sizeAffects, objectWeight, g.ignoreCurve);
+
+				if (g.collection != null && g.collection.Clips != null && g.collection.Clips.Count > 0)
+				{
+					var voice = AudioManager.Instance != null ? (AudioManager.Instance.impactEffects ?? AudioManager.Instance.shortEffects) : null;
+					g.collection.Play(voice, info.point, volMod, pitMod, 0f, disableSpatial);
+				}
+				else if (g.asset != null)
+				{
+					g.asset.Play(info.point, volMod, pitMod, disableSpatial);
+				}
+			}
+
+			return true;
 		}
 
 		public float GetNormalizedVelocity(float velocity)
 		{
-			if (maxVelocity <= minVelocity)
-				return 1f;
-			return Mathf.Clamp01((velocity - minVelocity) / (maxVelocity - minVelocity));
+			return AudioUtility.NormalizeMinMax01(velocity, minVelocity, maxVelocity);
 		}
 
 		public bool OnCollision(HitInfo info, ImpactUser user)
@@ -116,8 +131,10 @@ namespace Audio.Impact
 		public float GetPitchMod(float velocityNormalized, bool affectSize, ObjectWeight size, IgnoreCurve ignoreCurve)
 		{
 			float p = 1f;
-			if (affectPitch && (ignoreCurve & IgnoreCurve.IgnorePitch) == 0 && pitchCurve != null && pitchCurve.length > 0)
-				p = Mathf.Max(0.25f, pitchCurve.Evaluate(velocityNormalized));
+			if (affectPitch && !ignoreCurve.HasFlag(IgnoreCurve.IgnorePitch) && pitchCurve != null && pitchCurve.length > 0)
+				p = pitchCurve.Evaluate(velocityNormalized);
+			float sizePitch = CurrentIncomingObjectSize.pitchMultiplier > 0.01f ? CurrentIncomingObjectSize.pitchMultiplier : 1f;
+			p *= sizePitch;
 			if (affectSize)
 			{
 				int idx = Mathf.Clamp((int)size, 0, s_SizePit.Length - 1);
@@ -128,9 +145,11 @@ namespace Audio.Impact
 
 		public float GetVolumeMod(float velocityNormalized, bool affectSize, ObjectWeight size, IgnoreCurve ignoreCurve)
 		{
-			float v = Mathf.Lerp(0.35f, 1f, velocityNormalized);
-			if (affectVolume && (ignoreCurve & IgnoreCurve.IgnoreVolume) == 0 && volumeCurve != null && volumeCurve.length > 0)
-				v = Mathf.Clamp(volumeCurve.Evaluate(velocityNormalized), 0.05f, 1.5f);
+			float v = 1f;
+			if (affectVolume && !ignoreCurve.HasFlag(IgnoreCurve.IgnoreVolume) && volumeCurve != null && volumeCurve.length > 0)
+				v = volumeCurve.Evaluate(velocityNormalized);
+			float sizeVol = CurrentIncomingObjectSize.volumeMultiplier > 0.01f ? CurrentIncomingObjectSize.volumeMultiplier : 1f;
+			v *= sizeVol;
 			if (affectSize)
 			{
 				int idx = Mathf.Clamp((int)size, 0, s_SizeVol.Length - 1);
@@ -141,18 +160,15 @@ namespace Audio.Impact
 
 		public List<VelocityClipGroup> GetVelocityClipGroups(float velocityNormalized)
 		{
-			if (velocityClipGroups == null || velocityClipGroups.Count == 0)
-				return null;
 			var res = new List<VelocityClipGroup>();
+			if (velocityClipGroups == null)
+				return res;
 			for (int i = 0; i < velocityClipGroups.Count; i++)
 			{
 				var g = velocityClipGroups[i];
-				if (g == null) continue;
-				if (velocityNormalized >= g.minVelocityNormalized && (velocityNormalized <= g.maxVelocityNormalized || g.maxVelocityNormalized <= 0f))
+				if (g != null && velocityNormalized >= g.minVelocityNormalized && velocityNormalized <= g.maxVelocityNormalized)
 					res.Add(g);
 			}
-			if (res.Count == 0 && velocityClipGroups.Count > 0)
-				res.Add(velocityClipGroups[velocityClipGroups.Count - 1]);
 			return res;
 		}
 

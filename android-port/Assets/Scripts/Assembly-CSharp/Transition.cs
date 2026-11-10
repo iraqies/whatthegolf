@@ -163,25 +163,28 @@ public class Transition : MonoBehaviour
 		if (waitText != null)
 			waitText.SetActive(showWaitingText);
 
-		if (!string.IsNullOrEmpty(textId))
+		if (!string.IsNullOrEmpty(textId) && textId.Trim() != "---")
 		{
-			if (textEffect == null)
-				textEffect = defaultTextEffect;
 			string display = Localization.Instance != null ? Localization.Instance.GetEnglishString(textId) : textId;
-			if (string.IsNullOrEmpty(display))
-				display = textId;
-			activeTextEffect = textEffect;
-			if (activeTextEffect != null)
+			if (display != null && display.Trim() == "---")
+				display = string.Empty;
+			if (!string.IsNullOrEmpty(display))
 			{
-				activeTextEffect.gameObject.SetActive(true);
-				activeTextEffect.Prepare(display, onTheSide);
-				StartCoroutine(activeTextEffect.Show(transitionInDuration));
-			}
-			if (Localization.Instance != null && !Localization.Instance.IsEnglish())
-			{
-				string sub = Localization.Instance.GetString(textId, false, null);
-				if (!string.IsNullOrEmpty(sub) && subtitles != null)
-					subtitles.Show(textId, onTheSide);
+				if (textEffect == null)
+					textEffect = defaultTextEffect;
+				activeTextEffect = textEffect;
+				if (activeTextEffect != null)
+				{
+					activeTextEffect.gameObject.SetActive(true);
+					activeTextEffect.Prepare(display, onTheSide);
+					StartCoroutine(activeTextEffect.Show(transitionInDuration));
+				}
+				if (Localization.Instance != null && !Localization.Instance.IsEnglish())
+				{
+					string sub = Localization.Instance.GetString(textId, false, null);
+					if (!string.IsNullOrEmpty(sub) && sub.Trim() != "---" && subtitles != null)
+						subtitles.Show(textId, onTheSide);
+				}
 			}
 		}
 

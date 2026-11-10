@@ -140,6 +140,7 @@ public class OverworldBall2D : GolfBall2DShooterBase
 	protected virtual void Shooter_OnShoot(Vector3 dir)
 	{
 		ResetZ();
+		SetColliders(true);
 		if (rigidBody == null) rigidBody = GetComponent<Rigidbody2D>();
 		if (rigidBody == null) return;
 		rigidBody.isKinematic = false;
@@ -156,6 +157,7 @@ public class OverworldBall2D : GolfBall2DShooterBase
 		if (Mathf.Abs(randomAngularForce) > 0.001f)
 			rigidBody.angularVelocity = UnityEngine.Random.Range(-randomAngularForce, randomAngularForce);
 		canEnableFlagsAndDoors = true;
+		SaveGame.OverworldStrokes = SaveGame.OverworldStrokes + 1;
 	}
 
 	protected override void FixedUpdate()
@@ -248,6 +250,7 @@ public class OverworldBall2D : GolfBall2DShooterBase
 	{
 		if (!didInit) Init();
 		gameObject.SetActive(true);
+		SetColliders(true);
 		if (rigidBody != null)
 		{
 			rigidBody.isKinematic = false;
@@ -267,11 +270,12 @@ public class OverworldBall2D : GolfBall2DShooterBase
 	public bool ToggleColliders()
 	{
 		bool last = false;
-		foreach (var c in GetComponentsInChildren<Collider2D>(true))
+		foreach (var c in GetComponents<Collider2D>())
 		{
 			if (c != null)
 			{
 				c.enabled = !c.enabled;
+				c.isTrigger = false;
 				last = c.enabled;
 			}
 		}
@@ -280,9 +284,14 @@ public class OverworldBall2D : GolfBall2DShooterBase
 
 	public void SetColliders(bool state)
 	{
-		foreach (var c in GetComponentsInChildren<Collider2D>(true))
+		foreach (var c in GetComponents<Collider2D>())
 		{
-			if (c != null) c.enabled = state;
+			if (c != null)
+			{
+				c.enabled = state;
+				if (state)
+					c.isTrigger = false;
+			}
 		}
 	}
 

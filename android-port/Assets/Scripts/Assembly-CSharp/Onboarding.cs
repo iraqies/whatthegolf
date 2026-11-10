@@ -84,6 +84,16 @@ public class Onboarding : MonoBehaviour
 		}
 		if (pack != null)
 		{
+			if (!isSecond)
+			{
+				SaveGame.IsFirstTime = false;
+				SaveGame.IsOnboardingComplete = true;
+			}
+			else
+			{
+				SaveGame.SecondOnboardingIndex = SaveGame.SecondOnboardingIndex + 1;
+			}
+			SaveGame.Save(false);
 			var loadTask = OverworldSceneLoader.TryLoadOverworld(pack, true);
 			while (loadTask != null && !loadTask.IsCompleted)
 				yield return null;

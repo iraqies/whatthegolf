@@ -145,7 +145,7 @@ public class SaveGame
 				string json = Encoding.UTF8.GetString(raw);
 				var dict = MegacoolThirdParty_MiniJSON.Json.Deserialize(json) as Dictionary<string, object>;
 				var data = new SaveData();
-				if (dict != null)
+				if (dict != null && dict.Count > 0)
 				{
 					foreach (var kv in dict)
 					{
@@ -156,8 +156,24 @@ public class SaveGame
 							data[slotIdx] = slot;
 						}
 					}
-					success = true;
-					return data;
+					bool hasAnyData = false;
+					foreach (var kv in data)
+					{
+						if (kv.Key >= 0 && kv.Value != null && kv.Value.Count > 0)
+						{
+							hasAnyData = true;
+							break;
+						}
+					}
+					if (!hasAnyData && data.TryGetValue(SETTINGS_SAVESLOT, out var settingsSlot) && settingsSlot != null && settingsSlot.Count > 0)
+					{
+						hasAnyData = true;
+					}
+					if (hasAnyData)
+					{
+						success = true;
+						return data;
+					}
 				}
 			}
 			catch (Exception)
@@ -549,6 +565,7 @@ public class SaveGame
 	{
 		activeSaveSlot = saveSlot;
 		EnsureSlotExists(activeSaveSlot);
+		SetValue(ACTIVE_SAVESLOT, activeSaveSlot, false, SETTINGS_SAVESLOT);
 		OnSaveSlotChanged?.Invoke(activeSaveSlot);
 	}
 
@@ -619,7 +636,14 @@ public class SaveGame
 				byte[] bytes = File.ReadAllBytes(Path);
 				var loadedData = SaveData.FromBytes(bytes, out bool ok);
 				if (ok && loadedData != null)
+				{
 					savedFields = loadedData;
+					if (savedFields.TryGetValue(SETTINGS_SAVESLOT, out var settingsSlot) && settingsSlot != null && settingsSlot.TryGetValue(ACTIVE_SAVESLOT, out var slotObj) && slotObj != null)
+					{
+						if (int.TryParse(slotObj.ToString(), out int parsedSlot) && parsedSlot >= 0)
+							activeSaveSlot = parsedSlot;
+					}
+				}
 			}
 		}
 		catch (Exception ex)

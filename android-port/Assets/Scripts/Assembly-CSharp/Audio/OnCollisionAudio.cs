@@ -19,13 +19,14 @@ namespace Audio
 			ContactPoint2D contact = col.GetContact(0);
 			GameObject otherGo = col.rigidbody != null ? col.rigidbody.gameObject : (contact.otherCollider != null ? contact.otherCollider.gameObject : col.gameObject);
 			if (otherGo == null) return;
+			GameObject thisGo = contact.collider != null ? contact.collider.gameObject : gameObject;
 			Vector3 impactOnNormal = Vector3.Project(col.relativeVelocity, contact.normal);
 			HitInfo hitInfo = new HitInfo
 			{
 				point = contact.point,
 				incomingVelocity = impactOnNormal,
 				impactOnNormal = impactOnNormal,
-				childHit = gameObject,
+				childHit = thisGo,
 				otherHit = otherGo
 			};
 			PlayAudioFromCollision(hitInfo);
@@ -37,13 +38,14 @@ namespace Audio
 			ContactPoint contact = col.GetContact(0);
 			GameObject otherGo = col.rigidbody != null ? col.rigidbody.gameObject : (contact.otherCollider != null ? contact.otherCollider.gameObject : col.gameObject);
 			if (otherGo == null) return;
+			GameObject thisGo = contact.thisCollider != null ? contact.thisCollider.gameObject : gameObject;
 			Vector3 impactOnNormal = Vector3.Project(col.relativeVelocity, contact.normal);
 			HitInfo hitInfo = new HitInfo
 			{
 				point = contact.point,
 				incomingVelocity = impactOnNormal,
 				impactOnNormal = impactOnNormal,
-				childHit = gameObject,
+				childHit = thisGo,
 				otherHit = otherGo
 			};
 			PlayAudioFromCollision(hitInfo);

@@ -19,7 +19,14 @@ namespace Audio.Impact
 
 		public override bool CheckCondition(ImpactAsset asset, HitInfo info, float normalizedVelocity)
 		{
-			return false;
+			if (info.otherHit == null)
+				return false;
+			string tag = info.otherHit.tag;
+			if (useIncludeTags && (includeTags == null || !includeTags.Contains(tag)))
+				return false;
+			if (useExcludeTags && excludeTags != null && excludeTags.Contains(tag))
+				return false;
+			return true;
 		}
 	}
 }

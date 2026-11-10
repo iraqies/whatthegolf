@@ -69,28 +69,39 @@ namespace Audio
 		public static HitInfo GetHitInfo(Collision collision)
 		{
 			if (collision == null) return default;
-			Vector3 pt = collision.contactCount > 0 ? collision.GetContact(0).point : collision.transform.position;
+			ContactPoint contact = collision.contactCount > 0 ? collision.GetContact(0) : default;
+			Vector3 pt = collision.contactCount > 0 ? contact.point : collision.transform.position;
+			GameObject otherGo = collision.rigidbody != null ? collision.rigidbody.gameObject : (contact.otherCollider != null ? contact.otherCollider.gameObject : (collision.collider != null ? collision.collider.gameObject : collision.gameObject));
+			GameObject thisGo = contact.thisCollider != null ? contact.thisCollider.gameObject : collision.gameObject;
+			Vector3 relVel = collision.relativeVelocity;
+			Vector3 projVel = collision.contactCount > 0 ? Vector3.Project(relVel, contact.normal) : relVel;
 			return new HitInfo
 			{
 				point = pt,
-				incomingVelocity = collision.relativeVelocity,
-				impactOnNormal = collision.relativeVelocity,
-				childHit = collision.gameObject,
-				otherHit = collision.collider != null ? collision.collider.gameObject : collision.gameObject
+				incomingVelocity = relVel,
+				impactOnNormal = projVel,
+				childHit = thisGo,
+				otherHit = otherGo
 			};
 		}
 
 		public static HitInfo GetHitInfo(Collision2D collision)
 		{
 			if (collision == null) return default;
-			Vector3 pt = collision.contactCount > 0 ? (Vector3)collision.GetContact(0).point : collision.transform.position;
+			ContactPoint2D contact = collision.contactCount > 0 ? collision.GetContact(0) : default;
+			Vector3 pt = collision.contactCount > 0 ? (Vector3)contact.point : collision.transform.position;
+			Vector3 inVel = collision.collider != null && collision.collider.attachedRigidbody != null ? (Vector3)collision.collider.attachedRigidbody.velocity : Vector3.zero;
+			GameObject otherGo = collision.rigidbody != null ? collision.rigidbody.gameObject : (contact.collider != null ? contact.collider.gameObject : (collision.collider != null ? collision.collider.gameObject : collision.gameObject));
+			GameObject thisGo = contact.otherCollider != null ? contact.otherCollider.gameObject : collision.gameObject;
+			Vector3 relVel = collision.relativeVelocity;
+			Vector3 projVel = collision.contactCount > 0 ? Vector3.Project(relVel, contact.normal) : relVel;
 			return new HitInfo
 			{
 				point = pt,
-				incomingVelocity = collision.relativeVelocity,
-				impactOnNormal = collision.relativeVelocity,
-				childHit = collision.gameObject,
-				otherHit = collision.collider != null ? collision.collider.gameObject : collision.gameObject
+				incomingVelocity = inVel,
+				impactOnNormal = projVel,
+				childHit = thisGo,
+				otherHit = otherGo
 			};
 		}
 

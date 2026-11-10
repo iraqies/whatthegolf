@@ -10,6 +10,15 @@ namespace Audio
 
 		private void Start()
 		{
+			collisionAudio = GetComponent<OnCollisionAudioRemote>();
+			if (collisionAudio != null && collisionAudio.GetRoot != null)
+			{
+				var settings = collisionAudio.GetRoot.GetComponent<AudioMaterialSettings>();
+				if (settings == null)
+					settings = collisionAudio.GetRoot.AddComponent<AudioMaterialSettings>();
+				if (settings != null)
+					settings.material = audioMaterial;
+			}
 		}
 	}
 }

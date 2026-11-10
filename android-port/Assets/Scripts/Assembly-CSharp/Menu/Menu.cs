@@ -267,14 +267,19 @@ namespace Menu
 			}
 		}
 
-		public void SettingsButtonClicked()
+		public async void SettingsButtonClicked()
 		{
+			if (!_isInteractable) return;
+			DisableInteraction();
+			await CloseAsync();
 			if (SettingsMenu.Instance != null)
 				SettingsMenu.Instance.Show(true);
+			EnableInteraction();
 		}
 
 		public async void CloseButtonClicked()
 		{
+			if (!_isInteractable) return;
 			await CloseAsync();
 		}
 
