@@ -7,5 +7,9 @@ public class ChestEffects : MonoBehaviour
 
 	public void SpawnConfetti()
 	{
+		if (confettiSpawner != null)
+		{
+			confettiSpawner.RemoteSpawn(confettiSpawner.transform.position, false);
+		}
 	}
 }

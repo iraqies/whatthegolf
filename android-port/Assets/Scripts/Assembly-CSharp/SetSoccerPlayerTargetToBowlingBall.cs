@@ -9,9 +9,24 @@ public class SetSoccerPlayerTargetToBowlingBall : MonoBehaviour
 
 	private void Start()
 	{
+		if (Shooter != null)
+		{
+			Shooter.OnBallShot += BallShot;
+		}
 	}
 
 	private void BallShot(Rigidbody bowlingBall)
 	{
+		if (SoccerPlayers == null)
+		{
+			return;
+		}
+		foreach (SoccerPlayer soccerPlayer in SoccerPlayers)
+		{
+			if (soccerPlayer != null)
+			{
+				soccerPlayer.AddBallTarget(bowlingBall);
+			}
+		}
 	}
 }

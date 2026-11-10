@@ -20,7 +20,8 @@ public class Transmogrif : MonoBehaviour
 		snowball = 11,
 		pizza = 12,
 		turkey = 13,
-		goo = 14
+		goo = 14,
+		END = 7
 	}
 
 	public BALLSHAPES targetShape;
@@ -29,7 +30,7 @@ public class Transmogrif : MonoBehaviour
 
 	public Transform targetPosition;
 
-	public bool AddForceOnTransmogrif;
+	public bool AddForceOnTransmogrif = true;
 
 	public float outYVelocity;
 
@@ -41,9 +42,9 @@ public class Transmogrif : MonoBehaviour
 
 	public bool isAnimatedGrif;
 
-	public bool useCameraBlender;
+	public bool useCameraBlender = true;
 
-	public float TimeBeforeColliderReenable;
+	public float TimeBeforeColliderReenable = 0.2f;
 
 	public SpriteRenderer fromBright;
 
@@ -63,10 +64,39 @@ public class Transmogrif : MonoBehaviour
 
 	public void PlayAnimation(Transmogriffable.TransmogrifSprites start, Transmogriffable.TransmogrifSprites end)
 	{
+		if (fromBright != null && start != null)
+		{
+			fromBright.sprite = start.bright;
+		}
+		if (fromDark != null && start != null)
+		{
+			fromDark.sprite = start.dark;
+		}
+		if (toBright != null && end != null)
+		{
+			toBright.sprite = end.bright;
+		}
+		if (toDark != null && end != null)
+		{
+			toDark.sprite = end.dark;
+		}
+		if (anim != null)
+		{
+			anim.SetTrigger(animationName);
+		}
+		if (AudioManager.Instance != null && AudioManager.Instance.rumble != null)
+		{
+			AudioManager.Instance.rumble.PlayVibrationValue(0.35f, 80f, 0f, 0f, 0);
+		}
+		StartCoroutine(EndRumble());
 	}
 
 	private IEnumerator EndRumble()
 	{
-		return null;
+		yield return new WaitForSeconds(2f);
+		if (AudioManager.Instance != null && AudioManager.Instance.rumble != null)
+		{
+			AudioManager.Instance.rumble.StopVibration(0);
+		}
 	}
 }

@@ -11,5 +11,19 @@ public class OverworldIslandWall : MonoBehaviour
 
 	public void SetBridgeCollider(bool isOpen)
 	{
+		if (openBridgeWall != null && openBridgeWall.Count >= 1)
+		{
+			foreach (GameObject item in openBridgeWall)
+			{
+				if (item != null)
+				{
+					item.SetActive(isOpen);
+				}
+			}
+		}
+		if (closedBridgeWall != null)
+		{
+			closedBridgeWall.SetActive(!isOpen);
+		}
 	}
 }

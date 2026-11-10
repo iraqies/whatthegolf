@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Audio
@@ -14,10 +15,22 @@ namespace Audio
 
 		private void Start()
 		{
+			if (soccerPlayer != null)
+			{
+				soccerPlayer.onKick = (Action)Delegate.Combine(soccerPlayer.onKick, new Action(OnSoccerPlayerKick));
+			}
 		}
 
 		private void OnSoccerPlayerKick()
 		{
+			if (sfxGruntOnKick != null)
+			{
+				sfxGruntOnKick.Play(null, base.transform.position, 1f, 1f);
+			}
+			if (sfxKickSfx != null)
+			{
+				sfxKickSfx.Play(null, base.transform.position, 1f, 1f);
+			}
 		}
 	}
 }

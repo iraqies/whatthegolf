@@ -3,32 +3,43 @@ using UnityEngine;
 public class PropRain : MonoBehaviour
 {
 	public GameObject Prop;
+
 	public bool Raining;
-	public float MaximumRandomPositionOffset = 5f;
-	public float PropLifetime = 5f;
-	public float rainCooldownMax = 0.2f;
+
+	public float MaximumRandomPositionOffset;
+
+	public float PropLifetime;
+
+	public float rainCooldownMax;
+
 	private float rainCooldownTime;
+
 	private float rainCooldownTimer;
 
 	private void Update()
 	{
-		if (!Raining || Prop == null) return;
-		rainCooldownTimer += Time.deltaTime;
-		if (rainCooldownTimer >= rainCooldownTime)
+		if (Raining)
 		{
-			rainCooldownTimer = 0f;
-			rainCooldownTime = Random.Range(0.02f, Mathf.Max(0.05f, rainCooldownMax));
-			NewProp();
+			rainCooldownTimer += Time.deltaTime;
+			if (rainCooldownTimer > rainCooldownTime)
+			{
+				NewProp();
+				NewProp();
+				rainCooldownTimer = 0f;
+				rainCooldownTime = Random.Range(0f, rainCooldownMax);
+			}
 		}
 	}
 
 	private void NewProp()
 	{
-		if (Prop == null) return;
-		Vector3 offset = Random.insideUnitSphere * MaximumRandomPositionOffset;
-		offset.y = 0f;
-		var go = Instantiate(Prop, transform.position + offset, Random.rotation);
-		if (PropLifetime > 0f)
-			Destroy(go, PropLifetime);
+		GameObject gameObject = Object.Instantiate(Prop, base.transform.position, Quaternion.identity);
+		Vector3 zero = Vector3.zero;
+		zero.x = Random.Range(base.transform.position.x - MaximumRandomPositionOffset, base.transform.position.x + MaximumRandomPositionOffset);
+		zero.z = Random.Range(base.transform.position.z - MaximumRandomPositionOffset, base.transform.position.z + MaximumRandomPositionOffset);
+		zero.y = base.transform.position.y;
+		gameObject.transform.position = zero;
+		gameObject.transform.rotation = Random.rotation;
+		Object.Destroy(gameObject, PropLifetime);
 	}
 }
