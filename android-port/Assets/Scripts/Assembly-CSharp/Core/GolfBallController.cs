@@ -202,9 +202,10 @@ namespace Core
 
 		public Vector3 GetAimInputDirection => aimVector;
 
-		public void FlipAim()
+		public bool FlipAim
 		{
-			ReverseArrow = !ReverseArrow;
+			get => ReverseArrow;
+			set => ReverseArrow = value;
 		}
 
 		public bool GetPlayerButton(bool onlyController = false, string shootButtonName = "Shoot") => GetShootButton(onlyController, shootButtonName);
