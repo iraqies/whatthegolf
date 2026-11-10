@@ -39,6 +39,8 @@ public class ArrowClubShooter : MonoBehaviour
 		if (Crosshair != null)
 		{
 			Crosshair.transform.SetParent(null);
+			if (gameObject.scene.IsValid() && Crosshair.scene != gameObject.scene)
+				UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(Crosshair, gameObject.scene);
 		}
 		if (ColliderObject != null)
 		{

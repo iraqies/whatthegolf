@@ -10,16 +10,13 @@ public class OnCollisionEnter2DHandler : MonoBehaviour
 	public event Action<Collision2D> OnCollisionEnter2DEvent
 	{
 		[CompilerGenerated]
-		add
-		{
-		}
+		add => m_OnCollisionEnter2DEvent = (Action<Collision2D>)Delegate.Combine(m_OnCollisionEnter2DEvent, value);
 		[CompilerGenerated]
-		remove
-		{
-		}
+		remove => m_OnCollisionEnter2DEvent = (Action<Collision2D>)Delegate.Remove(m_OnCollisionEnter2DEvent, value);
 	}
 
 	public void OnCollisionEnter2D(Collision2D other)
 	{
+		m_OnCollisionEnter2DEvent?.Invoke(other);
 	}
 }

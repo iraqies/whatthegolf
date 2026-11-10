@@ -602,10 +602,10 @@ public class OverworldManager2d : GolfBehaviour
 	}
 	private IEnumerator ShowBallDelayed(OverworldGoal goalHit)
 	{
-		if (ball != null)
+		if (ball != null && goalHit != null)
 		{
 			ball.ShowAndEnable();
-			if (goalHit == null || goalHit.MoveBallWhenHit)
+			if (goalHit.MoveBallWhenHit)
 				ball.transform.position = ballStartPosition;
 			ball.StopAndSleep();
 			ball.StartAndWakeup();
@@ -818,16 +818,31 @@ public class OverworldManager2d : GolfBehaviour
 
 	public void ChangeStateToInLevel() => state = STATES.inlevel;
 
+	public void SetBallStartPosition(Vector3 pos) => ballStartPosition = pos;
+
 	public IEnumerator StartBossLevel(LevelData level, Action<bool> callback)
 	{
 		if (level != null && LevelManager.Instance != null)
 		{
-			ToggleOverworld(false);
-			bool won = false;
-			yield return LevelManager.Instance.Play(level, onComplete: _ => won = true);
-			ToggleOverworld(true);
-			RefreshDoorsAndGoals();
-			callback?.Invoke(won);
+			state = STATES.inlevel;
+			var completedStates = new List<Level.CompletedState>();
+			yield return StartCoroutine(LevelManager.Instance.Play(
+				level,
+				onTransitionCoverBefore: () => ToggleOverworld(false),
+				onComplete: cs =>
+				{
+					completedStates.Add(cs);
+					if (overworldMusic != null)
+						overworldMusic.StartWithoutTransition();
+				},
+				onTransitionCoverAfter: isCompleted =>
+				{
+					ReturnToOverworld(new List<LevelData> { level }, isCompleted, completedStates, null, false, null, null);
+					callback?.Invoke(isCompleted);
+				},
+				resetStrokesWhenFinished: true,
+				showStrokeCounter: true
+			));
 		}
 	}
 

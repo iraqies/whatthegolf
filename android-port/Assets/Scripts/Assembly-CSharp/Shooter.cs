@@ -52,13 +52,17 @@ public class Shooter : MonoBehaviour
 	private void Start()
 	{
 		splatterContainer = new GameObject("Splatters");
+		if (gameObject.scene.IsValid() && splatterContainer.scene != gameObject.scene)
+			UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(splatterContainer, gameObject.scene);
 		if (splatter != null)
 		{
-			splatterPool = new ObjectPool<SpriteRenderer>(splatter.gameObject, 100, null);
+			splatterPool = new ObjectPool<SpriteRenderer>(splatter.gameObject, 100, splatterContainer.transform);
 		}
 		if (KillParticles != null)
 		{
 			KillParticles.transform.SetParent(null);
+			if (gameObject.scene.IsValid() && KillParticles.gameObject.scene != gameObject.scene)
+				UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(KillParticles.gameObject, gameObject.scene);
 		}
 	}
 

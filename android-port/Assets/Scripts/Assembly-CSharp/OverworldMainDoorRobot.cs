@@ -115,7 +115,7 @@ public class OverworldMainDoorRobot : MonoBehaviour
 		[CompilerGenerated]
 		add => m_OnExitedCable = (Action<OverworldMainDoorRobot>)Delegate.Combine(m_OnExitedCable, value);
 		[CompilerGenerated]
-		remove => m_OnExitedCable = (Action<OverworldMainDoorRobot>)Delegate.Remove(m_OnExitedCable, value);
+		remove => m_OnExitedCable = (Action)Delegate.Remove(m_OnExitedCable, value);
 	}
 
 	private void OnValidate()
@@ -213,25 +213,65 @@ public class OverworldMainDoorRobot : MonoBehaviour
 
 	private IEnumerator ButtonRoutine(OverworldMainDoorPlate plate, bool isLastPlate)
 	{
-		var sfx = isLastPlate ? sfxFinalButtonOn : sfxFirstButtonOn;
-		if (sfx != null && AudioManager.Instance != null)
-			sfx.Play(AudioManager.Instance.sfx, Vector3.zero, 0f);
+		if (plate == null)
+			yield break;
 
-		yield return new WaitForSeconds(0.5f);
+		OverworldBall2D ball = OverworldBallManager.HasInstance && OverworldBallManager.Instance != null ? OverworldBallManager.Instance.Ball : null;
+		if (ball == null && overworldManager != null)
+			ball = overworldManager.ball;
 
-		var ball = OverworldBallManager.HasInstance && OverworldBallManager.Instance != null ? OverworldBallManager.Instance.Ball : null;
-		if (ball == null && OverworldManager2d.HasInstance && OverworldManager2d.Instance != null)
-			ball = OverworldManager2d.Instance.ball;
-		if (ball != null && plate != null && plate.returningBallTransform != null)
+		if (plate.isMovingBallOut && ball != null && plate.returningBallTransform != null)
 		{
-			ball.transform.position = plate.returningBallTransform.position;
-			if (OverworldManager2d.HasInstance && OverworldManager2d.Instance != null)
+			Vector3 startPos = ball.transform.position;
+			Vector3 targetPos = plate.returningBallTransform.position + plate.returningBallTransform.right * 3f;
+			StartCoroutine(pTween.To(0.8f, t =>
 			{
-				if (OverworldManager2d.Instance.cameraTarget != null)
-					OverworldManager2d.Instance.cameraTarget.position = plate.returningBallTransform.position;
-				if (OverworldManager2d.Instance.culling != null)
-					OverworldManager2d.Instance.culling.UpdateCulling();
+				if (ball != null)
+				{
+					ball.transform.position = Vector3.Lerp(startPos, targetPos, TweenFunctions.EaseInOut(t));
+					if (overworldManager != null && overworldManager.cameraTarget != null)
+						overworldManager.cameraTarget.position = ball.transform.position;
+				}
+			}));
+		}
+
+		if (sfxFirstButtonOn != null)
+			sfxFirstButtonOn.Play(null, transform.position, 1f, 1f);
+
+		yield return new WaitForSeconds(1.8f);
+
+		if (plate.isMovingBallOut && OverworldBallManager.HasInstance && OverworldBallManager.Instance != null)
+		{
+			Transform spawnTrans = plate.returningBallTransform != null ? plate.returningBallTransform : plate.transform;
+			OverworldBallManager.Instance.TransmogrifBallTo(transmogrif, spawnTrans.position, spawnTrans.rotation, false);
+			ball = OverworldBallManager.Instance.Ball;
+			if (ball != null)
+			{
+				ball.ShowAndEnable();
+				ball.enabled = true;
+				if (ball.rigidBody != null)
+					ball.rigidBody.isKinematic = false;
+				ball.SetColliders(false);
+				if (ball.Controller != null)
+				{
+					ball.Controller.enabled = true;
+					ball.Controller.Activate();
+				}
+				ball.Velocity = spawnTrans.right * 6f;
+				if (overworldManager != null)
+				{
+					overworldManager.RegisterBall(ball, transmogrif != null ? transmogrif.BallShape : Transmogrif.BALLSHAPES.Golfball);
+					if (overworldManager.cameraTarget != null)
+						overworldManager.cameraTarget.position = ball.transform.position;
+					if (overworldManager.culling != null)
+						overworldManager.culling.UpdateCulling();
+				}
 			}
+			if (sfxShootOutBall != null)
+				sfxShootOutBall.Play(null, transform.position, 1f, 1f);
+		}
+		else if (ball != null)
+		{
 			ball.ShowAndEnable();
 			ball.enabled = true;
 			if (ball.rigidBody != null)
@@ -242,18 +282,36 @@ public class OverworldMainDoorRobot : MonoBehaviour
 				ball.Controller.enabled = true;
 				ball.Controller.Activate();
 			}
-			ball.Velocity = plate.returningBallTransform.right * 6f;
 		}
-		if (sfxShootOutBall != null && AudioManager.Instance != null)
-			sfxShootOutBall.Play(AudioManager.Instance.sfx, Vector3.zero, 0f);
+
 		m_OnExitedCable?.Invoke(this);
+		yield return new WaitForSeconds(0.1f);
+
+		ball = OverworldBallManager.HasInstance && OverworldBallManager.Instance != null && OverworldBallManager.Instance.Ball != null
+			? OverworldBallManager.Instance.Ball
+			: ball;
+		if (ball != null)
+			ball.SetColliders(true);
+
+		yield return new WaitForSeconds(0.2f);
 
 		if (isLastPlate)
 		{
-			yield return new WaitForSeconds(0.5f);
-			if (hintArrow != null)
-				hintArrow.SetActive(true);
-			Change(State.Open, false);
+			if (hasLevels && bossLevel != null)
+			{
+				Change(State.Open, false);
+				if (hintArrow != null)
+					hintArrow.SetActive(true);
+			}
+			else
+			{
+				currentBall = ball;
+				StartCoroutine(Explode(true, 0.4f, 0.4f));
+			}
+		}
+		else
+		{
+			SaveGame.Save(false);
 		}
 	}
 
@@ -299,27 +357,84 @@ public class OverworldMainDoorRobot : MonoBehaviour
 
 	private IEnumerator StartLevelRoutine()
 	{
+		if (currentBall == null && OverworldBallManager.HasInstance && OverworldBallManager.Instance != null)
+			currentBall = OverworldBallManager.Instance.Ball;
+		if (currentBall == null && overworldManager != null)
+			currentBall = overworldManager.ball;
+
 		if (currentBall != null)
 			currentBall.HideAndStop(true);
 		if (overworldCamera != null)
 			overworldCamera.Shake(3.5f, 40f, 0.15f);
-		if (srcBootingUp != null)
-			srcBootingUp.Play();
-		yield return new WaitForSeconds(0.5f);
+		if (overworldManager != null)
+			overworldManager.SetBallStartPosition(transform.position + new Vector3(0f, -2f, 0f));
 
+		if (srcBootingUp != null)
+		{
+			srcBootingUp.Play();
+			yield return StartCoroutine(pTween.To(0.06f, 0f, 1f, v =>
+			{
+				if (srcBootingUp != null)
+					srcBootingUp.volume = v;
+			}));
+		}
+
+		yield return new WaitForSeconds(1.5f);
+
+		if (overworldCamera != null)
+			overworldCamera.Shake(2f, 60f, 0.5f);
 		if (AnimatorFace != null)
 			AnimatorFace.SetBool("On", true);
 
-		if (overworldManager != null && bossLevel != null)
-		{
-			bool didComplete = false;
-			yield return StartCoroutine(overworldManager.StartBossLevel(bossLevel, won => didComplete = won));
-			yield return StartCoroutine(Explode(didComplete));
-		}
-		else
+		if (overworldManager == null || !hasLevels || bossLevel == null)
 		{
 			yield return StartCoroutine(Explode(true));
+			yield break;
 		}
+
+		float startOrtho = overworldCamera != null && overworldCamera.MainCamera != null
+			? overworldCamera.MainCamera.orthographicSize
+			: 5f;
+		float endOrtho = startOrtho * 0.2f;
+		if (overworldCamera != null)
+			overworldCamera.enabled = false;
+		Vector3 startCamPos = overworldCamera != null ? overworldCamera.transform.position : transform.position;
+		Vector3 targetCamPos = screenCenterTransform != null ? screenCenterTransform.position : transform.position;
+		targetCamPos.z = startCamPos.z;
+
+		yield return StartCoroutine(pTween.To(1f, t =>
+		{
+			if (overworldCamera != null)
+			{
+				if (overworldCamera.MainCamera != null)
+					overworldCamera.MainCamera.orthographicSize = Mathf.Lerp(startOrtho, endOrtho, TweenFunctions.EaseInQuad(t));
+				overworldCamera.transform.position = Vector3.Lerp(startCamPos, targetCamPos, TweenFunctions.EaseInOutQuad(t));
+			}
+		}));
+
+		FadeOut(srcBootingUp, 4f);
+
+		overworldManager.StartCoroutine(overworldManager.StartBossLevel(bossLevel, didComplete =>
+		{
+			if (didComplete && explosionBuildupSFX != null)
+				explosionBuildupSFX.Play(null, transform.position, 1f, 1f);
+			if (didComplete && currentBall != null)
+				currentBall.HideAndStop(true);
+			StartCoroutine(Explode(didComplete, 1.8f, 2.2f));
+			if (AnimatorFace != null)
+				AnimatorFace.SetBool("On", false);
+			if (overworldCamera != null)
+			{
+				if (overworldCamera.MainCamera != null)
+				{
+					overworldCamera.MainCamera.orthographicSize = startOrtho;
+					overworldCamera.MainCamera.transform.localPosition = Vector3.zero;
+				}
+				overworldCamera.transform.position = startCamPos;
+				overworldCamera.enabled = true;
+			}
+			lastActivationTime = Time.unscaledTime;
+		}));
 	}
 
 	private void FadeOut(AudioSource audioSource, float duration)
@@ -341,35 +456,65 @@ public class OverworldMainDoorRobot : MonoBehaviour
 
 	public IEnumerator Explode(bool didComplete, float delayBeforeShake = 1.8f, float delayBeforeExplosion = 2.2f)
 	{
+		if (currentBall == null && OverworldBallManager.HasInstance && OverworldBallManager.Instance != null)
+			currentBall = OverworldBallManager.Instance.Ball;
+		if (currentBall == null && overworldManager != null)
+			currentBall = overworldManager.ball;
+
 		if (didComplete)
 		{
+			if (currentBall != null)
+				currentBall.HideAndStop(true);
 			m_OnBallExitedAndIsExploding?.Invoke(this);
 			if (hintArrow != null)
 				hintArrow.SetActive(false);
-			if (AnimatorFace != null)
-				AnimatorFace.SetTrigger("Explode");
-			if (AnimatorDoor != null)
-				AnimatorDoor.SetTrigger("Explode");
-			yield return new WaitForSeconds(0.4f);
+
+			if (delayBeforeShake > 0f)
+				yield return new WaitForSeconds(delayBeforeShake);
+
+			if (overworldCamera != null)
+				overworldCamera.Shake(0.2f, 20f, 1f);
+
+			float extraDelay = Mathf.Max(0f, delayBeforeExplosion - delayBeforeShake);
+			if (extraDelay > 0f)
+				yield return new WaitForSeconds(extraDelay);
+
 			if (Explosion != null)
 				Explosion.Explode(2.5f);
 			if (overworldCamera != null)
 				overworldCamera.Shake(0.2f, 100f, 1f);
 			FadeOut(srcBootingUp, 1f);
 			Change(State.Completed, false);
+
+			if (achievement != null)
+				achievement.Unlock();
+
+			yield return new WaitForSeconds(0.1f);
+
+			if (ExplosionsSmall != null)
+			{
+				for (int i = 0; i < ExplosionsSmall.Length; i++)
+				{
+					if (ExplosionsSmall[i] != null)
+						ExplosionsSmall[i].Explode(UnityEngine.Random.Range(0f, 0.25f));
+				}
+			}
+
+			if (currentBall != null)
+			{
+				if (ballStartPosition != null)
+					currentBall.transform.position = ballStartPosition.position;
+				currentBall.ShowAndEnable();
+			}
 			yield return new WaitForSeconds(0.3f);
 		}
 		else
 		{
 			Change(State.Open, false);
+			if (currentBall != null)
+				currentBall.ShowAndEnable();
+			yield return new WaitForSeconds(0.3f);
 		}
-		if (currentBall != null)
-		{
-			if (ballStartPosition != null)
-				currentBall.transform.position = ballStartPosition.position;
-			currentBall.ShowAndEnable();
-		}
-		yield return new WaitForSeconds(0.1f);
 	}
 
 	public void SetCompleted() => Change(State.Completed, true);

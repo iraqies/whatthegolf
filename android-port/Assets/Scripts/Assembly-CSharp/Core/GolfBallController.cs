@@ -394,12 +394,16 @@ namespace Core
 				if (prefab != null)
 				{
 					shootArrow = Instantiate(prefab);
+					if (gameObject.scene.IsValid() && shootArrow.gameObject.scene != gameObject.scene)
+						UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(shootArrow.gameObject, gameObject.scene);
 					shootArrow.Initialize(this, ShowArrowOnTop);
 					m_OnShootArrowInitialized?.Invoke(shootArrow);
 				}
 			}
 			else
 			{
+				if (gameObject.scene.IsValid() && shootArrow.transform.parent == null && shootArrow.gameObject.scene != gameObject.scene)
+					UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(shootArrow.gameObject, gameObject.scene);
 				shootArrow.Initialize(this, ShowArrowOnTop);
 			}
 		}

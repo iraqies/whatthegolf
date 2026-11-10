@@ -50,7 +50,8 @@ public class GrapplingHookShooter2D : GolfBallShooterExperimental
 		{
 			foreach (GrapplingHook2D item in hookQueue)
 			{
-				UnityEngine.Object.Destroy(item);
+				if (item != null && item.gameObject != null)
+					UnityEngine.Object.Destroy(item.gameObject);
 			}
 		}
 		hookQueue = new List<GrapplingHook2D>();
@@ -58,6 +59,8 @@ public class GrapplingHookShooter2D : GolfBallShooterExperimental
 		for (int i = 0; i < hooks; i++)
 		{
 			GameObject gameObject = UnityEngine.Object.Instantiate(GrapplingHookPrefab);
+			if (base.gameObject.scene.IsValid() && gameObject.scene != base.gameObject.scene)
+				UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(gameObject, base.gameObject.scene);
 			if (gameObject.TryGetComponent<HookAudio>(out var component))
 			{
 				component.SetController(GolfBallController);
@@ -173,6 +176,17 @@ public class GrapplingHookShooter2D : GolfBallShooterExperimental
 				GrapplingHook2D.RopeJoint pullPoint = item.GetPullPoint();
 				Gizmos.DrawSphere(pullPoint.Point, 1f);
 			}
+		}
+	}
+
+	private void OnDestroy()
+	{
+		if (hookQueue == null)
+			return;
+		foreach (GrapplingHook2D item in hookQueue)
+		{
+			if (item != null && item.gameObject != null)
+				UnityEngine.Object.Destroy(item.gameObject);
 		}
 	}
 }

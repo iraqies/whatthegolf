@@ -19,7 +19,10 @@ public class CollisionEvent2D : MonoBehaviour
 	{
 		if (col == null) return false;
 		if (acceptAny || Tags == null || Tags.Count == 0) return true;
-		return Tags.Contains(col.tag);
+		if (Tags.Contains(col.tag)) return true;
+		if (col.CompareTag("Ball") && Tags.Contains("Player")) return true;
+		if (col.CompareTag("Player") && Tags.Contains("Ball")) return true;
+		return false;
 	}
 
 	private void OnCollisionEnter2D(Collision2D other)

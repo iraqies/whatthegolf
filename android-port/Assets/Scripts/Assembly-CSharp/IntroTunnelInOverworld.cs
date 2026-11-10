@@ -291,8 +291,6 @@ public class IntroTunnelInOverworld : MonoBehaviour
 
 		if (srcOnMove != null)
 			srcOnMove.Stop();
-		if (OnCompleted != null)
-			OnCompleted();
 		yield return new WaitForSeconds(0.1f);
 
 		Vector3 bulgeEndScale = ballBulge != null ? ballBulge.localScale : bulgeStartScale;
@@ -327,8 +325,6 @@ public class IntroTunnelInOverworld : MonoBehaviour
 				ballCol.isTrigger = false;
 			ball.SetColliders(true);
 		}
-		if (followCamera != null && !centerCameraOnBallDuringShootOut)
-			followCamera.isInPipeIntro = false;
 
 		yield return StartCoroutine(pTween.ToRealTime(0.8f, t =>
 		{
@@ -342,11 +338,12 @@ public class IntroTunnelInOverworld : MonoBehaviour
 					Vector3 cpos = cameraEndPosition.position;
 					SetCameraCenter(new Vector3(cpos.x, bpos.y, bpos.z));
 				}
+				else
+				{
+					SetCameraCenter(ball.transform.position);
+				}
 			}
 		}));
-
-		if (followCamera != null)
-			followCamera.isInPipeIntro = false;
 
 		if (RecoilFromHittingTarget)
 		{
@@ -354,7 +351,15 @@ public class IntroTunnelInOverworld : MonoBehaviour
 			{
 				float ct = Mathf.Clamp01(TweenFunctions.EaseOut(t));
 				if (ball != null)
+				{
 					ball.transform.position = Vector3.Lerp(shootEnd, shootEnd + new Vector3(-0.3f, -1.8f, 0f), ct);
+					if (centerCameraOnBallDuringShootOut && cameraEndPosition != null)
+					{
+						Vector3 bpos = ball.transform.position;
+						Vector3 cpos = cameraEndPosition.position;
+						SetCameraCenter(new Vector3(cpos.x, bpos.y, bpos.z));
+					}
+				}
 			}));
 		}
 
@@ -374,6 +379,10 @@ public class IntroTunnelInOverworld : MonoBehaviour
 			ball.SetColliders(true);
 			ball.Show();
 		}
+		if (followCamera != null)
+			followCamera.isInPipeIntro = false;
+		if (OnCompleted != null)
+			OnCompleted();
 		yield return null;
 
 		if (snapshotAfterIntro != null)

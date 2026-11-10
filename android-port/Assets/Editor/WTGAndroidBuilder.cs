@@ -14,7 +14,7 @@ public static class WTGAndroidBuilder
 	{
 		try
 		{
-			Debug.Log("[WTGAndroidBuilder] Starting WHAT THE GOLF? (v1.0.36) Android APK build...");
+			Debug.Log("[WTGAndroidBuilder] Starting WHAT THE GOLF? (v1.0.37) Android APK build...");
 
 			string sdkRoot = Environment.GetEnvironmentVariable("ANDROID_SDK_ROOT") ?? "/home/ubuntu/mm-sdk";
 			string ndkRoot = Environment.GetEnvironmentVariable("ANDROID_NDK_ROOT") ?? "/home/ubuntu/ndk-r23b";
@@ -36,8 +36,8 @@ public static class WTGAndroidBuilder
 			PlayerSettings.companyName = "Triband";
 			PlayerSettings.productName = "GOLF?";
 			PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android, "com.thelabelgames.golf");
-			PlayerSettings.bundleVersion = "1.0.36";
-			PlayerSettings.Android.bundleVersionCode = 200537;
+			PlayerSettings.bundleVersion = "1.0.37";
+			PlayerSettings.Android.bundleVersionCode = 200538;
 			PlayerSettings.allowUnsafeCode = true;
 
 			PlayerSettings.defaultInterfaceOrientation = UIOrientation.Portrait;

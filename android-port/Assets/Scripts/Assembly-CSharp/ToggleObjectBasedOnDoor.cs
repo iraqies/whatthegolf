@@ -9,9 +9,23 @@ public class ToggleObjectBasedOnDoor : MonoBehaviour
 
 	private void OnEnable()
 	{
+		if (ObjectsToToggle == null)
+			return;
+		foreach (GameObject go in ObjectsToToggle)
+		{
+			if (go != null)
+				go.SetActive(!OnIfDisabled);
+		}
 	}
 
 	private void OnDisable()
 	{
+		if (ObjectsToToggle == null)
+			return;
+		foreach (GameObject go in ObjectsToToggle)
+		{
+			if (go != null)
+				go.SetActive(OnIfDisabled);
+		}
 	}
 }

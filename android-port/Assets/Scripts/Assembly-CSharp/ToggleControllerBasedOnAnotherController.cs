@@ -9,5 +9,9 @@ public class ToggleControllerBasedOnAnotherController : MonoBehaviour
 
 	private void Update()
 	{
+		if (ThisController != null && OtherController != null)
+		{
+			ThisController.enabled = OtherController.enabled;
+		}
 	}
 }

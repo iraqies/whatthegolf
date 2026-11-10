@@ -213,8 +213,8 @@ namespace Core
 			instance = this;
 			MainAudioListener.CreateInstanceIfNeeded();
 			_ = AudioManager.Instance;
-			if (controllers == null || controllers.Count == 0)
-				controllers = FindObjectsOfType<GolfBallController>().ToList();
+			if (controllers == null)
+				controllers = new List<GolfBallController>();
 		}
 
 		public int GetLevelStartStrokes(int id) => LevelStartStrokes;
@@ -226,7 +226,14 @@ namespace Core
 			levelManager = lm;
 			instance = this;
 			_ = AudioManager.Instance;
-			controllers = FindObjectsOfType<GolfBallController>().ToList();
+			if (controllers == null)
+				controllers = new List<GolfBallController>();
+			controllers.RemoveAll(c => c == null || c.gameObject.scene != gameObject.scene);
+			foreach (var c in FindObjectsOfType<GolfBallController>())
+			{
+				if (c != null && c.gameObject.scene == gameObject.scene && c.gameObject.activeInHierarchy && !controllers.Contains(c))
+					controllers.Add(c);
+			}
 			if (music == null)
 				music = GetComponent<LevelMusic>() ?? FindObjectOfType<LevelMusic>() ?? gameObject.AddComponent<LevelMusic>();
 			if (music != null)
@@ -257,7 +264,6 @@ namespace Core
 			{
 				if (c != null)
 				{
-					c.Activate();
 					c.OnPlayerHasShot += (_, s) => onStrokeChange?.Invoke(s);
 				}
 			}

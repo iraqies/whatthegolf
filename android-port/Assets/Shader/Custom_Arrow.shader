@@ -10,7 +10,7 @@ Shader "Custom/Arrow" {
 		LOD 200
 		Cull Off
 		Blend SrcAlpha OneMinusSrcAlpha
-		ZWrite Off
+		ZWrite On
 		Pass {
 			CGPROGRAM
 			#pragma vertex vert

@@ -56,7 +56,7 @@ namespace Core
 		public bool clampAimVector = true;
 
 		public float ShaftLength => Scale * 6f;
-		private float Scale => (ball != null && ball.Scale > 0f ? ball.Scale : 1f) * (scaleMod > 0f ? scaleMod : 1f);
+		private float Scale => (ball != null ? ball.Scale : 1f) * (scaleMod > 0f ? scaleMod : 1f);
 		private Vector3 Up => ball != null ? ball.GetPlane(ball.AimPlane).normal : Vector3.up;
 
 		public bool CastShadow
@@ -124,9 +124,9 @@ namespace Core
 			}
 			else
 			{
-				InsideAlpha = 0.85f;
+				InsideAlpha = 0.4f;
 				InsideAlphaOutline = 0.3f;
-				if (arrowMaterial != null) arrowMaterial.renderQueue = 3004;
+				if (arrowMaterial != null) arrowMaterial.renderQueue = 2000;
 				if (arrowOutlineMaterial != null) arrowOutlineMaterial.renderQueue = 3005;
 			}
 
@@ -175,7 +175,7 @@ namespace Core
 					baseCol = Color.clear;
 				}
 				Color fillCol = Color.Lerp(baseCol, blockedColor, blockValue);
-				fillCol.a = Mathf.Max(0.85f, InsideAlpha);
+				fillCol.a = InsideAlpha;
 				SetArrowColor(fillCol);
 
 				if (arrowOutlineMaterial != null)

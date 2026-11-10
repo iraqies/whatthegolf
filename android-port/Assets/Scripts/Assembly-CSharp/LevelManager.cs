@@ -324,10 +324,23 @@ public class LevelManager : AddressableSingleton<LevelManager>
 		}
 
 		yield return null;
-		var lvl = FindObjectOfType<Level>();
+		Level lvl = null;
+		Scene activeSc = SceneManager.GetActiveScene();
+		foreach (var candidate in FindObjectsOfType<Level>())
+		{
+			if (candidate != null && candidate.gameObject.scene == activeSc)
+			{
+				lvl = candidate;
+				break;
+			}
+		}
+		if (lvl == null)
+			lvl = FindObjectOfType<Level>();
 		if (lvl == null && loaded)
 		{
 			var go = new GameObject("AutoLevel");
+			if (activeSc.IsValid())
+				SceneManager.MoveGameObjectToScene(go, activeSc);
 			lvl = go.AddComponent<Level>();
 		}
 		if (lvl != null)
@@ -344,6 +357,37 @@ public class LevelManager : AddressableSingleton<LevelManager>
 	{
 		UnloadLevelEvent();
 		isReallyInLevel = false;
+		Scene unloadingScene = default;
+		if (addressableLoadHandle.IsValid() && addressableLoadHandle.Status == AsyncOperationStatus.Succeeded)
+			unloadingScene = addressableLoadHandle.Result.Scene;
+		else if (levelData != null && !string.IsNullOrEmpty(levelData.SceneName))
+			unloadingScene = SceneManager.GetSceneByName(levelData.SceneName);
+
+		foreach (var sa in FindObjectsOfType<ShootArrow>(true))
+		{
+			if (sa == null || sa.gameObject == null) continue;
+			if (!unloadingScene.IsValid() || sa.gameObject.scene == unloadingScene)
+			{
+				Destroy(sa.gameObject);
+				continue;
+			}
+			var overworldCtrl = OverworldManager2d.HasInstance && OverworldManager2d.Instance != null && OverworldManager2d.Instance.ball != null
+				? OverworldManager2d.Instance.ball.Controller
+				: null;
+			if (overworldCtrl == null || overworldCtrl.shootArrow != sa)
+				Destroy(sa.gameObject);
+		}
+		foreach (var gh in FindObjectsOfType<GrapplingHook>(true))
+		{
+			if (gh != null && gh.gameObject != null)
+				Destroy(gh.gameObject);
+		}
+		foreach (var gh2 in FindObjectsOfType<GrapplingHook2D>(true))
+		{
+			if (gh2 != null && gh2.gameObject != null)
+				Destroy(gh2.gameObject);
+		}
+
 		if (addressableLoadHandle.IsValid())
 		{
 			var u = Addressables.UnloadSceneAsync(addressableLoadHandle, true);

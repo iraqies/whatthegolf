@@ -23,29 +23,61 @@ public class OverworldPaper : GolfBehaviour
 	{
 		if (collision == null || Time.time < nextPush)
 			return;
-		var otherRb = collision.attachedRigidbody ?? collision.GetComponent<Rigidbody2D>();
-		if (otherRb == null || otherRb.velocity.magnitude < velocityThreshold)
+		Rigidbody2D otherRb = collision.GetComponent<Rigidbody2D>();
+		if (otherRb == null)
+			otherRb = collision.attachedRigidbody;
+		if (otherRb == null)
 			return;
+		float mag = otherRb.velocity.magnitude;
+		if (mag <= velocityThreshold)
+			return;
+
+		nextPush = Time.time + 1f;
+		if (col == null)
+			col = GetComponent<Collider2D>();
 		if (rigid == null)
 			rigid = GetComponent<Rigidbody2D>();
+
+		Collider2D otherCol = collision.GetComponent<Collider2D>();
+		if (otherCol == null)
+			otherCol = collision;
+		lastOtherCol = otherCol;
+		if (col != null && lastOtherCol != null)
+			Physics2D.IgnoreCollision(col, lastOtherCol, true);
+		if (col != null)
+			col.isTrigger = false;
+
+		if (hitSfx != null && AudioManager.Instance != null)
+			hitSfx.PlayRandomClip(transform.position);
+
 		if (rigid != null)
 		{
-			rigid.AddForce(otherRb.velocity * pushForce, ForceMode2D.Impulse);
-			rigid.AddTorque(Random.Range(-pushForce, pushForce), ForceMode2D.Impulse);
+			Vector2 dir = otherRb.velocity.normalized;
+			float forceScale = pushForce * Mathf.Clamp01(mag / 10f);
+			Vector2 force = dir * forceScale;
+			Vector2 hitPos = collision.transform.position;
+			rigid.AddForceAtPosition(force, hitPos);
 		}
-		if (hitSfx != null)
-			hitSfx.PlayRandomClip(transform, Mathf.Clamp01(otherRb.velocity.magnitude / 10f), 1f);
-		nextPush = Time.time + 0.05f;
-		lastOtherCol = collision;
 	}
 
 	private void Update()
 	{
-		if (rigid != null && !rigid.IsSleeping() && rigid.velocity.sqrMagnitude < sleepThreshold * sleepThreshold)
+		if (rigid == null)
+			rigid = GetComponent<Rigidbody2D>();
+		if (rigid == null || rigid.IsSleeping())
+			return;
+		if (rigid.velocity.magnitude < sleepThreshold)
 		{
-			rigid.velocity = Vector2.zero;
-			rigid.angularVelocity = 0f;
+			if (col == null)
+				col = GetComponent<Collider2D>();
+			if (col != null)
+				col.isTrigger = true;
 			rigid.Sleep();
+			if (lastOtherCol != null && col != null)
+			{
+				Physics2D.IgnoreCollision(col, lastOtherCol, false);
+				lastOtherCol = null;
+			}
 		}
 	}
 }

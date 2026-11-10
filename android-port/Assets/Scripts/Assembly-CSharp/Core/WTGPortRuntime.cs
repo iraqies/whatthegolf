@@ -7,6 +7,7 @@ namespace Core
 	public class WTGPortRuntime : MonoBehaviour
 	{
 		private static WTGPortRuntime _instance;
+		private static Material _cachedVectorMaterial;
 
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
 		private static void AutoBoot()
@@ -45,6 +46,21 @@ namespace Core
 			EnsureScenePlayable();
 		}
 
+		private static Material GetVectorMaterial()
+		{
+			if (_cachedVectorMaterial != null)
+				return _cachedVectorMaterial;
+			Shader sh = Shader.Find("Unlit/Vector");
+			if (sh == null)
+				sh = Shader.Find("Sprites/Default");
+			if (sh != null)
+			{
+				_cachedVectorMaterial = new Material(sh);
+				_cachedVectorMaterial.mainTexture = Texture2D.whiteTexture;
+			}
+			return _cachedVectorMaterial;
+		}
+
 		private void EnsureScenePlayable()
 		{
 			Screen.sleepTimeout = SleepTimeout.NeverSleep;
@@ -80,13 +96,17 @@ namespace Core
 					if (cam != null) cam.enabled = false;
 				}
 			}
-			if (!OverworldManager2d.HasInstance)
+			Material vecMat = GetVectorMaterial();
+			if (vecMat != null)
 			{
-				var ctrls = FindObjectsOfType<GolfBallController>();
-				foreach (var c in ctrls)
+				foreach (var sr in FindObjectsOfType<SpriteRenderer>(true))
 				{
-					if (c != null && !c.enabled && c.gameObject.name != "RealClubBall")
-						c.Activate();
+					if (sr != null && sr.sprite != null && sr.sprite.texture == null)
+					{
+						var shName = sr.sharedMaterial != null && sr.sharedMaterial.shader != null ? sr.sharedMaterial.shader.name : string.Empty;
+						if (shName == "Sprites/Default" || string.IsNullOrEmpty(shName))
+							sr.sharedMaterial = vecMat;
+					}
 				}
 			}
 		}

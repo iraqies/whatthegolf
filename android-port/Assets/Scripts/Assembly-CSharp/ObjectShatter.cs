@@ -72,13 +72,19 @@ public class ObjectShatter : MonoBehaviour
 		if (hasShattered) return;
 		hasShattered = true;
 		transform.SetParent(null);
+		if (gameObject.scene.IsValid())
+			UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(gameObject, gameObject.scene);
 		if (UseTimelines && rigidbodiesTimeline != null && rigidbodiesTimeline.Length > 0)
 		{
 			Toggle(true, r =>
 			{
 				if (r == null) return;
 				if (UnparentAllRigidbodies && r.component != null)
+				{
 					r.component.transform.SetParent(null);
+					if (gameObject.scene.IsValid() && r.component.gameObject.scene != gameObject.scene)
+						UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(r.component.gameObject, gameObject.scene);
+				}
 				if (r.component != null)
 					r.component.AddExplosionForce(force, impactPoint, explosionRadius, upwardsModifier, forceMode);
 			});
@@ -91,7 +97,11 @@ public class ObjectShatter : MonoBehaviour
 			{
 				if (r == null) return;
 				if (UnparentAllRigidbodies)
+				{
 					r.transform.SetParent(null);
+					if (gameObject.scene.IsValid() && r.gameObject.scene != gameObject.scene)
+						UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(r.gameObject, gameObject.scene);
+				}
 				r.AddExplosionForce(force, impactPoint, explosionRadius, upwardsModifier, forceMode);
 			});
 		}

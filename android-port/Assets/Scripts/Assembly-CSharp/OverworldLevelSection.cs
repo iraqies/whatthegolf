@@ -17,7 +17,7 @@ public class OverworldLevelSection
 	[NonSerialized] public bool isAvailable;
 	[NonSerialized] public float completionPercentage;
 
-	public string ID => unlockTriggerId;
+	public string ID => name;
 	public List<LevelData> Levels => levels;
 
 	public void Refresh()

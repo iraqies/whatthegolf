@@ -76,6 +76,8 @@ public class Toaster : MonoBehaviour
 				if (UnparentToasts)
 				{
 					rb.transform.SetParent(null);
+					if (gameObject.scene.IsValid() && rb.gameObject.scene != gameObject.scene)
+						UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(rb.gameObject, gameObject.scene);
 				}
 				else
 				{

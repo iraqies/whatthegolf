@@ -60,6 +60,7 @@ public class MainCampaignStartManager : MonoBehaviour
 
 	private void OnEnable()
 	{
+		packHasBeenEntered = false;
 		UpdateProgress();
 	}
 
@@ -93,15 +94,47 @@ public class MainCampaignStartManager : MonoBehaviour
 		}
 	}
 
-	public void StartPack()
+	public async void StartPack()
 	{
-		var pd = PackDef;
-		if (pd != null && pd.pack != null)
+		if (packHasBeenEntered)
+			return;
+		packHasBeenEntered = true;
+		if (OverworldManager2d.Instance != null)
+			OverworldManager2d.Instance.DisableInteraction(false);
+
+		var cp = PackDef.GetPack();
+		bool started = await PackStarterManager.StartPack(cp, false, Array.Empty<object>());
+		if (started)
 		{
-			_ = PackStarterManager.StartPack(pd.pack, false);
+			await Task.Delay(1000);
+			packHasBeenEntered = false;
+		}
+		else
+		{
+			Exit();
 		}
 	}
 
-	private void Exit() { }
-	private Task PushAway() => Task.CompletedTask;
+	private async void Exit()
+	{
+		if (OverworldManager2d.Instance != null)
+			OverworldManager2d.Instance.EnableInteraction();
+		await PushAway();
+		packHasBeenEntered = false;
+	}
+
+	private async Task PushAway()
+	{
+		Rigidbody2D rb = OverworldBallManager.Instance != null && OverworldBallManager.Instance.Ball != null
+			? OverworldBallManager.Instance.Ball.rigidBody
+			: null;
+		float timer = 0.15f;
+		while (timer > 0f)
+		{
+			if (rb != null)
+				rb.AddForce((Vector2)transform.up * -100f, ForceMode2D.Force);
+			timer -= Time.fixedDeltaTime;
+			await Task.Delay(Mathf.Max(1, Mathf.RoundToInt(Time.fixedDeltaTime * 1000f)));
+		}
+	}
 }

@@ -39,6 +39,8 @@ public class GrapplingHookShooter : GolfBallShooterExperimental
 		for (int i = 0; i < NumberOfHooks; i++)
 		{
 			GameObject gameObject = UnityEngine.Object.Instantiate(GrapplingHookPrefab);
+			if (base.gameObject.scene.IsValid() && gameObject.scene != base.gameObject.scene)
+				UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(gameObject, base.gameObject.scene);
 			Physics.IgnoreCollision(component, gameObject.GetComponent<Collider>(), ignore: true);
 			GrapplingHook component2 = gameObject.GetComponent<GrapplingHook>();
 			component2.Init();
@@ -148,6 +150,17 @@ public class GrapplingHookShooter : GolfBallShooterExperimental
 			{
 				item.OriginEnteredPortal(package);
 			}
+		}
+	}
+
+	private void OnDestroy()
+	{
+		if (hookQueue == null)
+			return;
+		foreach (GrapplingHook item in hookQueue)
+		{
+			if (item != null && item.gameObject != null)
+				UnityEngine.Object.Destroy(item.gameObject);
 		}
 	}
 }

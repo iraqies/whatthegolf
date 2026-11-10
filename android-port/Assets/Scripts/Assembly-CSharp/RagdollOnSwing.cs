@@ -138,7 +138,12 @@ public class RagdollOnSwing : MonoBehaviour
 	public void LaunchKid(Vector3 boost, Action<GameObject> onHitGround)
 	{
 		if (Root != null)
+		{
+			var sc = Root.scene;
 			Root.transform.SetParent(null);
+			if (sc.IsValid() && Root.scene != sc)
+				UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(Root, sc);
+		}
 
 		Vector3 crossUp = Vector3.Cross(boost, Vector3.up);
 		Vector3 pitched = Quaternion.AngleAxis(fullPitch * boost.magnitude, crossUp) * boost;
