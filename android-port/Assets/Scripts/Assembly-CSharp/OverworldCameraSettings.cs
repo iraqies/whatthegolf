@@ -42,4 +42,9 @@ public class OverworldCameraSettings : MonoBehaviour
 	{
 		SetValue(pct);
 	}
+
+	public void SetWeight(object sender, float pct)
+	{
+		SetValue(pct);
+	}
 }

@@ -519,11 +519,11 @@ public class HorseOLShooter : GolfBallShooterBase
 		}
 		if (bounceClips != null)
 		{
-			bounceClips.Play(null, base.transform.position, 1f, 1f);
+			bounceClips.Play(base.transform.position, 1f, 1f);
 		}
 		if (reactionClips != null && rigid != null)
 		{
-			reactionClips.PlayDelayed(null, rigid.position, reactionDelay, 1f, 1f);
+			reactionClips.PlayDelayed(rigid.position, reactionDelay, 1f, 1f);
 		}
 		if (rigid != null)
 		{
@@ -639,12 +639,12 @@ public class HorseOLShooter : GolfBallShooterBase
 				AddForceAtPosition(force, frontForcePosition.position, ForceMode.Acceleration);
 			}
 		}
-		if (goalMagnetism > 0f && Level.Instance != null && Level.Instance.Goal != null && rigid != null && GolfBallController != null && GolfBallController.enabled)
+		if (goalPullForce > 0f && Level.Instance != null && Level.Instance.Goal != null && rigid != null && GolfBallController != null && GolfBallController.enabled)
 		{
-			if (Vector3.Distance(base.transform.position, Level.Instance.Goal.transform.position) <= goalMagnetismDistance && Vector3.Angle(Velocity, Level.Instance.Goal.transform.position - base.transform.position) < goalMagnetismAngle)
+			if (Vector3.Distance(base.transform.position, Level.Instance.Goal.transform.position) <= goalPullDistance && Vector3.Angle(Velocity, Level.Instance.Goal.transform.position - base.transform.position) < angleThreshold)
 			{
 				Vector3 normalized = (Level.Instance.Goal.transform.position - base.transform.position).normalized;
-				AddForce(normalized * goalMagnetism, ForceMode.Force);
+				AddForce(normalized * goalPullForce, ForceMode.Force);
 			}
 		}
 		if (rigid != null)

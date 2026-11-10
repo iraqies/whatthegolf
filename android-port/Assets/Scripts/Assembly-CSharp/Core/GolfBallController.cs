@@ -117,7 +117,11 @@ namespace Core
 
 		public bool IsAiming { get; private set; }
 		public bool isAiming => IsAiming;
-		public bool isRolling => Velocity.sqrMagnitude > 0.01f;
+		public bool isRolling
+		{
+			get => Velocity.sqrMagnitude > 0.01f;
+			set { }
+		}
 		public int PlayerID => PlayerIndex;
 		public float MaxAimDistance
 		{

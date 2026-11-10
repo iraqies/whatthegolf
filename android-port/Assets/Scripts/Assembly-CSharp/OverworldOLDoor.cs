@@ -103,11 +103,11 @@ public class OverworldOLDoor : MonoBehaviour
 			}
 			yield return new WaitForSecondsRealtime(0.5f);
 		}
-		if (PlatformSettings.Instance != null && PlatformSettings.Instance.GetCurrent() != null && PlatformSettings.Instance.GetCurrent().vibration && notInstant && TryGetComponent<OverworldDoorRumble>(out var component))
+		if (PlatformSettings.Instance != null && PlatformSettings.Instance.GetCurrent() != null && PlatformSettings.Instance.GetCurrent().useRumble && notInstant && TryGetComponent<OverworldDoorRumble>(out var component) && component != null)
 		{
 			component.OpenDoorRumble(duration);
 		}
-		if (PlatformSettings.Instance != null && PlatformSettings.Instance.GetCurrent() != null && PlatformSettings.Instance.GetCurrent().showSaveIcon)
+		if (PlatformSettings.Instance != null && PlatformSettings.Instance.GetCurrent() != null && PlatformSettings.Instance.GetCurrent().useSaveThrobber)
 		{
 			SaveThrobber.ShowThrobber(0.5f);
 		}

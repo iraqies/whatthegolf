@@ -48,6 +48,8 @@ namespace Core
 			public int maxAudioTransitionsInMemory = 4;
 			public int maxAudioStatesInMemory = 4;
 			public bool useRumble;
+			public bool vibration => useRumble;
+			public bool showSaveIcon => useSaveThrobber;
 			public bool useUnloadUnusedAssetsOnLevelUnload;
 			public string overwriteId = "Android";
 			public float AdjustOrthoSizeForFourByThree = 1.3f;
