@@ -16,7 +16,7 @@ public class ClearCarTunneOnEnableIndicator : MonoBehaviour
 
 	private IEnumerator Start()
 	{
-		while (plate != null && !plate.IsInitialized)
+		while (plate != null && !plate.isInitialized)
 			yield return null;
 
 		if (plate == null)

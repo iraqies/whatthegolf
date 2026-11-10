@@ -68,8 +68,8 @@ public class PhysicalShootArrow : MonoBehaviour
 
 		if (ArrowAudioMaterial != null)
 		{
-			AudioObject ao = arrow.gameObject.AddComponent<AudioObject>();
-			ao.audioMaterial = ArrowAudioMaterial;
+			var ao = arrow.gameObject.GetComponent<Audio.AudioMaterialSettings>() ?? arrow.gameObject.AddComponent<Audio.AudioMaterialSettings>();
+			ao.material = ArrowAudioMaterial;
 		}
 
 		if (ColliderObject != null)

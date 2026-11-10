@@ -59,14 +59,14 @@ public class CowTippable : MonoBehaviour
 		if (isTipped)
 		{
 			if (SpeechStanding != null)
-				SpeechStanding.HideSpeechBubble();
+				SpeechStanding.Interrupt();
 			if (SpeechLying != null)
 				SpeechLying.enabled = true;
 		}
 		else
 		{
 			if (SpeechLying != null)
-				SpeechLying.HideSpeechBubble();
+				SpeechLying.Interrupt();
 			if (SpeechStanding != null)
 				SpeechStanding.enabled = true;
 		}

@@ -115,7 +115,7 @@ public class OverworldMainDoorRobot : MonoBehaviour
 		[CompilerGenerated]
 		add => m_OnExitedCable = (Action<OverworldMainDoorRobot>)Delegate.Combine(m_OnExitedCable, value);
 		[CompilerGenerated]
-		remove => m_OnExitedCable = (Action)Delegate.Remove(m_OnExitedCable, value);
+		remove => m_OnExitedCable = (Action<OverworldMainDoorRobot>)Delegate.Remove(m_OnExitedCable, value);
 	}
 
 	private void OnValidate()
@@ -243,10 +243,13 @@ public class OverworldMainDoorRobot : MonoBehaviour
 		if (plate.isMovingBallOut && OverworldBallManager.HasInstance && OverworldBallManager.Instance != null)
 		{
 			Transform spawnTrans = plate.returningBallTransform != null ? plate.returningBallTransform : plate.transform;
-			OverworldBallManager.Instance.TransmogrifBallTo(transmogrif, spawnTrans.position, spawnTrans.rotation, false);
+			if (transmogrif != null)
+				OverworldBallManager.Instance.Load(transmogrif.targetShape);
 			ball = OverworldBallManager.Instance.Ball;
 			if (ball != null)
 			{
+				ball.transform.position = spawnTrans.position;
+				ball.transform.rotation = spawnTrans.rotation;
 				ball.ShowAndEnable();
 				ball.enabled = true;
 				if (ball.rigidBody != null)
@@ -260,7 +263,7 @@ public class OverworldMainDoorRobot : MonoBehaviour
 				ball.Velocity = spawnTrans.right * 6f;
 				if (overworldManager != null)
 				{
-					overworldManager.RegisterBall(ball, transmogrif != null ? transmogrif.BallShape : Transmogrif.BALLSHAPES.Golfball);
+					overworldManager.RegisterBall(ball, transmogrif != null ? transmogrif.targetShape : Transmogrif.BALLSHAPES.ball);
 					if (overworldManager.cameraTarget != null)
 						overworldManager.cameraTarget.position = ball.transform.position;
 					if (overworldManager.culling != null)
@@ -407,8 +410,8 @@ public class OverworldMainDoorRobot : MonoBehaviour
 			if (overworldCamera != null)
 			{
 				if (overworldCamera.MainCamera != null)
-					overworldCamera.MainCamera.orthographicSize = Mathf.Lerp(startOrtho, endOrtho, TweenFunctions.EaseInQuad(t));
-				overworldCamera.transform.position = Vector3.Lerp(startCamPos, targetCamPos, TweenFunctions.EaseInOutQuad(t));
+					overworldCamera.MainCamera.orthographicSize = Mathf.Lerp(startOrtho, endOrtho, TweenFunctions.EaseIn(t));
+				overworldCamera.transform.position = Vector3.Lerp(startCamPos, targetCamPos, TweenFunctions.EaseInOut(t));
 			}
 		}));
 
@@ -487,7 +490,7 @@ public class OverworldMainDoorRobot : MonoBehaviour
 			Change(State.Completed, false);
 
 			if (achievement != null)
-				achievement.Unlock();
+				achievement.ManualUnlock();
 
 			yield return new WaitForSeconds(0.1f);
 

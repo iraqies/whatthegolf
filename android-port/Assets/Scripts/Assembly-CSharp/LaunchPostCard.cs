@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Core;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LaunchPostCard : MonoBehaviour
 {
@@ -27,13 +28,13 @@ public class LaunchPostCard : MonoBehaviour
 		}
 		if (exit != null)
 		{
-			exit.OnSelect -= SetSelectedButtonExit;
-			exit.OnSelect += SetSelectedButtonExit;
+			exit.onSelected.RemoveListener(SetSelectedButtonExit);
+			exit.onSelected.AddListener(SetSelectedButtonExit);
 		}
 		if (toMenu != null)
 		{
-			toMenu.OnSelect -= SetSelectedButtonToMenu;
-			toMenu.OnSelect += SetSelectedButtonToMenu;
+			toMenu.onSelected.RemoveListener(SetSelectedButtonToMenu);
+			toMenu.onSelected.AddListener(SetSelectedButtonToMenu);
 		}
 	}
 
@@ -101,25 +102,17 @@ public class LaunchPostCard : MonoBehaviour
 			return;
 		busyClosing = true;
 		if (HubSceneLoader.Instance != null)
-			await HubSceneLoader.Instance.LoadSceneAsync(false, default, false);
+			await HubSceneLoader.Instance.LoadSceneAsync(LoadSceneMode.Single, null, false);
 		busyClosing = false;
 	}
 
 	private void SetSelectedButtonExit()
 	{
-		if (exit != null)
-			exit.SetSelectedVisuals(true);
-		if (toMenu != null)
-			toMenu.SetSelectedVisuals(false);
 		selected = exit;
 	}
 
 	private void SetSelectedButtonToMenu()
 	{
-		if (exit != null)
-			exit.SetSelectedVisuals(false);
-		if (toMenu != null)
-			toMenu.SetSelectedVisuals(true);
 		selected = toMenu;
 	}
 
@@ -127,9 +120,9 @@ public class LaunchPostCard : MonoBehaviour
 	{
 		if (!isOpen || busyClosing)
 			return;
-		if (InputHelper.GetAllPlayerButtonSubmit() && selected != null)
+		if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton0))
 		{
-			selected.Click();
+			selected?.onClick?.Invoke();
 		}
 	}
 }

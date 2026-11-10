@@ -56,7 +56,8 @@ public class Shooter : MonoBehaviour
 			UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(splatterContainer, gameObject.scene);
 		if (splatter != null)
 		{
-			splatterPool = new ObjectPool<SpriteRenderer>(splatter.gameObject, 100, splatterContainer.transform);
+			splatterPool = new ObjectPool<SpriteRenderer>(splatter.gameObject, 100, null);
+			splatterPool.SetPoolTransformParent(splatterContainer.transform);
 		}
 		if (KillParticles != null)
 		{

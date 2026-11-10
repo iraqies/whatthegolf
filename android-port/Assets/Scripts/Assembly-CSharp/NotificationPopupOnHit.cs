@@ -8,14 +8,7 @@ public class NotificationPopupOnHit : MonoBehaviour
 	public void ShowNotificationPopup()
 	{
 		DisableInteraction();
-		if (LevelNotificationManager.Instance != null)
-		{
-			LevelNotificationManager.Instance.ScheduleLevelNotification(EnableInteraction);
-		}
-		else
-		{
-			EnableInteraction(false);
-		}
+		EnableInteraction(false);
 		OnAskedForNotification?.Invoke();
 	}
 
