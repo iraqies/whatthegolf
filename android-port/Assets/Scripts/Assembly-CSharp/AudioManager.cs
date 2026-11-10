@@ -338,23 +338,23 @@ public class AudioManager : MonoBehaviour
 	{
 		if (clip != null && Instance != null && Instance.shortEffects != null)
 		{
-			Instance.shortEffects.Play(clip, position, volume, pitch);
+			Instance.shortEffects.PlaySimple(clip, volume, pitch, position);
 		}
 	}
 
 	public static void PlaySFX(AudioClipSettings settings, Vector3 position = default, float volume = 1f, float pitch = 1f)
 	{
-		if (settings != null && Instance != null && Instance.shortEffects != null)
+		if (settings != null)
 		{
-			Instance.shortEffects.Play(settings, position, volume, pitch);
+			settings.Play(position);
 		}
 	}
 
 	public static void PlaySFX(RandomAudioClips clips, Vector3 position = default, float volume = 1f, float pitch = 1f)
 	{
-		if (clips != null && Instance != null && Instance.shortEffects != null)
+		if (clips != null)
 		{
-			Instance.shortEffects.Play(clips, position, volume, pitch);
+			clips.PlayRandomClip(position, volume, pitch);
 		}
 	}
 
@@ -362,7 +362,7 @@ public class AudioManager : MonoBehaviour
 	{
 		if (asset != null)
 		{
-			asset.Play(null, position, volume, pitch);
+			asset.Play(position, volume, pitch);
 		}
 	}
 }
