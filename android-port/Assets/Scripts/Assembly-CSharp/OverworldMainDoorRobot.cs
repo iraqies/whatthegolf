@@ -197,6 +197,9 @@ public class OverworldMainDoorRobot : MonoBehaviour
 
 	private void OnHitInactiveButton(OverworldBall2D ball)
 	{
+		var mcs = GetComponent<MainComputerSpeechbubble>();
+		if (mcs != null)
+			mcs.UpddateSpeechBubbles();
 		if (speech != null)
 			speech.ShowBubble();
 	}

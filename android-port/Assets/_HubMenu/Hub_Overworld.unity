@@ -312313,12 +312313,12 @@ LineRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 7
+  m_SortingOrder: -3
   m_Positions:
-  - {x: 47.5, y: -71.45, z: 5}
-  - {x: 47.43, y: -81.399605, z: 5}
-  - {x: -35.949944, y: -81.50049, z: 5}
-  - {x: -35.949944, y: -71.50049, z: 5}
+  - {x: 47.5, y: -71.45, z: 0}
+  - {x: 47.43, y: -81.399605, z: 0}
+  - {x: -35.949944, y: -81.50049, z: 0}
+  - {x: -35.949944, y: -71.50049, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.7
@@ -312368,7 +312368,7 @@ LineRenderer:
       m_NumAlphaKeys: 2
     numCornerVertices: 12
     numCapVertices: 0
-    alignment: 1
+    alignment: 0
     textureMode: 1
     shadowBias: 0
     generateLightingData: 0
@@ -313001,12 +313001,12 @@ LineRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -11
+  m_SortingOrder: -3
   m_Positions:
-  - {x: 39.5, y: -71.45, z: 5}
-  - {x: 39.43, y: -81.399605, z: 5}
-  - {x: -36.019943, y: -81.45044, z: 5}
-  - {x: -35.98999, y: -72.080444, z: 5}
+  - {x: 39.5, y: -71.45, z: 0}
+  - {x: 39.43, y: -81.399605, z: 0}
+  - {x: -36.019943, y: -81.45044, z: 0}
+  - {x: -35.98999, y: -72.080444, z: 0}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.7
@@ -313056,7 +313056,7 @@ LineRenderer:
       m_NumAlphaKeys: 2
     numCornerVertices: 12
     numCapVertices: 0
-    alignment: 1
+    alignment: 0
     textureMode: 1
     shadowBias: 0
     generateLightingData: 0

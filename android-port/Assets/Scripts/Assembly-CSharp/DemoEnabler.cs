@@ -16,5 +16,17 @@ public class DemoEnabler : MonoBehaviour
 
 	private void Awake()
 	{
+		if (_applyOnThisObject)
+		{
+			gameObject.SetActive(_inverse);
+			return;
+		}
+		foreach (Transform child in transform)
+		{
+			if (child != null)
+			{
+				child.gameObject.SetActive(_inverse);
+			}
+		}
 	}
 }

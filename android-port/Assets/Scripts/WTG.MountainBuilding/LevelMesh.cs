@@ -67,20 +67,6 @@ public class LevelMesh : MonoBehaviour
 			}
 			else
 			{
-				Vector3 center = Vector3.zero;
-				int topCount = 0;
-				for (int v = 0; v < verts.Length; v++)
-				{
-					if (verts[v].y > -5f)
-					{
-						center += verts[v];
-						topCount++;
-					}
-				}
-				if (topCount > 0)
-				{
-					center /= topCount;
-				}
 				for (int i = 0; i + 2 < tris.Length; i += 3)
 				{
 					int i0 = tris[i];
@@ -96,18 +82,7 @@ public class LevelMesh : MonoBehaviour
 						continue;
 					}
 					Vector3 geomNormal = cross.normalized;
-					Vector3 triMid = (v0 + v1 + v2) / 3f;
-					Vector3 outward = new Vector3(triMid.x - center.x, 0.25f, triMid.z - center.z);
-					bool flip = false;
 					if (geomNormal.y < -0.1f)
-					{
-						flip = true;
-					}
-					else if (outward.sqrMagnitude > 1f && Vector3.Dot(new Vector3(geomNormal.x, 0f, geomNormal.z), new Vector3(outward.x, 0f, outward.z)) < -0.1f)
-					{
-						flip = true;
-					}
-					if (flip)
 					{
 						int tmp = i1;
 						i1 = i2;

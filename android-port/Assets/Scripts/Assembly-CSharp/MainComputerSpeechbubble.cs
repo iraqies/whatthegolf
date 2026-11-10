@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MainComputerSpeechbubble : GolfBehaviour
@@ -16,7 +17,7 @@ public class MainComputerSpeechbubble : GolfBehaviour
 		if (hitbubble == null)
 			hitbubble = GetComponent<ShowSpeechbubbleOnHit>();
 		if (robot == null)
-			robot = GetComponentInParent<OverworldMainDoorRobot>();
+			robot = GetComponent<OverworldMainDoorRobot>() ?? GetComponentInParent<OverworldMainDoorRobot>();
 	}
 
 	private void Awake()
@@ -24,41 +25,57 @@ public class MainComputerSpeechbubble : GolfBehaviour
 		if (hitbubble == null)
 			hitbubble = GetComponent<ShowSpeechbubbleOnHit>();
 		if (robot == null)
-			robot = GetComponentInParent<OverworldMainDoorRobot>();
+			robot = GetComponent<OverworldMainDoorRobot>() ?? GetComponentInParent<OverworldMainDoorRobot>();
 		if (robot != null)
 		{
+			robot.OnIsReady -= Robot_OnIsReady;
+			robot.OnIsReady += Robot_OnIsReady;
+			robot.OnPlateChanged -= Robot_OnPlateChanged;
+			robot.OnPlateChanged += Robot_OnPlateChanged;
 			if (robot.IsInitialized)
 				Robot_OnIsReady();
-			else
-				robot.OnIsReady += Robot_OnIsReady;
-			robot.OnPlateChanged += Robot_OnPlateChanged;
 		}
 	}
 
 	private void Robot_OnPlateChanged()
 	{
-		UpddateSpeechBubbles();
-		if (robot != null && robot.plates != null && textOnIndicatorOn != null && hitbubble != null)
+		if (robot == null || hitbubble == null)
+			return;
+		int onCount = robot.plates != null ? robot.plates.Count(p => p != null && p.isOn) : 0;
+		if (textOnIndicatorOn != null && textOnIndicatorOn.Count > 0 && onCount > 0)
 		{
-			int onCount = 0;
-			foreach (var p in robot.plates)
+			if (textOnIndicatorOn.Count < onCount)
 			{
-				if (p != null && p.isOn)
-					onCount++;
+				hitbubble.TextList = null;
 			}
-			int idx = Mathf.Clamp(onCount - 1, 0, textOnIndicatorOn.Count - 1);
-			if (onCount > 0 && idx < textOnIndicatorOn.Count && textOnIndicatorOn[idx] != null)
+			else
 			{
+				int idx = (onCount - 1) % textOnIndicatorOn.Count;
 				hitbubble.TextList = textOnIndicatorOn[idx];
 				hitbubble.ResetConversation();
-				hitbubble.ForceStartSpeechBubble();
+			}
+			if (hitbubble.TextList != null)
+			{
+				StartCoroutine(hitbubble.HandleHit(UpddateSpeechBubbles));
+				return;
 			}
 		}
+		UpddateSpeechBubbles();
 	}
 
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
+		if (robot == null || robot.IsCompleted() || robot.IsOpen())
+			return;
+		if (collision == null || collision.collider == null || collision.collider.attachedRigidbody == null)
+			return;
+		if (collision.collider.attachedRigidbody.GetComponent<OverworldBall2D>() == null)
+			return;
 		UpddateSpeechBubbles();
+		if (hitbubble != null && hitbubble.TextList != null)
+		{
+			StartCoroutine(hitbubble.HandleHit());
+		}
 	}
 
 	private void Robot_OnIsReady()
@@ -66,26 +83,23 @@ public class MainComputerSpeechbubble : GolfBehaviour
 		UpddateSpeechBubbles();
 	}
 
-	private void UpddateSpeechBubbles()
+	public void UpddateSpeechBubbles()
 	{
 		if (robot == null || hitbubble == null)
 			return;
-		int onCount = 0;
-		int total = robot.plates != null ? robot.plates.Count : 0;
-		if (robot.plates != null)
+		if (robot.IsCompleted())
 		{
-			foreach (var p in robot.plates)
-			{
-				if (p != null && p.isOn)
-					onCount++;
-			}
+			hitbubble.TextList = null;
+			return;
 		}
+		int onCount = robot.plates != null ? robot.plates.Count(p => p != null && p.isOn) : 0;
+		int total = robot.plates != null ? robot.plates.Count : 0;
 		SpeechbubbleList target = textOnHitBeforeIndicators;
-		if (total > 0 && onCount >= total && textOnHitWithAllIndicators != null)
+		if (total > 0 && onCount == total)
 			target = textOnHitWithAllIndicators;
-		else if (onCount > 0 && textOnHitWithSomeIndicators != null)
+		else if (onCount >= 1)
 			target = textOnHitWithSomeIndicators;
-		if (target != null && hitbubble.TextList != target)
+		if (hitbubble.TextList != target)
 		{
 			hitbubble.TextList = target;
 			hitbubble.ResetConversation();

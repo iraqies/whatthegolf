@@ -150,7 +150,7 @@ namespace Core
 
 		public bool BlockShooting
 		{
-			get => blockShooting || IsBlockingFromFunctions();
+			get => ignoreBlocking <= 0f && (blockShooting || shootCoolTimer > 0f || IsBlockingFromFunctions());
 			set => blockShooting = value;
 		}
 
@@ -646,6 +646,7 @@ namespace Core
 				m_OnShootWhileBlocked?.Invoke(finalAim);
 				return;
 			}
+			m_OnPreShoot?.Invoke(finalAim);
 			if (!OnlyFullPower && finalAim.sqrMagnitude > 1e-6f)
 			{
 				float mag = finalAim.magnitude;
@@ -653,7 +654,6 @@ namespace Core
 				float remapped = Mathf.Clamp01((mag - thresh) / Mathf.Max(0.01f, 1f - thresh));
 				finalAim = finalAim.normalized * remapped;
 			}
-			m_OnPreShoot?.Invoke(finalAim);
 			shootCoolTimer = Mathf.Max(0.05f, shootCoolDown);
 			shooter?.OnShoot(finalAim);
 			m_OnShoot?.Invoke(finalAim);

@@ -16,6 +16,7 @@ namespace Core
 		protected float lastUnderVelocityShootingThreshold;
 		private float currentStillTime;
 		private float stillTimeThreshold = 0.09f;
+		private int lastBlockingFrame = -1;
 
 		public Rigidbody RigidbodyOverride
 		{
@@ -59,7 +60,7 @@ namespace Core
 				GolfBallController.OnShoot += GolfBallController_OnShoot;
 				GolfBallController.AddBlockingFunction(IsBlocking);
 			}
-			rigidbodyC = rigidbodyOverride != null ? rigidbodyOverride : (GetComponent<Rigidbody>() ?? GetComponentInChildren<Rigidbody>());
+			rigidbodyC = rigidbodyOverride != null ? rigidbodyOverride : GetComponent<Rigidbody>();
 		}
 
 		private void GolfBallController_OnShoot(Vector3 obj)
@@ -109,14 +110,30 @@ namespace Core
 		protected virtual bool IsBlocking()
 		{
 			if (rigidbodyC == null) return false;
-			float sqrVel = rigidbodyC.velocity.sqrMagnitude;
-			if (sqrVel < sqrVelocityShootingThreshold)
-				currentStillTime += Time.unscaledDeltaTime;
-			else
-				currentStillTime = 0f;
+			if (!float.IsInfinity(sqrVelocityShootingThreshold) && !float.IsNaN(sqrVelocityShootingThreshold) && sqrVelocityShootingThreshold > 0f)
+			{
+				float sqrVel = rigidbodyC.velocity.sqrMagnitude;
+				if (Time.frameCount != lastBlockingFrame)
+				{
+					lastBlockingFrame = Time.frameCount;
+					if (sqrVel < sqrVelocityShootingThreshold)
+						currentStillTime += Time.unscaledDeltaTime;
+					else
+						currentStillTime = 0f;
 
-			if (currentStillTime >= stillTimeThreshold)
+					if (currentStillTime >= stillTimeThreshold)
+						lastUnderVelocityShootingThreshold = Time.time;
+				}
+				else if (sqrVel >= sqrVelocityShootingThreshold)
+				{
+					currentStillTime = 0f;
+				}
+			}
+			else
+			{
 				lastUnderVelocityShootingThreshold = Time.time;
+				currentStillTime = stillTimeThreshold;
+			}
 
 			bool blocked = (Time.time < lastUnderVelocityShootingThreshold + shootThresholdMinimumTime) && (currentStillTime < stillTimeThreshold);
 			if (isblockedIfNotGrounded && GolfBallController != null && !GolfBallController.IsGrounded)

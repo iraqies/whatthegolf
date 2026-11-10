@@ -189,8 +189,8 @@ namespace GolfCourse
 		protected override bool IsBlocking()
 		{
 			if (isCollapsing) return true;
-			if (hasCollapsed && hips != null && sqrVelocityShootingThreshold > 0f)
-				return hips.velocity.sqrMagnitude > sqrVelocityShootingThreshold;
+			if (hasCollapsed && hips != null)
+				rigidbodyC = hips;
 			return base.IsBlocking();
 		}
 

@@ -72,7 +72,7 @@ public class TrafficController : MonoBehaviour
 		{
 			for (int i = 0; i < NumberOfCars; i++)
 			{
-				GameObject prefab = CarPrefabs[UnityEngine.Random.Range(0, CarPrefabs.Count)];
+				GameObject prefab = CarPrefabs[i % CarPrefabs.Count];
 				if (prefab == null) continue;
 				GameObject go = Instantiate(prefab, transform);
 				go.SetActive(false);
@@ -191,12 +191,14 @@ public class TrafficController : MonoBehaviour
 			return;
 
 		CarAgent chosenCar = null;
+		int inactiveCount = 0;
 		for (int i = 0; i < _cars.Count; i++)
 		{
 			if (_cars[i] != null && !_cars[i].gameObject.activeSelf)
 			{
-				chosenCar = _cars[i];
-				break;
+				inactiveCount++;
+				if (UnityEngine.Random.Range(0, inactiveCount) == 0)
+					chosenCar = _cars[i];
 			}
 		}
 		if (chosenCar == null) return;
