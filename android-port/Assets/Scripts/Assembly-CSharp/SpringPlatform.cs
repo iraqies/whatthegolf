@@ -18,18 +18,66 @@ public class SpringPlatform : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
+		if (other == null)
+		{
+			return;
+		}
+		Rigidbody rigidbody = ((other.GetComponent<Rigidbody>() != null) ? other.GetComponent<Rigidbody>() : other.GetComponentInParent<Rigidbody>());
+		if (!rigidbodies.Contains(rigidbody))
+		{
+			rigidbodies.Add(rigidbody);
+		}
+		if (rigidbodies.Count >= objectsBeforeBlowingUp)
+		{
+			StartCoroutine(DelaySpring());
+		}
 	}
 
 	private void OnTriggerExit(Collider other)
 	{
+		if (other == null)
+		{
+			return;
+		}
+		Rigidbody item = ((other.GetComponent<Rigidbody>() != null) ? other.GetComponent<Rigidbody>() : other.GetComponentInParent<Rigidbody>());
+		if (rigidbodies.Contains(item))
+		{
+			rigidbodies.Remove(item);
+		}
+		if (rigidbodies.Count < objectsBeforeBlowingUp)
+		{
+			StopAllCoroutines();
+		}
 	}
 
 	private IEnumerator DelaySpring()
 	{
-		return null;
+		yield return new WaitForSeconds(delayBeforeBlowingUp);
+		Spring();
 	}
 
 	public void Spring()
 	{
+		if (platformAnimator != null)
+		{
+			platformAnimator.SetTrigger("Spring");
+		}
+		for (int i = 0; i < rigidbodies.Count; i++)
+		{
+			if (rigidbodies[i] != null)
+			{
+				rigidbodies[i].AddForce(forceVector + Vector3.up * upForce, ForceMode.VelocityChange);
+				rigidbodies[i].AddTorque(forceVector + Vector3.up * upForce, ForceMode.VelocityChange);
+			}
+		}
+		rigidbodies.Clear();
+	}
+
+	public SpringPlatform()
+	{
+		upForce = 100f;
+		objectsBeforeBlowingUp = 6;
+		delayBeforeBlowingUp = 1f;
+		rigidbodies = new List<Rigidbody>();
 	}
 }

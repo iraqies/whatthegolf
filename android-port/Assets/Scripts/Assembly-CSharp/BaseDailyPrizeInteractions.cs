@@ -43,9 +43,35 @@ public class BaseDailyPrizeInteractions : MonoBehaviour
 
 	private void Awake()
 	{
+		if (dailyAnimalScript == null)
+		{
+			dailyAnimalScript = GetComponentInParent<DailyPrize>();
+		}
+		if (dailyAnimalScript != null)
+		{
+			dailyAnimalScript.OnUnpack += OnUnpack;
+			dailyAnimalScript.OnUnpackImmidiate += OnUnpackImmidiate;
+			dailyAnimalScript.OnAimNotWrapped += OnAimNotWrapped;
+			dailyAnimalScript.OnAimWrapped += OnAimWrapped;
+			dailyAnimalScript.OnShootNotWrapped += OnShootNotWrapped;
+			dailyAnimalScript.OnShootWrapped += OnShootWrapped;
+			dailyAnimalScript.OnLoseFocus += OnLoseFocus;
+			dailyAnimalScript.OnGetFocus += OnGetFocus;
+		}
 	}
 
 	private void OnDestroy()
 	{
+		if (dailyAnimalScript != null)
+		{
+			dailyAnimalScript.OnUnpack -= OnUnpack;
+			dailyAnimalScript.OnUnpackImmidiate -= OnUnpackImmidiate;
+			dailyAnimalScript.OnAimNotWrapped -= OnAimNotWrapped;
+			dailyAnimalScript.OnAimWrapped -= OnAimWrapped;
+			dailyAnimalScript.OnShootNotWrapped -= OnShootNotWrapped;
+			dailyAnimalScript.OnShootWrapped -= OnShootWrapped;
+			dailyAnimalScript.OnLoseFocus -= OnLoseFocus;
+			dailyAnimalScript.OnGetFocus -= OnGetFocus;
+		}
 	}
 }

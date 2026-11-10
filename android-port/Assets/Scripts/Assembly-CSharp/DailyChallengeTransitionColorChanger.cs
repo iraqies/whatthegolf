@@ -31,10 +31,106 @@ public class DailyChallengeTransitionColorChanger : MonoBehaviour
 
 	public void ChangeColor(TransitionColorDefinition d)
 	{
+		if (d == null)
+		{
+			return;
+		}
+		Debug.Log("Changing color");
+		top1?.ForEach(delegate(SpriteRenderer t)
+		{
+			if (t != null)
+			{
+				t.color = GetColor(d.c1);
+			}
+		});
+		c2?.ForEach(delegate(SpriteRenderer t)
+		{
+			if (t != null)
+			{
+				t.color = GetColor(d.c2);
+			}
+		});
+		c3?.ForEach(delegate(SpriteRenderer t)
+		{
+			if (t != null)
+			{
+				t.color = GetColor(d.c3);
+			}
+		});
+		c4?.ForEach(delegate(SpriteRenderer t)
+		{
+			if (t != null)
+			{
+				t.color = GetColor(d.c4);
+			}
+		});
+		c5?.ForEach(delegate(SpriteRenderer t)
+		{
+			if (t != null)
+			{
+				t.color = GetColor(d.c5);
+			}
+		});
+		c6?.ForEach(delegate(SpriteRenderer t)
+		{
+			if (t != null)
+			{
+				t.color = GetColor(d.c6);
+			}
+		});
+		middel7?.ForEach(delegate(SpriteRenderer t)
+		{
+			if (t != null)
+			{
+				t.color = GetColor(d.c7);
+			}
+		});
+		c8?.ForEach(delegate(SpriteRenderer t)
+		{
+			if (t != null)
+			{
+				t.color = GetColor(d.c8);
+			}
+		});
+		c9?.ForEach(delegate(SpriteRenderer t)
+		{
+			if (t != null)
+			{
+				t.color = GetColor(d.c9);
+			}
+		});
+		c10?.ForEach(delegate(SpriteRenderer t)
+		{
+			if (t != null)
+			{
+				t.color = GetColor(d.c10);
+			}
+		});
+		c11?.ForEach(delegate(SpriteRenderer t)
+		{
+			if (t != null)
+			{
+				t.color = GetColor(d.c11);
+			}
+		});
+		c12?.ForEach(delegate(SpriteRenderer t)
+		{
+			if (t != null)
+			{
+				t.color = GetColor(d.c12);
+			}
+		});
+		bottom13?.ForEach(delegate(SpriteRenderer t)
+		{
+			if (t != null)
+			{
+				t.color = GetColor(d.c13);
+			}
+		});
 	}
 
 	private Color GetColor(TransitionColorDefinition.AllowedColors a)
 	{
-		return default;
+		return TransitionColorDefinition.FromAllowedColor(a);
 	}
 }

@@ -10,6 +10,6 @@ public class LeaderboardEntry
 
 	public override string ToString()
 	{
-		return null;
+		return string.Concat(position.ToString(), ". ", name, " : ", score.ToString(), " isPlayer: ", isPlayer.ToString());
 	}
 }

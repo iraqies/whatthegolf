@@ -8,9 +8,11 @@ public class DPIFocusEvent : BaseDailyPrizeInteractions
 
 	public override void OnGetFocus()
 	{
+		GetFocusEvent?.Invoke();
 	}
 
 	public override void OnLoseFocus()
 	{
+		LoseFocusEvent?.Invoke();
 	}
 }
