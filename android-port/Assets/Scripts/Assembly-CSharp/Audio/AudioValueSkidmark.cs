@@ -18,15 +18,15 @@ namespace Audio
 		{
 			if (skidmarks != null)
 			{
-				skidmarks.onCreateSkidmark -= OnCreateSkidmark;
-				skidmarks.onCreateSkidmark += OnCreateSkidmark;
+				skidmarks.OnCreateSkidmark -= OnCreateSkidmark;
+				skidmarks.OnCreateSkidmark += OnCreateSkidmark;
 			}
 		}
 
 		private void OnDisable()
 		{
 			if (skidmarks != null)
-				skidmarks.onCreateSkidmark -= OnCreateSkidmark;
+				skidmarks.OnCreateSkidmark -= OnCreateSkidmark;
 		}
 
 		public override string ValueInputName()

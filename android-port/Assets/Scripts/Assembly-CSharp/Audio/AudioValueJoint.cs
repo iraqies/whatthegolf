@@ -34,16 +34,16 @@ namespace Audio
 			switch (listenType)
 			{
 			case JointValueListenType.ANCHOR_X:
-				value = (!Use2D && component3D != null) ? component3D.anchor.x : (component2D != null ? component2D.anchor.x : 0f);
+				value = (!Use2D && component3D != null) ? component3D.anchor.x : 0f;
 				break;
 			case JointValueListenType.ANCHOR_Y:
-				value = (!Use2D && component3D != null) ? component3D.anchor.y : (component2D != null ? component2D.anchor.y : 0f);
+				value = (!Use2D && component3D != null) ? component3D.anchor.y : 0f;
 				break;
 			case JointValueListenType.ANCHOR_Z:
 				value = (!Use2D && component3D != null) ? component3D.anchor.z : 0f;
 				break;
 			case JointValueListenType.ANCHOR_MAGNITUDE:
-				value = (!Use2D && component3D != null) ? component3D.anchor.magnitude : (component2D != null ? component2D.anchor.magnitude : 0f);
+				value = (!Use2D && component3D != null) ? component3D.anchor.magnitude : 0f;
 				break;
 			}
 			transmitDelta = useDelta;

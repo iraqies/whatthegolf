@@ -23,11 +23,9 @@ public class BadBallChallenge : Challenge
 		}
 		audio = goalPin.GetComponent<FlagAudio>();
 		if (audio != null)
-			audio.ManualMode = true;
+			audio.PlayAudioRemotely = true;
 		if (goalPin.TryGetComponent<GolfCourse.GolfCoursePinGoal>(out var pinGoal))
-			pinGoal.winsNeeded = int.MaxValue;
-		if (goalPin.TryGetComponent<GolfGoal>(out var golfGoal))
-			golfGoal.winsNeeded = int.MaxValue;
+			pinGoal.RequiredBallsInGoal = int.MaxValue;
 	}
 
 	public void OnFlagHit(GolfBallController ball)

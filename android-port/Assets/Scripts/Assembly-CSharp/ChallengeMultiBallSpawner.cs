@@ -31,8 +31,8 @@ public class ChallengeMultiBallSpawner : MonoBehaviour
 			if (col != null)
 				col.enabled = true;
 			_currentController.enabled = false;
-			if (_currentController.arrow != null)
-				_currentController.arrow.Hide();
+			if (_currentController.shootArrow != null)
+				_currentController.shootArrow.Hide();
 		}
 		StartCoroutine(WaitAndSpawn());
 	}

@@ -54,22 +54,6 @@ namespace Audio
 				currentRigids = new List<Rigidbody>();
 				if (rigid != null)
 					currentRigids.AddRange(rigid);
-				if (removeOnOutOfBounds && rigid != null)
-				{
-					for (int i = 0; i < rigid.Count; i++)
-					{
-						var r = rigid[i];
-						if (r == null) continue;
-						var colAudio = r.GetComponent<OnCollisionAudio>();
-						if (colAudio == null)
-							colAudio = r.gameObject.AddComponent<OnCollisionAudio>();
-						if (colAudio != null)
-						{
-							colAudio.OnTrigger -= OnAnyOutOfBounds;
-							colAudio.OnTrigger += OnAnyOutOfBounds;
-						}
-					}
-				}
 			}
 		}
 
@@ -189,17 +173,17 @@ namespace Audio
 
 		private void OnAnyOutOfBounds(TriggerInfo info)
 		{
-			if (info. self == null) return;
+			if (info.thisHit == null) return;
 			if (Use2D)
 			{
-				var r2d = info.self.GetComponent<Rigidbody2D>();
-				if (r2d != null && rigid2D != null && rigid2D.Contains(r2d) && OutOfBounds(info.other))
+				var r2d = info.thisHit.GetComponent<Rigidbody2D>();
+				if (r2d != null && rigid2D != null && rigid2D.Contains(r2d) && OutOfBounds(info.otherHit))
 					rigid2D.Remove(r2d);
 			}
 			else
 			{
-				var r3d = info.self.GetComponent<Rigidbody>();
-				if (r3d != null && rigid != null && rigid.Contains(r3d) && OutOfBounds(info.other))
+				var r3d = info.thisHit.GetComponent<Rigidbody>();
+				if (r3d != null && rigid != null && rigid.Contains(r3d) && OutOfBounds(info.otherHit))
 					rigid.Remove(r3d);
 			}
 		}
@@ -207,9 +191,7 @@ namespace Audio
 		private bool OutOfBounds(GameObject otherHit)
 		{
 			if (otherHit == null) return false;
-			if (otherHit.CompareTag("Lava") || otherHit.CompareTag("Water") || otherHit.CompareTag("OutOfBounds"))
-				return true;
-			return otherHit.GetComponent<OutOfBounds>() != null;
+			return otherHit.CompareTag("Lava") || otherHit.CompareTag("Water") || otherHit.CompareTag("OutOfBounds");
 		}
 	}
 }

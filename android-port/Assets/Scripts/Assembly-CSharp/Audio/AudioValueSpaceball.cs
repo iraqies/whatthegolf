@@ -18,7 +18,7 @@ namespace Audio
 		protected override void SetValue()
 		{
 			if (shooter == null) return;
-			value = shooter.isStuck ? 0f : shooter.BallVelocity.magnitude;
+			value = shooter.isGrounded ? 0f : shooter.BallVelocity.magnitude;
 			base.SetValue();
 		}
 	}
