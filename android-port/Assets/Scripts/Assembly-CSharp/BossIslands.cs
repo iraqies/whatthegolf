@@ -54,7 +54,8 @@ public class BossIslands : MonoBehaviour
 		}
 		if (Vector3.Distance(BossCar.position, NextEndPoint.position) <= DistanceFromNextPointBeforeNewSpawn)
 		{
-			BossIslandPart nextPart = islandPool.Get(NextEndPoint.position, NextEndPoint.rotation);
+			GameObject nextObj = islandPool.Get(NextEndPoint.position, NextEndPoint.rotation);
+			BossIslandPart nextPart = nextObj != null ? nextObj.GetComponent<BossIslandPart>() : null;
 			if (nextPart != null)
 			{
 				nextPart.OwnerPool = islandPool;
@@ -105,7 +106,7 @@ public class BossIslands : MonoBehaviour
 		OnIslandDestroyed?.Invoke(part);
 		if (part.OwnerPool != null)
 		{
-			part.OwnerPool.Release(part);
+			part.OwnerPool.Release(part.gameObject);
 		}
 		else
 		{

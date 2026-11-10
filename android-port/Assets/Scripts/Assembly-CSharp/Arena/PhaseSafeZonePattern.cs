@@ -167,7 +167,7 @@ namespace Arena
 				Vector2 pt = spots[idx];
 				spots.RemoveAt(idx);
 				Vector3 worldPos = transform.position + new Vector3(pt.x, 20f, pt.y);
-				ArenaDroppable spawned = RockPool != null ? RockPool.Get(worldPos, Quaternion.identity) : Object.Instantiate(rockPrefab, worldPos, Quaternion.identity);
+				ArenaDroppable spawned = RockPool != null ? RockPool.Get(worldPos, Quaternion.identity)?.GetComponent<ArenaDroppable>() : Object.Instantiate(rockPrefab, worldPos, Quaternion.identity);
 				if (spawned != null)
 				{
 					spawned.GridPosition = pt;

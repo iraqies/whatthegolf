@@ -74,7 +74,7 @@ public class FinalBoss : MonoBehaviour
 				BossStage s = activeList[i];
 				if (s != null && s.StageIslands != null && s.StageIslands.Count > 0 && s.StageIslands[0] != null)
 				{
-					islandPool[s] = new ObjectPool<BossIslandPart>(s.StageIslands[0], Mathf.Max(2, s.IslandsToPrepare));
+					islandPool[s] = new ObjectPool<BossIslandPart>(s.StageIslands[0].gameObject, Mathf.Max(2, s.IslandsToPrepare));
 				}
 			}
 		}

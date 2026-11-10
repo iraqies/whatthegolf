@@ -147,7 +147,7 @@ public class BossStage : MonoBehaviour
 		bool stageDone = false;
 		if (stageGoal != null)
 		{
-			stageGoal.OnComplete += _ =>
+			stageGoal.OnGoal += _ =>
 			{
 				goalPosition = stageGoal.transform.position;
 				stageDone = true;
