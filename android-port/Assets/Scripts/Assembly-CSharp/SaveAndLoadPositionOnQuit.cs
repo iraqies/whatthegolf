@@ -65,9 +65,25 @@ public class SaveAndLoadPositionOnQuit : GolfBehaviour
 			OverworldBallManager.Instance.OnNewBall -= Instance_OnNewBall;
 			OverworldBallManager.Instance.OnNewBall += Instance_OnNewBall;
 		}
-		if (!isInHub || HubSceneLoader.Instance == null || HubSceneLoader.Instance.HasBeenLoadedBefore)
+		bool playingIntroTunnel = !isInHub && !SaveGame.IsIntroAnimationComplete && OverworldManager2d.HasInstance && OverworldManager2d.Instance != null && OverworldManager2d.Instance.introTunnel != null;
+		if (playingIntroTunnel)
+		{
+			if (b != null)
+			{
+				transform.position = b.transform.position;
+				if (follower != null)
+					follower.SetTarget(b.transform);
+			}
+		}
+		else if (!isInHub || HubSceneLoader.Instance == null || HubSceneLoader.Instance.HasBeenLoadedBefore)
 		{
 			TeleportBallToCurrentSpot();
+		}
+		else if (b != null)
+		{
+			transform.position = b.transform.position;
+			if (follower != null)
+				follower.SetTarget(b.transform);
 		}
 	}
 
@@ -101,7 +117,7 @@ public class SaveAndLoadPositionOnQuit : GolfBehaviour
 			lastValidPosition = transform.position;
 			hasValidPositionEverBeenFound = true;
 		}
-		else if (isInHub && deafultSaveSpot != null)
+		else if (deafultSaveSpot != null)
 		{
 			if (OverworldBallManager.Instance != null)
 				OverworldBallManager.Instance.Load(Transmogrif.BALLSHAPES.ball);
@@ -175,10 +191,15 @@ public class SaveAndLoadPositionOnQuit : GolfBehaviour
 
 	private void Update()
 	{
-		checkTimer += Time.unscaledDeltaTime;
-		if (follower == null || !follower.isFollowing || checkTimer < CheckInterval)
+		if (OverworldManager2d.HasInstance && OverworldManager2d.Instance != null && OverworldManager2d.Instance.State != OverworldManager2d.STATES.active)
 			return;
 		if (controller == null || !controller.enabled)
+			return;
+		var trav = controller.GetComponent<ShortcutTunnelTraversable>();
+		if (trav != null && trav.isTraveling)
+			return;
+		checkTimer += Time.unscaledDeltaTime;
+		if (follower == null || !follower.isFollowing || checkTimer < CheckInterval)
 			return;
 		if (grid == null || grid.currentGroundMap == null)
 			return;

@@ -13,7 +13,7 @@ public class LevelMesh : MonoBehaviour
 		MeshFilter mf = GetComponent<MeshFilter>();
 		MeshCollider mc = GetComponent<MeshCollider>();
 		Mesh m = mf != null ? mf.sharedMesh : (mc != null ? mc.sharedMesh : null);
-		if (m == null || !m.isReadable || m.subMeshCount < 2)
+		if (m == null || !m.isReadable || m.subMeshCount < 1)
 		{
 			return;
 		}
@@ -28,42 +28,98 @@ public class LevelMesh : MonoBehaviour
 		for (int s = 0; s < m.subMeshCount; s++)
 		{
 			int[] tris = m.GetTriangles(s);
-			List<int> list = new List<int>(tris);
+			List<int> list = new List<int>(tris.Length);
 			if (s == 0)
 			{
-				for (int i = 0; i + 2 < list.Count; i += 3)
+				for (int i = 0; i + 2 < tris.Length; i += 3)
 				{
-					int i0 = list[i];
-					int i1 = list[i + 1];
-					int i2 = list[i + 2];
-					if (norms[i0].y < -0.5f && norms[i1].y < -0.5f && norms[i2].y < -0.5f)
+					int i0 = tris[i];
+					int i1 = tris[i + 1];
+					int i2 = tris[i + 2];
+					Vector3 v0 = verts[i0];
+					Vector3 v1 = verts[i1];
+					Vector3 v2 = verts[i2];
+					if (v0.y < -100f && v1.y < -100f && v2.y < -100f)
 					{
-						list[i + 1] = i2;
-						list[i + 2] = i1;
-						norms[i0] = -norms[i0];
-						norms[i1] = -norms[i1];
-						norms[i2] = -norms[i2];
+						modified = true;
+						continue;
+					}
+					Vector3 cross = Vector3.Cross(v1 - v0, v2 - v0);
+					if (cross.sqrMagnitude < 1e-6f)
+					{
+						modified = true;
+						continue;
+					}
+					if (cross.y < 0f || (norms[i0].y < -0.5f && norms[i1].y < -0.5f && norms[i2].y < -0.5f))
+					{
+						int tmp = i1;
+						i1 = i2;
+						i2 = tmp;
+						norms[i0] = Vector3.up;
+						norms[i1] = Vector3.up;
+						norms[i2] = Vector3.up;
 						modified = true;
 					}
+					list.Add(i0);
+					list.Add(i1);
+					list.Add(i2);
 				}
 			}
 			else
 			{
-				for (int i = 0; i + 5 < list.Count; i += 6)
+				Vector3 center = Vector3.zero;
+				int topCount = 0;
+				for (int v = 0; v < verts.Length; v++)
 				{
-					int a0 = list[i];
-					int b0 = list[i + 3];
-					int b1 = list[i + 4];
-					int b2 = list[i + 5];
-					if (Vector3.Dot(norms[a0], norms[b0]) < -0.2f)
+					if (verts[v].y > -5f)
 					{
-						list[i + 4] = b2;
-						list[i + 5] = b1;
-						norms[b0] = -norms[b0];
-						norms[b1] = -norms[b1];
-						norms[b2] = -norms[b2];
+						center += verts[v];
+						topCount++;
+					}
+				}
+				if (topCount > 0)
+				{
+					center /= topCount;
+				}
+				for (int i = 0; i + 2 < tris.Length; i += 3)
+				{
+					int i0 = tris[i];
+					int i1 = tris[i + 1];
+					int i2 = tris[i + 2];
+					Vector3 v0 = verts[i0];
+					Vector3 v1 = verts[i1];
+					Vector3 v2 = verts[i2];
+					Vector3 cross = Vector3.Cross(v1 - v0, v2 - v0);
+					if (cross.sqrMagnitude < 1e-6f)
+					{
+						modified = true;
+						continue;
+					}
+					Vector3 geomNormal = cross.normalized;
+					Vector3 triMid = (v0 + v1 + v2) / 3f;
+					Vector3 outward = new Vector3(triMid.x - center.x, 0.25f, triMid.z - center.z);
+					bool flip = false;
+					if (geomNormal.y < -0.1f)
+					{
+						flip = true;
+					}
+					else if (outward.sqrMagnitude > 1f && Vector3.Dot(new Vector3(geomNormal.x, 0f, geomNormal.z), new Vector3(outward.x, 0f, outward.z)) < -0.1f)
+					{
+						flip = true;
+					}
+					if (flip)
+					{
+						int tmp = i1;
+						i1 = i2;
+						i2 = tmp;
+						norms[i0] = -geomNormal;
+						norms[i1] = -geomNormal;
+						norms[i2] = -geomNormal;
 						modified = true;
 					}
+					list.Add(i0);
+					list.Add(i1);
+					list.Add(i2);
 				}
 			}
 			subMeshTris.Add(list);
@@ -75,7 +131,8 @@ public class LevelMesh : MonoBehaviour
 			{
 				m.SetTriangles(subMeshTris[s], s);
 			}
-			if (mc != null && mc.sharedMesh == m)
+			m.RecalculateBounds();
+			if (mc != null)
 			{
 				mc.sharedMesh = null;
 				mc.sharedMesh = m;

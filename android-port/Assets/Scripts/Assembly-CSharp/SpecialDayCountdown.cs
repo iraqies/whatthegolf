@@ -12,19 +12,40 @@ public class SpecialDayCountdown : MonoBehaviour
 
 	private TMP_Text _text;
 
+	private TMP_Text Text
+	{
+		get
+		{
+			if (_text == null && localization != null)
+			{
+				_text = localization.GetComponent<TMP_Text>();
+			}
+			if (_text == null)
+			{
+				_text = GetComponent<TMP_Text>();
+			}
+			return _text;
+		}
+	}
+
 	private void Start()
 	{
-		if (localization != null)
+		_ = Text;
+		if (specialDayCalendar != null)
 		{
-			_text = localization.GetComponent<TMP_Text>();
+			SpecialDayStage cur = specialDayCalendar.GetCurrentStage();
+			if (cur != null)
+			{
+				Tick(cur);
+			}
 		}
 	}
 
 	public void Tick(SpecialDayStage newStage)
 	{
-		if (newStage != null && _text != null)
+		if (newStage != null && Text != null)
 		{
-			_text.SetLocalizedText(newStage.GetCountdownText());
+			Text.SetLocalizedText(newStage.GetCountdownText());
 		}
 	}
 }

@@ -102,6 +102,9 @@ namespace Core
 		private int lastFrame;
 		private Vector3 _lastBallPosition;
 		private Vector3 _ballVelocity;
+		private float _autoOobMinY = float.NegativeInfinity;
+		private string _autoOobTag = "OutOfBounds";
+		private bool _hasAutoOobY;
 
 		public float ShootCoolDown
 		{
@@ -355,6 +358,35 @@ namespace Core
 			hasBeenStarted = true;
 			if (Level.HasInstance)
 				Level.Instance.AddGolfballController(this);
+			if (GetComponent<Rigidbody2D>() == null && GetComponent<Rigidbody>() != null)
+			{
+				float lowestTriggerTop = float.PositiveInfinity;
+				string foundTag = "OutOfBounds";
+				bool foundAny = false;
+				foreach (var col in FindObjectsOfType<Collider>())
+				{
+					if (col == null || !col.enabled) continue;
+					string t = col.tag;
+					if (t == "OutOfBounds" || t == "BoundsFail" || t == "KillZone" || t == "OutOfBoundsReset" || t == "BoundsReset" || t == "OutOfBoundsReload" || t == "BoundsReload")
+					{
+						if (col.bounds.size.x >= 200f && col.bounds.size.z >= 200f && col.bounds.max.y < _startPos.y - 1f)
+						{
+							if (col.bounds.max.y < lowestTriggerTop)
+							{
+								lowestTriggerTop = col.bounds.max.y;
+								foundTag = t;
+								foundAny = true;
+							}
+						}
+					}
+				}
+				if (foundAny)
+				{
+					_autoOobMinY = lowestTriggerTop;
+					_autoOobTag = foundTag;
+					_hasAutoOobY = true;
+				}
+			}
 			if (shootArrow == null)
 			{
 				var prefab = shootArrowPrefab != null ? shootArrowPrefab : Resources.Load<ShootArrow>("ShootArrow");
@@ -471,6 +503,11 @@ namespace Core
 		protected virtual void Update()
 		{
 			DetermineVelocity();
+			if (_hasAutoOobY && transform.position.y < _autoOobMinY && Level.HasInstance)
+			{
+				CheckOutOfBounds(_autoOobTag);
+				return;
+			}
 			if (shootCoolTimer > 0f) shootCoolTimer -= Time.unscaledDeltaTime;
 			if (ignoreBlocking > 0f) ignoreBlocking -= Time.unscaledDeltaTime;
 
@@ -737,9 +774,29 @@ namespace Core
 			if (other != null) CheckOutOfBounds(other.tag);
 		}
 
+		private void OnTriggerStay(Collider other)
+		{
+			if (other != null) CheckOutOfBounds(other.tag);
+		}
+
+		private void OnCollisionEnter(Collision collision)
+		{
+			if (collision != null && collision.collider != null) CheckOutOfBounds(collision.collider.tag);
+		}
+
 		private void OnTriggerEnter2D(Collider2D other)
 		{
 			if (other != null) CheckOutOfBounds(other.tag);
+		}
+
+		private void OnTriggerStay2D(Collider2D other)
+		{
+			if (other != null) CheckOutOfBounds(other.tag);
+		}
+
+		private void OnCollisionEnter2D(Collision2D collision)
+		{
+			if (collision != null && collision.collider != null) CheckOutOfBounds(collision.collider.tag);
 		}
 
 		public void NotifyChildTriggerEnter(Collider other)

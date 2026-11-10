@@ -33,25 +33,39 @@ public class EpisodeEntranceManager : MonoBehaviour
 		set
 		{
 			if (_campaignNameText != null)
+			{
 				_campaignNameText.ChangeText(value);
+			}
+			if (_episodeText != null && transform.parent != null)
+			{
+				int epNum = transform.parent.childCount - transform.GetSiblingIndex();
+				_episodeText.ChangeText($"ID_EPISODEHUB_EPISODE_{epNum}");
+			}
 		}
 	}
 
 	public void Start()
 	{
 		var pd = PackDef;
-		if (pd != null && pd.pack != null)
+		if (pd == null || pd.pack == null)
 		{
-			adventureTitleID = pd.pack.TitleID;
-			UpdateProgress();
-			OpenTheCurtains();
+			return;
 		}
+		SetUpBannerColor();
+		isNew = pd.pack.IsFresh() && pd.accessible;
+		if (_curtainsAnimator != null)
+		{
+			_curtainsAnimator.SetBool("IsNew", isNew);
+		}
+		adventureTitleID = pd.pack.TitleID;
+		SetArtwork();
+		UpdateProgress();
 	}
 
 	private void UpdateProgress()
 	{
 		var pd = PackDef;
-		if (pd != null && pd.pack != null)
+		if (pd != null && pd.pack != null && pd.pack.campaignType != ECampaignType.None)
 		{
 			float pct = SaveGame.GetCompletedPercentage(pd.pack.campaignType) / 100f;
 			SetProgressText(pct);
@@ -60,25 +74,82 @@ public class EpisodeEntranceManager : MonoBehaviour
 
 	private void OnEnable()
 	{
+		packHasBeenEntered = false;
 		UpdateProgress();
 	}
 
 	public void OpenTheCurtains()
 	{
+		var pd = PackDef;
+		if (pd != null && pd.pack != null)
+		{
+			SaveGame.IncrementContentPackPlayCount(pd.pack.contentPackID);
+		}
 		if (_curtainsAnimator != null)
-			_curtainsAnimator.SetBool("Open", true);
+		{
+			_curtainsAnimator.SetTrigger("Open");
+		}
 	}
 
-	private void SetArtwork() { }
-	private void SetUpBannerColor() { }
+	private void SetArtwork()
+	{
+		if (_animatedIllustrationPrefab != null && _animatedIllustrationContainer != null)
+		{
+			if (_animatedIllustrationContainer.childCount == 0)
+			{
+				GameObject inst = Instantiate(_animatedIllustrationPrefab, _animatedIllustrationContainer);
+				inst.transform.SetAsFirstSibling();
+			}
+		}
+	}
+
+	private void SetUpBannerColor()
+	{
+		if (_nameBanner == null)
+		{
+			return;
+		}
+		SVGImage[] svgs = _nameBanner.GetComponentsInChildren<SVGImage>(true);
+		if (svgs != null)
+		{
+			for (int i = 0; i < svgs.Length; i++)
+			{
+				if (svgs[i] != null)
+				{
+					svgs[i].color = _bannerColor;
+				}
+			}
+		}
+	}
 
 	private void SetProgressText(float value)
 	{
-		int pct = Mathf.FloorToInt(Mathf.Clamp01(value) * 100f);
-		if (_progressText != null) _progressText.text = pct + "%";
-		if (_progressImg != null) _progressImg.fillAmount = Mathf.Clamp01(value);
-		if (_completeBanner != null) _completeBanner.SetActive(pct >= 100);
-		if (_newBanner != null) _newBanner.SetActive(pct == 0);
+		var pd = PackDef;
+		if (_newBanner != null && pd != null && pd.pack != null)
+		{
+			_newBanner.SetActive(pd.pack.IsConsideredNew());
+		}
+		float clamped = Mathf.Clamp01(value);
+		bool isComplete = Mathf.Abs(clamped - 1f) < 0.01f;
+		bool showProgress = clamped > 0f && !isComplete;
+		if (_progressText != null)
+		{
+			_progressText.gameObject.SetActive(showProgress);
+			int pct = Mathf.FloorToInt(clamped * 100f);
+			_progressText.SetLocalizedText($"{pct}%");
+		}
+		if (_progressBanner != null)
+		{
+			_progressBanner.SetActive(showProgress);
+		}
+		if (_completeBanner != null)
+		{
+			_completeBanner.SetActive(isComplete);
+		}
+		if (_progressImg != null)
+		{
+			_progressImg.fillAmount = clamped;
+		}
 	}
 
 	public void StartPack()
@@ -86,6 +157,7 @@ public class EpisodeEntranceManager : MonoBehaviour
 		var pd = PackDef;
 		if (pd != null && pd.pack != null)
 		{
+			OpenTheCurtains();
 			_ = PackStarterManager.StartPack(pd.pack, false);
 		}
 	}

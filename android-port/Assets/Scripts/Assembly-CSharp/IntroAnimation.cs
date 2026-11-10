@@ -58,6 +58,20 @@ public class IntroAnimation : MonoBehaviour
 
 	public AudioSource ComputerOnSource;
 
+	private bool inIntroAnimation;
+
+	private bool _buttonTriggered;
+
+	private bool IsFirstDoorOpen()
+	{
+		if (door != null && door.openOrOpening)
+			return true;
+		var idComp = door != null ? door.GetComponent<OverworldID>() : null;
+		if (idComp != null && !string.IsNullOrEmpty(idComp.ID))
+			return SaveGame.GetIsDoorOpen(idComp.ID);
+		return SaveGame.GetIsDoorOpen("ZNC37");
+	}
+
 	private void SetDarknessMaterialColor(Color c)
 	{
 		if (DarknessRenderer == null)
@@ -75,14 +89,14 @@ public class IntroAnimation : MonoBehaviour
 			DarknessRenderer.enabled = false;
 		}
 
-		if (SaveGame.IsIntroAnimationComplete)
+		if (SaveGame.IsIntroAnimationComplete && IsFirstDoorOpen())
 		{
 			if (button != null)
 				button.color = buttonOffColor;
 			if (buttonBase != null)
 				buttonBase.color = buttonBaseOffColor;
 			if (darkScreen != null)
-				darkScreen.enabled = true;
+				darkScreen.enabled = false;
 			if (face != null)
 				face.SetBool("On", true);
 			if (introComputer != null)
@@ -96,15 +110,70 @@ public class IntroAnimation : MonoBehaviour
 		}
 	}
 
+	private void Start()
+	{
+		if (SaveGame.IsIntroAnimationComplete && !IsFirstDoorOpen() && !inIntroAnimation)
+		{
+			SetupDirectButtonTrigger();
+		}
+	}
+
+	private void SetupDirectButtonTrigger()
+	{
+		if (button != null)
+		{
+			var col = button.GetComponent<CircleCollider2D>();
+			if (col == null)
+			{
+				col = button.gameObject.AddComponent<CircleCollider2D>();
+				col.radius = 0.7f;
+				col.isTrigger = false;
+			}
+		}
+		if (door != null)
+		{
+			door.canOpen = false;
+			door.UpdateStatus();
+		}
+		if (introComputer != null)
+			introComputer.enabled = false;
+		if (save != null)
+			save.gameObject.SetActive(false);
+	}
+
+	private void FixedUpdate()
+	{
+		if (inIntroAnimation || _buttonTriggered)
+			return;
+		if (IsFirstDoorOpen())
+			return;
+		if (button != null && OverworldBallManager.Instance != null && OverworldBallManager.Instance.Ball != null)
+		{
+			float dist = Vector2.Distance(OverworldBallManager.Instance.Ball.transform.position, button.transform.position);
+			if (dist < 1.1f)
+			{
+				_buttonTriggered = true;
+				StartCoroutine(IntroRoutine(true));
+			}
+		}
+	}
+
 	private void Tunnel_OnAtLogo()
 	{
 		if (tunnel != null)
 			tunnel.OnStartAtLogo -= Tunnel_OnAtLogo;
-		StartCoroutine(IntroRoutine());
+		_buttonTriggered = true;
+		StartCoroutine(IntroRoutine(false));
 	}
 
 	private IEnumerator IntroRoutine()
 	{
+		return IntroRoutine(false);
+	}
+
+	private IEnumerator IntroRoutine(bool skipTunnelWait)
+	{
+		inIntroAnimation = true;
 		if (DarknessRenderer != null)
 		{
 			SetDarknessMaterialColor(DarknessLight);
@@ -127,33 +196,35 @@ public class IntroAnimation : MonoBehaviour
 		}
 		else
 		{
-			bool atEndOfTunnel = tunnel == null;
+			bool atEndOfTunnel = skipTunnelWait || tunnel == null;
 			Action onEndOfTunnel = () => atEndOfTunnel = true;
 			if (!atEndOfTunnel && tunnel != null)
 				tunnel.OnAtEndOfTunnel += onEndOfTunnel;
 			if (save != null)
 				save.gameObject.SetActive(false);
 
-			yield return new WaitForSeconds(5f);
+			yield return new WaitForSeconds(skipTunnelWait ? 0.05f : 5f);
 
 			if (DarknessRenderer != null)
 			{
 				SetDarknessMaterialColor(DarknessLight);
 				DarknessRenderer.enabled = true;
-				StartCoroutine(pTween.To(1.5f, t =>
+				StartCoroutine(pTween.To(skipTunnelWait ? 0.05f : 1.5f, t =>
 				{
 					SetDarknessMaterialColor(Color.Lerp(DarknessLight, DarknessDark, t));
 				}));
 			}
 
-			while (!atEndOfTunnel)
+			float tunnelTimeout = Time.realtimeSinceStartup + 12f;
+			while (!atEndOfTunnel && Time.realtimeSinceStartup < tunnelTimeout)
 			{
 				yield return null;
 			}
 			if (tunnel != null)
 				tunnel.OnAtEndOfTunnel -= onEndOfTunnel;
 
-			yield return new WaitForSeconds(0.8f);
+			if (!skipTunnelWait)
+				yield return new WaitForSeconds(0.8f);
 
 			if (button != null)
 				button.color = buttonOffColor;
@@ -291,7 +362,8 @@ public class IntroAnimation : MonoBehaviour
 					() => didInterrupt = true,
 					() => isWaitingForSpeech = false,
 					null));
-				yield return new WaitUntil(() => !isWaitingForSpeech);
+				float speechWaitTimeout = Time.realtimeSinceStartup + 6f;
+				yield return new WaitUntil(() => !isWaitingForSpeech || Time.realtimeSinceStartup > speechWaitTimeout);
 
 				float maxWait = Time.time + 2f;
 				yield return new WaitUntil(() => Time.time > maxWait || didInterrupt);
@@ -309,7 +381,8 @@ public class IntroAnimation : MonoBehaviour
 					() => isWaitingForSpeech = false,
 					null));
 				yield return new WaitForSeconds(0.2f);
-				yield return new WaitUntil(() => !isWaitingForSpeech);
+				float speechWaitTimeout2 = Time.realtimeSinceStartup + 6f;
+				yield return new WaitUntil(() => !isWaitingForSpeech || Time.realtimeSinceStartup > speechWaitTimeout2);
 			}
 
 			if (ComputerOnSource != null)
@@ -360,5 +433,6 @@ public class IntroAnimation : MonoBehaviour
 		SaveGame.IsIntroAnimationComplete = true;
 		yield return new WaitForSeconds(0.3f);
 		SaveGame.Save(false);
+		inIntroAnimation = false;
 	}
 }

@@ -21,6 +21,19 @@ public class AmbientOverworldManager : MonoBehaviour
 
 	private void Start()
 	{
+		if (overworldManager == null)
+		{
+			overworldManager = OverworldManager2d.Instance;
+		}
+		if (AudioManager.Instance != null)
+		{
+			ambient = AudioManager.Instance.AmbientPlayer;
+		}
+		if (defaultSnapshot != null)
+		{
+			defaultSnapshot.TransitionTo(0.5f);
+		}
+		OnZoneChange();
 	}
 
 	private void OnDisable()
@@ -29,21 +42,38 @@ public class AmbientOverworldManager : MonoBehaviour
 
 	private void OnApplicationQuit()
 	{
+		applicationIsQuitting = true;
 	}
 
 	private void OnZoneEnter(OverworldZoneAmbience zone)
 	{
+		currentZone = zone;
+		OnZoneChange();
 	}
 
 	private void OnZoneExit(OverworldZoneAmbience zone)
 	{
+		if (currentZone == zone)
+		{
+			currentZone = null;
+			OnZoneChange();
+		}
 	}
 
 	private void OnZoneChange()
 	{
+		if (applicationIsQuitting)
+		{
+			return;
+		}
+		if (currentZone == null && defaultSnapshot != null)
+		{
+			defaultSnapshot.TransitionTo(0.5f);
+		}
 	}
 
 	private void OverworldManager_OnEnableOverworld()
 	{
+		OnZoneChange();
 	}
 }

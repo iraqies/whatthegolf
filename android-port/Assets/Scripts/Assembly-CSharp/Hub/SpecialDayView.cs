@@ -44,7 +44,12 @@ namespace Hub
 			}
 			if (calendar != null)
 			{
-				Apply(calendar.GetCurrentStage());
+				SpecialDayStage cur = calendar.GetCurrentStage();
+				Apply(cur);
+				if (countdown != null && cur != null)
+				{
+					countdown.Tick(cur);
+				}
 			}
 			if (debugText != null)
 			{
@@ -79,7 +84,7 @@ namespace Hub
 			_stage = currentStage;
 			if (titleText != null && Localization.Instance != null)
 			{
-				string key = isAvailable && _stage.Special != null ? ("ID_MENU_" + _stage.Special.PackName) : "ID_HUB_SPECIAL_EVENT_TITLE";
+				string key = isAvailable && _stage.Special != null ? ("ID_MENU_" + _stage.Special.PackName) : "ID_MENU_UI_SPECIAL_EVENT";
 				titleText.text = Localization.Instance.GetString(key, false, null) ?? "";
 			}
 			if (_currentStageDressing != null)
@@ -99,17 +104,14 @@ namespace Hub
 					return;
 				}
 			}
-			if (wasAvailable != isAvailable || _stage != null)
+			bool played = _stage.Special != null && SaveGame.GetIsSpecialPlayed(_stage.Special.PackName);
+			if (door != null)
 			{
-				bool played = _stage.Special != null && SaveGame.GetIsSpecialPlayed(_stage.Special.PackName);
-				if (door != null)
-				{
-					door.SetState(isAvailable, played);
-				}
-				if (lockView != null)
-				{
-					lockView.SetState(isAvailable, played);
-				}
+				door.SetState(isAvailable, played);
+			}
+			if (lockView != null)
+			{
+				lockView.SetState(isAvailable, played);
 			}
 		}
 

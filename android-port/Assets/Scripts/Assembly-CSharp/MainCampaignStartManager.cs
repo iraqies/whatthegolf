@@ -40,6 +40,10 @@ public class MainCampaignStartManager : MonoBehaviour
 		if (pd != null && pd.pack != null)
 		{
 			adventureTitleID = pd.pack.TitleID;
+			if (indicator != null && indicatorCriteria != null)
+			{
+				indicator.SetActive(indicatorCriteria.Check(false));
+			}
 			UpdateProgress();
 		}
 	}
@@ -61,11 +65,32 @@ public class MainCampaignStartManager : MonoBehaviour
 
 	private void SetProgressText(float value)
 	{
-		int pct = Mathf.FloorToInt(Mathf.Clamp01(value) * 100f);
-		if (_progressText != null) _progressText.text = pct + "%";
-		if (_progressImg != null) _progressImg.fillAmount = Mathf.Clamp01(value);
-		if (_completeBanner != null) _completeBanner.SetActive(pct >= 100);
-		if (_newBanner != null) _newBanner.SetActive(pct == 0);
+		var pd = PackDef;
+		if (_newBanner != null && pd != null && pd.pack != null)
+		{
+			_newBanner.SetActive(pd.pack.IsConsideredNew());
+		}
+		float clamped = Mathf.Clamp01(value);
+		bool isComplete = Mathf.Abs(clamped - 1f) < 0.01f;
+		bool showProgress = clamped > 0f && !isComplete;
+		if (_progressText != null)
+		{
+			_progressText.gameObject.SetActive(showProgress);
+			int pct = Mathf.FloorToInt(clamped * 100f);
+			_progressText.SetLocalizedText($"{pct}%");
+		}
+		if (_progressBanner != null)
+		{
+			_progressBanner.SetActive(showProgress);
+		}
+		if (_completeBanner != null)
+		{
+			_completeBanner.SetActive(isComplete);
+		}
+		if (_progressImg != null)
+		{
+			_progressImg.fillAmount = clamped;
+		}
 	}
 
 	public void StartPack()

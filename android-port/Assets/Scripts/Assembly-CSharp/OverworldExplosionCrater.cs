@@ -8,9 +8,19 @@ public class OverworldExplosionCrater : MonoBehaviour
 
 	private void Start()
 	{
+		if (Barrel == null)
+		{
+			Barrel = GetComponentInParent<ExplosionBarrel2D>();
+		}
+		if (Barrel != null)
+		{
+			Barrel.OnExplode -= OnExplode;
+			Barrel.OnExplode += OnExplode;
+		}
 	}
 
 	private void OnExplode(Collider2D collider2D)
 	{
+		transform.localEulerAngles = ExplodedEuler;
 	}
 }

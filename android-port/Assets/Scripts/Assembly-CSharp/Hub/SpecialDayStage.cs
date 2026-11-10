@@ -55,33 +55,33 @@ namespace Hub
 			switch (countdownType)
 			{
 			case CountdownType.ComingSoon:
-				return Localization.Instance.GetString("ID_HUB_SPECIAL_EVENT_COMING_SOON", false, null) ?? "";
+				return Localization.Instance.GetString("ID_MENU_CAR_COMING_SOON", false, null) ?? "";
 			case CountdownType.DaysLeft:
 			{
 				TimeSpan ts = SpecialDayCalendar.TimeUntilSpecialActive(Special);
 				if (ts.Days >= 3)
 				{
-					return Localization.Instance.GetStringWithFormat("ID_HUB_SPECIAL_EVENT_DAYS_LEFT", new object[1] { ts.Days + 1 }) ?? "";
+					return Localization.Instance.GetStringWithFormat("ID_HUB_SPECIAL_COUNTDOWN_PRE_DAYS", new object[1] { ts.Days + 1 }) ?? "";
 				}
-				int hours = (int)ts.TotalHours;
-				return Localization.Instance.GetStringWithFormat("ID_HUB_SPECIAL_EVENT_HOURS_LEFT", new object[1] { $"{hours:00}:{ts:mm\\:ss}" }) ?? "";
+				int hours = Mathf.Max(0, (int)ts.TotalHours);
+				return Localization.Instance.GetStringWithFormat("ID_HUB_SPECIAL_COUNTDOWN_PRE_HOURS", new object[1] { $"{hours:00}:{ts:mm\\:ss}" }) ?? "";
 			}
 			case CountdownType.Live:
 			{
 				if (!DailyChallenges.HasSpecialBeenPlayedBefore())
 				{
-					return Localization.Instance.GetString("ID_HUB_SPECIAL_EVENT_LIVE", false, null) ?? "";
+					return Localization.Instance.GetString("ID_HUB_NEW", false, null) ?? "";
 				}
 				TimeSpan tsOver = SpecialDayCalendar.TimeUntilSpecialOver(Special);
 				if (tsOver.Days >= 3)
 				{
-					return Localization.Instance.GetStringWithFormat("ID_HUB_SPECIAL_EVENT_ENDS_IN_DAYS", new object[1] { tsOver.Days }) ?? "";
+					return Localization.Instance.GetStringWithFormat("ID_HUB_SPECIAL_COUNTDOWN_LIVE_DAYS", new object[1] { tsOver.Days }) ?? "";
 				}
 				int hoursLeft = Mathf.Max(0, (int)tsOver.TotalHours);
-				return Localization.Instance.GetStringWithFormat("ID_HUB_SPECIAL_EVENT_ENDS_IN_HOURS", new object[1] { $"{hoursLeft:00}:{tsOver:mm\\:ss}" }) ?? "";
+				return Localization.Instance.GetStringWithFormat("ID_HUB_SPECIAL_COUNTDOWN_LIVE_HOURS", new object[1] { $"{hoursLeft:00}:{tsOver:mm\\:ss}" }) ?? "";
 			}
 			case CountdownType.EventEnded:
-				return Localization.Instance.GetString("ID_HUB_SPECIAL_EVENT_ENDED", false, null) ?? "";
+				return Localization.Instance.GetString("ID_HUB_SPECIAL_COUNTDOWN_POST", false, null) ?? "";
 			default:
 				return "";
 			}
