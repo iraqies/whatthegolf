@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Unity.Collections;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine.Rendering;
 using UnityEngine.Scripting;
 using UnityEngine.U2D;
@@ -296,8 +297,7 @@ namespace UnityEngine.U2D.Animation
 			}
 
 			int vCount = m_OriginalVertices.Length;
-			NativeSlice<byte> rawSlice = new NativeSlice<byte>(m_RawVertexBuffer);
-			NativeSlice<Vector3> posSlice = rawSlice.SliceWithStride<Vector3>(0, m_VertexStride);
+			byte* basePtr = (byte*)m_RawVertexBuffer.GetUnsafePtr();
 			for (int i = 0; i < vCount; i++)
 			{
 				Vector3 v = m_OriginalVertices[i];
@@ -311,7 +311,7 @@ namespace UnityEngine.U2D.Animation
 					res += m_SkinMatrices[bw.boneIndex2].MultiplyPoint3x4(v) * bw.weight2;
 				if (bw.weight3 > 0f && bw.boneIndex3 >= 0 && bw.boneIndex3 < boneCount)
 					res += m_SkinMatrices[bw.boneIndex3].MultiplyPoint3x4(v) * bw.weight3;
-				posSlice[i] = res;
+				*(Vector3*)(basePtr + i * m_VertexStride) = res;
 			}
 
 			InternalEngineBridge.SetDeformableBuffer(m_SpriteRenderer, m_RawVertexBuffer);

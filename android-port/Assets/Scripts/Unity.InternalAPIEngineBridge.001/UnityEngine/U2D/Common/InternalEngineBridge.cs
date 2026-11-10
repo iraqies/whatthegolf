@@ -4,7 +4,7 @@ using UnityEngine.U2D;
 
 namespace UnityEngine.U2D.Common
 {
-	internal static class InternalEngineBridge
+	public static class InternalEngineBridge
 	{
 		public static void SetLocalAABB(SpriteRenderer spriteRenderer, Bounds aabb)
 		{
