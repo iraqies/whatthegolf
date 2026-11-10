@@ -9,9 +9,14 @@ public class FlyingExplosionShooterChangeVelocity : MonoBehaviour
 
 	private void Start()
 	{
+		explosionShooterScript = GetComponent<FlyingExplosionShooter>();
 	}
 
 	public void ChangeVelocity()
 	{
+		if (explosionShooterScript != null)
+		{
+			explosionShooterScript.fullShootVelocity = newMaxVelocity;
+		}
 	}
 }

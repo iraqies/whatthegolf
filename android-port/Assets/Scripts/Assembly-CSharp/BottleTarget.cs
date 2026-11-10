@@ -10,5 +10,6 @@ public class BottleTarget : MonoBehaviour, IHitscanTarget
 
 	public void OnHit(Vector3 point)
 	{
+		OnHitUnityEvent?.Invoke();
 	}
 }

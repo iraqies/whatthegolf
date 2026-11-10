@@ -26,18 +26,50 @@ namespace GolfGames.Pinball
 
 		private void Start()
 		{
+			if (ball != null)
+			{
+				ball.BallInStarterPosition = true;
+			}
 		}
 
 		private void OnTriggerExit2D(Collider2D other)
 		{
+			if (other == null)
+				return;
+
+			if (other.CompareTag("Ground"))
+			{
+				Pinball p = other.gameObject.GetComponent<Pinball>();
+				if (p != null)
+				{
+					p.BallInStarterPosition = false;
+				}
+				CloseShooterPeg();
+			}
 		}
 
 		private void OnTriggerStay2D(Collider2D other)
 		{
+			if (other != null && other.CompareTag("Ground") && peg != null)
+			{
+				peg.SetActive(false);
+			}
 		}
 
 		private void CloseShooterPeg()
 		{
+			if (peg != null)
+			{
+				peg.SetActive(true);
+			}
+			if (arrowPositionTransform != null)
+			{
+				arrowPositionTransform.parent = null;
+				if (arrowPositionAfterShotTransform != null)
+				{
+					arrowPositionTransform.position = arrowPositionAfterShotTransform.position;
+				}
+			}
 		}
 	}
 }

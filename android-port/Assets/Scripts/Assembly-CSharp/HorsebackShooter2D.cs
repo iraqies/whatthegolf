@@ -1,37 +1,52 @@
+using System.Collections.Generic;
 using Core;
 using UnityEngine;
 using Utility;
 
 public class HorsebackShooter2D : GolfBall2DShooterBase
 {
-	public Transform ShootOrigin;
+	public Transform shootTransform;
 
-	public GameObject ProjectilePrefab;
+	public GameObject projectilePrefab;
 
-	public Rigidbody2D Limb;
-
-	public bool rotate;
+	public MinMax forceLimits;
 
 	private ObjectPool<GameObject> projectiles;
 
-	private Rigidbody2D[] childLimbs;
+	private List<Collider> colliders;
 
 	protected override void Awake()
 	{
-	base.Awake();
-	}
-
-	private void Start()
-	{
-	}
-
-	public override void OnAimUpdate(Vector3 boost, bool onlyAimArrow)
-	{
+		base.Awake();
+		colliders = new List<Collider>();
+		GetComponentsInChildren(colliders);
+		if (projectilePrefab != null)
+		{
+			projectiles = new ObjectPool<GameObject>(projectilePrefab, 0, null);
+		}
 	}
 
 	public override void OnShoot(Vector3 boost)
 	{
-	base.OnShoot(boost);
-		StandardShoot(boost, 15f, 5f, 22f, 5f);
+		base.OnShoot(boost);
+		ShootProjectile(boost);
+	}
+
+	private void ShootProjectile(Vector3 boost)
+	{
+		if (shootTransform == null || projectiles == null || forceLimits == null)
+			return;
+
+		GameObject go = projectiles.Get(shootTransform.position, Quaternion.LookRotation(boost), null, true);
+		if (go != null)
+		{
+			SuperGolfBullet bullet = go.GetComponent<SuperGolfBullet>();
+			if (bullet != null)
+			{
+				bullet.BulletPool = projectiles;
+				bullet.SetSpeed(Mathf.Lerp(forceLimits.min, forceLimits.max, boost.magnitude));
+				bullet.previousOwnerColliders = colliders;
+			}
+		}
 	}
 }

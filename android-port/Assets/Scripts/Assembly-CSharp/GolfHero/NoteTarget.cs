@@ -11,10 +11,14 @@ namespace GolfHero
 		{
 			get
 			{
-				return null;
+				return renderer != null ? renderer.sharedMaterial : null;
 			}
 			set
 			{
+				if (renderer != null)
+				{
+					renderer.sharedMaterial = value;
+				}
 			}
 		}
 	}
