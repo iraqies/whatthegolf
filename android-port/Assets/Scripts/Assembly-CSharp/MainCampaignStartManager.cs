@@ -42,7 +42,7 @@ public class MainCampaignStartManager : MonoBehaviour
 			adventureTitleID = pd.pack.TitleID;
 			if (indicator != null && indicatorCriteria != null)
 			{
-				indicator.SetActive(indicatorCriteria.Check(false));
+				indicator.SetActive(indicatorCriteria.DoesUserFit());
 			}
 			UpdateProgress();
 		}

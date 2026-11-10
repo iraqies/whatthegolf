@@ -29,7 +29,7 @@ public class ShowOrHidePlatform : MonoBehaviour
 		{
 			hide = true;
 		}
-		if (isForLeaderboards && RuntimeStoreData.instance.onlineLeaderboardType == PlatformSettings.OnlineLeaderboardType.None)
+		if (isForLeaderboards && RuntimeStoreData.instance.onlineLeaderboardType == Core.PlatformSettings.OnlineLeaderboardType.None)
 		{
 			hide = true;
 		}
