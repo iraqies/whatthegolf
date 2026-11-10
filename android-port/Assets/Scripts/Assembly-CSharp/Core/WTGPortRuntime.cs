@@ -47,6 +47,7 @@ namespace Core
 
 		private void EnsureScenePlayable()
 		{
+			Screen.sleepTimeout = SleepTimeout.NeverSleep;
 			QualitySettings.vSyncCount = 0;
 			if (Application.targetFrameRate < 60)
 				Application.targetFrameRate = 120;
@@ -79,11 +80,14 @@ namespace Core
 					if (cam != null) cam.enabled = false;
 				}
 			}
-			var ctrls = FindObjectsOfType<GolfBallController>();
-			foreach (var c in ctrls)
+			if (!OverworldManager2d.HasInstance)
 			{
-				if (c != null && !c.enabled && c.gameObject.name != "RealClubBall")
-					c.Activate();
+				var ctrls = FindObjectsOfType<GolfBallController>();
+				foreach (var c in ctrls)
+				{
+					if (c != null && !c.enabled && c.gameObject.name != "RealClubBall")
+						c.Activate();
+				}
 			}
 		}
 

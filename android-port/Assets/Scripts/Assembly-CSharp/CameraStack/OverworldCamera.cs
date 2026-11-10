@@ -108,11 +108,9 @@ namespace CameraStack
 
 		private IEnumerator ResetCameraNextFrame()
 		{
-			yield return null;
-			if (resetCamearaSettings != null)
-				OnCameraSettingsChanged(resetCamearaSettings, 1f);
-			else if (defaultSettings != null)
-				OnCameraSettingsChanged(defaultSettings, 1f);
+			yield return new WaitForSeconds(0.1f);
+			if (defaultSettings != null)
+				defaultSettings.SetValue(1f);
 		}
 
 		private void OnCameraSettingsChanged(OverworldCameraSettings settings, float pct)
@@ -142,7 +140,8 @@ namespace CameraStack
 			if (size > 0.1f)
 				ortho.SetOrthoSize(size);
 			float tTween = TweenFunctions.SmoothStep(Mathf.Clamp01(pct * toData.tweenTimtweenTime));
-			ortho.tweenTime = Mathf.Lerp(fromData.tweenTime, toData.tweenTime, tTween);
+			if (toData.tweenTime >= 0f)
+				ortho.tweenTime = Mathf.Lerp(fromData.tweenTime, toData.tweenTime, tTween);
 			ortho.lookAheadDistance = Mathf.Lerp(fromData.lookAhead, toData.lookAhead, t);
 		}
 

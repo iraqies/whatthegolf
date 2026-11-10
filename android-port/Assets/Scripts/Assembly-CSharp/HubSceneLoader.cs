@@ -13,7 +13,7 @@ public class HubSceneLoader : AddressableSingleton<HubSceneLoader>
 	private int _loadCount;
 	private bool _busyLoading;
 
-	public bool HasBeenLoadedBefore => _loadCount > 0;
+	public bool HasBeenLoadedBefore => _loadCount > 1;
 	public bool IsHubBusyLoading => _busyLoading;
 	public bool IsHubLoaded => SceneManager.GetSceneByName("Hub_Overworld").isLoaded;
 

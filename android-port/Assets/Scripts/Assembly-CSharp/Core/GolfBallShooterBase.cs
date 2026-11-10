@@ -65,6 +65,7 @@ namespace Core
 
 		private void GolfBallController_OnShoot(Vector3 obj)
 		{
+			currentStillTime = 0f;
 			lastUnderVelocityShootingThreshold = Time.time - shootThresholdMinimumTime - 1f;
 		}
 
@@ -135,7 +136,7 @@ namespace Core
 				currentStillTime = stillTimeThreshold;
 			}
 
-			bool blocked = (Time.time < lastUnderVelocityShootingThreshold + shootThresholdMinimumTime) && (currentStillTime < stillTimeThreshold);
+			bool blocked = (Time.time >= lastUnderVelocityShootingThreshold + shootThresholdMinimumTime) && (currentStillTime < stillTimeThreshold);
 			if (isblockedIfNotGrounded && GolfBallController != null && !GolfBallController.IsGrounded)
 				blocked = true;
 			return blocked;

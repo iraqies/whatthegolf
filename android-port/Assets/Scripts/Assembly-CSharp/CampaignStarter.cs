@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using Core;
 using UnityEngine;
 
@@ -26,7 +27,7 @@ public class CampaignStarter : BasePackStarter
 		if (pack.campaignType != ECampaignType.None)
 			SaveGame.LastPlayedCampaignType = cType;
 
-		bool needOnboarding = !SaveGame.IsOnboardingComplete && pack.campaignType == ECampaignType.Main;
+		bool needOnboarding = !SaveGame.IsOnboardingComplete && pack.campaignType != ECampaignType.Hub;
 		if (!needOnboarding && section != null)
 		{
 			SaveGame.SavePosition = section.saveSpotId;
@@ -39,23 +40,30 @@ public class CampaignStarter : BasePackStarter
 
 		if (needOnboarding)
 		{
-			if (LevelManager.Exists)
-				yield return StartCoroutine(LevelManager.Instance.StartTransition(Color.black, null, true, false, false, effect, null));
-			if (overworldCaller != null)
-				overworldCaller.ChangeStateToInLevel();
-			var onboarding = FindObjectOfType<Onboarding>();
+			var onboardings = GetComponentsInChildren<Onboarding>(true);
+			var onboarding = onboardings != null ? onboardings.FirstOrDefault(o => o != null && o.CampaignType == pack.campaignType) : null;
+			if (onboarding == null)
+			{
+				var allOnboardings = FindObjectsOfType<Onboarding>();
+				onboarding = allOnboardings.FirstOrDefault(o => o != null && o.CampaignType == pack.campaignType) ?? allOnboardings.FirstOrDefault();
+			}
 			if (onboarding != null)
 			{
+				if (LevelManager.Exists)
+					yield return StartCoroutine(LevelManager.Instance.StartTransition(Color.black, null, true, false, false, effect, null));
+				if (overworldCaller != null)
+					overworldCaller.ChangeStateToInLevel();
 				onboarding.StartOnBoarding(pack, true, LevelAborted, BackFromOnboarding);
 				yield break;
 			}
 		}
 
+		if (overworldCaller != null)
+			overworldCaller.DisableInteraction(false);
 		if (LevelManager.Exists)
 			yield return StartCoroutine(LevelManager.Instance.StartTransition(Color.black, null, false, false, false, effect, null));
 		SaveThrobber.HideThrobber();
-		bool useTunnel = !SaveGame.IsIntroAnimationComplete && pack.campaignType == ECampaignType.Main;
-		OverworldSceneLoader.LoadOverworld(pack, useTunnel);
+		OverworldSceneLoader.LoadOverworld(pack, false);
 		StartCoroutine(WaitAfterLevelLoaded());
 	}
 

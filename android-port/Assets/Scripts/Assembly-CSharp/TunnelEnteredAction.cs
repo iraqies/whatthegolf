@@ -47,5 +47,12 @@ public class TunnelEnteredAction : MonoBehaviour
 
 	private void Update()
 	{
+		if (inTunnel && OverworldManager2d.Instance != null)
+		{
+			if (OverworldManager2d.Instance.IsInteractionDisabled)
+				Tunnel?.Pause();
+			else
+				Tunnel?.Resume();
+		}
 	}
 }

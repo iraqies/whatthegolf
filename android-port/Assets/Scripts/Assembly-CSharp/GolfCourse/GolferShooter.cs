@@ -264,12 +264,16 @@ namespace GolfCourse
 
 			if (hips != null)
 			{
+				rigidbodyC = hips;
 				Vector3 dir = pitched.normalized;
 				float mag = Mathf.Clamp01(pitched.magnitude);
 				float speed = Mathf.Lerp(minVelocity, fullVelocity, mag);
 				hips.AddForce(dir * speed, ForceMode.VelocityChange);
 				hips.AddTorque(Vector3.up * fullSpin, ForceMode.VelocityChange);
 			}
+			lastUnderVelocityShootingThreshold = Time.time - shootThresholdMinimumTime - 1f;
+			hasCollapsed = true;
+			isCollapsing = false;
 		}
 
 		public override void OnReset()
@@ -342,8 +346,6 @@ namespace GolfCourse
 						golfAnimator.SetFloat("Blend", t);
 				}));
 			}
-			hasCollapsed = true;
-			isCollapsing = false;
 			if (GolfBallController != null)
 				GolfBallController.CheckpointHit(oldPosition, oldRotation);
 			if (GolfClub != null)

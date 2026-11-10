@@ -95,7 +95,7 @@ public class Bootstrap : MonoBehaviour
 	private void SetOrientation()
 	{
 		var cfg = PlatformSettings.Instance != null ? PlatformSettings.Instance.GetCurrent() : null;
-		Screen.sleepTimeout = cfg != null ? cfg.SleepTimeout : -1;
+		Screen.sleepTimeout = SleepTimeout.NeverSleep;
 		Screen.autorotateToPortrait = false;
 		Screen.autorotateToPortraitUpsideDown = false;
 		Screen.autorotateToLandscapeLeft = false;

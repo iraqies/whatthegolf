@@ -29,7 +29,7 @@ namespace Core
 			public bool useGyro = true;
 			public bool simulateGyroWithTouchOrMouse = true;
 			public bool flipGyroInput = true;
-			public int SleepTimeout = 200;
+			public int SleepTimeout = UnityEngine.SleepTimeout.NeverSleep;
 			public int FPSOnBattery = 60;
 			public int FPSOnPower = 120;
 			public bool usesKeyboardAndControllerInput = true;
@@ -175,6 +175,7 @@ namespace Core
 				android.useFileSave = true;
 				android.usesKeyboardAndControllerInput = true;
 				android.UseAimMarker = false;
+				android.SleepTimeout = UnityEngine.SleepTimeout.NeverSleep;
 				return android;
 			}
 			if (iPhone != null)

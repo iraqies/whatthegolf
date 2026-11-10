@@ -355,6 +355,10 @@ public class OverworldManager2d : GolfBehaviour
 			orthoFollow.SetFollowTarget(cameraTarget);
 
 		bool introDone = SaveGame.IsIntroAnimationComplete;
+		if (isHub && HubSceneLoader.Instance != null && !HubSceneLoader.Instance.HasBeenLoadedBefore)
+		{
+			introDone = false;
+		}
 		if (!introDone || (isHub && HubSceneLoader.Instance != null && !HubSceneLoader.Instance.HasBeenLoadedBefore))
 		{
 			StartCoroutine(StartOverworldMusicDelayed(0.2f));
