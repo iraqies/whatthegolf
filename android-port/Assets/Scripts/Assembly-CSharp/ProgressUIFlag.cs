@@ -10,9 +10,21 @@ public class ProgressUIFlag : MonoBehaviour
 
 	public void Toggle(bool isCompleted)
 	{
+		if (uncompleted != null)
+		{
+			uncompleted.enabled = !isCompleted;
+		}
+		if (completed != null)
+		{
+			completed.enabled = isCompleted;
+		}
 	}
 
 	public void SetColor(Color color)
 	{
+		if (completed != null)
+		{
+			completed.color = color;
+		}
 	}
 }

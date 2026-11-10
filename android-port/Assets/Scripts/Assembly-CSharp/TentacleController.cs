@@ -16,9 +16,9 @@ public class TentacleController : MonoBehaviour
 
 	public CCDIK Tentacle;
 
-	public float BlockRange;
+	public float BlockRange = 5f;
 
-	public Vector2 BaseWeightRange;
+	public Vector2 BaseWeightRange = new Vector2(0.1f, 0.9f);
 
 	private IEnumerator currentStateRoutine;
 
@@ -27,54 +27,130 @@ public class TentacleController : MonoBehaviour
 
 	private void Start()
 	{
+		StartCoroutine(TentacleRoutine());
 	}
 
 	public void SetState(TentacleStatesEnum newState)
 	{
+		state = newState;
+		currentStateRoutine = GetNextState();
 	}
 
 	public TentacleStatesEnum GetState()
 	{
-		return TentacleStatesEnum.Hidden;
+		return state;
 	}
 
 	private IEnumerator TentacleRoutine()
 	{
-		return null;
+		currentStateRoutine = GetNextState();
+		while (true)
+		{
+			if (currentStateRoutine != null)
+			{
+				yield return StartCoroutine(currentStateRoutine);
+			}
+			else
+			{
+				yield return null;
+			}
+			currentStateRoutine = GetNextState();
+		}
 	}
 
 	private IEnumerator GetNextState()
 	{
-		return null;
+		return state switch
+		{
+			TentacleStatesEnum.Hidden => HiddenState(),
+			TentacleStatesEnum.Appearing => AppearingState(),
+			TentacleStatesEnum.Idle => IdleState(),
+			TentacleStatesEnum.Obstacle => ObstacleRoutine(),
+			TentacleStatesEnum.Blocking => BlockingState(),
+			TentacleStatesEnum.Sinking => SinkState(),
+			_ => IdleState(),
+		};
 	}
 
 	private IEnumerator AppearingState()
 	{
-		return null;
+		float t = 0f;
+		while (t < 1f)
+		{
+			t += Time.deltaTime;
+			if (Tentacle != null && Tentacle.solver != null)
+			{
+				Tentacle.solver.IKPositionWeight = Mathf.Lerp(0f, BaseWeightRange.y, t);
+			}
+			yield return null;
+		}
+		state = TentacleStatesEnum.Idle;
 	}
 
 	private IEnumerator ObstacleRoutine()
 	{
-		return null;
+		float timer = 0f;
+		while (state == TentacleStatesEnum.Obstacle)
+		{
+			timer += Time.deltaTime;
+			if (Tentacle != null && Tentacle.solver != null)
+			{
+				Tentacle.solver.IKPositionWeight = Mathf.Lerp(BaseWeightRange.x, BaseWeightRange.y, (Mathf.Sin(timer * 2f) + 1f) * 0.5f);
+			}
+			yield return null;
+		}
 	}
 
 	private IEnumerator IdleState()
 	{
-		return null;
+		float timer = 0f;
+		while (state == TentacleStatesEnum.Idle)
+		{
+			timer += Time.deltaTime;
+			if (Tentacle != null && Tentacle.solver != null)
+			{
+				Tentacle.solver.IKPositionWeight = Mathf.Lerp(BaseWeightRange.x, BaseWeightRange.y, (Mathf.Sin(timer * 1.5f) + 1f) * 0.5f);
+			}
+			yield return null;
+		}
 	}
 
 	private IEnumerator HiddenState()
 	{
-		return null;
+		if (Tentacle != null && Tentacle.solver != null)
+		{
+			Tentacle.solver.IKPositionWeight = 0f;
+		}
+		while (state == TentacleStatesEnum.Hidden)
+		{
+			yield return null;
+		}
 	}
 
 	private IEnumerator BlockingState()
 	{
-		return null;
+		if (Tentacle != null && Tentacle.solver != null)
+		{
+			Tentacle.solver.IKPositionWeight = 1f;
+		}
+		while (state == TentacleStatesEnum.Blocking)
+		{
+			yield return null;
+		}
 	}
 
 	private IEnumerator SinkState()
 	{
-		return null;
+		float t = 0f;
+		while (t < 1f)
+		{
+			t += Time.deltaTime;
+			if (Tentacle != null && Tentacle.solver != null)
+			{
+				Tentacle.solver.IKPositionWeight = Mathf.Lerp(BaseWeightRange.y, 0f, t);
+			}
+			yield return null;
+		}
+		state = TentacleStatesEnum.Hidden;
 	}
 }

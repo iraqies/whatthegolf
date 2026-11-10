@@ -21,11 +21,11 @@ public class BusFight : MonoBehaviour
 
 	public Rigidbody car;
 
-	public float curveWidth;
+	public float curveWidth = 4f;
 
-	public float speed;
+	public float speed = 12f;
 
-	public float distance;
+	public float distance = 15f;
 
 	private BusFightPlayer player;
 
@@ -39,7 +39,7 @@ public class BusFight : MonoBehaviour
 
 	private bool isDriving;
 
-	private float xMovementMultiplier;
+	private float xMovementMultiplier = 1f;
 
 	private float moveDistanceForSineMovement;
 
@@ -49,51 +49,122 @@ public class BusFight : MonoBehaviour
 
 	private float nextObstacleHit;
 
-	private float hitMultiplier;
+	private float hitMultiplier = 1f;
 
 	private IEnumerator Start()
 	{
-		return null;
+		busPosition = car != null ? car.position : transform.position;
+		if (controller != null)
+		{
+			player = controller.GetComponent<BusFightPlayer>();
+			carController = controller.GetComponent<GolfCarShooter>();
+			controller.OnBallShot += HandleOnShoot;
+		}
+		if (player != null)
+		{
+			player.OnExploded += Player_OnExploded;
+			player.OnHitObstacle += Player_OnHitObstacle;
+		}
+		yield return StartCoroutine(BossRoutine());
 	}
 
 	private void Player_OnExploded(float obj)
 	{
+		StartCoroutine(FailDelayed());
 	}
 
 	private IEnumerator FailDelayed()
 	{
-		return null;
+		yield return new WaitForSeconds(1.5f);
+		if (Level.Instance != null)
+		{
+			Level.Instance.FailLevel(false);
+		}
 	}
 
 	private void Player_OnHitObstacle(float extraSpeedOnObstacleCollision)
 	{
+		if (Time.time >= nextObstacleHit)
+		{
+			nextObstacleHit = Time.time + 0.5f;
+			hitMultiplier = Mathf.Clamp(hitMultiplier + 0.25f, 1f, 2.5f);
+		}
 	}
 
 	private void HandleOnShoot(Vector3 obj)
 	{
+		isDriving = true;
 	}
 
 	private IEnumerator BossRoutine()
 	{
-		return null;
+		currentSpeed = speed;
+		isDriving = true;
+		if (busParts != null)
+		{
+			for (int i = 0; i < busParts.Count; i++)
+			{
+				currentPart = busParts[i];
+				if (currentPart != null)
+				{
+					currentPart.player = player;
+					yield return StartCoroutine(currentPart.AttackRoutine());
+					yield return StartCoroutine(currentPart.Dettach());
+				}
+			}
+		}
+		isEndAnimation = true;
+		if (finalExplosions != null)
+		{
+			finalExplosions.ExplodeAllSmaller();
+		}
+		if (catdoll != null)
+		{
+			catdoll.SetRagdoll(true);
+		}
+		if (greenWithFlag != null && car != null)
+		{
+			greenWithFlag.position = car.position + Vector3.forward * 10f;
+			greenWithFlag.gameObject.SetActive(true);
+		}
+		isDriving = false;
 	}
 
 	private float GetXMovementFromZ(float z, bool useXmovementMultiplier = true)
 	{
-		return 0f;
+		float mult = useXmovementMultiplier ? xMovementMultiplier : 1f;
+		return Mathf.Sin(z * 0.05f) * curveWidth * mult;
 	}
 
 	private float GetMoveDistanceFromForward(float forward)
 	{
-		return 0f;
+		return forward * currentSpeed * Time.deltaTime;
 	}
 
 	public Vector3 GetBusPositionForOffsetZ(float zOffset, bool useXmovementMultiplier = true)
 	{
-		return default;
+		float z = busPosition.z + zOffset;
+		float x = GetXMovementFromZ(z, useXmovementMultiplier);
+		return new Vector3(x, busPosition.y, z);
 	}
 
 	private void Update()
 	{
+		if (!isDriving || isEndAnimation)
+		{
+			return;
+		}
+		float partMult = currentPart != null ? currentPart.speedMultiplier : 1f;
+		float step = GetMoveDistanceFromForward(partMult);
+		busPosition.z += step;
+		busPosition.x = GetXMovementFromZ(busPosition.z, true);
+		if (car != null)
+		{
+			car.MovePosition(busPosition);
+		}
+		if (backwallPusher != null)
+		{
+			backwallPusher.MovePosition(GetBusPositionForOffsetZ(-distance, true));
+		}
 	}
 }

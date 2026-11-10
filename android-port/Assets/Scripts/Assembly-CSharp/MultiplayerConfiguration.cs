@@ -13,9 +13,9 @@ public class MultiplayerConfiguration
 
 		public CameraManager Cam;
 
-		public List<GolfBallController> Controllers;
+		public List<GolfBallController> Controllers = new List<GolfBallController>();
 
-		public List<GameObject> ControllerContainer;
+		public List<GameObject> ControllerContainer = new List<GameObject>();
 
 		public int Strokes;
 
@@ -23,7 +23,7 @@ public class MultiplayerConfiguration
 
 		public GameObject BallToSpawn;
 
-		public Stopwatch TimeSpent;
+		public Stopwatch TimeSpent = new Stopwatch();
 
 		public PlayerColors.AvatarData Avatar;
 
@@ -35,14 +35,20 @@ public class MultiplayerConfiguration
 
 		public bool ArenaLooser;
 
-		public string DisplayName => null;
+		public string DisplayName => Avatar != null && !string.IsNullOrEmpty(Avatar.NameID) ? Avatar.NameID : "Player " + (InputIndex + 1);
 
 		public void Reset()
 		{
+			Strokes = 0;
+			FinishedCurrentLevel = false;
+			ArenaLooser = false;
+			TimeSpent?.Reset();
+			Controllers?.Clear();
+			ControllerContainer?.Clear();
 		}
 	}
 
-	public List<PlayerInfo> Players;
+	public List<PlayerInfo> Players = new List<PlayerInfo>();
 
 	public int LevelsLeft;
 
@@ -50,11 +56,37 @@ public class MultiplayerConfiguration
 
 	public PlayerInfo AddPlayer(MultiplayerLobby.LobbyPlayer player)
 	{
-		return null;
+		if (player == null)
+		{
+			return null;
+		}
+		if (Players == null)
+		{
+			Players = new List<PlayerInfo>();
+		}
+		PlayerInfo info = new PlayerInfo
+		{
+			InputIndex = player.PlayerIndex,
+			Avatar = player.Avatar,
+			Side = player.SpawnPointUsed != null ? player.SpawnPointUsed.Position : LobbySpawnPoint.SpawnPointPositions.Left
+		};
+		Players.Add(info);
+		return info;
 	}
 
 	public PlayerInfo GetPlayerWithIndex(int index)
 	{
+		if (Players == null)
+		{
+			return null;
+		}
+		for (int i = 0; i < Players.Count; i++)
+		{
+			if (Players[i] != null && Players[i].InputIndex == index)
+			{
+				return Players[i];
+			}
+		}
 		return null;
 	}
 }
