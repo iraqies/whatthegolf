@@ -4,6 +4,7 @@ namespace Audio
 	{
 		private void Update()
 		{
+			SetValue();
 		}
 
 		protected override void SetValue()

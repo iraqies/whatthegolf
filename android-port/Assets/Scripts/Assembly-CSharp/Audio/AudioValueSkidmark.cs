@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Audio
 {
 	public class AudioValueSkidmark : BaseAudioValue
@@ -10,31 +12,46 @@ namespace Audio
 
 		private float smoothVelocity;
 
-		protected override bool Use2D => false;
+		protected override bool Use2D => true;
 
 		private void OnEnable()
 		{
+			if (skidmarks != null)
+			{
+				skidmarks.onCreateSkidmark -= OnCreateSkidmark;
+				skidmarks.onCreateSkidmark += OnCreateSkidmark;
+			}
 		}
 
 		private void OnDisable()
 		{
+			if (skidmarks != null)
+				skidmarks.onCreateSkidmark -= OnCreateSkidmark;
 		}
 
 		public override string ValueInputName()
 		{
-			return null;
+			return "Skidmark";
 		}
 
 		private void OnCreateSkidmark(float v)
 		{
+			if (smoothTime > 0f)
+				value = Mathf.SmoothDamp(value, v, ref smoothVelocity, smoothTime);
+			else
+				value = v;
+			SetValue();
 		}
 
 		private void LateUpdate()
 		{
+			value = Mathf.SmoothDamp(value, 0f, ref smoothVelocity, smoothTime);
+			SetValue();
 		}
 
 		protected override void SetValue()
 		{
+			base.SetValue();
 		}
 	}
 }

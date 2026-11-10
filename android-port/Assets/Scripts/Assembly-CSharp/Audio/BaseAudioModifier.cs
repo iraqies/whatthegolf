@@ -24,6 +24,17 @@ namespace Audio
 
 		protected void Initialize()
 		{
+			if (source == null)
+				source = GetComponent<AudioSource>();
+			if (modifier == null)
+				modifier = GetComponent<BaseAudioValue>();
+			if (modifier != null)
+			{
+				modifier.onValueChange -= OnValueChange;
+				modifier.onValueChange += OnValueChange;
+			}
+			if (source == null)
+				source = GetComponent<AudioSource>();
 		}
 
 		protected virtual void OnValueChange(float _value)

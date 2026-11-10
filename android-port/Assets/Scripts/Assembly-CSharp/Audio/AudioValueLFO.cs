@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Audio
 {
 	public class AudioValueLFO : BaseAudioValue
@@ -12,7 +14,7 @@ namespace Audio
 
 		public AudioValueMapper Affector;
 
-		public bool isOn;
+		public bool isOn = true;
 
 		public float rate;
 
@@ -28,19 +30,35 @@ namespace Audio
 
 		private void Update()
 		{
+			if (isOn)
+				SetValue();
 		}
 
 		public override string ValueInputName()
 		{
-			return null;
+			return "LFO";
 		}
 
 		protected override void Initialize()
 		{
+			if (Affector != null)
+				Affector.Init();
 		}
 
 		protected override void SetValue()
 		{
+			if (useAffector && Affector != null)
+			{
+				m_depth = depth * Affector.value;
+				m_rate = rate * Affector.value;
+			}
+			else
+			{
+				m_depth = depth;
+				m_rate = rate;
+			}
+			value = m_depth * Mathf.Sin(Time.time * m_rate);
+			base.SetValue();
 		}
 	}
 }

@@ -14,10 +14,24 @@ namespace Audio
 
 		private void OnEnable()
 		{
+			if (controller != null)
+			{
+				controller.OnAimStart += OnAimStart;
+				controller.OnAimUpdate += OnAimUpdate;
+				controller.OnPreShoot += OnAimShoot;
+				controller.OnCancel += OnAimCancel;
+			}
 		}
 
 		private void OnDisable()
 		{
+			if (controller != null)
+			{
+				controller.OnAimStart -= OnAimStart;
+				controller.OnAimUpdate -= OnAimUpdate;
+				controller.OnPreShoot -= OnAimShoot;
+				controller.OnCancel -= OnAimCancel;
+			}
 		}
 
 		private void OnAimStart()
@@ -26,6 +40,9 @@ namespace Audio
 
 		private void OnAimUpdate(Vector3 boost, bool arg2)
 		{
+			this.boost = boost;
+			SetValue();
+			lastBoost = boost;
 		}
 
 		private void OnAimShoot(Vector3 boost)

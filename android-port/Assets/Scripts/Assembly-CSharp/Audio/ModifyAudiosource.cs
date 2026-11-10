@@ -8,6 +8,8 @@ namespace Audio
 
 		public override void Initialize()
 		{
+			if (source == null)
+				source = GetComponent<AudioSource>();
 		}
 	}
 }

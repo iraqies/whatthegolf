@@ -6,6 +6,8 @@ namespace Audio
 
 		protected override void UpdateModifier()
 		{
+			if (source != null)
+				source.pitch = output + basePitch;
 		}
 	}
 }

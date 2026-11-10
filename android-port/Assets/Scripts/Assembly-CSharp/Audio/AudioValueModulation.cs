@@ -7,7 +7,7 @@ namespace Audio
 	{
 		public AnimationCurve Curve;
 
-		public float phaseDuration;
+		public float phaseDuration = 1f;
 
 		public bool maxToMin;
 
@@ -27,19 +27,36 @@ namespace Audio
 
 		private void Update()
 		{
+			if (canSelfTrigger && Time.time > m_nextModulation)
+				StartModulation();
 		}
 
 		public override string ValueInputName()
 		{
-			return null;
+			return "Modulation";
 		}
 
 		public void TriggerModulation()
 		{
+			StartModulation();
 		}
 
 		private void StartModulation()
 		{
+			m_nextModulation = Time.time + UnityEngine.Random.Range(cooldownMin, cooldownMax);
+			m_modulating = true;
+			float from = maxToMin ? 1f : 0f;
+			float to = maxToMin ? 0f : 1f;
+			StartCoroutine(pTween.To(phaseDuration, from, to, t =>
+			{
+				if (Curve != null)
+					value = Curve.Evaluate(t);
+				SetValue();
+			}).Then(() =>
+			{
+				m_modulating = false;
+				OnModulationComplete?.Invoke();
+			}));
 		}
 	}
 }

@@ -110,7 +110,7 @@ public class BlockShotIfNotGrounded : MonoBehaviour
 				{
 					if (controller != null)
 					{
-						controller.canShoot = false;
+						controller.BlockShooting = false;
 						isBlocked = controller.BlockShooting;
 					}
 				}
@@ -123,7 +123,7 @@ public class BlockShotIfNotGrounded : MonoBehaviour
 			{
 				if (controller != null)
 				{
-					controller.canShoot = true;
+					controller.BlockShooting = true;
 					isBlocked = controller.BlockShooting;
 				}
 				frameCount = 0;
@@ -135,7 +135,7 @@ public class BlockShotIfNotGrounded : MonoBehaviour
 			{
 				if (controller != null)
 				{
-					controller.canShoot = true;
+					controller.BlockShooting = true;
 					isBlocked = controller.BlockShooting;
 				}
 				frameCount = 0;
@@ -143,7 +143,7 @@ public class BlockShotIfNotGrounded : MonoBehaviour
 			{
 				if (controller != null)
 				{
-					controller.canShoot = false;
+					controller.BlockShooting = false;
 					isBlocked = controller.BlockShooting;
 				}
 			});

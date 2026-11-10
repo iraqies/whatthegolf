@@ -10,9 +10,12 @@ public class AudioLowPassToTimeScale : MonoBehaviour
 
 	private void Awake()
 	{
+		filter = GetComponent<AudioLowPassFilter>();
 	}
 
 	private void Update()
 	{
+		if (filter == null) return;
+		filter.cutoffFrequency = normalAmount - slowDownAmount * (1f - Time.timeScale);
 	}
 }
