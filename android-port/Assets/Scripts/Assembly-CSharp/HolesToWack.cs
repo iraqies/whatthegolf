@@ -32,7 +32,7 @@ public class HolesToWack : MonoBehaviour
 	private GolfGoal finalFlag;
 
 	[SerializeField]
-	private float paritcleEmissionMod;
+	private float paritcleEmissionMod = 1f;
 
 	[SerializeField]
 	private GameObject finalHole;
@@ -41,7 +41,7 @@ public class HolesToWack : MonoBehaviour
 	private List<ActionAfterDelay> actions;
 
 	[SerializeField]
-	private Vector2 StayUpDurationRange;
+	private Vector2 StayUpDurationRange = new Vector2(1.5f, 3f);
 
 	[SerializeField]
 	private ParticleSystem HitParticles;
@@ -60,14 +60,40 @@ public class HolesToWack : MonoBehaviour
 
 	private void Awake()
 	{
+		if (finalHole != null)
+		{
+			finalHole.SetActive(false);
+		}
 	}
 
 	private void Start()
 	{
+		if (holes != null && holes.Count > 0)
+		{
+			swap = StartCoroutine(Swap());
+		}
 	}
 
 	private void GoUp(Hole h)
 	{
+		if (h.HoleAnimator != null)
+		{
+			h.HoleAnimator.SetTrigger("Up");
+		}
+		if (thingsInHolePrefab != null && thingsInHolePrefab.Count > 0 && h.HoleTransform != null)
+		{
+			currentThingIndex = UnityEngine.Random.Range(0, thingsInHolePrefab.Count);
+			GameObject prefab = thingsInHolePrefab[currentThingIndex];
+			if (prefab != null)
+			{
+				if (currentThing != null)
+				{
+					UnityEngine.Object.Destroy(currentThing);
+				}
+				currentThing = UnityEngine.Object.Instantiate(prefab, h.HoleTransform.transform.position, Quaternion.identity, h.HoleTransform.transform);
+				currentThing.SetActive(true);
+			}
+		}
 	}
 
 	private void LateUpdate()
@@ -76,18 +102,69 @@ public class HolesToWack : MonoBehaviour
 
 	private IEnumerator Swap()
 	{
-		return null;
+		while (!final && holes != null && holes.Count > 0)
+		{
+			currentIndex = UnityEngine.Random.Range(0, holes.Count);
+			Hole h = holes[currentIndex];
+			GoUp(h);
+			stayUpTimer = UnityEngine.Random.Range(StayUpDurationRange.x, StayUpDurationRange.y);
+			yield return new WaitForSeconds(Mathf.Max(0.5f, stayUpTimer));
+			if (h.HoleAnimator != null)
+			{
+				h.HoleAnimator.SetTrigger("Down");
+			}
+			yield return new WaitForSeconds(0.5f);
+		}
 	}
 
 	public void ActivateFinalHole()
 	{
+		final = true;
+		if (swap != null)
+		{
+			StopCoroutine(swap);
+		}
+		if (finalHole != null)
+		{
+			finalHole.SetActive(true);
+		}
+		if (finalFlag != null)
+		{
+			finalFlag.gameObject.SetActive(true);
+		}
 	}
 
 	public void HasBeenWhacked()
 	{
+		if (HitParticles != null)
+		{
+			HitParticles.Play();
+		}
+		if (DizzySystem != null)
+		{
+			DizzySystem.Play();
+		}
+		if (ticker != null)
+		{
+			ticker.Tick();
+			if (ticker.Progress() >= 1f)
+			{
+				ActivateFinalHole();
+			}
+		}
 	}
 
 	public void TweenLight()
 	{
+		if (actions != null)
+		{
+			for (int i = 0; i < actions.Count; i++)
+			{
+				if (actions[i] != null)
+				{
+					actions[i].DoAction();
+				}
+			}
+		}
 	}
 }

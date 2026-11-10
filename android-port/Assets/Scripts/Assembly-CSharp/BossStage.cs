@@ -22,29 +22,29 @@ public class BossStage : MonoBehaviour
 	[SerializeField]
 	private CinemachineVirtualCamera virtualCameraBehaviourMobile;
 
-	public float gravity;
+	public float gravity = -9.81f;
 
-	public float wheelParticlesGravityMultiplier;
+	public float wheelParticlesGravityMultiplier = 1f;
 
 	public bool MoveStageToBoss;
 
 	public List<BossIslandPart> StageIslands;
 
-	public int IslandsToPrepare;
+	public int IslandsToPrepare = 2;
 
-	public float InitialDistanceBuffer;
+	public float InitialDistanceBuffer = 10f;
 
 	public bool GoNearNextEndPointOnStart;
 
-	public bool InitCamera;
+	public bool InitCamera = true;
 
 	public float DelayCameraBehaviourBlendTime;
 
-	public float AimTimeScale;
+	public float AimTimeScale = 0.2f;
 
-	public float UpSpeed;
+	public float UpSpeed = 5f;
 
-	public float DownSpeed;
+	public float DownSpeed = 5f;
 
 	public bool ShowVisualEffect;
 
@@ -75,10 +75,12 @@ public class BossStage : MonoBehaviour
 		[CompilerGenerated]
 		add
 		{
+			m_OnChallengeIntro = (Action<IEnumerator>)Delegate.Combine(m_OnChallengeIntro, value);
 		}
 		[CompilerGenerated]
 		remove
 		{
+			m_OnChallengeIntro = (Action<IEnumerator>)Delegate.Remove(m_OnChallengeIntro, value);
 		}
 	}
 
@@ -87,10 +89,12 @@ public class BossStage : MonoBehaviour
 		[CompilerGenerated]
 		add
 		{
+			m_OnChallengeBegin = (Action)Delegate.Combine(m_OnChallengeBegin, value);
 		}
 		[CompilerGenerated]
 		remove
 		{
+			m_OnChallengeBegin = (Action)Delegate.Remove(m_OnChallengeBegin, value);
 		}
 	}
 
@@ -99,10 +103,12 @@ public class BossStage : MonoBehaviour
 		[CompilerGenerated]
 		add
 		{
+			m_OnChallengeEnd = (Action)Delegate.Combine(m_OnChallengeEnd, value);
 		}
 		[CompilerGenerated]
 		remove
 		{
+			m_OnChallengeEnd = (Action)Delegate.Remove(m_OnChallengeEnd, value);
 		}
 	}
 
@@ -111,34 +117,70 @@ public class BossStage : MonoBehaviour
 		[CompilerGenerated]
 		add
 		{
+			m_OnChallengeUpdate = (Action)Delegate.Combine(m_OnChallengeUpdate, value);
 		}
 		[CompilerGenerated]
 		remove
 		{
+			m_OnChallengeUpdate = (Action)Delegate.Remove(m_OnChallengeUpdate, value);
 		}
 	}
 
 	public void SetupBeforePlay(Vector3 lastGoalPosition)
 	{
+		if (MoveStageToBoss)
+		{
+			transform.position = lastGoalPosition;
+		}
+		goalPosition = transform.position;
 	}
 
 	public IEnumerator Play(BossStageSpawnPlayer eggSpawner)
 	{
-		return null;
+		gameObject.SetActive(true);
+		if (eggSpawner != null && Egg != null)
+		{
+			yield return StartCoroutine(eggSpawner.SpawnPlayer(Egg));
+		}
+		m_OnChallengeBegin?.Invoke();
+		GolfGoal stageGoal = GetComponentInChildren<GolfGoal>(true);
+		bool stageDone = false;
+		if (stageGoal != null)
+		{
+			stageGoal.OnComplete += _ =>
+			{
+				goalPosition = stageGoal.transform.position;
+				stageDone = true;
+			};
+			while (!stageDone)
+			{
+				m_OnChallengeUpdate?.Invoke();
+				yield return null;
+			}
+		}
+		m_OnChallengeEnd?.Invoke();
 	}
 
 	public Vector3 GetGoalPosition()
 	{
-		return default;
+		return goalPosition;
 	}
 
 	public CameraBehaviorPerspective GetCameraBehaviour()
 	{
-		return null;
+		if (Application.isMobilePlatform && cameraBehaviourMobile != null)
+		{
+			return cameraBehaviourMobile;
+		}
+		return cameraBehaviour != null ? cameraBehaviour : cameraBehaviourMobile;
 	}
 
 	public CinemachineVirtualCamera GetVirtualCameraBehaviour()
 	{
-		return null;
+		if (Application.isMobilePlatform && virtualCameraBehaviourMobile != null)
+		{
+			return virtualCameraBehaviourMobile;
+		}
+		return virtualCameraBehaviour != null ? virtualCameraBehaviour : virtualCameraBehaviourMobile;
 	}
 }

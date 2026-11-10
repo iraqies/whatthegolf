@@ -13,9 +13,19 @@ public class Replayer : MonoBehaviour
 
 	private void Update()
 	{
+		if (Snapshots == null || Snapshots.Count == 0)
+		{
+			return;
+		}
+		if (Recorder.Snapshot.TryGetInterpolatedSnapshot(Snapshots, out Recorder.Snapshot snap, TimeTravelController.CurrentTime))
+		{
+			transform.position = snap.Position;
+			transform.rotation = snap.Rotation;
+		}
 	}
 
 	public void Reset()
 	{
+		TimeLineOver = false;
 	}
 }

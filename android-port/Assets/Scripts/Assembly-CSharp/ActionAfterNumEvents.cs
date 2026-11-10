@@ -4,7 +4,7 @@ using UnityEngine.Events;
 public class ActionAfterNumEvents : MonoBehaviour
 {
 	[SerializeField]
-	private int NumTicks;
+	private int NumTicks = 1;
 
 	[SerializeField]
 	private UnityEvent m_Event;
@@ -13,15 +13,24 @@ public class ActionAfterNumEvents : MonoBehaviour
 
 	public float Progress()
 	{
-		return 0f;
+		if (NumTicks <= 0)
+		{
+			return 1f;
+		}
+		return Mathf.Clamp01((float)ticks / NumTicks);
 	}
 
 	public int TotalTicks()
 	{
-		return 0;
+		return NumTicks;
 	}
 
 	public void Tick()
 	{
+		ticks++;
+		if (ticks >= Mathf.Max(1, NumTicks))
+		{
+			m_Event?.Invoke();
+		}
 	}
 }

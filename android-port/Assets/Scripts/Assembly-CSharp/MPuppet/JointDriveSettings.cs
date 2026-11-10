@@ -14,14 +14,19 @@ namespace MPuppet
 
 		public JointDriveSettings(float positionSpring, float positionDamper, float maximumForce)
 		{
-			this.positionSpring = 0f;
-			this.positionDamper = 0f;
-			this.maximumForce = 0f;
+			this.positionSpring = positionSpring;
+			this.positionDamper = positionDamper;
+			this.maximumForce = maximumForce;
 		}
 
 		public JointDrive GetJointDrive()
 		{
-			return default;
+			return new JointDrive
+			{
+				positionSpring = positionSpring,
+				positionDamper = positionDamper,
+				maximumForce = maximumForce
+			};
 		}
 	}
 }

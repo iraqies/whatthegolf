@@ -4,18 +4,18 @@ namespace Arena
 {
 	public class ArenaDroppableRock : ArenaDroppable
 	{
-		public float sphereCheckRadius;
+		public float sphereCheckRadius = 1.5f;
 
 		public GameObject[] CliffObjects;
 
 		protected override void Awake()
-	{
-		base.Awake();
-	}
+		{
+			base.Awake();
+		}
 
 		public override Collider[] GetHitColliders()
 		{
-			return null;
+			return Physics.OverlapSphere(transform.position, Mathf.Max(0.25f, sphereCheckRadius));
 		}
 
 		private void OnDrawGizmosSelected()
