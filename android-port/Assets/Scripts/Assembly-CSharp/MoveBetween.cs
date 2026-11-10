@@ -43,7 +43,7 @@ public class MoveBetween : MonoBehaviour
 		}
 		if (shooter != null)
 		{
-			shooter.OnShoot += Shooter_OnShoot;
+			shooter.OnShootEvent += Shooter_OnShoot;
 		}
 	}
 

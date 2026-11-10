@@ -55,7 +55,7 @@ public class Game : MonoBehaviour
 	{
 		if (speechBubble != null)
 		{
-			speechBubble.Show(text, speechBubble.transform.position, null, null, null, Vector2.up, false);
+			speechBubble.Show(text, speechBubble.transform.position, null, null, Vector2.up, false, null);
 		}
 	}
 
@@ -101,8 +101,9 @@ public class Game : MonoBehaviour
 			if (speechBubble != null)
 				speechBubble.Hide(true);
 			var conv = levels[0].dialogStart.NewConversation();
-			if (conv != null && conv.MoveNext() && conv.Current != null)
-				ShowSpeechBubble(conv.Current.text);
+			var info = conv != null ? conv.GetText() : null;
+			if (info != null)
+				ShowSpeechBubble(info.ID);
 			if (faceAnim != null)
 				faceAnim.SetBool("IsTalking", true);
 			nextLostSpeechBubbleTime = Time.time;
@@ -118,8 +119,9 @@ public class Game : MonoBehaviour
 				if (speechBubble != null)
 					speechBubble.Hide(true);
 				var conv = levels[i].dialogStart.NewConversation();
-				if (conv != null && conv.MoveNext() && conv.Current != null)
-					ShowSpeechBubble(conv.Current.text);
+				var info = conv != null ? conv.GetText() : null;
+				if (info != null)
+					ShowSpeechBubble(info.ID);
 				if (faceAnim != null)
 					faceAnim.SetBool("IsTalking", true);
 				ResetLostSpeechBubbleTimeout();
@@ -156,7 +158,7 @@ public class Game : MonoBehaviour
 			BallShooter shooter = curLevel.GetComponentInChildren<BallShooter>(true);
 
 			if (shooter != null && controllerToggler != null)
-				controllerToggler.OtherController = shooter.GolfBallController;
+				controllerToggler.OtherController = shooter.GetOwner();
 
 			Vector3 startPos = shooter != null ? shooter.transform.position : Vector3.zero;
 
@@ -227,10 +229,10 @@ public class Game : MonoBehaviour
 				yield return null;
 			}
 
-			if (shooter != null && shooter.GolfBallController != null)
+			if (shooter != null && shooter.GetOwner() != null)
 			{
-				shooter.GolfBallController.CancelShooting();
-				shooter.GolfBallController.enabled = false;
+				shooter.GetOwner().CancelShooting();
+				shooter.GetOwner().enabled = false;
 			}
 
 			bool starTransDone = false;
@@ -255,8 +257,9 @@ public class Game : MonoBehaviour
 					if (speechBubble != null)
 						speechBubble.Hide(true);
 					var conv = levels[i].dialogLose.NewConversation();
-					if (conv != null && conv.MoveNext() && conv.Current != null)
-						ShowSpeechBubble(conv.Current.text);
+					var info = conv != null ? conv.GetText() : null;
+					if (info != null)
+						ShowSpeechBubble(info.ID);
 					if (faceAnim != null)
 						faceAnim.SetBool("IsTalking", true);
 					ResetLostSpeechBubbleTimeout();
@@ -279,7 +282,7 @@ public class Game : MonoBehaviour
 		if (level == null && Level.HasInstance)
 			level = Level.Instance;
 		if (level != null)
-			level.ForceCompletion(0f);
+			level.Complete("", 0f);
 	}
 
 	private void OnShoot(Vector2 boost)

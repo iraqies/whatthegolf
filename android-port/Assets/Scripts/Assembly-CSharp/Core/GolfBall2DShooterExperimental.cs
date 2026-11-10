@@ -25,19 +25,19 @@ namespace Core
 		public override void OnActivate()
 		{
 			base.OnActivate();
-			if (rb != null)
+			if (rigid != null)
 			{
-				rb.isKinematic = false;
+				rigid.isKinematic = false;
 			}
 		}
 
 		public override void OnAimUpdate(Vector3 boost, bool onlyAimArrow)
 		{
 			base.OnAimUpdate(boost, onlyAimArrow);
-			if (lookInAimDirection && rb != null)
+			if (lookInAimDirection && rigid != null)
 			{
 				float angle = Vector2.SignedAngle(Vector2.up, new Vector2(boost.x, boost.y));
-				rb.MoveRotation(angle);
+				rigid.MoveRotation(angle);
 			}
 		}
 

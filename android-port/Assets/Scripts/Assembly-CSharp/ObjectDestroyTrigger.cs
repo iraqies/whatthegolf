@@ -12,16 +12,16 @@ public class ObjectDestroyTrigger : ObjectDestroyable
 		{
 			return;
 		}
-		if (Objects != null && Objects.Contains(other.gameObject))
+		if (destroyableObjects != null && destroyableObjects.Contains(other.gameObject))
 		{
-			OnObjectDestroyed?.Invoke(other.gameObject);
+			onDestroyObject?.Invoke(other.gameObject);
 			other.gameObject.SetActive(false);
 		}
 		else if (destroyAnyObject && (onlyWithTag == "" || other.gameObject.CompareTag(onlyWithTag)))
 		{
 			Rigidbody rb = other.GetComponentInParent<Rigidbody>();
 			GameObject target = ((rb != null) ? rb.gameObject : other.gameObject);
-			OnObjectDestroyed?.Invoke(target);
+			onDestroyObject?.Invoke(target);
 			target.SetActive(false);
 		}
 	}
@@ -32,16 +32,16 @@ public class ObjectDestroyTrigger : ObjectDestroyable
 		{
 			return;
 		}
-		if (Objects != null && Objects.Contains(other.gameObject))
+		if (destroyableObjects != null && destroyableObjects.Contains(other.gameObject))
 		{
-			OnObjectDestroyed?.Invoke(other.gameObject);
+			onDestroyObject?.Invoke(other.gameObject);
 			other.gameObject.SetActive(false);
 		}
 		else if (destroyAnyObject && (onlyWithTag == "" || other.gameObject.CompareTag(onlyWithTag)))
 		{
 			Rigidbody2D rb = other.GetComponentInParent<Rigidbody2D>();
 			GameObject target = ((rb != null) ? rb.gameObject : other.gameObject);
-			OnObjectDestroyed?.Invoke(target);
+			onDestroyObject?.Invoke(target);
 			target.SetActive(false);
 		}
 	}

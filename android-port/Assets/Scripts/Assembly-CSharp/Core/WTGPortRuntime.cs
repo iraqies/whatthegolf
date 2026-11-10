@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 namespace Core
@@ -18,6 +19,16 @@ namespace Core
 
 		private void Awake()
 		{
+			if (_instance != null && _instance != this)
+			{
+				Destroy(gameObject);
+				return;
+			}
+			_instance = this;
+			DontDestroyOnLoad(gameObject);
+			QualitySettings.vSyncCount = 0;
+			QualitySettings.antiAliasing = 0;
+			Application.targetFrameRate = 120;
 			Screen.sleepTimeout = SleepTimeout.NeverSleep;
 			SceneManager.sceneLoaded += OnSceneLoaded;
 			EnsureScenePlayable();
@@ -30,41 +41,42 @@ namespace Core
 
 		private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
 		{
+			Game.strokes = 0;
 			EnsureScenePlayable();
-		}
-
-		private void Update()
-		{
-			if (Input.GetKeyDown(KeyCode.F5))
-			{
-				int next = (SceneManager.GetActiveScene().buildIndex + 1) % Mathf.Max(1, SceneManager.sceneCountInBuildSettings);
-				SceneManager.LoadScene(next);
-			}
-			else if (Input.GetKeyDown(KeyCode.F6))
-			{
-				int prev = (SceneManager.GetActiveScene().buildIndex - 1 + SceneManager.sceneCountInBuildSettings) % Mathf.Max(1, SceneManager.sceneCountInBuildSettings);
-				SceneManager.LoadScene(prev);
-			}
 		}
 
 		private void EnsureScenePlayable()
 		{
 			Screen.sleepTimeout = SleepTimeout.NeverSleep;
-			if (LevelManager.HasInstance && LevelManager.Instance != null && LevelManager.Instance.CurrentLevelData != null)
-				return;
-
-			var levels = FindObjectsOfType<Level>();
-			foreach (var lvl in levels)
+			QualitySettings.vSyncCount = 0;
+			if (Application.targetFrameRate < 60)
+				Application.targetFrameRate = 120;
+			var cfg = PlatformSettings.Instance != null ? PlatformSettings.Instance.GetCurrent() : null;
+			if (cfg != null && cfg.useRotatedOverworldAndCameraInLevels)
 			{
-				if (lvl == null) continue;
-				if (lvl.gameObject.scene.name == "main overworld new" || lvl.gameObject.scene.name == "Hub_Overworld") continue;
-				if (!lvl.IsInitialized)
+				if (Screen.orientation != ScreenOrientation.Portrait)
+					Screen.orientation = ScreenOrientation.Portrait;
+			}
+			else
+			{
+				Screen.autorotateToPortrait = false;
+				Screen.autorotateToPortraitUpsideDown = false;
+				if (Screen.orientation == ScreenOrientation.Portrait || Screen.orientation == ScreenOrientation.PortraitUpsideDown)
+					Screen.orientation = ScreenOrientation.LandscapeLeft;
+			}
+			foreach (var es in FindObjectsOfType<EventSystem>())
+			{
+				if (es != null && es.GetComponent<StandaloneInputModule>() == null)
 				{
-					var ld = ScriptableObject.CreateInstance<LevelData>();
-					ld.name = lvl.gameObject.scene.name;
-					lvl.Initialize(ld);
-					lvl.Begin();
-					var cam = lvl.GetComponentInChildren<Camera>(true);
+					var sim = es.gameObject.AddComponent<StandaloneInputModule>();
+					sim.forceModuleActive = true;
+				}
+			}
+			foreach (var tr in FindObjectsOfType<Transition>())
+			{
+				if (tr != null && !tr.IsShowing)
+				{
+					var cam = tr.GetComponent<Camera>();
 					if (cam != null) cam.enabled = false;
 				}
 			}
@@ -77,6 +89,19 @@ namespace Core
 						c.Activate();
 				}
 			}
+		}
+
+		private void OnApplicationPause(bool pauseStatus)
+		{
+			if (pauseStatus)
+			{
+				SaveGame.Save(false);
+			}
+		}
+
+		private void OnApplicationQuit()
+		{
+			SaveGame.Save(false);
 		}
 	}
 }

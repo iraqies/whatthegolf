@@ -70,10 +70,10 @@ public class MarioLevelController : GolfBallShooterBase
 	protected override void Awake()
 	{
 		base.Awake();
-		if (rb != null)
+		if (rigid != null)
 		{
-			dragTarget = rb.drag;
-			origDrag = rb.drag;
+			dragTarget = rigid.drag;
+			origDrag = rigid.drag;
 		}
 	}
 
@@ -84,9 +84,9 @@ public class MarioLevelController : GolfBallShooterBase
 		if (CanWallJump)
 		{
 			BlockShootingInAir = true;
-			if (rb != null)
+			if (rigid != null)
 			{
-				rb.drag = origDrag;
+				rigid.drag = origDrag;
 			}
 			dragTarget = origDrag;
 		}
@@ -113,30 +113,30 @@ public class MarioLevelController : GolfBallShooterBase
 			LookTransform.localRotation = Quaternion.RotateTowards(LookTransform.localRotation, targetRot, Time.deltaTime * RotateSpeed);
 		}
 		CheckIfNeedHelp(false);
-		if (applyForceTimer > 0f && rb != null)
+		if (applyForceTimer > 0f && rigid != null)
 		{
-			Vector3 localVel = base.transform.InverseTransformDirection(rb.velocity);
+			Vector3 localVel = base.transform.InverseTransformDirection(rigid.velocity);
 			if (localVel.y >= 0f)
 			{
 				applyForceTimer -= Time.unscaledDeltaTime;
-				rb.AddForce(new Vector3(currentDirection.x * HelperForce, 0f, 0f), ForceMode.VelocityChange);
+				rigid.AddForce(new Vector3(currentDirection.x * HelperForce, 0f, 0f), ForceMode.VelocityChange);
 			}
 		}
 		if (GolfBallController != null)
 		{
 			GolfBallController.BlockShooting = BlockShootingInAir && !IsGrounded();
 		}
-		if (CanWallJump && rb != null)
+		if (CanWallJump && rigid != null)
 		{
-			rb.drag = Mathf.MoveTowards(rb.drag, dragTarget, Time.deltaTime * ChangeDragSpeed);
+			rigid.drag = Mathf.MoveTowards(rigid.drag, dragTarget, Time.deltaTime * ChangeDragSpeed);
 		}
-		if (RunParticles != null && rb != null)
+		if (RunParticles != null && rigid != null)
 		{
 			if (IsGrounded())
 			{
 				RunParticles.Play();
 			}
-			else if (Mathf.Abs(rb.drag - wallDrag) >= 1f)
+			else if (Mathf.Abs(rigid.drag - wallDrag) >= 1f)
 			{
 				RunParticles.Stop();
 			}
@@ -145,19 +145,19 @@ public class MarioLevelController : GolfBallShooterBase
 				RunParticles.Play();
 			}
 		}
-		if (rb != null)
+		if (rigid != null)
 		{
-			lastFrameVelocity = rb.velocity;
+			lastFrameVelocity = rigid.velocity;
 		}
 	}
 
 	private void CheckIfNeedHelp(bool ignoreGrounded = false)
 	{
-		if ((!ignoreGrounded && IsGrounded()) || rb == null || LookTransform == null)
+		if ((!ignoreGrounded && IsGrounded()) || rigid == null || LookTransform == null)
 		{
 			return;
 		}
-		Vector3 pos = rb.position;
+		Vector3 pos = rigid.position;
 		Vector3 fwd = LookTransform.forward;
 		if (Physics.Raycast(pos + Up * 0.4f, fwd, HelperCheckDist, GroundLayer) || Physics.Raycast(pos - Up * 0.4f, fwd, HelperCheckDist, GroundLayer) || Physics.Raycast(pos, fwd, HelperCheckDist, GroundLayer))
 		{
@@ -181,11 +181,11 @@ public class MarioLevelController : GolfBallShooterBase
 		{
 			return true;
 		}
-		if (rb == null)
+		if (rigid == null)
 		{
 			return false;
 		}
-		Vector3 pos = rb.position;
+		Vector3 pos = rigid.position;
 		Vector3 rightOffset = base.transform.right * 0.4f;
 		bool leftHit = Physics.Raycast(pos - rightOffset, -Up, GroundCheckDist, GroundLayer);
 		bool rightHit = Physics.Raycast(pos + rightOffset, -Up, GroundCheckDist, GroundLayer);
@@ -201,7 +201,7 @@ public class MarioLevelController : GolfBallShooterBase
 			return;
 		}
 		MarioGoolfba goomba = c.gameObject.GetComponent<MarioGoolfba>();
-		if (goomba == null || goomba.IsDead)
+		if (goomba == null || goomba.IsDead())
 		{
 			return;
 		}
@@ -209,9 +209,9 @@ public class MarioLevelController : GolfBallShooterBase
 		if (base.transform.position.y > topThreshold)
 		{
 			goomba.Kill();
-			if (rb != null)
+			if (rigid != null)
 			{
-				rb.velocity = Vector3.Reflect(rb.velocity.normalized, Vector3.up) * KillAddForce;
+				rigid.velocity = Vector3.Reflect(rigid.velocity.normalized, Vector3.up) * KillAddForce;
 			}
 		}
 		else
@@ -219,14 +219,14 @@ public class MarioLevelController : GolfBallShooterBase
 			resetting = true;
 			if (GolfBallController != null)
 			{
-				GolfBallController.OutOfBounds(GolfBallController.isPlayer ? "Player" : "Other", GolfBallController.isPlayer ? 0.4f : 0f);
+				GolfBallController.OutOfBounds("Player", 0.4f);
 			}
 		}
 	}
 
 	private void OnCollisionStay(Collision c)
 	{
-		if (!CanWallJump || c == null || rb == null)
+		if (!CanWallJump || c == null || rigid == null)
 		{
 			return;
 		}
@@ -236,7 +236,7 @@ public class MarioLevelController : GolfBallShooterBase
 			return;
 		}
 		Vector3 normal = c.contacts[0].normal;
-		if (rb.velocity.y < 0f && (Vector3.Distance(normal, Vector3.right) < 0.1f || Vector3.Distance(normal, -Vector3.right) < 0.1f))
+		if (rigid.velocity.y < 0f && (Vector3.Distance(normal, Vector3.right) < 0.1f || Vector3.Distance(normal, -Vector3.right) < 0.1f))
 		{
 			BlockShootingInAir = false;
 			dragTarget = wallDrag;

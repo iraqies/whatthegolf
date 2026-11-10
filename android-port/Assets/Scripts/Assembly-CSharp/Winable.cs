@@ -15,11 +15,11 @@ public class Winable : MonoBehaviour
 			return;
 		Component goal = collision.transform.GetComponent<Hole>();
 		if (goal == null)
-			goal = collision.transform.GetComponent<GolfCourseGoal>();
+			goal = collision.transform.GetComponent<GolfGoal>();
 		if (goal != null && OnWon != null)
 		{
 			if (rumbleOnWin != null)
-				rumbleOnWin.Play(1f, false);
+				rumbleOnWin.Play(0, 1f);
 			OnWon(goal.transform.position);
 		}
 	}
@@ -30,11 +30,11 @@ public class Winable : MonoBehaviour
 			return;
 		Component goal = collision.transform.GetComponent<Hole>();
 		if (goal == null)
-			goal = collision.transform.GetComponent<GolfCourseGoal>();
+			goal = collision.transform.GetComponent<GolfGoal>();
 		if (goal != null && OnWon != null)
 		{
 			if (rumbleOnWin != null)
-				rumbleOnWin.Play(1f, false);
+				rumbleOnWin.Play(0, 1f);
 			OnWon(goal.transform.position);
 		}
 	}

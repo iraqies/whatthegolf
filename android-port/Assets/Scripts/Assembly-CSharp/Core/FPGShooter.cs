@@ -23,17 +23,16 @@ namespace Core
 		protected override void Awake()
 		{
 			base.Awake();
-			rb = GetComponent<Rigidbody>();
-			rigidbodyC = rb;
+			rigidbodyC = GetComponent<Rigidbody>();
 			startRot = base.transform.rotation;
 		}
 
 		public override void OnActivate()
 		{
 			base.OnActivate();
-			if (rb != null)
+			if (rigidbodyC != null)
 			{
-				rb.isKinematic = false;
+				rigidbodyC.isKinematic = false;
 			}
 		}
 
@@ -61,10 +60,6 @@ namespace Core
 			{
 				boost = Quaternion.AngleAxis(pitch, axis) * boost;
 			}
-			if (AudioManager.Instance != null && AudioManager.Instance.golfAudioManager != null && AudioManager.Instance.golfAudioManager.releaseRumble != null && GolfBallController != null)
-			{
-				AudioManager.Instance.golfAudioManager.releaseRumble.Play(1f, GolfBallController.playerIndex);
-			}
 			StandardShoot(boost, pitch, minShootVelocity, fullShootVelocity, 0f);
 		}
 
@@ -73,11 +68,7 @@ namespace Core
 			bool shootPressed = false;
 			if (Time.timeScale > 0f && GolfBallController != null)
 			{
-				shootPressed = GolfBallController.GetButtonUp(true, "Shoot");
-			}
-			if (PlatformSettings.IsAppleTV && GolfBallController != null && GolfBallController.player != null && !shootPressed)
-			{
-				shootPressed = GolfBallController.player.GetButtonUp("Shoot");
+				shootPressed = Input.GetMouseButtonUp(0);
 			}
 			if (shootPressed && GolfBallController != null && !GolfBallController.BlockShooting && GolfBallController.mainCamera != null)
 			{

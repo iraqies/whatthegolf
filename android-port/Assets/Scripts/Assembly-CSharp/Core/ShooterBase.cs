@@ -4,7 +4,7 @@ namespace Core
 {
 	public abstract class ShooterBase : MonoBehaviour
 	{
-		protected GolfBallController GolfBallController;
+		public GolfBallController GolfBallController;
 
 		public virtual void OnActivate() { }
 		public virtual void OnAimStart() { }

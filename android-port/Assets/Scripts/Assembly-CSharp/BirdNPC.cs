@@ -47,14 +47,14 @@ public class BirdNPC : MonoBehaviour, IAudioEvent
 			otherColInfo = RigidbodyCollisionInfo.GetOrAdd(scareOnOtherColliderEnter.gameObject);
 			if (otherColInfo != null)
 			{
-				otherColInfo.OnHitEnter += OnOtherCollision;
+				otherColInfo.onCollision += OnOtherCollision;
 			}
 		}
 	}
 
 	private void OnOtherCollision(HitInfo hitinfo)
 	{
-		if (hitinfo.relativeVelocity.magnitude > 1f)
+		if (hitinfo.incomingVelocity.magnitude > 1f)
 		{
 			Scare();
 		}
