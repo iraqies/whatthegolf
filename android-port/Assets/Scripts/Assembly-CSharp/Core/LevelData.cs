@@ -77,6 +77,8 @@ namespace Core
 		}
 
 		public WindowType LevelWindowType => window;
+		public bool IsBossLevel => isBossBattle;
+		public List<ChallengeData> Challenges => levelChallenges;
 
 		public int BestScore
 		{

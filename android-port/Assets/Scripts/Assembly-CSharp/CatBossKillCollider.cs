@@ -59,7 +59,7 @@ public class CatBossKillCollider : MonoBehaviour
 		{
 			yield break;
 		}
-		GolfBallShooter shooter = player.gameObject.GetComponentInChildren<GolfBallShooter>();
+		MarioLevelController shooter = player.gameObject.GetComponent<MarioLevelController>();
 		Transform playerTransform = player.transform;
 		playerTransform.localScale = new Vector3(1.5f, 0.5f, 1f);
 		if (shooter != null)

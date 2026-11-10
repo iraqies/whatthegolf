@@ -116,6 +116,20 @@ namespace Core
 		}
 
 		public bool IsAiming { get; private set; }
+		public bool isAiming => IsAiming;
+		public bool isRolling => Velocity.sqrMagnitude > 0.01f;
+		public int PlayerID => PlayerIndex;
+		public float MaxAimDistance
+		{
+			get => Scale;
+			set => Scale = value;
+		}
+		public bool UseRigidbodyTimeline { get; set; }
+		public bool AffectTime
+		{
+			get => affectTime;
+			set => affectTime = value;
+		}
 		public bool IsAimingWithOutline { get; private set; }
 
 		public bool BlockShooting

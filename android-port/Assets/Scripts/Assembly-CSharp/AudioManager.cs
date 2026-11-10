@@ -66,6 +66,8 @@ public class AudioManager : MonoBehaviour
 	}
 
 	public AudioSources sfx => shortEffects;
+	public AudioSources AudioSources => shortEffects;
+	public RumbleManager rumble => rumbleManager;
 	public Dictionary<int, AudioMaterialSettings> AudioMatCache => audioMatCache;
 
 	private AudioSources EnsurePool(ref AudioSources field, string childName)

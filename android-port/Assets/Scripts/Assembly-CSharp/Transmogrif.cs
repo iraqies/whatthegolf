@@ -25,6 +25,7 @@ public class Transmogrif : MonoBehaviour
 	}
 
 	public BALLSHAPES targetShape;
+	public BALLSHAPES shape => targetShape;
 
 	public bool UseTargetPosition;
 

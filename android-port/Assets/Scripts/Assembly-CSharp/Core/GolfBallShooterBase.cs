@@ -23,6 +23,20 @@ namespace Core
 			set { rigidbodyOverride = value; rigidbodyC = value; }
 		}
 
+		protected Rigidbody rigid
+		{
+			get => rigidbodyC;
+			set => rigidbodyC = value;
+		}
+
+		protected Rigidbody Rigid
+		{
+			get => rigidbodyC;
+			set => rigidbodyC = value;
+		}
+
+		protected GolfBallController GolfManager => GolfBallController;
+
 		protected virtual void Awake()
 		{
 			GolfBallController = golfBallControllerOverride != null ? golfBallControllerOverride : (GetComponent<GolfBallController>() ?? GetComponentInParent<GolfBallController>());

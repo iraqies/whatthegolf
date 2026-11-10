@@ -37,6 +37,8 @@ public class GolfGoal : MonoBehaviour
 
 	public void GoalProgress(int playerIndex) => m_OnGoalProgress?.Invoke(playerIndex, string.Empty);
 
+	public void TriggerGoal(string message) => Complete(message);
+
 	public virtual void Complete(string message) => DoComplete(message, null);
 
 	public virtual void Complete(string message, float delay) => DoComplete(message, delay);

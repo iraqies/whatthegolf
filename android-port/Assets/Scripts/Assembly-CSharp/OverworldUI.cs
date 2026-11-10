@@ -38,6 +38,7 @@ public class OverworldUI : MonoBehaviour
 	public RectTransform CloseButtonRectRotated;
 	public RectTransform ChallengeContainer;
 	public AimMarker AimMarker;
+	public AimMarker aimMarker => AimMarker;
 	public GameObject CrownLocked;
 	public GameObject CrownWon;
 	public GameObject CrownWonTop;

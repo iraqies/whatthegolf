@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Audio;
+using Audio.Rumble;
 using CameraStack;
+using Core;
 using UnityEngine;
 
 public class OverworldOLDoor : MonoBehaviour

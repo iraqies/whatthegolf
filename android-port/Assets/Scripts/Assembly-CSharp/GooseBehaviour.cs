@@ -89,14 +89,14 @@ public class GooseBehaviour : MonoBehaviour
 		{
 			return;
 		}
-		SplinePoint closestPoint = path.GetClosestPoint(base.transform.position, 0.2f);
+		SplineValue closestPoint = path.GetClosestPoint(base.transform.position, 0.2f);
 		float num = closestPoint.t + agent.speed / path.GetLength();
 		if (num >= 1f)
 		{
 			num = agent.speed / path.GetLength() * 0.5f;
 		}
-		SplinePoint splinePoint = path.Evaluate(num, true);
-		agent.destination = splinePoint.point;
+		SplineValue splinePoint = path.Evaluate(num, true);
+		agent.destination = splinePoint.position;
 		if (animator != null)
 		{
 			animator.SetFloat("Velocity", 1f);

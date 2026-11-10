@@ -37,4 +37,9 @@ public class OverworldCameraSettings : MonoBehaviour
 	{
 		m_OnSettingsUpdated?.Invoke(this, pct);
 	}
+
+	public void SetWeight(float pct)
+	{
+		SetValue(pct);
+	}
 }

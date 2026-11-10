@@ -22,7 +22,7 @@ public class OverworldBall2D : GolfBall2DShooterBase
 	public float lookSpeed = 10f;
 	public TrailRenderer trail;
 
-	private GolfBallController controller;
+	public GolfBallController controller;
 	private float startDrag;
 	private Vector3 checkPoint;
 	protected bool canEnableFlagsAndDoors = true;
@@ -30,6 +30,13 @@ public class OverworldBall2D : GolfBall2DShooterBase
 	private bool didInit;
 	private Transform t;
 	private OverworldButton2D debugLastHitDoor;
+
+	public Rigidbody2D rigid => rigidBody;
+	protected bool canHitFlags
+	{
+		get => canEnableFlagsAndDoors;
+		set => canEnableFlagsAndDoors = value;
+	}
 
 	public Vector3 Velocity
 	{

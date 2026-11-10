@@ -37,10 +37,10 @@ public class GrapplingHookShooter2D : GolfBallShooterExperimental
 	{
 		rigid = ((RigidbodyOverride != null) ? RigidbodyOverride : GetComponent<Rigidbody2D>());
 		hookQueue = new List<GrapplingHook2D>();
-		if (GolfManager.AffectTime)
+		if (GolfBallController != null && GolfBallController.affectTime)
 		{
 			setAffectTime = true;
-			GolfManager.AffectTime = false;
+			GolfBallController.affectTime = false;
 		}
 	}
 
@@ -58,9 +58,9 @@ public class GrapplingHookShooter2D : GolfBallShooterExperimental
 		for (int i = 0; i < hooks; i++)
 		{
 			GameObject gameObject = UnityEngine.Object.Instantiate(GrapplingHookPrefab);
-			if (gameObject.TryGetComponent<SimpleGameElement>(out var component))
+			if (gameObject.TryGetComponent<HookAudio>(out var component))
 			{
-				component.GolfManager = GolfManager;
+				component.SetController(GolfBallController);
 			}
 			Collider2D componentInChildren = gameObject.GetComponentInChildren<Collider2D>();
 			Physics2D.IgnoreCollision(collider, componentInChildren, ignore: true);
@@ -86,9 +86,9 @@ public class GrapplingHookShooter2D : GolfBallShooterExperimental
 		lastHook.SetOrigin(base.transform.position);
 		lastHook.FireHook(base.transform.position, boost, rigid.velocity, GrappleLength);
 		nextHookIndex = (nextHookIndex + 1) % hookQueue.Count;
-		if (setAffectTime)
+		if (setAffectTime && GolfBallController != null)
 		{
-			GolfManager.AffectTime = true;
+			GolfBallController.affectTime = true;
 			setAffectTime = false;
 		}
 	}

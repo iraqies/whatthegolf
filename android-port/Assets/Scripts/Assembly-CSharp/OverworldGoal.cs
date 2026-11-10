@@ -57,6 +57,7 @@ public class OverworldGoal : MonoBehaviour
 
 	public HubSection ParentHubSection => parentHubSection != null ? parentHubSection : (parentHubSection = GetComponentInParent<HubSection>());
 	public bool CanShowIndicator { set => canShowIndicator = value; }
+	public void showFlagCrownLock() => ForceShowCrownOutline();
 
 	public event Action<OverworldGoal> OnUpdateData
 	{

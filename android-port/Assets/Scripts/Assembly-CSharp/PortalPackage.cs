@@ -8,7 +8,14 @@ public class PortalPackage
 
 	public SimplePortal To { get; }
 
+	public SimplePortal EntryPortal => From;
+
+	public SimplePortal ExitPortal => To;
+
 	public PortalPackage(SimplePortal from, SimplePortal to, Vector3 entryPoint)
 	{
+		From = from;
+		To = to;
+		EntryPoint = entryPoint;
 	}
 }

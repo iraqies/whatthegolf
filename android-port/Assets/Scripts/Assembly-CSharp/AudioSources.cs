@@ -133,6 +133,16 @@ public class AudioSources : MonoBehaviour
 		return Play(clips, null, true, 0f, false);
 	}
 
+	public AudioSource Play(List<AudioClip> clips, Action<AudioSource> modifier, bool canRepeat, bool reverse, float delay = 0f)
+	{
+		return Play(clips, modifier, canRepeat, delay, reverse);
+	}
+
+	public AudioSource Play(AudioClip clip, Action<AudioSource> modifier, bool reverse, float delay = 0f)
+	{
+		return Play(clip, modifier, delay, reverse);
+	}
+
 	public AudioSource Play(List<AudioClip> clips, Action<AudioSource> modifier, bool canRepeat = true, float delay = 0f, bool reverse = false)
 	{
 		if (clips == null || clips.Count == 0) return null;

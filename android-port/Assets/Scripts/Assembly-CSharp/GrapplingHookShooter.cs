@@ -45,10 +45,10 @@ public class GrapplingHookShooter : GolfBallShooterExperimental
 			component2.OnCollided = (Action<Rigidbody>)Delegate.Combine(component2.OnCollided, new Action<Rigidbody>(OnCollided));
 			hookQueue.Add(component2);
 		}
-		if (GolfManager.AffectTime)
+		if (GolfBallController != null && GolfBallController.affectTime)
 		{
 			setAffectTime = true;
-			GolfManager.AffectTime = false;
+			GolfBallController.affectTime = false;
 		}
 	}
 
@@ -70,9 +70,9 @@ public class GrapplingHookShooter : GolfBallShooterExperimental
 			lastHook.FireHook(base.transform.position, boost, Rigid.velocity, GrappleLength);
 			nextHookIndex = (nextHookIndex + 1) % hookQueue.Count;
 		}
-		if (setAffectTime)
+		if (setAffectTime && GolfBallController != null)
 		{
-			GolfManager.AffectTime = true;
+			GolfBallController.affectTime = true;
 			setAffectTime = false;
 		}
 	}

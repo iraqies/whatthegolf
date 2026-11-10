@@ -84,43 +84,28 @@ public class HotdogGolfer : UserControlThirdPerson
 	public void SetToFreeRunning()
 	{
 		StartRunning();
-		if (Controller != null)
-		{
-			Controller.enabled = true;
-			Controller.ArrowPosition = ArrowPosition;
-			Controller.MaxAimDistance = 1f;
-		}
+		Controller.enabled = true;
+		Controller.ArrowPosition = ArrowPosition;
+		Controller.Scale = 1f;
 		Winstate = true;
 	}
 
 	protected override void Start()
 	{
 		base.Start();
-		if (Controller != null)
-		{
-			Controller.OnShoot += OnShoot;
-			Controller.OnAimUpdate += OnAimUpdate;
-			Controller.enabled = true;
-		}
+		Controller.OnShoot += OnShoot;
+		Controller.OnAimUpdate += OnAimUpdate;
+		Controller.enabled = true;
 		LayerMask.GetMask(staticObstacleLayer);
 		StartRunning();
 	}
 
 	private void StartRunning()
 	{
-		if (puppetMaster != null)
-		{
-			puppetMaster.mode = PuppetMaster.Mode.Active;
-		}
-		if (Puppet != null)
-		{
-			Puppet.propMuscle.mode = Muscle.Mode.Animated;
-		}
+		puppetMaster.mode = PuppetMaster.Mode.Active;
+		Puppet.moveMode = CharacterThirdPerson.MoveMode.Directional;
 		state.lookPos = base.transform.forward;
-		if (animator != null)
-		{
-			animator.SetBool(animParamIsGolfSwinging, false);
-		}
+		animator.SetBool(animParamIsGolfSwinging, value: false);
 		golfingState = GolfingState.RUNNING;
 	}
 
@@ -133,51 +118,33 @@ public class HotdogGolfer : UserControlThirdPerson
 	{
 		if (golfingState == GolfingState.RUNNING && !Winstate)
 		{
-			if (puppetMaster != null)
-			{
-				puppetMaster.mode = PuppetMaster.Mode.Active;
-			}
-			if (Puppet != null)
-			{
-				Puppet.propMuscle.mode = Muscle.Mode.Animated;
-			}
-			if (TargetPosition != null)
-			{
-				state.lookPos = TargetPosition.position;
-			}
+			puppetMaster.mode = PuppetMaster.Mode.Active;
+			Puppet.moveMode = CharacterThirdPerson.MoveMode.Directional;
+			state.lookPos = TargetPosition.position;
 			OnReadyToShoot();
 		}
 	}
 
 	private void RunTowards()
 	{
-		if (TargetPosition != null)
+		Vector3 normalized = (TargetPosition.transform.position - base.transform.position).normalized;
+		state.move = Vector3.ProjectOnPlane(normalized, base.transform.up);
+		state.lookPos = TargetPosition.position;
+		if (Vector3.Distance(base.transform.position, TargetPosition.position) < 1f)
 		{
-			Vector3 normalized = (TargetPosition.transform.position - base.transform.position).normalized;
-			state.move = Vector3.ProjectOnPlane(normalized, base.transform.up);
-			state.lookPos = TargetPosition.position;
-			if (Vector3.Distance(base.transform.position, TargetPosition.position) < 1f)
-			{
-				OnReadyToShoot();
-			}
+			OnReadyToShoot();
 		}
 	}
 
 	private void OnReadyToShoot()
 	{
 		golfingState = GolfingState.READY_TO_SHOOT;
-		if (Controller != null)
-		{
-			Controller.StopAiming();
-		}
+		Controller.StopAiming();
 		SpawnNewGolfableBall();
 		aimDir = Vector3.zero;
 		state.move = Vector3.zero;
-		if (currentBall != null && Controller != null)
-		{
-			Controller.ArrowPosition = currentBall.transform;
-			Controller.MaxAimDistance = 0.3f;
-		}
+		Controller.ArrowPosition = currentBall.transform;
+		Controller.Scale = 0.3f;
 	}
 
 	private void ReadyToShoot()
@@ -186,73 +153,37 @@ public class HotdogGolfer : UserControlThirdPerson
 		if (aimDir != Vector3.zero)
 		{
 			Vector3 vector2 = Vector3.Cross(base.transform.up, aimDir);
-			if (puppetMaster != null)
-			{
-				puppetMaster.mode = PuppetMaster.Mode.Active;
-			}
-			if (currentBall != null)
-			{
-				Vector3 position = currentBall.transform.position;
-				Vector3 normalized = aimDir.normalized;
-				Vector3 vector3 = position - normalized * MaxDistanceWhenAiming - vector2 * golferAimSideOffset;
-				vector = Vector3.ProjectOnPlane(vector3 - base.transform.position, base.transform.up);
-			}
-			if (Puppet != null)
-			{
-				Puppet.propMuscle.mode = Muscle.Mode.Kinematic;
-			}
+			puppetMaster.mode = PuppetMaster.Mode.Active;
+			Vector3 position = currentBall.transform.position;
+			Vector3 normalized = aimDir.normalized;
+			Vector3 vector3 = position - normalized * MaxDistanceWhenAiming - vector2 * golferAimSideOffset;
+			vector = Vector3.ProjectOnPlane(vector3 - base.transform.position, base.transform.up);
+			Puppet.moveMode = CharacterThirdPerson.MoveMode.Strafe;
 			state.lookPos = base.transform.position + vector2;
 			if (vector.magnitude < distanceGoodEnough)
 			{
-				if (animator != null)
-				{
-					animator.SetBool(animParamIsGolfSwinging, true);
-				}
+				animator.SetBool(animParamIsGolfSwinging, value: true);
 				float num = Mathf.Clamp(Time.time - lastNotGolfSwingingTime, 0f, 0.5f);
-				if (animator != null)
-				{
-					animator.SetFloat(animParamIsGolfSwingBlend, 0.5f - num);
-				}
-				if (puppetMaster != null)
-				{
-					puppetMaster.mode = PuppetMaster.Mode.Kinematic;
-				}
-				if (Puppet != null)
-				{
-					Puppet.propMuscle.mode = Muscle.Mode.Kinematic;
-				}
+				animator.SetFloat(animParamIsGolfSwingBlend, 0.5f - num);
+				puppetMaster.mode = PuppetMaster.Mode.Kinematic;
+				Puppet.moveMode = CharacterThirdPerson.MoveMode.Strafe;
 				vector = Vector3.zero;
 			}
 			else
 			{
-				if (puppetMaster != null)
-				{
-					puppetMaster.mode = PuppetMaster.Mode.Active;
-				}
-				if (animator != null)
-				{
-					animator.SetBool(animParamIsGolfSwinging, false);
-					animator.SetFloat(animParamIsGolfSwingBlend, 0.5f);
-				}
+				puppetMaster.mode = PuppetMaster.Mode.Active;
+				animator.SetBool(animParamIsGolfSwinging, value: false);
+				animator.SetFloat(animParamIsGolfSwingBlend, 0.5f);
 				lastNotGolfSwingingTime = Time.time;
 			}
 		}
 		else
 		{
 			vector = Vector3.zero;
-			if (puppetMaster != null)
-			{
-				puppetMaster.mode = PuppetMaster.Mode.Kinematic;
-			}
-			if (Puppet != null)
-			{
-				Puppet.propMuscle.mode = Muscle.Mode.Kinematic;
-			}
-			if (animator != null)
-			{
-				animator.SetBool(animParamIsGolfSwinging, true);
-				animator.SetFloat(animParamIsGolfSwingBlend, 0.5f);
-			}
+			puppetMaster.mode = PuppetMaster.Mode.Kinematic;
+			Puppet.moveMode = CharacterThirdPerson.MoveMode.Strafe;
+			animator.SetBool(animParamIsGolfSwinging, value: true);
+			animator.SetFloat(animParamIsGolfSwingBlend, 0.5f);
 		}
 		state.move = vector;
 	}
@@ -269,56 +200,34 @@ public class HotdogGolfer : UserControlThirdPerson
 	private IEnumerator ShootRoutine(Vector3 boost)
 	{
 		golfingState = GolfingState.SHOOTING;
-		if (Controller != null)
-		{
-			Controller.StopAiming();
-			Controller.enabled = false;
-		}
+		Controller.StopAiming();
+		Controller.enabled = false;
 		yield return new WaitForSeconds(0.1f);
-		if (puppetMaster != null)
-		{
-			puppetMaster.mode = PuppetMaster.Mode.Kinematic;
-		}
-		if (animator != null)
-		{
-			animator.SetBool(animParamIsGolfSwinging, true);
-		}
+		puppetMaster.mode = PuppetMaster.Mode.Kinematic;
+		animator.SetBool(animParamIsGolfSwinging, value: true);
 		yield return StartCoroutine(pTween.To(0.2f, 0f, 1f, delegate(float t)
 		{
-			if (animator != null)
-			{
-				animator.SetFloat(animParamIsGolfSwingBlend, t);
-			}
-		}, TimeScale.Type.Normal, false));
-		SetBallActive(true);
-		if (currentBall != null)
+			animator.SetFloat(animParamIsGolfSwingBlend, t);
+		}, pTween.TimeMode.Normal, useFixedUpdate: false));
+		SetBallActive(active: true);
+		Rigidbody component = currentBall.GetComponent<Rigidbody>();
+		if (component != null)
 		{
-			Rigidbody componentInChildren = currentBall.GetComponentInChildren<Rigidbody>();
-			if (componentInChildren != null)
-			{
-				componentInChildren.AddForce(boost * ShootForce + Vector3.up * ShootUpForce);
-			}
+			component.AddForce(boost * ShootForce + Vector3.up * ShootUpForce);
 		}
 		aimDir = Vector3.zero;
-		if (animator != null)
-		{
-			animator.SetBool(animParamIsGolfSwinging, false);
-		}
-		if (Controller != null)
-		{
-			Controller.enabled = true;
-		}
+		animator.SetBool(animParamIsGolfSwinging, value: false);
+		Controller.enabled = true;
 		yield return new WaitForSeconds(0.4f);
 		OnReadyToShoot();
 	}
 
 	public void OnAimUpdate(Vector3 boost, bool onlyAimArrow)
 	{
-		if (Puppet != null && Puppet.characterAnimation != null && !Puppet.characterAnimation.animationGrounded)
+		if (Puppet.puppet.state == BehaviourPuppet.State.Puppet)
 		{
-			return;
+			aimDir = boost;
 		}
-		aimDir = boost;
 	}
 
 	protected override void Update()
@@ -342,38 +251,22 @@ public class HotdogGolfer : UserControlThirdPerson
 
 	private void SpawnNewGolfableBall()
 	{
-		if (HotdogGolfBall != null && SpawnPosition != null)
-		{
-			currentBall = Object.Instantiate(HotdogGolfBall.gameObject, SpawnPosition.position, SpawnPosition.rotation);
-			SetBallActive(false);
-		}
+		currentBall = Object.Instantiate(HotdogGolfBall.gameObject, SpawnPosition.position, SpawnPosition.rotation);
+		SetBallActive(active: false);
 	}
 
 	private void SetBallActive(bool active)
 	{
-		if (currentBall != null)
-		{
-			Rigidbody componentInChildren = currentBall.GetComponentInChildren<Rigidbody>();
-			Collider componentInChildren2 = currentBall.GetComponentInChildren<Collider>();
-			if (componentInChildren2 != null)
-			{
-				componentInChildren2.enabled = active;
-			}
-			if (componentInChildren != null)
-			{
-				componentInChildren.isKinematic = !active;
-				componentInChildren.useGravity = active;
-			}
-		}
+		Rigidbody component = currentBall.GetComponent<Rigidbody>();
+		currentBall.GetComponent<Collider>().enabled = active;
+		component.isKinematic = !active;
+		component.useGravity = active;
 	}
 
 	private void OnDrawGizmos()
 	{
 		Gizmos.color = Color.magenta;
 		Gizmos.DrawWireSphere(base.transform.position + Vector3.up * 0.5f, sphereCastRadius);
-		if (TargetPosition != null)
-		{
-			Gizmos.DrawLine(TargetPosition.position, base.transform.position);
-		}
+		Gizmos.DrawLine(TargetPosition.position, base.transform.position);
 	}
 }

@@ -443,7 +443,7 @@ public class CatBossBehaviour : MonoBehaviour
 				{
 					source.volume = s;
 				}
-			}, (TimeScale.Type)2, false)));
+			}, pTween.TimeMode.Realtime, false)));
 		}
 	}
 

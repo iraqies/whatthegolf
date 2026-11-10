@@ -253,10 +253,10 @@ public class SimplePortal : MonoBehaviour
 		LinkedPortal.RecieveObject(other.gameObject);
 		if (portalSFX != null)
 		{
-			portalSFX.Play(0, base.transform.position);
-			if (AudioManager.Instance != null && portalSFX.AudioSource != null)
+			portalSFX.Play(base.transform.position);
+			if (AudioManager.Instance != null && portalSFX.clips != null && portalSFX.clips.LastAudioSource != null)
 			{
-				AudioManager.Instance.AudioSourceFollowTransform(portalSFX.AudioSource.Source, other.transform, 0.2f);
+				AudioManager.Instance.AudioSourceFollowTransform(portalSFX.clips.LastAudioSource, other.transform, 0.2f);
 			}
 		}
 		blockTimer = BlockTimer;
@@ -279,10 +279,10 @@ public class SimplePortal : MonoBehaviour
 		LinkedPortal.RecieveObject(other.gameObject);
 		if (portalSFX != null)
 		{
-			portalSFX.Play(0, base.transform.position);
-			if (AudioManager.Instance != null && portalSFX.AudioSource != null)
+			portalSFX.Play(base.transform.position);
+			if (AudioManager.Instance != null && portalSFX.clips != null && portalSFX.clips.LastAudioSource != null)
 			{
-				AudioManager.Instance.AudioSourceFollowTransform(portalSFX.AudioSource.Source, other.transform, 0.2f);
+				AudioManager.Instance.AudioSourceFollowTransform(portalSFX.clips.LastAudioSource, other.transform, 0.2f);
 			}
 		}
 		blockTimer = BlockTimer;
@@ -292,8 +292,8 @@ public class SimplePortal : MonoBehaviour
 	{
 		if (saveUnhideState)
 		{
-			SaveGame.SetValue(string.Format(saveFormat, overworldID.ID), value: true, save: false);
-			SaveGame.Save(async: false);
+			SaveGame.SetValue(string.Format(saveFormat, overworldID.ID), value: true, autoSave: false);
+			SaveGame.Save(isIcloud: false);
 		}
 	}
 

@@ -6,6 +6,12 @@ public class OverworldID : MonoBehaviour
 {
 	public string ID;
 
+	public string id
+	{
+		get => ID;
+		set => ID = value;
+	}
+
 	private static System.Random random;
 
 	private void OnEnable()
@@ -14,11 +20,11 @@ public class OverworldID : MonoBehaviour
 
 	public string GenerateId(int length)
 	{
-		return null;
+		return ID;
 	}
 
 	public override string ToString()
 	{
-		return null;
+		return ID;
 	}
 }
