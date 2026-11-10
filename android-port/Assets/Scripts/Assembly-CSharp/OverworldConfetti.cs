@@ -20,14 +20,22 @@ public class OverworldConfetti : MonoBehaviour
 
 	private void OnlevelCompleted(OverworldGoal overworldGoal, bool parUnlocked)
 	{
-		if (overworldGoal != null && Spawner != null && gameObject.activeInHierarchy)
+		if (overworldGoal == null)
+			return;
+		if (overworldGoal.levelData != null && overworldGoal.levelData.disableConfetti)
+			return;
+		if (gameObject.activeInHierarchy)
 			StartCoroutine(DelayedSpawn(overworldGoal, parUnlocked));
 	}
 
 	private IEnumerator DelayedSpawn(OverworldGoal overworldGoal, bool isCrown)
 	{
-		yield return new WaitForSeconds(0.25f);
-		if (overworldGoal != null)
-			Confetti.SpawnConfetti(overworldGoal.transform);
+		yield return new WaitForSeconds(0.4f);
+		if (overworldGoal == null || Spawner == null)
+			yield break;
+		Vector3 pos = overworldGoal.IsStuckToWall
+			? (overworldGoal.transform.position + overworldGoal.transform.forward)
+			: overworldGoal.transform.position;
+		Spawner.RemoteSpawn(pos, isCrown);
 	}
 }

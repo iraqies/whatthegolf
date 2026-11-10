@@ -93,7 +93,7 @@ namespace GolfCourse
 				validGoalHit = true;
 			}
 
-			WinnableGolfBall winBall = trans.GetComponentInChildren<WinnableGolfBall>();
+			WinnableGolfBall winBall = trans.GetComponentInChildren<WinnableGolfBall>() ?? trans.GetComponentInParent<WinnableGolfBall>();
 			if (winBall != null)
 			{
 				GolfBallController[] allCtrls = FindObjectsOfType<GolfBallController>();
@@ -102,6 +102,7 @@ namespace GolfCourse
 					GolfBallController ownerCtrl = allCtrls.FirstOrDefault(g => g != null && g.PlayerIndex == winBall.PlayerIndex);
 					if (ownerCtrl != null && golfGoal != null)
 					{
+						hitDir = GetHitDir(trans);
 						golfGoal.GoalProgress(ownerCtrl.PlayerIndex);
 						ballsInGoal++;
 						validGoalHit = true;
@@ -128,7 +129,8 @@ namespace GolfCourse
 				}
 				if (emitParticles && particles != null)
 				{
-					particles.Play();
+					didPlayParticles = true;
+					particles.Play(true);
 				}
 			}
 
@@ -142,7 +144,7 @@ namespace GolfCourse
 				controllersInGoal.Clear();
 			}
 
-			if (fromCollision && bendFlagOnHit && !didBend && (validGoalHit || completedNow))
+			if (bendFlagOnHit && !didBend && (validGoalHit || completedNow))
 			{
 				didBend = true;
 				PlayFlagAnimation(hitDir);
@@ -151,7 +153,7 @@ namespace GolfCourse
 			if (emitParticles && particles != null && !didPlayParticles && (validGoalHit || completedNow))
 			{
 				didPlayParticles = true;
-				particles.Play();
+				particles.Play(true);
 			}
 		}
 

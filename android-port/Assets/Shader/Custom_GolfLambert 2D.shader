@@ -1,66 +1,73 @@
 Shader "Custom/GolfLambert 2D" {
 	Properties {
-
-
+		[PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
 		_Color ("Color", Vector) = (1,1,1,1)
-		_ShadowColor ("Shadow Color", Vector) = (0,0,0,1)
+		_ShadowColor ("Shadow Color", Vector) = (1,1,1,1)
+		[HideInInspector] _RendererColor ("RendererColor", Vector) = (1,1,1,1)
+		[HideInInspector] _Flip ("Flip", Vector) = (1,1,1,1)
 	}
 	SubShader {
-		Tags { "RenderType"="Opaque" "Queue"="Geometry" }
+		Tags { "Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent" "PreviewType"="Plane" "CanUseSpriteAtlas"="True" }
 		LOD 200
 		Cull Off
+		Lighting Off
+		ZWrite Off
+		Blend SrcAlpha OneMinusSrcAlpha
 		Pass {
-			Tags { "LightMode"="ForwardBase" }
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
-			#pragma multi_compile_fwdbase
+			#pragma multi_compile_instancing
 			#include "UnityCG.cginc"
-			#include "Lighting.cginc"
-			#include "AutoLight.cginc"
 
+			sampler2D _MainTex;
 			float4 _Color;
-			float4 _HighlightColor;
-			float4 _ShadowColor;
-			float _HighlightAmount;
-			float _HighlightAngle;
-			
+			#ifdef UNITY_INSTANCING_ENABLED
+				UNITY_INSTANCING_BUFFER_START(PerDrawSprite)
+					UNITY_DEFINE_INSTANCED_PROP(fixed4, unity_SpriteRendererColorArray)
+					UNITY_DEFINE_INSTANCED_PROP(fixed2, unity_SpriteFlipArray)
+				UNITY_INSTANCING_BUFFER_END(PerDrawSprite)
+				#define _RendererColor UNITY_ACCESS_INSTANCED_PROP(PerDrawSprite, unity_SpriteRendererColorArray)
+				#define _Flip UNITY_ACCESS_INSTANCED_PROP(PerDrawSprite, unity_SpriteFlipArray)
+			#else
+				fixed4 _RendererColor;
+				fixed2 _Flip;
+			#endif
 
 			struct appdata {
 				float4 vertex : POSITION;
-				float3 normal : NORMAL;
 				float2 uv : TEXCOORD0;
 				float4 color : COLOR;
+				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
 			struct v2f {
 				float4 pos : SV_POSITION;
-				float3 wnorm : TEXCOORD0;
-				float2 uv : TEXCOORD1;
+				float2 uv : TEXCOORD0;
 				float4 color : COLOR;
-				SHADOW_COORDS(2)
+				UNITY_VERTEX_OUTPUT_STEREO
 			};
 
 			v2f vert(appdata v) {
 				v2f o;
-				o.pos = UnityObjectToClipPos(v.vertex);
-				o.wnorm = UnityObjectToWorldNormal(v.normal);
+				UNITY_SETUP_INSTANCE_ID(v);
+				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+				float4 vpos = v.vertex;
+				fixed2 flip = (abs(_Flip.x) > 0.001 || abs(_Flip.y) > 0.001) ? _Flip.xy : fixed2(1.0, 1.0);
+				vpos.xy *= flip;
+				o.pos = UnityObjectToClipPos(vpos);
 				o.uv = v.uv;
-				o.color = v.color;
-				TRANSFER_SHADOW(o);
+				fixed4 rcol = ( _RendererColor.r + _RendererColor.g + _RendererColor.b + _RendererColor.a ) > 0.0001 ? _RendererColor : fixed4(1,1,1,1);
+				o.color = v.color * _Color * rcol;
 				return o;
 			}
 
 			fixed4 frag(v2f i) : SV_Target {
-				float3 n = normalize(i.wnorm);
-				float3 l = any(_WorldSpaceLightPos0.xyz) ? normalize(_WorldSpaceLightPos0.xyz) : normalize(float3(0.35, 0.85, -0.4));
-				float t = clamp((dot(n, l) - 0.25) * 1.3, 0.0, 1.0) + 0.2;
-				float3 col = lerp(_ShadowColor.rgb, _Color.rgb, t);
-				fixed atten = SHADOW_ATTENUATION(i);
-				return fixed4(col * atten, 1.0);
+				fixed4 tex = tex2D(_MainTex, i.uv);
+				return i.color * tex;
 			}
 			ENDCG
 		}
 	}
-	FallBack "Diffuse"
+	FallBack "Sprites/Default"
 }

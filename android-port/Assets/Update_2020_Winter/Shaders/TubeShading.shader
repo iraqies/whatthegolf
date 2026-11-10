@@ -51,12 +51,14 @@ Shader "Custom/TubeShading" {
 
 			fixed4 frag(v2f i) : SV_Target {
 				fixed4 tex = tex2D(_MainTex, i.uv);
-				float3 n = normalize(i.wnorm);
+				float nlenSq = dot(i.wnorm, i.wnorm);
+				float3 n = nlenSq > 1e-5 ? (i.wnorm * rsqrt(nlenSq)) : float3(0.0, 0.0, -1.0);
 				float3 l = normalize(float3(0.35, 0.85, -0.4));
-				float ndotl = dot(n, l);
+				float ndotl = nlenSq > 1e-5 ? dot(n, l) : (1.0 - abs(i.uv.y - 0.35) * 2.0);
 				float ha = max(_HighlightAngle, 0.01);
 				float hl = saturate((ndotl - (1.0 - ha)) / ha);
-				float3 rgb = tex.rgb * _Color.rgb * i.color.rgb + _HighlightColor.rgb * hl * _HighlightAmount * 0.35;
+				float3 baseCol = lerp(_Color.rgb, _HighlightColor.rgb, saturate(hl * 0.45));
+				float3 rgb = tex.rgb * baseCol * i.color.rgb;
 				fixed alpha = saturate(tex.a * _Color.a * i.color.a);
 				return fixed4(rgb, alpha);
 			}

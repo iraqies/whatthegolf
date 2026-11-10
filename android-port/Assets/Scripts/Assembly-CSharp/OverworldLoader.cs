@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
+using Core;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
-using Core;
 using UnityEngine.SceneManagement;
 
 public class OverworldLoader : MonoBehaviour
@@ -181,7 +181,8 @@ public class OverworldLoader : MonoBehaviour
 			}
 		}
 		yield return null;
-		for (int i = 0; i < 2; i++)
+		yield return StartCoroutine(Cleanup(true, true));
+		for (int i = 0; i < 5; i++)
 			yield return null;
 		Application.backgroundLoadingPriority = ThreadPriority.Normal;
 		shouldContinueTunnel = true;

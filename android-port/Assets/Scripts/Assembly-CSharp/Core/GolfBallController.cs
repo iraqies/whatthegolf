@@ -105,6 +105,7 @@ namespace Core
 		private float _autoOobMinY = float.NegativeInfinity;
 		private string _autoOobTag = "OutOfBounds";
 		private bool _hasAutoOobY;
+		private bool _isOutOfBounds;
 
 		public float ShootCoolDown
 		{
@@ -419,12 +420,14 @@ namespace Core
 
 		public void Activate()
 		{
+			_isOutOfBounds = false;
 			enabled = true;
 			shooter?.OnActivate();
 		}
 
 		public void Prepare()
 		{
+			_isOutOfBounds = false;
 			_startPos = transform.position;
 			_startRot = transform.rotation;
 		}
@@ -811,23 +814,31 @@ namespace Core
 
 		protected virtual void CheckOutOfBounds(string tag)
 		{
+			if (_isOutOfBounds)
+				return;
+			if (Level.HasInstance && Level.Instance != null && !Level.Instance.IsPlaying)
+				return;
 			if (tag == "OutOfBounds" || tag == "BoundsFail" || tag == "KillZone")
 			{
+				_isOutOfBounds = true;
 				RaiseOnOutOfBoundsEvent();
 				FailLevel(false);
 			}
 			else if (tag == "OutOfBoundsReset" || tag == "BoundsReset")
 			{
+				_isOutOfBounds = true;
 				RaiseOnOutOfBoundsEvent();
 				Reset(0f);
 			}
 			else if (tag == "OutOfBoundsReload" || tag == "BoundsReload")
 			{
+				_isOutOfBounds = true;
 				RaiseOnOutOfBoundsEvent();
 				FailLevel(true);
 			}
 			else if (tag == "BoundsTrigger" || tag == "OutOfBoundsTrigger")
 			{
+				_isOutOfBounds = true;
 				RaiseOnOutOfBoundsEvent();
 			}
 		}
@@ -843,13 +854,18 @@ namespace Core
 		private void FailLevel(bool doReload = true)
 		{
 			if (Level.HasInstance)
-				Level.Instance.Fail(doReload, ShowTransitionOnOutOfBounds, this, 0f, true, "OUT OF BOUNDS");
+				Level.Instance.Fail(doReload, ShowTransitionOnOutOfBounds, this, 0f, false, "OUT OF BOUNDS");
 		}
 
 		private void HideShootArrow() => shootArrow?.Hide();
 
 		public void OutOfBounds(string txt = "OUT OF BOUNDS", float delayedReset = 0f)
 		{
+			if (_isOutOfBounds)
+				return;
+			if (Level.HasInstance && Level.Instance != null && !Level.Instance.IsPlaying)
+				return;
+			_isOutOfBounds = true;
 			_ballVelocity = Vector3.zero;
 			HideShootArrow();
 			RaiseOnOutOfBoundsEvent();
@@ -889,6 +905,7 @@ namespace Core
 
 		private void ResetValues()
 		{
+			_isOutOfBounds = false;
 			IsAiming = false;
 			IsAimingWithOutline = false;
 			transform.position = _startPos;

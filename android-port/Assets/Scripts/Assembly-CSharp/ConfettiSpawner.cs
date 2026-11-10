@@ -53,12 +53,12 @@ public class ConfettiSpawner : MonoBehaviour, IAudioEvent
 	private void OnEnable()
 	{
 		goal = GetComponentInParent<GolfGoal>();
-		if (Level.HasInstance && Level.Instance != null)
+		if (spawnedConfetti == null)
 		{
-			Level.Instance.OnComplete -= Instance_OnComplete;
-			Level.Instance.OnComplete += Instance_OnComplete;
+			maxConfettiCount = innerAmount * amount;
+			spawnedConfetti = new Queue<Confetti>();
 		}
-		if (spawnedConfetti != null && spawnedConfetti.Count < maxConfettiCount && confettiSpawnRoutine == null && confettiPrefab != null)
+		if (spawnedConfetti.Count < maxConfettiCount && confettiSpawnRoutine == null && confettiPrefab != null)
 		{
 			confettiSpawnRoutine = StartCoroutine(PopulatePool());
 		}
@@ -71,7 +71,7 @@ public class ConfettiSpawner : MonoBehaviour, IAudioEvent
 
 	private void Instance_OnComplete(Level.CompletedState obj)
 	{
-		Confetti.SpawnConfetti(base.transform);
+		RemoteSpawn(transform.position, false);
 	}
 
 	private IEnumerator PopulatePool()
@@ -80,17 +80,21 @@ public class ConfettiSpawner : MonoBehaviour, IAudioEvent
 		{
 			yield break;
 		}
-		Transform trans = base.transform;
-		for (int i = 0; i < maxConfettiCount; i++)
+		Transform trans = transform;
+		while (spawnedConfetti.Count < maxConfettiCount)
 		{
-			Confetti confetti = UnityEngine.Object.Instantiate(confettiPrefab, trans.position - Vector3.forward * 0.01f, Quaternion.identity, trans);
-			if (confetti != null)
+			for (int i = 0; i < 5 && spawnedConfetti.Count < maxConfettiCount; i++)
 			{
-				spawnedConfetti.Enqueue(confetti);
-				confetti.gameObject.SetActive(false);
+				Confetti confetti = UnityEngine.Object.Instantiate(confettiPrefab, trans.position - Vector3.forward * 0.01f, Quaternion.identity, trans);
+				if (confetti != null)
+				{
+					spawnedConfetti.Enqueue(confetti);
+					confetti.gameObject.SetActive(false);
+				}
 			}
 			yield return null;
 		}
+		confettiSpawnRoutine = null;
 	}
 
 	public void RemoteSpawn(Vector3 position, bool isCrown)
@@ -105,9 +109,12 @@ public class ConfettiSpawner : MonoBehaviour, IAudioEvent
 	private IEnumerator ConfettiRoutine(Vector3 pos, bool isCrown)
 	{
 		PlayConfettiSound(isCrown);
-		for (int i = 0; i < innerAmount; i++)
+		for (int wave = 0; wave < amount; wave++)
 		{
-			SpawnConfetti(pos);
+			for (int i = 0; i < innerAmount; i++)
+			{
+				SpawnConfetti(pos);
+			}
 			yield return null;
 		}
 	}
@@ -123,16 +130,16 @@ public class ConfettiSpawner : MonoBehaviour, IAudioEvent
 		{
 			if (confettiLayerOne != null)
 			{
-				confettiLayerOne.Play(sfx, base.transform.position, 0f);
+				confettiLayerOne.Play(sfx, transform.position, 0f);
 			}
 			if (confettiLayerTwo != null)
 			{
-				confettiLayerTwo.Play(sfx, base.transform.position, 0f);
+				confettiLayerTwo.Play(sfx, transform.position, 0f);
 			}
 		}
 		else if (crownLayerOne != null)
 		{
-			crownLayerOne.Play(sfx, base.transform.position, 0f);
+			crownLayerOne.Play(sfx, transform.position, 0f);
 		}
 		OnAudioEvent?.Invoke(Vector3.zero);
 	}
@@ -141,12 +148,17 @@ public class ConfettiSpawner : MonoBehaviour, IAudioEvent
 	{
 		if (confettiPrefab == null || spawnedConfetti == null)
 		{
-			Confetti.SpawnConfetti(base.transform);
 			return;
 		}
 		if (spawnedConfetti.Count == 0)
 		{
-			Confetti.SpawnConfetti(base.transform);
+			Confetti extra = UnityEngine.Object.Instantiate(confettiPrefab, position - Vector3.forward * 0.01f, Quaternion.identity, transform);
+			if (extra != null)
+			{
+				extra.gameObject.SetActive(true);
+				extra.Initiate();
+				spawnedConfetti.Enqueue(extra);
+			}
 			return;
 		}
 		Confetti confetti = spawnedConfetti.Dequeue();
@@ -154,7 +166,7 @@ public class ConfettiSpawner : MonoBehaviour, IAudioEvent
 		{
 			confetti.transform.position = position - Vector3.forward * 0.01f;
 			confetti.gameObject.SetActive(true);
-			Confetti.SpawnConfetti(confetti.transform);
+			confetti.Initiate();
 			spawnedConfetti.Enqueue(confetti);
 		}
 	}

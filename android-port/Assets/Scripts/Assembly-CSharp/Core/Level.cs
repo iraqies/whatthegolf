@@ -247,6 +247,8 @@ namespace Core
 
 		public void DoCheat() => Complete("CHEAT!", 0.25f);
 
+		public bool IsPlaying => state == State.Playing;
+
 		public IEnumerator Play(Action<State> onDone = null, Action<int> onStrokeChange = null)
 		{
 			state = State.Playing;
@@ -275,7 +277,6 @@ namespace Core
 					AkSoundEngine.PostTrigger(AK.TRIGGERS.OFF_THE_MAP_SHORT, gameObject);
 				}
 				m_OnFail?.Invoke(Ball, fs.Message, fs);
-				m_OnOutOfBounds?.Invoke();
 			}
 
 			State finalState = state;
@@ -295,7 +296,7 @@ namespace Core
 				controller.Reset(0f);
 				return;
 			}
-			if (state is FailState) return;
+			if (state != State.Playing) return;
 			var fs = new FailState(doReload, showTransition, delay, playFailSFX, GetHighestAmountOfStrokes(controller), message);
 			state = fs;
 		}

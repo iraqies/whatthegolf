@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class DrawSmoothLine : MonoBehaviour
@@ -28,16 +29,6 @@ public class DrawSmoothLine : MonoBehaviour
 
 	private Transform control;
 
-	private void Awake()
-	{
-		if (brush == null)
-		{
-			brush = GetComponent<LineRenderer>();
-		}
-		UpdateIndexes();
-		UpdateLine();
-	}
-
 	private void Update()
 	{
 		if (UpdateAutomatically)
@@ -48,35 +39,87 @@ public class DrawSmoothLine : MonoBehaviour
 
 	private void UpdateLine()
 	{
-		if (brush == null || transform.childCount < 2)
+		if (brush == null)
 		{
 			return;
 		}
-		UpdateIndexes();
-		if (start == null || end == null)
+		if (UseEndPointAsStartPoint)
+		{
+			var points = new List<Vector3>();
+			for (int i = 0; i < transform.childCount - 1; i += 2)
+			{
+				Transform c0 = transform.GetChild(i);
+				if (c0 == null || !c0.gameObject.activeSelf)
+					continue;
+				Vector3 p0 = c0.position;
+				Vector3 p1 = transform.GetChild(i | 1).position;
+				Vector3 p2 = (i + 2 < transform.childCount) ? transform.GetChild(i + 2).position : p1;
+				points.Add(p0);
+				for (int j = 0; j < 10; j++)
+				{
+					float u = j / 10f;
+					float oneMinusU = 1f - u;
+					Vector3 pt = oneMinusU * oneMinusU * p0 + 2f * oneMinusU * u * p1 + u * u * p2;
+					points.Add(pt);
+				}
+				points.Add(p2);
+			}
+			brush.positionCount = points.Count;
+			brush.SetPositions(points.ToArray());
+			return;
+		}
+
+		if (transform.childCount < 1)
 		{
 			return;
 		}
-		float len = DetermineLength();
-		int steps = Mathf.Clamp(Mathf.CeilToInt(len / Mathf.Max(0.05f, StepDetail)), 4, 64);
-		brush.positionCount = steps + 1;
-		Vector3 p0 = start.position + Offset;
-		Vector3 p2 = end.position + Offset;
-		Vector3 p1 = control != null ? (control.position + Offset) : ((p0 + p2) * 0.5f);
-		for (int i = 0; i <= steps; i++)
+		if (UseBezier && (transform.childCount & 1) != 0)
 		{
-			float u = (float)i / steps;
-			if (UseBezier && control != null)
+			return;
+		}
+		if (UseBezier)
+		{
+			UpdateIndexes();
+		}
+		start = transform.GetChild(0);
+		var list = new List<Vector3>();
+		if (UseBezier)
+		{
+			t = 0f;
+			for (int i = 0; i < transform.childCount / 2; i++)
 			{
-				float oneMinusU = 1f - u;
-				Vector3 pt = oneMinusU * oneMinusU * p0 + 2f * oneMinusU * u * p1 + u * u * p2;
-				brush.SetPosition(i, pt);
+				if (controlIndex == null || endIndex == null || i >= controlIndex.Length || i >= endIndex.Length)
+					break;
+				control = transform.GetChild(controlIndex[i]);
+				end = transform.GetChild(endIndex[i]);
+				float len = Mathf.Max(0.01f, DetermineLength());
+				detail = Mathf.Max(0.01f, StepDetail / len);
+				for (float u = 0f; u < 1f; u += detail)
+				{
+					float oneMinusU = 1f - u;
+					Vector3 pt = oneMinusU * oneMinusU * start.position + 2f * oneMinusU * u * control.position + u * u * end.position;
+					list.Add(pt);
+				}
+				start = end;
 			}
-			else
+			if (end != null)
 			{
-				brush.SetPosition(i, Vector3.Lerp(p0, p2, u));
+				list.Add(end.position);
 			}
 		}
+		else
+		{
+			for (int i = 0; i < transform.childCount; i++)
+			{
+				Transform ch = transform.GetChild(i);
+				if (ch != null && ch.gameObject.activeSelf)
+				{
+					list.Add(ch.position);
+				}
+			}
+		}
+		brush.positionCount = list.Count;
+		brush.SetPositions(list.ToArray());
 	}
 
 	private float DetermineLength()
@@ -98,17 +141,13 @@ public class DrawSmoothLine : MonoBehaviour
 
 	private void UpdateIndexes()
 	{
-		if (transform.childCount >= 3)
+		int pairs = transform.childCount / 2;
+		controlIndex = new int[pairs];
+		endIndex = new int[pairs];
+		for (int i = 0; i < pairs; i++)
 		{
-			start = transform.GetChild(0);
-			control = transform.GetChild(1);
-			end = transform.GetChild(2);
-		}
-		else if (transform.childCount == 2)
-		{
-			start = transform.GetChild(0);
-			control = null;
-			end = transform.GetChild(1);
+			controlIndex[i] = i * 2 + 1;
+			endIndex[i] = Mathf.Min(transform.childCount - 1, (i + 1) * 2);
 		}
 	}
 }
