@@ -6,7 +6,9 @@ public class LobbySpawnPoint : MonoBehaviour
 	public enum SpawnPointPositions
 	{
 		Left = 0,
-		Right = 1
+		Right = 1,
+		Top = 2,
+		Bottom = 3
 	}
 
 	public SpawnPointPositions Position;

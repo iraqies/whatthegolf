@@ -174,5 +174,13 @@ namespace Core
 				rigidbodyC.WakeUp();
 			}
 		}
+
+		public void BlockShootingForSeconds(float seconds)
+		{
+			if (GolfBallController != null)
+			{
+				GolfBallController.BlockShootingForSeconds(seconds);
+			}
+		}
 	}
 }

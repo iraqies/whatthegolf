@@ -857,6 +857,34 @@ namespace Core
 		private void OnEnable() { }
 		private void OnDisable() => StopAiming();
 
+		public event Action<Vector3> OnBallShot
+		{
+			add => OnShoot += value;
+			remove => OnShoot -= value;
+		}
+
+		public event Action<Vector3, bool> OnBallAiming
+		{
+			add => OnAimUpdate += value;
+			remove => OnAimUpdate -= value;
+		}
+
+		public void DisableShooting()
+		{
+			blockShooting = true;
+			StopAiming();
+		}
+
+		public void EnableShooting()
+		{
+			blockShooting = false;
+		}
+
+		public void BlockShootingForSeconds(float seconds)
+		{
+			shootCoolTimer = Mathf.Max(shootCoolTimer, seconds);
+		}
+
 		private void OnDestroy()
 		{
 			isDestroyed = true;

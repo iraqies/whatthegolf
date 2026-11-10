@@ -225,10 +225,9 @@ public class FrisbeeThrower : GolfBallShooterBase
 		if (Pins.Count <= PinsLeftToStillWin)
 		{
 			didWin = true;
-			Flag flag = Object.FindObjectOfType<Flag>();
-			if (flag != null)
+			if (Level.HasInstance && Level.Instance != null)
 			{
-				flag.TouchFlag(true);
+				Level.Instance.Complete();
 			}
 		}
 	}

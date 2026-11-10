@@ -163,10 +163,9 @@ public class SuperPuttBoss : MonoBehaviour
 	private IEnumerator GameWonRoutine()
 	{
 		OnBossDead?.Invoke();
-		Flag flag = UnityEngine.Object.FindObjectOfType<Flag>();
-		if (flag != null)
+		if (Core.Level.HasInstance && Core.Level.Instance != null)
 		{
-			flag.TouchFlag(true);
+			Core.Level.Instance.Complete();
 		}
 		yield return null;
 	}

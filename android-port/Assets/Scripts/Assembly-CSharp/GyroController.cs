@@ -55,7 +55,7 @@ public class GyroController : MonoBehaviour
 
 	public Vector3 GetOffset()
 	{
-		if (PlatformSettings.Instance != null && PlatformSettings.Instance.GetCurrent() != null && PlatformSettings.Instance.GetCurrent().platform == 0)
+		if (Application.isMobilePlatform)
 		{
 			return new Vector3(offset.y, offset.x, offset.z);
 		}
@@ -117,7 +117,7 @@ public class GyroController : MonoBehaviour
 		}
 		lastAttitude = attitude;
 
-		bool useRot = PlatformSettings.Instance != null && PlatformSettings.Instance.GetCurrent() != null && PlatformSettings.Instance.GetCurrent().useRotatedOverworldAndCameraInLevels;
+		bool useRot = Application.isMobilePlatform;
 		if (gyroTransform != null)
 		{
 			if (useRot)

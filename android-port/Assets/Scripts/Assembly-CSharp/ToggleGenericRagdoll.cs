@@ -56,6 +56,8 @@ public class ToggleGenericRagdoll : MonoBehaviour
 
 	public void RagdollOff() => ToggleRagdoll(false);
 
+	public void SetRagdoll(bool ragdollOn) => ToggleRagdoll(ragdollOn);
+
 	private void ToggleRagdoll(bool ragdollOn)
 	{
 		if (NavAgent != null)

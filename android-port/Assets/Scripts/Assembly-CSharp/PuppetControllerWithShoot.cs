@@ -142,10 +142,9 @@ public class PuppetControllerWithShoot : UserControlThirdPerson
 		CollapsedTargets++;
 		if (CollapsedTargets >= Mathf.Max(1, TargetsToHit))
 		{
-			Flag flag = UnityEngine.Object.FindObjectOfType<Flag>();
-			if (flag != null)
+			if (Level.HasInstance && Level.Instance != null)
 			{
-				flag.TouchFlag(true);
+				Level.Instance.Complete();
 			}
 		}
 	}

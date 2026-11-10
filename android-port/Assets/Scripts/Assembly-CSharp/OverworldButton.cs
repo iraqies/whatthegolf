@@ -40,11 +40,6 @@ public class OverworldButton : MonoBehaviour
 
 	private void Start()
 	{
-		OnBallHit ballHit = GetComponentInChildren<OnBallHit>();
-		if (ballHit != null)
-		{
-			ballHit.OnHit.AddListener(OverworldButton_OnBallHit);
-		}
 	}
 
 	public void SetText(string text)

@@ -300,6 +300,8 @@ namespace Core
 			state = fs;
 		}
 
+		public void FailLevel(bool doReload = true) => Fail(doReload);
+
 		public void Complete(string message = null, float? delay = null, TransitionTextEffect transitionTextEffect = null, int levelSkips = 0)
 		{
 			if (state is CompletedState) return;
