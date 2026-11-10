@@ -140,10 +140,12 @@ public class IntroTunnelInOverworld : MonoBehaviour
 
 	private OverworldBall2D GetBall()
 	{
-		if (ball == null)
+		if (ball == null || !ball.gameObject.scene.IsValid())
 		{
-			if (OverworldBallManager.HasInstance && OverworldBallManager.Instance != null && OverworldBallManager.Instance.Ball != null)
+			if (OverworldBallManager.HasInstance && OverworldBallManager.Instance != null && OverworldBallManager.Instance.Ball != null && OverworldBallManager.Instance.Ball.gameObject.scene.IsValid())
 				ball = OverworldBallManager.Instance.Ball;
+			else if (OverworldManager2d.HasInstance && OverworldManager2d.Instance != null && OverworldManager2d.Instance.ball != null && OverworldManager2d.Instance.ball.gameObject.scene.IsValid())
+				ball = OverworldManager2d.Instance.ball;
 			else
 				ball = FindObjectOfType<OverworldBall2D>();
 		}
@@ -194,7 +196,7 @@ public class IntroTunnelInOverworld : MonoBehaviour
 		}));
 
 		lastPipeIndex = 0;
-		if (!startAtLogo)
+		if (!startAtLogo && pathToLogo != null && pathToLogo.Count > 0 && tweenTimeToLogo > 0f)
 		{
 			StartCoroutine(pTween.To(tweenTimeToLogo, t =>
 			{
@@ -477,6 +479,16 @@ public class IntroTunnelInOverworld : MonoBehaviour
 		{
 			Vector3 cur = followCamera.transform.position;
 			followCamera.transform.position = new Vector3(target.x, target.y, cur.z);
+			if (followCamera.follow != null)
+			{
+				Vector3 fcur = followCamera.follow.position;
+				followCamera.follow.position = new Vector3(target.x, target.y, fcur.z);
+			}
+		}
+		if (OverworldManager2d.HasInstance && OverworldManager2d.Instance != null && OverworldManager2d.Instance.cameraTarget != null)
+		{
+			Vector3 ct = OverworldManager2d.Instance.cameraTarget.position;
+			OverworldManager2d.Instance.cameraTarget.position = new Vector3(target.x, target.y, ct.z);
 		}
 	}
 }

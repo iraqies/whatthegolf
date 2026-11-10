@@ -38,9 +38,9 @@ public class SaveAndLoadPositionOnQuit : GolfBehaviour
 	private void Start()
 	{
 		OverworldBall2D b = null;
-		if (OverworldBallManager.Instance != null && OverworldBallManager.Instance.Ball != null)
+		if (OverworldBallManager.Instance != null && OverworldBallManager.Instance.Ball != null && OverworldBallManager.Instance.Ball.gameObject.scene.IsValid())
 			b = OverworldBallManager.Instance.Ball;
-		else if (OverworldManager2d.HasInstance && OverworldManager2d.Instance.ball != null)
+		else if (OverworldManager2d.HasInstance && OverworldManager2d.Instance.ball != null && OverworldManager2d.Instance.ball.gameObject.scene.IsValid())
 			b = OverworldManager2d.Instance.ball;
 		else
 			b = FindObjectOfType<OverworldBall2D>();

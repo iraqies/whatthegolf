@@ -95,6 +95,13 @@ public class RuntimeStoreData : ScriptableObject
 		if (contentPacksDefs != null)
 		{
 			var found = contentPacksDefs.FirstOrDefault(d => d != null && d.pack != null && d.pack.contentPackID == contentPackID);
+			if (found == null)
+			{
+				if (contentPackID == "CP_HUB")
+					found = contentPacksDefs.FirstOrDefault(d => d != null && d.pack != null && (d.pack.contentPackID == "CP_EPISODESHUB" || d.pack.campaignType == ECampaignType.Hub));
+				else if (contentPackID == "CP_EPISODESHUB")
+					found = contentPacksDefs.FirstOrDefault(d => d != null && d.pack != null && (d.pack.contentPackID == "CP_HUB" || d.pack.campaignType == ECampaignType.Hub));
+			}
 			if (found != null)
 			{
 				ContentLookup[contentPackID] = found;

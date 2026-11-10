@@ -162,6 +162,24 @@ public class GridFiller : GolfBehaviour
 			return;
 		}
 
+		// Preserve pre-baked Normal and Rotated tilemaps in built player when they already contain ground tiles
+		if (groundMap != null && groundMap.GetUsedTilesCount() > 0 && rotatedMap.transform.childCount > 0)
+		{
+			GridFilledTileMap rotGridPre = rotatedMap.GetComponent<GridFilledTileMap>();
+			GridFilledTileMap normGridPre = normalMap.GetComponent<GridFilledTileMap>();
+			if (normGridPre != null && normGridPre.ground == null)
+				normGridPre.ground = groundMap;
+			if (rotGridPre != null && rotGridPre.ground == null)
+			{
+				var rotGround = rotatedMap.GetComponentsInChildren<Tilemap>(true).FirstOrDefault(tm => tm != null && tm.name.Contains("Ground"));
+				if (rotGround != null)
+					rotGridPre.ground = rotGround;
+			}
+			AllRenders = transform.GetComponentsInChildren<TilemapRenderer>(true).ToList();
+			PostPreCompile();
+			return;
+		}
+
 		normalMap.SetActive(true);
 		rotatedMap.SetActive(true);
 		GridFilledTileMap rotGrid = rotatedMap.GetComponent<GridFilledTileMap>();
@@ -446,7 +464,38 @@ public class GridFiller : GolfBehaviour
 		TileBase tileBottomRight = CheckSectionsForTile(posBottomRight);
 
 		bool changed = false;
-		if (IsRound(tiles, centerTile))
+		if (IsDiagonal(tiles, centerTile))
+		{
+			if (centerTile == tiles.diagonalTopLeft)
+			{
+				if (diagonals != null) diagonals.SetTile(tilePos, tiles.diagonalTopLeft);
+				if (collison != null) collison.SetTile(tilePos, tiles.borderDiaTopLeft);
+				if (innerCornerBottomRight != null) innerCornerBottomRight.SetTile(posBottomRight, tiles.borderInnerBottomRight);
+				return true;
+			}
+			if (centerTile == tiles.diagonalTopRight)
+			{
+				if (diagonals != null) diagonals.SetTile(tilePos, tiles.diagonalTopRight);
+				if (collison != null) collison.SetTile(tilePos, tiles.borderDiaTopRight);
+				if (innerCornerBottomLeft != null) innerCornerBottomLeft.SetTile(posBottomLeft, tiles.borderInnerBottomLeft);
+				return true;
+			}
+			if (centerTile == tiles.diagonalBottomLeft)
+			{
+				if (diagonals != null) diagonals.SetTile(tilePos, tiles.diagonalBottomLeft);
+				if (collison != null) collison.SetTile(tilePos, tiles.borderDiaBottomLeft);
+				if (innerCornerTopRight != null) innerCornerTopRight.SetTile(posTopRight, tiles.borderInnerTopRight);
+				return true;
+			}
+			if (centerTile == tiles.diagonalBottomRight)
+			{
+				if (diagonals != null) diagonals.SetTile(tilePos, tiles.diagonalBottomRight);
+				if (collison != null) collison.SetTile(tilePos, tiles.borderDiaBottomRight);
+				if (innerCornerTopLeft != null) innerCornerTopLeft.SetTile(posTopLeft, tiles.borderInnerTopLeft);
+				return true;
+			}
+		}
+		else if (IsRound(tiles, centerTile))
 		{
 			if (centerTile == tiles.roundTopLeft)
 			{
@@ -516,6 +565,46 @@ public class GridFiller : GolfBehaviour
 				if (bottomCornerRightBorder != null) bottomCornerRightBorder.SetTile(posBottomRight, tiles.borderOuterBottomRight);
 				changed = true;
 			}
+			if (tileTop == null && IsTileTargetOrOrRound(tiles, tileTopRight))
+			{
+				if (innerCornerBottomLeft != null) innerCornerBottomLeft.SetTile(posTop, tiles.borderInnerBottomLeft);
+				changed = true;
+			}
+			if (tileTop == null && IsTileTargetOrOrRound(tiles, tileTopLeft))
+			{
+				if (innerCornerBottomRight != null) innerCornerBottomRight.SetTile(posTop, tiles.borderInnerBottomRight);
+				changed = true;
+			}
+			if (tileBottom == null && IsTileTargetOrOrRound(tiles, tileBottomRight))
+			{
+				if (innerCornerTopLeft != null) innerCornerTopLeft.SetTile(posBottom, tiles.borderInnerTopLeft);
+				changed = true;
+			}
+			if (tileBottom == null && IsTileTargetOrOrRound(tiles, tileBottomLeft))
+			{
+				if (innerCornerTopRight != null) innerCornerTopRight.SetTile(posBottom, tiles.borderInnerTopRight);
+				changed = true;
+			}
+			if (tileRight == null && IsTileTargetOrOrRound(tiles, tileTopRight))
+			{
+				if (innerCornerBottomLeft != null) innerCornerBottomLeft.SetTile(posRight, tiles.borderInnerBottomLeft);
+				changed = true;
+			}
+			if (tileRight == null && IsTileTargetOrOrRound(tiles, tileBottomRight))
+			{
+				if (innerCornerTopLeft != null) innerCornerTopLeft.SetTile(posRight, tiles.borderInnerTopLeft);
+				changed = true;
+			}
+			if (tileLeft == null && IsTileTargetOrOrRound(tiles, tileTopLeft))
+			{
+				if (innerCornerBottomRight != null) innerCornerBottomRight.SetTile(posLeft, tiles.borderInnerBottomRight);
+				changed = true;
+			}
+			if (tileLeft == null && IsTileTargetOrOrRound(tiles, tileBottomLeft))
+			{
+				if (innerCornerTopRight != null) innerCornerTopRight.SetTile(posLeft, tiles.borderInnerTopRight);
+				changed = true;
+			}
 		}
 
 		if (groundMap != null)
@@ -561,6 +650,12 @@ public class GridFiller : GolfBehaviour
 				return true;
 		}
 		return false;
+	}
+
+	public bool IsDiagonal(TileMapData tiles, TileBase tile)
+	{
+		if (tiles == null || tile == null) return false;
+		return tile == tiles.diagonalTopRight || tile == tiles.diagonalBottomLeft || tile == tiles.diagonalTopLeft || tile == tiles.diagonalBottomRight;
 	}
 
 	public bool IsRound(TileMapData tiles, TileBase tile)

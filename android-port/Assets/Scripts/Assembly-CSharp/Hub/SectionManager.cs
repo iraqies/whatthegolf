@@ -41,10 +41,6 @@ namespace Hub
 			}
 
 			bool isLandscape = Screen.width >= Screen.height;
-			if (PlatformSettings.Instance != null && PlatformSettings.Instance.GetCurrent() != null)
-			{
-				isLandscape = !PlatformSettings.Instance.GetCurrent().useRotatedOverworldAndCameraInLevels;
-			}
 
 			if (mainSectionLandscape != null) mainSectionLandscape.SetActive(isLandscape);
 			if (mainSectionPortrait != null) mainSectionPortrait.SetActive(!isLandscape);

@@ -368,7 +368,17 @@ public class LevelManager : AddressableSingleton<LevelManager>
 
 	public IEnumerator SwapTranstion(Color? color = null, string textId = null, bool showWaitAnimation = false, bool isAsync = false, bool showWaitingText = false, Transition.TransitionEffect customTransitionEffectIndex = Transition.TransitionEffect.Default)
 	{
-		yield break;
+		if (transition == null)
+			yield break;
+		transition.EndTextTransitionImmidiate();
+		BaseTransitionEffect customEffect = null;
+		if (transition.transitionEffects != null)
+		{
+			int idx = (int)customTransitionEffectIndex;
+			if (idx >= 0 && idx < transition.transitionEffects.Count)
+				customEffect = transition.transitionEffects[idx];
+		}
+		yield return StartCoroutine(transition.StartTransition(textId, false, 0f, null, color, null, showWaitAnimation, isAsync, showWaitingText, customEffect));
 	}
 
 	public IEnumerator StartTransition(Color? color = null, string textId = null, bool showWaitAnimation = false, bool isAsync = false, bool showWaitingText = false, Transition.TransitionEffect customTransitionEffectIndex = Transition.TransitionEffect.Default, BaseTransitionEffect customTransitionEffect = null)

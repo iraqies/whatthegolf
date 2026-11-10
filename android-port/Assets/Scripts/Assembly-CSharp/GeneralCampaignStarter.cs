@@ -68,7 +68,56 @@ public class GeneralCampaignStarter : BasePackStarter
 		SaveGame.SetOverworld(cType);
 		SaveGame.IncrementContentPackPlayCount(pack.contentPackID);
 		SaveGame.LastPlayedCampaignType = cType;
-		OverworldSceneLoader.LoadOverworld(pack, false);
+
+		bool loadedOverworld = false;
+		var loadTask = OverworldSceneLoader.TryLoadOverworld(pack, false);
+		while (!loadTask.IsCompleted)
+			yield return null;
+		loadedOverworld = !loadTask.IsFaulted && !loadTask.IsCanceled && loadTask.Result;
+
+		if (!loadedOverworld)
+		{
+			// Fallback for ODR packs whose overworld scene is external, playing available built-in levels sequentially
+			if (pack.mainContainer != null && LevelManager.Instance != null)
+			{
+				var allLevels = pack.mainContainer.GetLevelDatasWithChallenges();
+				var playableLevels = allLevels != null
+					? allLevels.Where(item => item != null && item.level != null && !string.IsNullOrEmpty(item.level.SceneName) && Application.CanStreamedLevelBeLoaded(item.level.SceneName)).ToList()
+					: null;
+				if (playableLevels != null && playableLevels.Count > 0)
+				{
+					bool aborted = false;
+					for (int i = 0; i < playableLevels.Count; i++)
+					{
+						if (aborted) break;
+						var item = playableLevels[i];
+						string challengeId = string.IsNullOrEmpty(item.challengeID) ? null : item.challengeID;
+						if (AudioManager.Instance != null && AudioManager.Instance.music != null)
+							AudioManager.Instance.music.SetLevelMusic(item.level.music, false);
+						yield return StartCoroutine(LevelManager.Instance.Play(
+							item.level,
+							onComplete: _ => { },
+							onAbort: () => aborted = true,
+							skipTransitionIn: true,
+							skipTransitionOut: true,
+							disableRestartButton: false,
+							disableExitButton: false,
+							showStrokeCounter: !string.IsNullOrEmpty(challengeId),
+							challengeID: challengeId
+						));
+					}
+					if (HubSceneLoader.Instance != null)
+					{
+						var hubTask = HubSceneLoader.Instance.LoadSceneAsync(UnityEngine.SceneManagement.LoadSceneMode.Single);
+						while (!hubTask.IsCompleted)
+							yield return null;
+					}
+				}
+			}
+			if (LevelManager.Instance != null)
+				yield return StartCoroutine(LevelManager.Instance.EndTransition(true, 0f));
+			yield break;
+		}
 
 		if (!string.IsNullOrEmpty(level))
 		{

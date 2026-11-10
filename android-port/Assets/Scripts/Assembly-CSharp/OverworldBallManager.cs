@@ -112,8 +112,9 @@ public class OverworldBallManager : MonoBehaviour
 	public void Initialize()
 	{
 		_Instance = this;
-		if (ballProxy == null)
+		if (ballProxy == null || !ballProxy.gameObject.scene.IsValid())
 		{
+			ballProxy = null;
 			GameObject gameObject = GameObject.Find("BallFollower");
 			if (gameObject != null)
 			{
@@ -124,12 +125,20 @@ public class OverworldBallManager : MonoBehaviour
 				ballProxy = UnityEngine.Object.FindObjectOfType<OverworldBallFollower>();
 			}
 		}
-		if (Ball == null)
+		if (Ball == null || !Ball.gameObject.scene.IsValid())
 		{
-			GameObject gameObject2 = GameObject.Find("Ball");
-			if (gameObject2 != null)
+			Ball = null;
+			if (OverworldManager2d.HasInstance && OverworldManager2d.Instance != null && OverworldManager2d.Instance.ball != null && OverworldManager2d.Instance.ball.gameObject.scene.IsValid())
 			{
-				Ball = gameObject2.GetComponentInParent<OverworldBall2D>();
+				Ball = OverworldManager2d.Instance.ball;
+			}
+			if (Ball == null)
+			{
+				GameObject gameObject2 = GameObject.Find("Ball");
+				if (gameObject2 != null)
+				{
+					Ball = gameObject2.GetComponentInParent<OverworldBall2D>();
+				}
 			}
 			if (Ball == null)
 			{
@@ -157,11 +166,11 @@ public class OverworldBallManager : MonoBehaviour
 
 	public void Load(Transmogrif.BALLSHAPES shape)
 	{
-		if (Ball == null)
+		if (Ball == null || !Ball.gameObject.scene.IsValid())
 		{
 			Initialize();
 		}
-		if (Ball == null)
+		if (Ball == null || !Ball.gameObject.scene.IsValid())
 		{
 			return;
 		}
@@ -298,7 +307,7 @@ public class OverworldBallManager : MonoBehaviour
 
 	private Transmogriffable ChangeBall(Transmogriffable ball, Transmogrif.BALLSHAPES targetShape)
 	{
-		if (ball != null)
+		if (ball != null && ball.gameObject.scene.IsValid())
 		{
 			UnityEngine.Object.Destroy(ball.gameObject);
 		}
@@ -317,6 +326,15 @@ public class OverworldBallManager : MonoBehaviour
 			}
 		}
 		currentShape = targetShape;
-		return UnityEngine.Object.Instantiate(original);
+		Transmogriffable spawned = UnityEngine.Object.Instantiate(original);
+		if (spawned != null && OverworldManager2d.HasInstance && OverworldManager2d.Instance != null)
+		{
+			OverworldBall2D owBall = spawned.GetComponent<OverworldBall2D>();
+			if (owBall != null)
+			{
+				OverworldManager2d.Instance.ball = owBall;
+			}
+		}
+		return spawned;
 	}
 }
