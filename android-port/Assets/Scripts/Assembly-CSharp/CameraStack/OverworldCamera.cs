@@ -140,8 +140,9 @@ namespace CameraStack
 			if (size > 0.1f)
 				ortho.SetOrthoSize(size);
 			float tTween = TweenFunctions.SmoothStep(Mathf.Clamp01(pct * toData.tweenTimtweenTime));
-			if (toData.tweenTime >= 0f)
-				ortho.tweenTime = Mathf.Lerp(fromData.tweenTime, toData.tweenTime, tTween);
+			float fromTween = fromData.tweenTime >= 0f ? fromData.tweenTime : 0.05f;
+			float toTween = toData.tweenTime >= 0f ? toData.tweenTime : fromTween;
+			ortho.tweenTime = Mathf.Lerp(fromTween, toTween, tTween);
 			ortho.lookAheadDistance = Mathf.Lerp(fromData.lookAhead, toData.lookAhead, t);
 		}
 

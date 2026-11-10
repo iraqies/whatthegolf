@@ -106,7 +106,11 @@ public class OverworldGoal : MonoBehaviour
 
 		if (levelData.GetWindowType() == LevelData.WindowType.TwoD && !IsStuckToWall && !DontRotateBasedOnLevel)
 		{
-			transform.Rotate(0f, 0f, -90f, Space.Self);
+			var flagChild = transform.Find("flag");
+			if (flagChild != null)
+				flagChild.Rotate(0f, 0f, -90f, Space.Self);
+			else
+				transform.Rotate(0f, 0f, -90f, Space.World);
 		}
 
 		if (IsStuckToWall)

@@ -120,7 +120,12 @@ namespace Core
 
 		public void HandleSceneDataUpdate(Dictionary<string, float> data) { }
 		public void DeleteData() { }
-		public WindowType GetWindowType() => window;
+		public WindowType GetWindowType()
+		{
+			if (PlatformSettings.Instance != null && PlatformSettings.Instance.GetCurrent() != null && PlatformSettings.Instance.GetCurrent().useRotatedOverworldAndCameraInLevels)
+				return window;
+			return WindowType.Normal;
+		}
 		public string GetID()
 		{
 			if (string.IsNullOrEmpty(convertedLevelId))

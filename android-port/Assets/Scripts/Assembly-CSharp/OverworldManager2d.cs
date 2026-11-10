@@ -477,6 +477,9 @@ public class OverworldManager2d : GolfBehaviour
 	{
 		if (button == null) yield break;
 		Vector3 btnPos = button.transform.position;
+		OverworldBall2D currentBall = OverworldBallManager.HasInstance && OverworldBallManager.Instance != null && OverworldBallManager.Instance.Ball != null
+			? OverworldBallManager.Instance.Ball
+			: ball;
 		if (ball != null)
 		{
 			if (ball.Controller != null)
@@ -500,29 +503,21 @@ public class OverworldManager2d : GolfBehaviour
 		yield return StartCoroutine(button.EnableButtonAndCable(
 			cablePos =>
 			{
+				btnPos = cablePos;
+				if (ball != null)
+					ball.transform.position = cablePos;
 				if (cameraTarget != null)
 					cameraTarget.position = cablePos;
 			},
 			() =>
 			{
-				var curBall = OverworldBallManager.HasInstance && OverworldBallManager.Instance != null && OverworldBallManager.Instance.Ball != null
-					? OverworldBallManager.Instance.Ball
-					: ball;
-				if (curBall != null)
+				if (ball != null)
 				{
-					curBall.ShowAndEnable();
-					curBall.enabled = true;
-					if (curBall.rigidBody != null)
-						curBall.rigidBody.isKinematic = false;
-					curBall.SetColliders(true);
-					if (curBall.Controller != null)
-					{
-						curBall.Controller.enabled = true;
-						curBall.Controller.Activate();
-					}
-					if (cameraTarget != null)
-						cameraTarget.position = curBall.transform.position;
+					float z = currentBall != null ? currentBall.transform.position.z : ball.transform.position.z;
+					ball.transform.position = new Vector3(btnPos.x, btnPos.y, z);
 				}
+				if (cameraTarget != null && ball != null)
+					cameraTarget.position = ball.transform.position;
 			}
 		));
 	}

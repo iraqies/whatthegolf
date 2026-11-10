@@ -188,7 +188,7 @@ public class BlockShotIfNotGrounded : MonoBehaviour
 	{
 		Vector3 n = hit.normal;
 		float dot = (-down.y * n.y) - (down.x * n.x) - (down.z * n.z);
-		return dot >= AcceptedNormalUp;
+		return dot >= AcceptedNormalUp - 0.001f;
 	}
 
 	private bool CheckAdditionalTransforms(Vector3 d)

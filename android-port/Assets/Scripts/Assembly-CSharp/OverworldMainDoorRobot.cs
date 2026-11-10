@@ -220,9 +220,18 @@ public class OverworldMainDoorRobot : MonoBehaviour
 		yield return new WaitForSeconds(0.5f);
 
 		var ball = OverworldBallManager.HasInstance && OverworldBallManager.Instance != null ? OverworldBallManager.Instance.Ball : null;
+		if (ball == null && OverworldManager2d.HasInstance && OverworldManager2d.Instance != null)
+			ball = OverworldManager2d.Instance.ball;
 		if (ball != null && plate != null && plate.returningBallTransform != null)
 		{
 			ball.transform.position = plate.returningBallTransform.position;
+			if (OverworldManager2d.HasInstance && OverworldManager2d.Instance != null)
+			{
+				if (OverworldManager2d.Instance.cameraTarget != null)
+					OverworldManager2d.Instance.cameraTarget.position = plate.returningBallTransform.position;
+				if (OverworldManager2d.Instance.culling != null)
+					OverworldManager2d.Instance.culling.UpdateCulling();
+			}
 			ball.ShowAndEnable();
 			ball.enabled = true;
 			if (ball.rigidBody != null)

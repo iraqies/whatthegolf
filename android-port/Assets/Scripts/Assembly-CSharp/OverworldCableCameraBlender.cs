@@ -33,17 +33,24 @@ public class OverworldCableCameraBlender : GolfBehaviour
 
 	private void Cable_OnEnteredCable1(OverworldMainButton cable)
 	{
+		if (cable != null && cable.doorplate != null && cable.doorplate.computer != null)
+		{
+			cable.doorplate.computer.OnExitedCable -= Cable_OnExitedCable;
+			cable.doorplate.computer.OnExitedCable += Cable_OnExitedCable;
+		}
 		if (inCable == null) return;
 		if (current != null) StopCoroutine(current);
-		current = StartCoroutine(pTween.To(0.25f, 0f, 1f, t =>
+		current = StartCoroutine(pTween.To(0.6f, t =>
 		{
 			if (inCable != null)
-				inCable.SetValue(t * t);
+				inCable.SetValue(TweenFunctions.EaseIn(t));
 		}));
 	}
 
 	private void Cable_OnExitedCable(OverworldMainDoorRobot cable)
 	{
+		if (cable != null)
+			cable.OnExitedCable -= Cable_OnExitedCable;
 		if (inCable == null) return;
 		if (current != null) StopCoroutine(current);
 		current = StartCoroutine(EndCamera());
@@ -51,10 +58,10 @@ public class OverworldCableCameraBlender : GolfBehaviour
 
 	private IEnumerator EndCamera()
 	{
-		yield return StartCoroutine(pTween.To(0.25f, 1f, 0f, t =>
+		yield return StartCoroutine(pTween.To(0.6f, 1f, 0f, t =>
 		{
 			if (inCable != null)
-				inCable.SetValue(t * t);
+				inCable.SetValue(TweenFunctions.EaseIn(Mathf.Clamp01(t)));
 		}));
 	}
 }

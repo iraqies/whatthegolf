@@ -92,11 +92,15 @@ public class IntroTunnelInOverworld : MonoBehaviour
 
 	public void Init(bool _startAtLogo = false)
 	{
-		startAtLogo = _startAtLogo;
+		startAtLogo = _startAtLogo || tweenTimeToLogo <= 0.01f;
+		if (followCamera != null)
+			followCamera.isInPipeIntro = true;
 		ball = GetBall();
 		if (ball != null)
 		{
 			List<Transform> initialPath = startAtLogo ? pathFromLogo : pathToLogo;
+			if (initialPath == null || initialPath.Count == 0)
+				initialPath = pathFromLogo != null && pathFromLogo.Count > 0 ? pathFromLogo : pathToLogo;
 			if (initialPath != null && initialPath.Count > 0 && initialPath[0] != null)
 				ball.transform.position = initialPath[0].position;
 			var col = ball.GetComponent<Collider2D>();
@@ -323,7 +327,7 @@ public class IntroTunnelInOverworld : MonoBehaviour
 				ballCol.isTrigger = false;
 			ball.SetColliders(true);
 		}
-		if (followCamera != null)
+		if (followCamera != null && !centerCameraOnBallDuringShootOut)
 			followCamera.isInPipeIntro = false;
 
 		yield return StartCoroutine(pTween.ToRealTime(0.8f, t =>
@@ -340,6 +344,9 @@ public class IntroTunnelInOverworld : MonoBehaviour
 				}
 			}
 		}));
+
+		if (followCamera != null)
+			followCamera.isInPipeIntro = false;
 
 		if (RecoilFromHittingTarget)
 		{
@@ -437,6 +444,14 @@ public class IntroTunnelInOverworld : MonoBehaviour
 		{
 			Vector3 cur = followCamera.transform.position;
 			followCamera.transform.position = new Vector3(target.x, target.y, cur.z);
+			Transform followTarget = followCamera.GetFollowTarget();
+			if (followTarget != null)
+				followTarget.position = new Vector3(target.x, target.y, followTarget.position.z);
+		}
+		if (OverworldManager2d.HasInstance && OverworldManager2d.Instance != null && OverworldManager2d.Instance.cameraTarget != null)
+		{
+			Vector3 ct = OverworldManager2d.Instance.cameraTarget.position;
+			OverworldManager2d.Instance.cameraTarget.position = new Vector3(target.x, target.y, ct.z);
 		}
 	}
 }
