@@ -23,15 +23,18 @@ namespace Core
 		protected override void Awake()
 		{
 			base.Awake();
-			rigidbodyC = GetComponent<Rigidbody>();
-			startRot = transform.rotation;
+			rb = GetComponent<Rigidbody>();
+			rigidbodyC = rb;
+			startRot = base.transform.rotation;
 		}
 
 		public override void OnActivate()
 		{
 			base.OnActivate();
-			if (rigidbodyC != null)
-				rigidbodyC.isKinematic = false;
+			if (rb != null)
+			{
+				rb.isKinematic = false;
+			}
 		}
 
 		public override void OnShoot(Vector3 boost)
@@ -42,31 +45,55 @@ namespace Core
 
 		private void Shoot(Vector3 boost, bool comingFromUpdate)
 		{
+			if (!comingFromUpdate && PlatformSettings.IsAppleTV)
+			{
+				return;
+			}
 			if (GolfBallController != null && GolfBallController.mainCamera != null)
 			{
 				Vector3 fwd = GolfBallController.mainCamera.transform.forward;
 				float mag = boost.magnitude;
 				boost = new Vector3(fwd.x * mag, 0f, fwd.z * mag);
 			}
-
 			base.OnShoot(boost);
 			Vector3 axis = Vector3.Cross(boost, Vector3.up);
-			if (!zeroPitchIfNotGrouneded || GolfBallController == null || GolfBallController.IsGrounded)
+			if (!zeroPitchIfNotGrouneded || (GolfBallController != null && GolfBallController.IsGrounded))
 			{
-				if (axis.sqrMagnitude > 1e-6f)
-					boost = Quaternion.AngleAxis(pitch, axis) * boost;
+				boost = Quaternion.AngleAxis(pitch, axis) * boost;
+			}
+			if (AudioManager.Instance != null && AudioManager.Instance.golfAudioManager != null && AudioManager.Instance.golfAudioManager.releaseRumble != null && GolfBallController != null)
+			{
+				AudioManager.Instance.golfAudioManager.releaseRumble.Play(1f, GolfBallController.playerIndex);
 			}
 			StandardShoot(boost, pitch, minShootVelocity, fullShootVelocity, 0f);
 		}
 
 		private void LateUpdate()
 		{
+			bool shootPressed = false;
+			if (Time.timeScale > 0f && GolfBallController != null)
+			{
+				shootPressed = GolfBallController.GetButtonUp(true, "Shoot");
+			}
+			if (PlatformSettings.IsAppleTV && GolfBallController != null && GolfBallController.player != null && !shootPressed)
+			{
+				shootPressed = GolfBallController.player.GetButtonUp("Shoot");
+			}
+			if (shootPressed && GolfBallController != null && !GolfBallController.BlockShooting && GolfBallController.mainCamera != null)
+			{
+				Shoot(base.transform.forward, true);
+				if (Time.time - lastShotTime > 0.1f)
+				{
+					GolfBallController.CountShot();
+					GolfBallController.TimedBlockShot(0.01f);
+				}
+			}
 		}
 
 		public override void OnReset()
 		{
 			base.OnReset();
-			transform.rotation = startRot;
+			base.transform.rotation = startRot;
 		}
 	}
 }

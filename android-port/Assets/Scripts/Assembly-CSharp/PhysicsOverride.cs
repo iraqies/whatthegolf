@@ -6,7 +6,7 @@ public class PhysicsOverride : MonoBehaviour
 	private Vector3 gravity;
 
 	[SerializeField]
-	private float bounceThreshold;
+	private float bounceThreshold = 15f;
 
 	private float oldBounceThreshold;
 
@@ -14,9 +14,15 @@ public class PhysicsOverride : MonoBehaviour
 
 	private void Awake()
 	{
+		oldBounceThreshold = Physics.bounceThreshold;
+		oldGravity = Physics.gravity;
+		Physics.bounceThreshold = bounceThreshold;
+		Physics.gravity = gravity;
 	}
 
 	private void OnDestroy()
 	{
+		Physics.bounceThreshold = oldBounceThreshold;
+		Physics.gravity = oldGravity;
 	}
 }
