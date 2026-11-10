@@ -37,6 +37,7 @@ public class TunnelToOverworld : MonoBehaviour
 		var ball = other.GetComponentInParent<GolfBallController>();
 		if (ball == null) return;
 		ballTransform = ball.transform;
+		ball.DisableAutoOutOfBounds();
 		didActivate = true;
 		if (catSfxOnEnter != null && AudioManager.Instance != null)
 			catSfxOnEnter.Play(AudioManager.Instance.shortEffects, Vector3.zero, 0f);

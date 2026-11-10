@@ -17,7 +17,7 @@ namespace Chronos
 		}
 
 		public TransformTimeline(Timeline timeline, Transform component)
-			: base((Timeline)null, (Transform)null)
+			: base(timeline, component)
 		{
 		}
 

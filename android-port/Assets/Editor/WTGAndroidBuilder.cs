@@ -34,7 +34,7 @@ public static class WTGAndroidBuilder
 			}
 
 			PlayerSettings.companyName = "Triband";
-			PlayerSettings.productName = "WHAT THE GOLF?";
+			PlayerSettings.productName = "GOLF?";
 			PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android, "com.thelabelgames.golf");
 			PlayerSettings.bundleVersion = "20.5.34";
 			PlayerSettings.Android.bundleVersionCode = 200534;

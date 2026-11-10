@@ -359,7 +359,7 @@ namespace Core
 			hasBeenStarted = true;
 			if (Level.HasInstance)
 				Level.Instance.AddGolfballController(this);
-			if (GetComponent<Rigidbody2D>() == null && GetComponent<Rigidbody>() != null)
+			if (GetComponent<Rigidbody2D>() == null && GetComponent<Rigidbody>() != null && FindObjectOfType<TunnelToOverworld>() == null)
 			{
 				float lowestTriggerTop = float.PositiveInfinity;
 				string foundTag = "OutOfBounds";
@@ -480,6 +480,12 @@ namespace Core
 		}
 
 		public void ForceOutOfBounds(string text) => OutOfBounds(text, 0f);
+
+		public void DisableAutoOutOfBounds()
+		{
+			_hasAutoOobY = false;
+			_isOutOfBounds = true;
+		}
 
 		public void CountShot()
 		{

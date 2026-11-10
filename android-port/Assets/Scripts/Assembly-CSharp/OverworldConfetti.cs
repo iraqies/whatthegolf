@@ -9,8 +9,6 @@ public class OverworldConfetti : MonoBehaviour
 
 	private void Start()
 	{
-		if (Manager == null)
-			Manager = OverworldManager2d.Instance;
 		if (Manager != null)
 		{
 			Manager.OnlevelCompleted -= OnlevelCompleted;

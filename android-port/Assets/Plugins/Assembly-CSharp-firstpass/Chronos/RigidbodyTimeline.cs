@@ -30,6 +30,7 @@ namespace Chronos
 		{
 			set
 			{
+				bodyMass = value;
 			}
 		}
 
@@ -37,10 +38,11 @@ namespace Chronos
 		{
 			get
 			{
-				return 0f;
+				return bodyDrag;
 			}
 			set
 			{
+				bodyDrag = value;
 			}
 		}
 
@@ -48,10 +50,11 @@ namespace Chronos
 		{
 			get
 			{
-				return 0f;
+				return bodyAngularDrag;
 			}
 			set
 			{
+				bodyAngularDrag = value;
 			}
 		}
 

@@ -109,7 +109,8 @@ public class ConfettiSpawner : MonoBehaviour, IAudioEvent
 	private IEnumerator ConfettiRoutine(Vector3 pos, bool isCrown)
 	{
 		PlayConfettiSound(isCrown);
-		for (int wave = 0; wave < amount; wave++)
+		int spawnWaves = Mathf.Min(amount, 20);
+		for (int wave = 0; wave < spawnWaves; wave++)
 		{
 			for (int i = 0; i < innerAmount; i++)
 			{
