@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Core;
 using UnityEngine;
 
 namespace Hub
@@ -40,6 +41,11 @@ namespace Hub
 			}
 
 			bool isLandscape = Screen.width >= Screen.height;
+			if (PlatformSettings.Instance != null && PlatformSettings.Instance.GetCurrent() != null)
+			{
+				isLandscape = !PlatformSettings.Instance.GetCurrent().useRotatedOverworldAndCameraInLevels;
+			}
+
 			if (mainSectionLandscape != null) mainSectionLandscape.SetActive(isLandscape);
 			if (mainSectionPortrait != null) mainSectionPortrait.SetActive(!isLandscape);
 			if (leftSectionLandscape != null) leftSectionLandscape.SetActive(isLandscape);
@@ -57,11 +63,24 @@ namespace Hub
 					sec.gameObject.SetActive(sec.disableIfPackIsIncluded ? !included : included);
 				}
 			}
+
+			if (gridFiller != null)
+			{
+				gridFiller.PreBuildScript(null, () => StartCoroutine(FixColliders()), true);
+			}
 		}
 
 		private IEnumerator FixColliders()
 		{
-			yield break;
+			yield return null;
+			if (gridFiller != null)
+			{
+				foreach (var col in gridFiller.gameObject.GetComponentsInChildren<CompositeCollider2D>())
+				{
+					if (col != null)
+						col.GenerateGeometry();
+				}
+			}
 		}
 	}
 }

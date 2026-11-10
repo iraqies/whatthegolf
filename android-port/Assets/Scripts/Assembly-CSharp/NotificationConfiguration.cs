@@ -6,5 +6,5 @@ public class NotificationConfiguration : ScriptableObject
 	[SerializeField]
 	private List<WTGNotification> notifications;
 
-	public List<WTGNotification> Notifications => null;
+	public List<WTGNotification> Notifications => notifications ?? (notifications = new List<WTGNotification>());
 }

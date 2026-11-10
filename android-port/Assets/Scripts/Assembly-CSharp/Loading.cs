@@ -105,6 +105,14 @@ public class Loading : MonoBehaviour
 
 	private IEnumerator LoadHubRoutine()
 	{
+		if (HubSceneLoader.Instance != null)
+		{
+			var task = HubSceneLoader.Instance.LoadSceneAsync(LoadSceneMode.Single, _loadingSceneInstance, false);
+			while (task != null && !task.IsCompleted)
+				yield return null;
+			yield break;
+		}
+
 		bool loaded = false;
 		AsyncOperationHandle<SceneInstance> handle = default;
 		try
@@ -143,19 +151,30 @@ public class Loading : MonoBehaviour
 		if (forceSecondOnboarding) return StartingPoint.SECONDONBOARDING;
 		if (!SaveGame.IsOnboardingComplete)
 			return StartingPoint.ONBOARDING;
+		if (IsUserBeginner())
+			return StartingPoint.SECONDONBOARDING;
 		return StartingPoint.HUB;
 	}
 
 	private bool IsUserBeginner()
 	{
-		if (SaveGame.GetCompletedPercentage(ECampaignType.Main, null, true) <= 19 && SaveGame.SecondOnboardingIndex <= 2 && RuntimeStoreData.instance != null && RuntimeStoreData.instance.secondOnboarding != null)
+		if (HasOnlyPlayedMainCampaign() && SaveGame.GetCompletedPercentage(ECampaignType.Main, null, true) <= 19 && SaveGame.SecondOnboardingIndex <= 2 && RuntimeStoreData.instance != null && RuntimeStoreData.instance.secondOnboarding != null)
 		{
-			SaveGame.SecondOnboardingIndex = (SaveGame.SecondOnboardingIndex + 1) % 3;
 			return true;
 		}
 		return false;
 	}
-	private bool HasOnlyPlayedMainCampaign() => true;
+
+	private bool HasOnlyPlayedMainCampaign()
+	{
+		if (RuntimeStoreData.instance != null)
+		{
+			var hubDef = RuntimeStoreData.instance.TryGetContent("CP_HUB");
+			if (hubDef != null && hubDef.pack != null)
+				return hubDef.pack.IsFresh();
+		}
+		return true;
+	}
 
 	private IEnumerator StartOnBoardingRoutine(ContentPack pack, bool allowMenuButtons, bool isMainOnboarding)
 	{

@@ -18,9 +18,9 @@ public struct LocalizationData
 
 	public LocalizationData(NotificationSystemType type, string locId, string locTitleId, Sprite img)
 	{
-		this.type = NotificationSystemType.None;
-		localizationID = null;
-		localizationTitleID = null;
-		image = null;
+		this.type = type;
+		localizationID = locId;
+		localizationTitleID = locTitleId;
+		image = img;
 	}
 }

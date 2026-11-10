@@ -355,10 +355,13 @@ public class OverworldManager2d : GolfBehaviour
 			orthoFollow.SetFollowTarget(cameraTarget);
 
 		bool introDone = SaveGame.IsIntroAnimationComplete;
-		if (introDone || isHub || introTunnel == null)
+		if (!introDone || (isHub && HubSceneLoader.Instance != null && !HubSceneLoader.Instance.HasBeenLoadedBefore))
 		{
-			if (!isHub || (HubSceneLoader.Instance != null && !HubSceneLoader.Instance.HasBeenLoadedBefore))
-				StartCoroutine(StartOverworldMusicDelayed(0.2f));
+			StartCoroutine(StartOverworldMusicDelayed(0.2f));
+		}
+
+		if (introDone || introTunnel == null)
+		{
 			if (ball != null)
 			{
 				ball.ShowAndEnable();
@@ -372,7 +375,12 @@ public class OverworldManager2d : GolfBehaviour
 				ui.EnableReturnButton();
 			IsIntroAnimationComplete = true;
 			if (LevelManager.Exists)
-				yield return StartCoroutine(LevelManager.Instance.EndTransition(false, 0f));
+			{
+				if (!isComingFromLoaderScene)
+					StartCoroutine(LevelManager.Instance.EndTransition(false, 0f));
+				else
+					yield return StartCoroutine(LevelManager.Instance.EndTransition(false, 0f));
+			}
 		}
 		else
 		{

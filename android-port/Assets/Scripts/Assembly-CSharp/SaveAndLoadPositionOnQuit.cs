@@ -2,12 +2,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Core;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class SaveAndLoadPositionOnQuit : GolfBehaviour
 {
 	public GridFiller grid;
 	public float CheckInterval = 1f;
-	private readonly string key;
+	private readonly string key = "OverworldBallPosition";
 	private float checkTimer;
 	private SaveSpot lastSavePosition;
 	private Vector3 lastValidPosition;
@@ -68,12 +69,6 @@ public class SaveAndLoadPositionOnQuit : GolfBehaviour
 		{
 			TeleportBallToCurrentSpot();
 		}
-		else if (b != null)
-		{
-			transform.position = b.transform.position;
-			if (follower != null)
-				follower.SetTarget(b.transform);
-		}
 	}
 
 	public void TeleportBallToCurrentSpot()
@@ -82,30 +77,46 @@ public class SaveAndLoadPositionOnQuit : GolfBehaviour
 		string savePosId = curOw != null ? curOw.SavePosition : null;
 		Transmogrif.BALLSHAPES shape = (Transmogrif.BALLSHAPES)SaveGame.SavePositionShape;
 		Vector3 targetPos = deafultSaveSpot != null ? deafultSaveSpot.transform.position : transform.position;
-		if (!string.IsNullOrEmpty(savePosId) && savespots != null)
+		if (!string.IsNullOrEmpty(savePosId))
 		{
-			var found = savespots.FirstOrDefault(s => s != null && s.ID == savePosId);
+			SaveSpot found = null;
+			if (savespots != null)
+				found = savespots.FirstOrDefault(s => s != null && s.ID == savePosId);
 			if (found != null)
 				targetPos = found.transform.position;
 			else
 				shape = Transmogrif.BALLSHAPES.ball;
+
+			if (OverworldBallManager.Instance != null)
+				OverworldBallManager.Instance.Load(shape);
+			if (controller == null && OverworldBallManager.Instance != null && OverworldBallManager.Instance.Ball != null)
+				controller = OverworldBallManager.Instance.Ball.GetComponent<GolfBallController>();
+			if (controller != null)
+			{
+				controller.transform.position = targetPos;
+				if (follower != null)
+					follower.SetTarget(controller.transform);
+			}
+			transform.position = targetPos;
+			lastValidPosition = transform.position;
+			hasValidPositionEverBeenFound = true;
 		}
-		else
+		else if (isInHub && deafultSaveSpot != null)
 		{
-			shape = Transmogrif.BALLSHAPES.ball;
+			if (OverworldBallManager.Instance != null)
+				OverworldBallManager.Instance.Load(Transmogrif.BALLSHAPES.ball);
+			if (controller == null && OverworldBallManager.Instance != null && OverworldBallManager.Instance.Ball != null)
+				controller = OverworldBallManager.Instance.Ball.GetComponent<GolfBallController>();
+			if (controller != null)
+			{
+				controller.transform.position = targetPos;
+				if (follower != null)
+					follower.SetTarget(controller.transform);
+			}
+			transform.position = targetPos;
+			lastValidPosition = transform.position;
+			hasValidPositionEverBeenFound = true;
 		}
-		if (OverworldBallManager.Instance != null)
-			OverworldBallManager.Instance.Load(shape);
-		if (controller == null && OverworldBallManager.Instance != null && OverworldBallManager.Instance.Ball != null)
-			controller = OverworldBallManager.Instance.Ball.GetComponent<GolfBallController>();
-		if (controller != null)
-		{
-			controller.transform.position = targetPos;
-			if (follower != null)
-				follower.SetTarget(controller.transform);
-		}
-		transform.position = targetPos;
-		lastValidPosition = transform.position;
 	}
 
 	public HubSection HubSectionFromSaveSpot(string savePosition)
@@ -164,5 +175,32 @@ public class SaveAndLoadPositionOnQuit : GolfBehaviour
 
 	private void Update()
 	{
+		checkTimer += Time.unscaledDeltaTime;
+		if (follower == null || !follower.isFollowing || checkTimer < CheckInterval)
+			return;
+		if (controller == null || !controller.enabled)
+			return;
+		if (grid == null || grid.currentGroundMap == null)
+			return;
+
+		Tilemap gMap = grid.currentGroundMap;
+		Vector3Int cell = gMap.WorldToCell(transform.position);
+		if (gMap.GetTile(cell) != null || grid.IsTileTarget(cell))
+		{
+			lastValidPosition = transform.position;
+			hasValidPositionEverBeenFound = true;
+		}
+		else if (hasValidPositionEverBeenFound)
+		{
+			var b = controller.GetComponent<OverworldBall2D>();
+			if (b != null && b.rigidBody != null)
+			{
+				b.rigidBody.velocity = Vector2.zero;
+				b.rigidBody.angularVelocity = 0f;
+			}
+			controller.transform.position = lastValidPosition;
+			transform.position = lastValidPosition;
+		}
+		checkTimer = 0f;
 	}
 }

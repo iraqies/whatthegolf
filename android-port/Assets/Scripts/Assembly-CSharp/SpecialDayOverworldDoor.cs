@@ -40,26 +40,79 @@ public class SpecialDayOverworldDoor : MonoBehaviour
 
 	private Vector3 rightStart;
 
-	public void OpenDoor(Action onOpen, bool instant = false)
+	private bool _startsInitialized;
+
+	private void EnsureStarts()
 	{
+		if (!_startsInitialized)
+		{
+			_startsInitialized = true;
+			if (LeftDoor != null) leftStart = LeftDoor.localPosition;
+			if (RightDoor != null) rightStart = RightDoor.localPosition;
+		}
 	}
 
-	public void CloseDoor(Action onClose, bool instant = false)
+	public async void OpenDoor(Action onOpen, bool instant = false)
 	{
+		EnsureStarts();
+		await OpenDoorAsync(onOpen, instant ? 0f : RoutineLength);
 	}
 
-	private Task OpenDoorAsync(Action onOpen, float duration)
+	public async void CloseDoor(Action onClose, bool instant = false)
 	{
-		return null;
+		EnsureStarts();
+		await CloseDoorAsync(onClose, instant ? 0f : RoutineLength);
 	}
 
-	private Task MoveDoorsAsync(bool shouldOpen, float duration)
+	private async Task OpenDoorAsync(Action onOpen, float duration)
 	{
-		return null;
+		await MoveDoorsAsync(shouldOpen: true, duration);
+		if (Colliders != null)
+		{
+			foreach (var c in Colliders)
+			{
+				if (c != null) c.enabled = false;
+			}
+		}
+		onOpen?.Invoke();
 	}
 
-	private Task CloseDoorAsync(Action onClose, float duration, bool playEndSounds = true)
+	private async Task MoveDoorsAsync(bool shouldOpen, float duration)
 	{
-		return null;
+		EnsureStarts();
+		float startTime = Time.time;
+		float endTime = startTime + duration;
+		Vector3 dir = transform.InverseTransformDirection(transform.right) * DoorExtend;
+		Vector3 leftOpen = leftStart - dir;
+		Vector3 rightOpen = rightStart + dir;
+		do
+		{
+			float t = (duration <= 0f) ? 1f : ((animationCurve != null) ? animationCurve.Evaluate(Mathf.InverseLerp(startTime, endTime, Time.time)) : Mathf.InverseLerp(startTime, endTime, Time.time));
+			t = Mathf.Clamp01(t);
+			if (LeftDoor != null)
+			{
+				LeftDoor.localPosition = Vector3.Lerp(shouldOpen ? leftStart : leftOpen, shouldOpen ? leftOpen : leftStart, t);
+			}
+			if (RightDoor != null)
+			{
+				RightDoor.localPosition = Vector3.Lerp(shouldOpen ? rightStart : rightOpen, shouldOpen ? rightOpen : rightStart, t);
+			}
+			if (duration <= 0f) break;
+			await Task.Delay(16);
+		}
+		while (Time.time <= endTime);
+	}
+
+	private async Task CloseDoorAsync(Action onClose, float duration, bool playEndSounds = true)
+	{
+		if (Colliders != null)
+		{
+			foreach (var c in Colliders)
+			{
+				if (c != null) c.enabled = true;
+			}
+		}
+		await MoveDoorsAsync(shouldOpen: false, duration);
+		onClose?.Invoke();
 	}
 }

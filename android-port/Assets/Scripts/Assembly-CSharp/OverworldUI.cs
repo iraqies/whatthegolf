@@ -138,10 +138,27 @@ public class OverworldUI : MonoBehaviour
 
 	public IEnumerator ExitToHub()
 	{
+		if (_exiting) yield break;
+		_exiting = true;
+		if (OverworldManager2d.Instance != null)
+			OverworldManager2d.Instance.DisableInteraction(true);
+		if (ExitOverworldButton != null && ExitOverworldButton.onClick != null)
+			ExitOverworldButton.onClick.RemoveAllListeners();
+		SaveThrobber.ShowThrobber(1f);
+		if (LevelManager.Instance != null)
+			yield return StartCoroutine(LevelManager.Instance.StartTransition(default, null, false, false, false, TransitionEffectType, null));
 		m_OnExitingOverworld?.Invoke();
-		var task = HubSceneLoader.Instance.LoadSceneAsync(LoadSceneMode.Single);
-		while (!task.IsCompleted)
-			yield return null;
+		if (HubSceneLoader.Instance != null)
+		{
+			var task = HubSceneLoader.Instance.LoadSceneAsync(LoadSceneMode.Single);
+			while (task != null && !task.IsCompleted)
+				yield return null;
+		}
+		else
+		{
+			SaveGame.SetOverworld(ECampaignType.Hub);
+			SceneManager.LoadSceneAsync("Hub_Overworld", LoadSceneMode.Single);
+		}
 	}
 
 	private void OnDestroy() { }

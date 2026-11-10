@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -13,11 +14,6 @@ public class IntroAnimationOL : MonoBehaviour
 
 	private void Start()
 	{
-		if (door != null)
-		{
-			door.OnOpen -= UpdateSave;
-			door.OnOpen += UpdateSave;
-		}
 		if (intro != null)
 		{
 			intro.OnAtEndOfTunnel -= Intro_OnAtEndOfTunnel;
@@ -27,23 +23,40 @@ public class IntroAnimationOL : MonoBehaviour
 
 	private void Intro_OnAtEndOfTunnel()
 	{
-		if (!didEnableSave)
-		{
-			didEnableSave = true;
-			StartCoroutine(SetSaveOkay());
-		}
+		StartCoroutine(SetSaveOkay());
 	}
 
 	public IEnumerator SetSaveOkay()
 	{
-		yield return new WaitForSeconds(1f);
-		if (save != null)
+		if (!SaveGame.IsIntroAnimationComplete)
+		{
+			if (save != null && save.gameObject != null)
+				save.gameObject.SetActive(false);
+
+			bool waitingForDoor = door != null && !door.openOrOpening;
+			Action onDoorOpen = () => waitingForDoor = false;
+			if (door != null)
+				door.OnOpen += onDoorOpen;
+
+			float endTime = Time.realtimeSinceStartup + 5f;
+			while (waitingForDoor && Time.realtimeSinceStartup < endTime)
+				yield return null;
+
+			if (door != null)
+				door.OnOpen -= onDoorOpen;
+
+			UpdateSave();
+			didEnableSave = true;
+		}
+
+		if (save != null && save.gameObject != null)
 			save.gameObject.SetActive(true);
+		SaveGame.Save(false);
 	}
 
 	private void UpdateSave()
 	{
+		SaveGame.IsOnboardingComplete = true;
 		SaveGame.IsIntroAnimationComplete = true;
-		SaveGame.Save(false);
 	}
 }
