@@ -6,5 +6,9 @@ public class Unparent : MonoBehaviour
 
 	public void UnparentObject()
 	{
+		if (objectToUnparent != null)
+		{
+			objectToUnparent.transform.parent = null;
+		}
 	}
 }

@@ -36,26 +36,93 @@ public class AmongUsFollowAgent : MonoBehaviour
 
 	private void Start()
 	{
+		if (agent != null)
+		{
+			baseSpeed = agent.speed;
+		}
+		startingPos = base.transform.position;
+		startingRot = base.transform.rotation;
 	}
 
 	private void Update()
 	{
+		if (chaseTarget != null && agent != null)
+		{
+			agent.SetDestination(chaseTarget.position);
+			if (Vector3.Distance(chaseTarget.position, base.transform.position) <= attackRange && currentState != GooseState.KICK)
+			{
+				currentState = GooseState.KICK;
+				StartCoroutine(TryKickBall());
+			}
+		}
 	}
 
 	public void Chase()
 	{
+		if ((bool)chaseTarget && agent != null)
+		{
+			agent.speed = baseSpeed + baseSpeed;
+			agent.destination = chaseTarget.position;
+			if (Vector3.Distance(chaseTarget.position, base.transform.position) <= attackRange && currentState != GooseState.KICK)
+			{
+				currentState = GooseState.KICK;
+				OnHit?.Invoke();
+			}
+		}
 	}
 
 	private IEnumerator TryKickBall()
 	{
-		return null;
+		OnHit?.Invoke();
+		yield return new WaitForSeconds(0.1f);
+		if (chaseTarget != null)
+		{
+			Rigidbody componentInChildren = chaseTarget.GetComponentInChildren<Rigidbody>();
+			if (componentInChildren != null)
+			{
+				Vector3 normalized = (chaseTarget.position - base.transform.position).normalized;
+				componentInChildren.AddForce((normalized + Vector3.up) * yeetForce, ForceMode.VelocityChange);
+			}
+			if (agent != null)
+			{
+				agent.speed = 0f;
+			}
+		}
+		yield return new WaitForSeconds(1f);
+		if (agent != null)
+		{
+			agent.speed = baseSpeed;
+		}
+		currentState = GooseState.CHASE;
 	}
 
 	public void StartChasing(Transform target)
 	{
+		if (currentState != GooseState.KICK)
+		{
+			chaseTarget = target;
+			if (target != null)
+			{
+				lastPlayerPos = target.position;
+			}
+			currentState = GooseState.CHASE;
+		}
 	}
 
 	public void UpdateChaseTarget(Transform target)
 	{
+		if (currentState != GooseState.KICK)
+		{
+			chaseTarget = target;
+			if (target != null)
+			{
+				lastPlayerPos = target.position;
+			}
+		}
+	}
+
+	public AmongUsFollowAgent()
+	{
+		attackRange = 6f;
 	}
 }

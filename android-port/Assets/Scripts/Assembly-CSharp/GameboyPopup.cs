@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Threading.Tasks;
+using Menu;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -134,7 +135,7 @@ public class GameboyPopup : PopupController
 		Instance = this;
 		if (container != null)
 		{
-			container.SetShow(show: false, instant: true);
+			container.SetShow(false, true);
 		}
 	}
 
@@ -222,7 +223,10 @@ public class GameboyPopup : PopupController
 	{
 		if (HighscoreList != null)
 		{
-			HighscoreList.pack = pack;
+			if (pack != null)
+			{
+				HighscoreList.board = pack.leaderboard;
+			}
 			HighscoreList.InitEntries();
 			HighscoreList.Reset();
 			HighscoreList.StartRefreshLeaderboard(0f);
@@ -257,7 +261,7 @@ public class GameboyPopup : PopupController
 		string desc = !string.IsNullOrEmpty(notification.GameboyDescription) ? notification.GameboyDescription : notification.LocalizationId;
 		string title = !string.IsNullOrEmpty(notification.GameboyTitle) ? notification.GameboyTitle : notification.LocalizationIdTitle;
 		LocalizationData locData = new LocalizationData(NotificationSystemType.Gameboy, desc, title, notification.Image);
-		StartCoroutine(Show(packContainer, pack, locData, notification.Type == ENotificationType.Campaign));
+		StartCoroutine(Show(packContainer, pack, locData, notification.Type == ENotificationType.Level));
 	}
 
 	public static bool HasBeenSeenBefore(string notificationId)
@@ -379,7 +383,7 @@ public class GameboyPopup : PopupController
 		}
 		if (OverworldManager2d.Instance != null)
 		{
-			OverworldManager2d.Instance.DisableInteraction(alsoDisableMenuButton: true);
+			OverworldManager2d.Instance.DisableInteraction(true);
 		}
 		if (UIBackgroundFader.Instance != null)
 		{
@@ -403,7 +407,7 @@ public class GameboyPopup : PopupController
 	{
 		if (OverworldManager2d.Instance != null)
 		{
-			OverworldManager2d.Instance.DisableInteraction(alsoDisableMenuButton: true);
+			OverworldManager2d.Instance.DisableInteraction(true);
 		}
 	}
 
@@ -452,7 +456,7 @@ public class GameboyPopup : PopupController
 		}
 		if (!isAvailable && DaysLeftText != null && Localization.Instance != null)
 		{
-			DaysLeftText.text = Localization.Instance.GetString("ID_MENU_SPECIAL_EVENT_EXPIRED", logFallback: false, null);
+			DaysLeftText.text = Localization.Instance.GetString("ID_MENU_SPECIAL_EVENT_EXPIRED", false, null);
 		}
 	}
 }

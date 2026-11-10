@@ -150,7 +150,7 @@ public class GeneralCampaignStarter : BasePackStarter
 		bool allOpen = true;
 		foreach (var d in doors)
 		{
-			if (d != null && d.goalRequired != null && d.goalRequired.levelData != null && (d.goalRequired.levelData.ID == level || d.goalRequired.levelData.name == level))
+			if (d != null && d.requireGoals != null && d.requireGoals.Any(g => g != null && g.levelData != null && (g.levelData.ID == level || g.levelData.name == level)))
 			{
 				if (!d.openOrOpening)
 					allOpen = false;

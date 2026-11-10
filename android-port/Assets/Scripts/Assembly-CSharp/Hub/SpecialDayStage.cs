@@ -55,7 +55,7 @@ namespace Hub
 			switch (countdownType)
 			{
 			case CountdownType.ComingSoon:
-				return Localization.Instance.GetString("ID_HUB_SPECIAL_EVENT_COMING_SOON", logFallback: false, null) ?? "";
+				return Localization.Instance.GetString("ID_HUB_SPECIAL_EVENT_COMING_SOON", false, null) ?? "";
 			case CountdownType.DaysLeft:
 			{
 				TimeSpan ts = SpecialDayCalendar.TimeUntilSpecialActive(Special);
@@ -70,7 +70,7 @@ namespace Hub
 			{
 				if (!DailyChallenges.HasSpecialBeenPlayedBefore())
 				{
-					return Localization.Instance.GetString("ID_HUB_SPECIAL_EVENT_LIVE", logFallback: false, null) ?? "";
+					return Localization.Instance.GetString("ID_HUB_SPECIAL_EVENT_LIVE", false, null) ?? "";
 				}
 				TimeSpan tsOver = SpecialDayCalendar.TimeUntilSpecialOver(Special);
 				if (tsOver.Days >= 3)
@@ -81,7 +81,7 @@ namespace Hub
 				return Localization.Instance.GetStringWithFormat("ID_HUB_SPECIAL_EVENT_ENDS_IN_HOURS", new object[1] { $"{hoursLeft:00}:{tsOver:mm\\:ss}" }) ?? "";
 			}
 			case CountdownType.EventEnded:
-				return Localization.Instance.GetString("ID_HUB_SPECIAL_EVENT_ENDED", logFallback: false, null) ?? "";
+				return Localization.Instance.GetString("ID_HUB_SPECIAL_EVENT_ENDED", false, null) ?? "";
 			default:
 				return "";
 			}

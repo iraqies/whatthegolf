@@ -8,5 +8,10 @@ public class TreeCounter : MonoBehaviour
 
 	public void AddOneCount()
 	{
+		if (!popped && totalCounter != null)
+		{
+			totalCounter.totalTreesPopped++;
+			popped = true;
+		}
 	}
 }

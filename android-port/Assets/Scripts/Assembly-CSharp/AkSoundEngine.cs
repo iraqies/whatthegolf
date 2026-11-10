@@ -32,6 +32,11 @@ public class AkSoundEngine
 		WwisePlayer.Instance?.SetRTPC(rtpcID, value);
 	}
 
+	public static void SetRTPCValue(uint rtpcID, float value, GameObject gameObject)
+	{
+		WwisePlayer.Instance?.SetRTPC(rtpcID, value);
+	}
+
 	public static void SetState(string stateGroup, string state)
 	{
 		WwisePlayer.Instance?.SetState(stateGroup, state);

@@ -42,6 +42,7 @@ public class AnimateRectTransform : MonoBehaviour
 	private TransitionType defaultT = new TransitionType { duration = 0.25f, ease = EasingFunction.Ease.EaseOutQuad };
 	[SerializeField] public RectState HideState;
 	[SerializeField] private RectState ShowState;
+	public RectState hidden => HideState;
 	[SerializeField] private bool alternate;
 	[SerializeField] private List<RectState> AlternateStates;
 	[SerializeField] private RectTransform overrideRectTransform;

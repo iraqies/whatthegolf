@@ -10,5 +10,27 @@ public class AmongUsDisableLineOnHeight : MonoBehaviour
 
 	private void Update()
 	{
+		if (base.transform.position.y < heightCapValue)
+		{
+			if (lineRope != null)
+			{
+				lineRope.enabled = false;
+			}
+			if (lineRenderer != null)
+			{
+				lineRenderer.enabled = false;
+			}
+		}
+		if (base.transform.position.y > heightCapValue)
+		{
+			if (lineRope != null)
+			{
+				lineRope.enabled = true;
+			}
+			if (lineRenderer != null)
+			{
+				lineRenderer.enabled = true;
+			}
+		}
 	}
 }

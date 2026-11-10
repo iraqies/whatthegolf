@@ -162,7 +162,7 @@ namespace Hub
 				SetState();
 				if (OverworldManager2d.Instance != null)
 				{
-					OverworldManager2d.ToggleOverworld(enabled: true);
+					OverworldManager2d.Instance.ToggleOverworld(true);
 				}
 				if (pack == "CP_SHOW_TO_A_FRIEND" && carPopup != null)
 				{
@@ -177,7 +177,7 @@ namespace Hub
 			yield return new WaitForSecondsRealtime(0.5f);
 			if (OverworldManager2d.Instance != null)
 			{
-				OverworldManager2d.Instance.ToggleOverworld(enabled: false);
+				OverworldManager2d.Instance.ToggleOverworld(false);
 			}
 		}
 
@@ -189,9 +189,9 @@ namespace Hub
 			{
 				if (OverworldManager2d.Instance.ball != null)
 				{
-					OverworldManager2d.Instance.ball.StopBall(hardStop: true);
+					OverworldManager2d.Instance.ball.StopBall(true);
 				}
-				OverworldManager2d.Instance.DisableInteraction(alsoDisableMenuButton: false);
+				OverworldManager2d.Instance.DisableInteraction(false);
 			}
 		}
 

@@ -42,6 +42,8 @@ public class DailyChallengeLevelDataContainer : LevelDataContainer, IPackWithDat
 	public LevelMusicSettings music;
 	public List<PunData> puns;
 	public SpecialDayRoomConfig RoomConfig;
+	public SpecialDayRoomConfig roomConfig => RoomConfig;
+	public Sprite image => menuIcon;
 
 	public DateTime StartDate
 	{

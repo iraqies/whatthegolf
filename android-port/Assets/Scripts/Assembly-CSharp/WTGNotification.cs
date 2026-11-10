@@ -82,7 +82,7 @@ public struct WTGNotification
 
 	public List<UserCriteria> Criteria => criteria;
 
-	public List<LevelData> Levels => (type == ENotificationType.Campaign && levels != null) ? levels.levels : null;
+	public List<LevelData> Levels => (type == ENotificationType.Level && levels != null) ? levels.levels : null;
 
 	public bool IsValid => !string.IsNullOrEmpty(id);
 
@@ -102,7 +102,7 @@ public struct WTGNotification
 			}
 			if (Localization.Instance != null && !string.IsNullOrEmpty(localizationId))
 			{
-				return Localization.Instance.GetString(localizationId, logFallback: false, null) ?? "";
+				return Localization.Instance.GetString(localizationId, false, null) ?? "";
 			}
 			return "";
 		}
@@ -124,7 +124,7 @@ public struct WTGNotification
 			}
 			if (Localization.Instance != null && !string.IsNullOrEmpty(localizationIdTitle))
 			{
-				return Localization.Instance.GetString(localizationIdTitle, logFallback: false, null) ?? "";
+				return Localization.Instance.GetString(localizationIdTitle, false, null) ?? "";
 			}
 			return "";
 		}
@@ -153,7 +153,7 @@ public struct WTGNotification
 				{
 					string id1 = id;
 					ContentPack pack = def.GetPack();
-					if (pack != null && pack.levelContainer is DailyChallengeLevelDataContainerContainer container)
+					if (pack != null && pack.mainContainer is DailyChallengeLevelDataContainerContainer container)
 					{
 						var containers = container.GetContainers();
 						if (containers != null)
@@ -190,12 +190,12 @@ public struct WTGNotification
 			bool isLevel = url.StartsWith("level_");
 			if (isLevel)
 			{
-				type = ENotificationType.Campaign;
+				type = ENotificationType.Level;
 				packId = "CP_MAIN_CAMPAIGN";
 			}
 			else if (isDaily || isSpecial || isChallenge)
 			{
-				type = ENotificationType.Event;
+				type = ENotificationType.Pack;
 				if (isChallenge)
 				{
 					packId = "CP_IMPOSSIBLE_LIVING_ROOM";

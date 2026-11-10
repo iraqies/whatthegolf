@@ -17,10 +17,23 @@ public class BallAttemptSpawn : MonoBehaviour
 
 	public void SpawnNewBall()
 	{
+		if (spawnNewBallCoroutine == null)
+		{
+			spawnNewBallCoroutine = StartCoroutine(SpawningBall());
+		}
 	}
 
 	private IEnumerator SpawningBall()
 	{
-		return null;
+		yield return new WaitForSeconds(delayBeforeSpawn);
+		if (ballGameObject != null)
+		{
+			nextBall = Object.Instantiate(ballGameObject, base.transform.position + spawnOffset, Quaternion.identity);
+			if (nextBall != null)
+			{
+				nextBall.AddForce(spawnForce, ForceMode.VelocityChange);
+			}
+		}
+		spawnNewBallCoroutine = null;
 	}
 }

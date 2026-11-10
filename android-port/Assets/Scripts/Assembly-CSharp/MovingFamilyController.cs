@@ -69,13 +69,13 @@ public class MovingFamilyController : MonoBehaviour
 				}
 			}
 			ToggleGenericRagdoll component2 = currentController.GetComponent<ToggleGenericRagdoll>();
-			if (component2 != null && component2.colliders != null)
+			if (component2 != null && component2.Rigidbodies != null)
 			{
-				for (int j = 0; j < component2.colliders.Count; j++)
+				for (int j = 0; j < component2.Rigidbodies.Count; j++)
 				{
-					if (component2.colliders[j] != null)
+					if (component2.Rigidbodies[j] != null)
 					{
-						Object.Destroy(component2.colliders[j]);
+						Object.Destroy(component2.Rigidbodies[j]);
 					}
 				}
 			}

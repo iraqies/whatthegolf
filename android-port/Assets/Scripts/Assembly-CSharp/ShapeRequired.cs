@@ -23,9 +23,31 @@ public class ShapeRequired : MonoBehaviour
 
 	private void Update()
 	{
+		if (!m_checkForShapeOnUpdate || m_shapeShifterToCheck == null || m_shapeShifterToCheck.LastCopiedItem == null)
+		{
+			return;
+		}
+		GameObject lastCopiedItem = m_shapeShifterToCheck.LastCopiedItem;
+		if ((bool)m_lastShapeEvaluated && lastCopiedItem == m_lastShapeEvaluated)
+		{
+			return;
+		}
+		if (m_shapesAccepted != null && m_shapesAccepted.Contains(lastCopiedItem))
+		{
+			OnCorrectShape?.Invoke();
+		}
+		else
+		{
+			OnWrongShape?.Invoke();
+		}
+		m_lastShapeEvaluated = lastCopiedItem;
 	}
 
 	public void EvaluateShape(GameObject playerShape)
 	{
+		if (m_shapesAccepted != null && m_shapesAccepted.Contains(playerShape))
+		{
+			OnUnlock?.Invoke();
+		}
 	}
 }

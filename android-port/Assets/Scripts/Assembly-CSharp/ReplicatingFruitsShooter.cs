@@ -97,11 +97,11 @@ public class ReplicatingFruitsShooter : ShooterBase
 							fruit.transform.localScale = Vector3.Lerp(Vector3.zero, targetScale, t2);
 						}
 					}));
-					if (AudioOnSpawn != null && AudioManager.Instance != null)
+					if (AudioOnSpawn != null)
 					{
-						AudioOnSpawn.Play(AudioManager.Instance.shortEffects, fruit.transform.position, 1f);
+						AudioOnSpawn.Play(fruit.transform.position);
 					}
-					fruit.AddComponent<GolfableObject>();
+					fruit.AddComponent<TreeCounter>();
 					listOfFruits.Add(fruit);
 					if (listOfFruits.Count >= maxNumberOfFruits && listOfFruits.Count > 0)
 					{

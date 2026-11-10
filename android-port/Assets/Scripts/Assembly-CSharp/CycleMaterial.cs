@@ -15,10 +15,24 @@ public class CycleMaterial : MonoBehaviour
 
 	private void Start()
 	{
+		meshrenderer = GetComponent<MeshRenderer>();
+		StartCoroutine(ChangeMaterial());
 	}
 
 	private IEnumerator ChangeMaterial()
 	{
-		return null;
+		while (true)
+		{
+			if (materialList != null && materialList.Length > 0 && meshrenderer != null)
+			{
+				meshrenderer.material = materialList[Random.Range(0, materialList.Length)];
+			}
+			yield return new WaitForSeconds(interval);
+		}
+	}
+
+	public CycleMaterial()
+	{
+		interval = 1f;
 	}
 }

@@ -35,7 +35,7 @@ namespace Hub
 		{
 			if (newPack != null && image != null)
 			{
-				image.sprite = newPack.image;
+				image.sprite = newPack.MenuIcon;
 			}
 		}
 	}

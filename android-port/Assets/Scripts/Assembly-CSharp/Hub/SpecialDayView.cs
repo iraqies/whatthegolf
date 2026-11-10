@@ -80,7 +80,7 @@ namespace Hub
 			if (titleText != null && Localization.Instance != null)
 			{
 				string key = isAvailable && _stage.Special != null ? ("ID_MENU_" + _stage.Special.PackName) : "ID_HUB_SPECIAL_EVENT_TITLE";
-				titleText.text = Localization.Instance.GetString(key, logFallback: false, null) ?? "";
+				titleText.text = Localization.Instance.GetString(key, false, null) ?? "";
 			}
 			if (_currentStageDressing != null)
 			{
@@ -120,7 +120,7 @@ namespace Hub
 				var hubDef = RuntimeStoreData.instance.TryGetContent("CP_HUB");
 				if (hubDef != null && hubDef.pack != null)
 				{
-					await OverworldSceneLoader.TryLoadOverworld(hubDef.pack, forceReload: true);
+					await OverworldSceneLoader.TryLoadOverworld(hubDef.pack, true);
 				}
 			}
 		}

@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Core;
+using Hub;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ProcessDeepLink : WTGSingleton<ProcessDeepLink>
 {
@@ -18,16 +20,19 @@ public class ProcessDeepLink : WTGSingleton<ProcessDeepLink>
 	{
 		get
 		{
-			var cfg = ConfigAssets.Get<NotificationConfiguration>();
-			return cfg != null ? cfg.Notifications : new List<WTGNotification>();
+			if (WTGSingleton<WTGNotificationsManager>.Instance != null && WTGSingleton<WTGNotificationsManager>.Instance.AllNotifications != null)
+			{
+				return WTGSingleton<WTGNotificationsManager>.Instance.AllNotifications;
+			}
+			return new List<WTGNotification>();
 		}
 	}
 
-	private bool IsLoaded => Loading.Instance != null;
+	private bool IsLoaded => Loading.IsReady;
 
 	public bool HasEvent => IsLoaded && _notification.HasValue;
 
-	public bool HasChallengeEvent => HasEvent && _notification.Value.Type == ENotificationType.Event;
+	public bool HasChallengeEvent => HasEvent && _notification.Value.Type == ENotificationType.Pack;
 
 	protected override void OnInit()
 	{
@@ -93,7 +98,7 @@ public class ProcessDeepLink : WTGSingleton<ProcessDeepLink>
 				var pack = def.GetPack();
 				if (pack != null)
 				{
-					await FlagPackStarter.StartFlag(pack);
+					await FlagPackStarter.StartFlag(pack.PackID);
 				}
 			}
 			DismissNotification();
@@ -111,7 +116,7 @@ public class ProcessDeepLink : WTGSingleton<ProcessDeepLink>
 
 		if (GameboyPopup.Instance != null)
 		{
-			await GameboyPopup.Instance.ShowWithResult(_notification.Value, DismissNotification, true, false, false);
+			await GameboyPopup.Instance.ShowWithResult(_notification.Value, DismissNotification, true, GameboyPopup.Type.DeepLink, false);
 		}
 	}
 
@@ -193,7 +198,7 @@ public class ProcessDeepLink : WTGSingleton<ProcessDeepLink>
 				yield return null;
 			if (LevelManager.Instance != null && LevelManager.Instance.IsInLevel())
 			{
-				if (LevelManager.Instance.isLevelActive && Level.Instance != null)
+				if (LevelManager.Instance.getIsReallyInLevel && Level.Instance != null)
 				{
 					Level.Instance.Abort();
 					yield return null;
@@ -208,8 +213,8 @@ public class ProcessDeepLink : WTGSingleton<ProcessDeepLink>
 
 	private IEnumerator GoToHubFromAnywhere()
 	{
-		if (!SaveGame.IsReady)
-			yield return new WaitUntil(() => SaveGame.IsReady);
+		if (!SaveGame.loaded)
+			yield return new WaitUntil(() => SaveGame.loaded);
 
 		if (LevelManager.Instance != null && LevelManager.Instance.IsTransitionActive())
 			yield return new WaitUntil(() => LevelManager.Instance == null || !LevelManager.Instance.IsTransitionActive());
@@ -217,13 +222,13 @@ public class ProcessDeepLink : WTGSingleton<ProcessDeepLink>
 		if (Loading.IsCreated && !Loading.IsReady)
 			yield return new WaitUntil(() => Loading.IsReady);
 
-		if (InGameMenu.IsCreated && InGameMenu.Instance != null && InGameMenu.Instance.IsOpen())
-			InGameMenu.Instance.Close();
+		if (Menu.Menu.Exists && Menu.Menu.Instance != null && Menu.Menu.Instance.IsOpen())
+			Menu.Menu.Instance.Close();
 
-		if (ModalWindowSingleton.IsCreated && ModalWindowSingleton.IsAnyOpen())
+		if (ModalWindowSingleton.Exists && ModalWindowSingleton.IsAnyOpen())
 			ModalWindowSingleton.ForceClose();
 
-		if (SettingsMenu.IsCreated && SettingsMenu.Instance != null && SettingsMenu.Instance.IsOpen)
+		if (SettingsMenu.Exists && SettingsMenu.Instance != null && SettingsMenu.Instance.IsOpen)
 		{
 			yield return SettingsMenu.Instance.CloseAsync(false);
 		}
@@ -233,12 +238,12 @@ public class ProcessDeepLink : WTGSingleton<ProcessDeepLink>
 		yield return new WaitUntil(() => OverworldManager2d.Instance != null);
 		yield return new WaitUntil(() => OverworldManager2d.Instance != null && OverworldManager2d.Instance.IsOverworldPlaying);
 
-		if (HubSceneLoader.Instance != null && HubSceneLoader.Instance.IsBusy)
-			yield return new WaitUntil(() => HubSceneLoader.Instance == null || !HubSceneLoader.Instance.IsBusy);
+		if (HubSceneLoader.Instance != null && HubSceneLoader.Instance.IsHubBusyLoading)
+			yield return new WaitUntil(() => HubSceneLoader.Instance == null || !HubSceneLoader.Instance.IsHubBusyLoading);
 
-		if (OverworldManager2d.Instance != null && !OverworldManager2d.Instance.IsHubScene && HubSceneLoader.Instance != null)
+		if (OverworldManager2d.Instance != null && !OverworldManager2d.Instance.isHub && HubSceneLoader.Instance != null)
 		{
-			yield return HubSceneLoader.Instance.LoadSceneAsync(true, null, false).YieldTask();
+			yield return HubSceneLoader.Instance.LoadSceneAsync(LoadSceneMode.Single, null, false).YieldTask();
 		}
 	}
 }

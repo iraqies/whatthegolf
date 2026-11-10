@@ -18,14 +18,24 @@ public class ActionOnce : MonoBehaviour
 
 	private void OnEnable()
 	{
+		if (startOnEnable && !hasHappened)
+		{
+			StartCoroutine(Do());
+		}
 	}
 
 	public void DoAction()
 	{
+		if (!hasHappened)
+		{
+			StartCoroutine(Do());
+		}
 	}
 
 	private IEnumerator Do()
 	{
-		return null;
+		hasHappened = true;
+		yield return new WaitForSeconds(delay);
+		m_Event?.Invoke();
 	}
 }

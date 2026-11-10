@@ -11,9 +11,9 @@ namespace Hub
 		{
 			if (isInHub && OverworldManager2d.Instance != null && OverworldManager2d.Instance.ball != null)
 			{
-				if (OverworldManager2d.Instance.ball.shooter != null && OverworldManager2d.Instance.ball.rb != null)
+				if (OverworldManager2d.Instance.ball.Controller != null && OverworldManager2d.Instance.ball.Controller.shooter != null && OverworldManager2d.Instance.ball.rigidBody != null)
 				{
-					OverworldManager2d.Instance.ball.rb.drag = 0.15f;
+					OverworldManager2d.Instance.ball.rigidBody.drag = 0.15f;
 				}
 			}
 		}

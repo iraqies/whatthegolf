@@ -168,7 +168,7 @@ namespace Hub
 			}
 			if (ball != null)
 			{
-				ball.StopBall(hardStop: true);
+				ball.StopBall(true);
 			}
 			if (OverworldManager2d.Instance != null)
 			{

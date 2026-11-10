@@ -30,17 +30,18 @@ public class MultiplayerStarter : BasePackStarter
 		}
 
 		bool loaded = false;
+		UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<UnityEngine.ResourceManagement.ResourceProviders.SceneInstance> handle = default;
 		try
 		{
-			var handle = Addressables.LoadSceneAsync("PartyMode", LoadSceneMode.Single, true, 100);
-			if (handle.IsValid())
-			{
-				yield return handle;
-				loaded = true;
-			}
+			handle = Addressables.LoadSceneAsync("PartyMode", LoadSceneMode.Single, true, 100);
 		}
 		catch (Exception)
 		{
+		}
+		if (handle.IsValid())
+		{
+			yield return handle;
+			loaded = true;
 		}
 
 		if (!loaded)

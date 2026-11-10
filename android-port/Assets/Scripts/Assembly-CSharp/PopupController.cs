@@ -1,4 +1,5 @@
 using System.Collections;
+using Menu;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -67,7 +68,7 @@ public class PopupController : MonoBehaviour
 		showing = true;
 		if (container != null)
 		{
-			container.SetShow(show: true, instant: false);
+			container.SetShow(true, false);
 		}
 		OnOpen();
 	}
@@ -111,17 +112,14 @@ public class PopupController : MonoBehaviour
 		{
 			return;
 		}
-		if (Singleton<PlayerInput>.HasInstance && Singleton<PlayerInput>.Instance != null)
+		if (InputHelper.GetAllPlayerButtonCancel() || InputHelper.GetAllPlayerButtonGoBack())
 		{
-			if (Singleton<PlayerInput>.Instance.GetButtonDown("Cancel"))
-			{
-				Close(confirmed: false, invokeCallbacks: true);
-				return;
-			}
-			if (Singleton<PlayerInput>.Instance.GetButtonDown("Confirm") && play != null && play.gameObject.activeInHierarchy && play.interactable)
-			{
-				Play();
-			}
+			Close(confirmed: false, invokeCallbacks: true);
+			return;
+		}
+		if (InputHelper.GetAllPlayerButtonConfirm() && play != null && play.gameObject.activeInHierarchy && play.interactable)
+		{
+			Play();
 		}
 	}
 

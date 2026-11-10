@@ -11,5 +11,9 @@ public class TotalTreeCounter : MonoBehaviour
 
 	private void Update()
 	{
+		if (totalTreesPopped == amountOfTrees)
+		{
+			OnAllPopped?.Invoke();
+		}
 	}
 }
