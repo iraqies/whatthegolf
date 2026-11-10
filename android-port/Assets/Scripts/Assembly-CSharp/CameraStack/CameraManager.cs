@@ -26,6 +26,7 @@ namespace CameraStack
 		public Camera[] Cameras => _cameras ?? (_cameras = GetComponentsInChildren<Camera>(true));
 		public Camera MainCamera => GetComponent<Camera>() ?? (Cameras.Length > 0 ? Cameras[0] : Camera.main);
 		public CameraBehavior ActiveBehavior { get; private set; }
+		public CameraBehavior CurrentBehaviour => ActiveBehavior;
 		public bool Is2D { set => _is2D = value; }
 
 		public event Action<CameraBehavior> OnActiveBehaviourChanged
