@@ -13,24 +13,6 @@ public class BallBulge : MonoBehaviour
 	{
 		if (ballBulge != null)
 		{
-			var sr = ballBulge.GetComponentInChildren<SpriteRenderer>(true);
-			if (sr != null)
-			{
-				Shader defSh = Shader.Find("Sprites/Default");
-				if (defSh != null && sr.sharedMaterial != null && sr.sharedMaterial.shader != defSh)
-					sr.sharedMaterial = new Material(defSh);
-				if (sr.drawMode != SpriteDrawMode.Simple)
-				{
-					Vector2 targetSize = sr.size;
-					sr.drawMode = SpriteDrawMode.Simple;
-					float spriteWorldSize = (sr.sprite != null && sr.sprite.pixelsPerUnit > 0f && sr.sprite.rect.width > 0f)
-						? (sr.sprite.rect.width / sr.sprite.pixelsPerUnit)
-						: 0.5f;
-					float factor = spriteWorldSize > 0.001f ? (targetSize.x / spriteWorldSize) : 20f;
-					Vector3 ls = sr.transform.localScale;
-					sr.transform.localScale = new Vector3(ls.x * factor, ls.y * factor, 1f);
-				}
-			}
 			ballBulge.gameObject.SetActive(false);
 		}
 		ShortcutTunnel tunnel = GetComponent<ShortcutTunnel>() ?? GetComponentInParent<ShortcutTunnel>();

@@ -102,43 +102,19 @@ public class IntroTunnelInOverworld : MonoBehaviour
 			_initialBulgeScale = ballBulge.localScale;
 			_capturedBulgeScale = true;
 		}
-		ballBulge.gameObject.SetActive(true);
 		var sr = ballBulge.GetComponentInChildren<SpriteRenderer>(true);
 		if (sr != null)
 		{
-			sr.gameObject.SetActive(true);
-			sr.enabled = true;
 			sr.color = new Color(0.29411766f, 0.67058825f, 0.49411768f, 1f);
 			Shader defSh = Shader.Find("Sprites/Default");
 			if (defSh != null && (sr.sharedMaterial == null || sr.sharedMaterial.shader != defSh))
 				sr.sharedMaterial = new Material(defSh);
-			if (!_preparedBulgeRenderer)
-			{
-				_preparedBulgeRenderer = true;
-				if (sr.drawMode != SpriteDrawMode.Simple)
-				{
-					Vector2 targetSize = sr.size;
-					sr.drawMode = SpriteDrawMode.Simple;
-					float spriteWorldSize = (sr.sprite != null && sr.sprite.pixelsPerUnit > 0f && sr.sprite.rect.width > 0f)
-						? (sr.sprite.rect.width / sr.sprite.pixelsPerUnit)
-						: 0.5f;
-					float factor = spriteWorldSize > 0.001f ? (targetSize.x / spriteWorldSize) : 20f;
-					Vector3 ls = sr.transform.localScale;
-					if (ls.sqrMagnitude < 1e-6f)
-						ls = new Vector3(0.8633f, 0.8633f, 0.8633f);
-					sr.transform.localScale = new Vector3(ls.x * factor, ls.y * factor, 1f);
-				}
-				Vector3 lp = sr.transform.localPosition;
-				sr.transform.localPosition = new Vector3(lp.x, lp.y, 0f);
-			}
 		}
 	}
 
 	private void CaptureAndHideBulges()
 	{
 		EnsureBulgeRendererReady();
-		if (ballBulge != null)
-			ballBulge.localScale = Vector3.zero;
 		Shader defSh = Shader.Find("Sprites/Default");
 		foreach (var tr in GetComponentsInChildren<Transform>(true))
 		{
@@ -504,7 +480,7 @@ public class IntroTunnelInOverworld : MonoBehaviour
 					float segPct = segDist > 0.0001f ? Mathf.Clamp01((targetDist - accum) / segDist) : 0f;
 					pos = Vector3.Lerp(path[i].position, path[nextIdx].position, segPct);
 					if (ballBulge != null)
-						ballBulge.position = new Vector3(pos.x, pos.y, 0f);
+						ballBulge.position = pos;
 					if (OnChangedIndex != null && lastPipeIndex != nextIdx)
 						OnChangedIndex(nextIdx);
 					lastPipeIndex = nextIdx;
