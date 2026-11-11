@@ -69,6 +69,22 @@ namespace Core
 			get => shootArrow;
 			set => shootArrow = value;
 		}
+		public Level Level => Level.Instance;
+		public AimPlanes PlayPlane
+		{
+			get => AimPlane;
+			set => AimPlane = value;
+		}
+		public bool BlockAiming
+		{
+			get => BlockShooting;
+			set => BlockShooting = value;
+		}
+		public bool Is2D
+		{
+			get => AimPlane == AimPlanes.XY;
+			set { if (value) AimPlane = AimPlanes.XY; }
+		}
 		public bool isShooting
 		{
 			get => BlockShooting;

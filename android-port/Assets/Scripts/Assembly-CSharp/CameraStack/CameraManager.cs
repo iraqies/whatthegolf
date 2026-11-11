@@ -234,6 +234,16 @@ namespace CameraStack
 				shake.StopShake();
 		}
 
+		public void DirectionalShake(float duration, float speed, Vector3 dir, Vector3 pos, float magnitude)
+		{
+			Shake(duration, speed, magnitude);
+		}
+
+		public void PerlinShake(float duration, float speed, float magnitude, Vector3 pos = default)
+		{
+			Shake(duration, speed, magnitude);
+		}
+
 		public float GetShakeMagnitude() => shake != null ? shake.magnitude : 0f;
 		private void OnDrawGizmosSelected() { }
 	}

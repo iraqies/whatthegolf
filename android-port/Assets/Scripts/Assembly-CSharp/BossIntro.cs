@@ -24,8 +24,11 @@ public class BossIntro : MonoBehaviour
 
 	public RectTransform RightBar;
 
+	public bool InIntro { get; private set; }
+
 	public void PlayIntro(Action onFinished)
 	{
+		InIntro = true;
 		if (!gameObject.activeInHierarchy)
 			gameObject.SetActive(true);
 		if (Is2D)
@@ -42,6 +45,7 @@ public class BossIntro : MonoBehaviour
 			yield return new WaitForSeconds(MidDuration);
 		if (OutDuration > 0f)
 			yield return new WaitForSeconds(OutDuration);
+		InIntro = false;
 		onFinished?.Invoke();
 	}
 

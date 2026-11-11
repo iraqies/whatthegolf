@@ -154,7 +154,7 @@ public class RopeBoss : MonoBehaviour
 			{
 				AudioManager.Instance.sfx.Play(CrashIntoIslandClips);
 			}
-			RopeJoint3D[] componentsInChildren = other.GetComponentsInChildren<RopeJoint3D>();
+			LineRope[] componentsInChildren = other.GetComponentsInChildren<LineRope>();
 			if (componentsInChildren != null)
 			{
 				for (int i = 0; i < componentsInChildren.Length; i++)
