@@ -16,4 +16,10 @@ public class Gravity : MonoBehaviour
 	}
 
 	public bool IsFake2D() => twoD;
+
+	private void OnDestroy()
+	{
+		Physics.gravity = new Vector3(0f, -9.81f, 0f);
+		Physics2D.gravity = new Vector2(0f, -9.81f);
+	}
 }

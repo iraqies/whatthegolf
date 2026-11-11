@@ -73,6 +73,7 @@ namespace Arena
 
 		private void OnDestroy()
 		{
+			Time.timeScale = 1f;
 			if (ModifyFixedDeltaTime && fixedTimeStep > 0f)
 			{
 				Time.fixedDeltaTime = fixedTimeStep;

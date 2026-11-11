@@ -31,12 +31,23 @@ namespace Core
 			Application.targetFrameRate = 120;
 			Screen.sleepTimeout = SleepTimeout.NeverSleep;
 			SceneManager.sceneLoaded += OnSceneLoaded;
+			SceneManager.sceneUnloaded += OnSceneUnloaded;
 			EnsureScenePlayable();
 		}
 
 		private void OnDestroy()
 		{
 			SceneManager.sceneLoaded -= OnSceneLoaded;
+			SceneManager.sceneUnloaded -= OnSceneUnloaded;
+		}
+
+		private void OnSceneUnloaded(Scene scene)
+		{
+			if (FindObjectOfType<Gravity>() == null && FindObjectOfType<PhysicsOverride>() == null)
+			{
+				Physics.gravity = new Vector3(0f, -9.81f, 0f);
+				Physics2D.gravity = new Vector2(0f, -9.81f);
+			}
 		}
 
 		private void OnSceneLoaded(Scene scene, LoadSceneMode mode)

@@ -18,9 +18,21 @@ public class ChangeGravityOnAim : MonoBehaviour
 
 	private float moveTimer;
 
+	private Vector3 origGravity3D;
+	private Vector2 origGravity2D;
+
 	private void Start()
 	{
-		Controller.OnAimUpdate += OnAimUpdate;
+		origGravity3D = Physics.gravity;
+		origGravity2D = Physics2D.gravity;
+		if (Controller != null)
+			Controller.OnAimUpdate += OnAimUpdate;
+	}
+
+	private void OnDestroy()
+	{
+		Physics.gravity = origGravity3D.sqrMagnitude > 0.01f ? origGravity3D : new Vector3(0f, -9.81f, 0f);
+		Physics2D.gravity = origGravity2D.sqrMagnitude > 0.01f ? origGravity2D : new Vector2(0f, -9.81f);
 	}
 
 	private void OnAimUpdate(Vector3 dir, bool b)

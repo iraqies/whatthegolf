@@ -14,7 +14,7 @@ public static class WTGAndroidBuilder
 	{
 		try
 		{
-			Debug.Log("[WTGAndroidBuilder] Starting WHAT THE GOLF? (v1.0.47) Android APK build...");
+			Debug.Log("[WTGAndroidBuilder] Starting WHAT THE GOLF? (v1.0.48) Android APK build...");
 
 			string sdkRoot = Environment.GetEnvironmentVariable("ANDROID_SDK_ROOT") ?? "/home/ubuntu/mm-sdk";
 			string ndkRoot = Environment.GetEnvironmentVariable("ANDROID_NDK_ROOT") ?? "/home/ubuntu/ndk-r23b";
@@ -36,8 +36,8 @@ public static class WTGAndroidBuilder
 			PlayerSettings.companyName = "Triband";
 			PlayerSettings.productName = "GOLF?";
 			PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android, "com.thelabelgames.golf");
-			PlayerSettings.bundleVersion = "1.0.47";
-			PlayerSettings.Android.bundleVersionCode = 200547;
+			PlayerSettings.bundleVersion = "1.0.48";
+			PlayerSettings.Android.bundleVersionCode = 200548;
 			PlayerSettings.allowUnsafeCode = true;
 
 			PlayerSettings.defaultInterfaceOrientation = UIOrientation.Portrait;
@@ -111,7 +111,7 @@ public static class WTGAndroidBuilder
 
 			string outDir = Environment.GetEnvironmentVariable("WTG_BUILD_DIR") ?? "/home/ubuntu/c113work/build";
 			Directory.CreateDirectory(outDir);
-			string apkPath = Path.Combine(outDir, "WhatTheGolf-Android-v47.apk");
+			string apkPath = Path.Combine(outDir, "WhatTheGolf-Android-v48.apk");
 			if (File.Exists(apkPath))
 				File.Delete(apkPath);
 

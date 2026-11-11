@@ -239,5 +239,11 @@ namespace Core
 					ghost.enabled = false;
 			}
 		}
+
+		private void OnDestroy()
+		{
+			Physics.gravity = new Vector3(0f, -9.81f, 0f);
+			Time.timeScale = 1f;
+		}
 	}
 }

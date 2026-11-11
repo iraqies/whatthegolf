@@ -185,4 +185,9 @@ public class FrogKingLastStage : MonoBehaviour
 				trans.position = Vector3.Lerp(startPos, endPos, Mathf.Clamp01(t));
 		}));
 	}
+
+	private void OnDestroy()
+	{
+		Physics.gravity = new Vector3(0f, -9.81f, 0f);
+	}
 }

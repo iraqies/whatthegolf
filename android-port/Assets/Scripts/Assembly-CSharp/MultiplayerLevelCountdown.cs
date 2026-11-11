@@ -214,4 +214,9 @@ public class MultiplayerLevelCountdown : MonoBehaviour
 		}
 		OnLastBeep();
 	}
+
+	private void OnDestroy()
+	{
+		Time.timeScale = 1f;
+	}
 }

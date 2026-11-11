@@ -112,4 +112,13 @@ public class FlipGravityOnShot : MonoBehaviour
 			}
 		}
 	}
+
+	private void OnDestroy()
+	{
+		if (inverseGravity)
+		{
+			Physics2D.gravity = -Physics2D.gravity;
+			inverseGravity = false;
+		}
+	}
 }
