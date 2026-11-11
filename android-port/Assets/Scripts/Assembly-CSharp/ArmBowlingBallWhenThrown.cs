@@ -1,67 +1,34 @@
-using System;
-using System.Collections.Generic;
-using Audio;
+using Core;
 using UnityEngine;
 
-public class ArmBowlingBallWhenThrown : MonoBehaviour, IAudioEvent
+public class ArmBowlingBallWhenThrown : MonoBehaviour
 {
-	public ParticleSystem Explosion;
+	[SerializeField]
+	private GolfBallController controller;
 
-	public float Timer;
+	[SerializeField]
+	private StickyObject handSnapper;
 
-	public float Range;
+	[SerializeField]
+	private ExplodeExplosionablesOnCollision exploder;
 
-	public float RangeMobile;
-
-	public float Power;
-
-	public float UpFactor;
-
-	public List<AudioClip> Clips;
-
-	public float Volume;
-
-	public float VolumeDeviance;
-
-	public AudioSource FuseSource;
-
-	public ParticleSystem FuseParticles;
-
-	public int AffectedPinsStandalone;
-
-	public int AffectedPinsMobile;
-
-	public List<string> ExplodeWhenHittingTags;
-
-	private Rigidbody rigid;
-
-	private bool armed;
-
-	private float timer;
-
-	private List<Rigidbody> affectedRigidbodies;
-
-	private Collider[] collider;
-
-	public Action<Vector3> OnAudioEvent { get; set; }
-
-	private void Awake()
+	private void Start()
 	{
+		if (exploder != null)
+		{
+			exploder.enabled = false;
+		}
+		if (controller != null)
+		{
+			controller.OnShoot += OnShot;
+		}
 	}
 
-	private void Update()
+	private void OnShot(GolfBallController controller, Vector3 dir)
 	{
-	}
-
-	private void Explode()
-	{
-	}
-
-	private void OnCollisionEnter(Collision other)
-	{
-	}
-
-	private void OnDrawGizmosSelected()
-	{
+		if (handSnapper != null && !handSnapper.IsConstraintActive && exploder != null)
+		{
+			exploder.enabled = true;
+		}
 	}
 }

@@ -15,10 +15,10 @@ namespace Olympics.Wrestling
 		}
 
 		[SerializeField]
-		private float unpin;
+		private float unpin = 10f;
 
 		[SerializeField]
-		private float multiplier;
+		private float multiplier = 15f;
 
 		[SerializeField]
 		private LayerMask stickToLayer;
@@ -40,19 +40,56 @@ namespace Olympics.Wrestling
 
 		private void Awake()
 		{
+			stickyRigidbody = GetComponent<Rigidbody>();
+			stickyCollider = GetComponent<Collider>();
 		}
 
 		private void FixedUpdate()
 		{
+			if (stickyRigidbody == null)
+			{
+				return;
+			}
+			if (stickNextFrame)
+			{
+				transform.SetParent(stickInfo.stickTo);
+				stickyRigidbody.isKinematic = true;
+				if (stickyCollider != null)
+				{
+					Object.Destroy(stickyCollider);
+				}
+			}
+			Velocity = stickyRigidbody.velocity;
+			stickNextFrame = false;
 		}
 
 		private void OnCollisionEnter(Collision collision)
 		{
+			if (stickNextFrame || stickyRigidbody == null || Velocity.sqrMagnitude < 45f || collision == null || collision.rigidbody == null)
+			{
+				return;
+			}
+			if (CheckMask(collision.gameObject))
+			{
+				collision.gameObject.TryGetComponent<MuscleCollisionBroadcaster>(out MuscleCollisionBroadcaster muscle);
+				ContactPoint cp = collision.GetContact(0);
+				stickNextFrame = true;
+				stickInfo = new StickInfo
+				{
+					stickTo = collision.transform,
+					offsetOnTransform = collision.transform.position - cp.point,
+					muscle = muscle
+				};
+			}
 		}
 
 		private bool CheckMask(GameObject go)
 		{
-			return false;
+			if (go == null)
+			{
+				return false;
+			}
+			return ((stickToLayer.value >> go.layer) & 1) == 0;
 		}
 	}
 }

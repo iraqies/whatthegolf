@@ -20,10 +20,37 @@ public class PortalblePuppet : PortableObject
 
 	public override void Port(Vector3 position)
 	{
+		StartCoroutine(PortCR(position));
 	}
 
 	private IEnumerator PortCR(Vector3 position)
 	{
-		return null;
+		if (Puppet != null)
+		{
+			Puppet.SwitchToKinematicMode();
+		}
+		if (Controller != null)
+		{
+			Controller.BlockShooting = true;
+		}
+		if (Character != null)
+		{
+			Character.state.move = Vector3.zero;
+		}
+		yield return new WaitForSeconds(0.5f);
+		if (Puppet != null)
+		{
+			Puppet.Teleport(position, Quaternion.identity, true);
+		}
+		yield return new WaitForSeconds(0.5f);
+		if (Puppet != null)
+		{
+			Puppet.SwitchToActiveMode();
+			Puppet.Resurrect();
+		}
+		if (Controller != null)
+		{
+			Controller.BlockShooting = false;
+		}
 	}
 }

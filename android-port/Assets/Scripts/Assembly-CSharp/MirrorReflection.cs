@@ -4,15 +4,15 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class MirrorReflection : MonoBehaviour
 {
-	public bool m_DisablePixelLights;
+	public bool m_DisablePixelLights = true;
 
-	public int m_TextureSize;
+	public int m_TextureSize = 256;
 
-	public float m_ClipPlaneOffset;
+	public float m_ClipPlaneOffset = 0.07f;
 
-	public LayerMask m_ReflectLayers;
+	public LayerMask m_ReflectLayers = -1;
 
-	private Hashtable m_ReflectionCameras;
+	private Hashtable m_ReflectionCameras = new Hashtable();
 
 	private RenderTexture m_ReflectionTexture;
 
@@ -22,32 +22,175 @@ public class MirrorReflection : MonoBehaviour
 
 	public void OnWillRenderObject()
 	{
+		Renderer rend = GetComponent<Renderer>();
+		if (!enabled || !rend || !rend.sharedMaterial || !rend.enabled)
+		{
+			return;
+		}
+		Camera cam = Camera.current;
+		if (!cam || s_InsideRendering)
+		{
+			return;
+		}
+		s_InsideRendering = true;
+		CreateMirrorObjects(cam, out Camera reflectionCamera);
+		Vector3 pos = transform.position;
+		Vector3 normal = transform.up;
+		int oldPixelLightCount = QualitySettings.pixelLightCount;
+		if (m_DisablePixelLights)
+		{
+			QualitySettings.pixelLightCount = 0;
+		}
+		UpdateCameraModes(cam, reflectionCamera);
+		float d = -Vector3.Dot(normal, pos) - m_ClipPlaneOffset;
+		Vector4 reflectionPlane = new Vector4(normal.x, normal.y, normal.z, d);
+		Matrix4x4 reflection = Matrix4x4.zero;
+		CalculateReflectionMatrix(ref reflection, reflectionPlane);
+		Vector3 oldpos = cam.transform.position;
+		Vector3 newpos = reflection.MultiplyPoint(oldpos);
+		reflectionCamera.worldToCameraMatrix = cam.worldToCameraMatrix * reflection;
+		Vector4 clipPlane = CameraSpacePlane(reflectionCamera, pos, normal, 1f);
+		Matrix4x4 projection = cam.CalculateObliqueMatrix(clipPlane);
+		reflectionCamera.projectionMatrix = projection;
+		reflectionCamera.cullingMask = ~(1 << 4) & m_ReflectLayers.value;
+		reflectionCamera.targetTexture = m_ReflectionTexture;
+		GL.invertCulling = true;
+		reflectionCamera.transform.position = newpos;
+		Vector3 euler = cam.transform.eulerAngles;
+		reflectionCamera.transform.eulerAngles = new Vector3(0f, euler.y, euler.z);
+		reflectionCamera.Render();
+		reflectionCamera.transform.position = oldpos;
+		GL.invertCulling = false;
+		Shader.SetGlobalTexture("_ReflectionTex", m_ReflectionTexture);
+		if (m_DisablePixelLights)
+		{
+			QualitySettings.pixelLightCount = oldPixelLightCount;
+		}
+		s_InsideRendering = false;
 	}
 
 	private void OnDisable()
 	{
+		if (m_ReflectionTexture != null)
+		{
+			Object.DestroyImmediate(m_ReflectionTexture);
+			m_ReflectionTexture = null;
+		}
+		if (m_ReflectionCameras != null)
+		{
+			foreach (DictionaryEntry kvp in m_ReflectionCameras)
+			{
+				if (kvp.Value is Camera c && c != null)
+				{
+					Object.DestroyImmediate(c.gameObject);
+				}
+			}
+			m_ReflectionCameras.Clear();
+		}
 	}
 
 	private void UpdateCameraModes(Camera src, Camera dest)
 	{
+		if (dest == null || src == null)
+		{
+			return;
+		}
+		dest.clearFlags = src.clearFlags;
+		dest.backgroundColor = src.backgroundColor;
+		if (src.clearFlags == CameraClearFlags.Skybox)
+		{
+			Skybox sky = src.GetComponent<Skybox>();
+			Skybox mysky = dest.GetComponent<Skybox>();
+			if (!sky || !sky.material)
+			{
+				if (mysky != null)
+				{
+					mysky.enabled = false;
+				}
+			}
+			else if (mysky != null)
+			{
+				mysky.enabled = true;
+				mysky.material = sky.material;
+			}
+		}
+		dest.farClipPlane = src.farClipPlane;
+		dest.nearClipPlane = src.nearClipPlane;
+		dest.orthographic = src.orthographic;
+		dest.fieldOfView = src.fieldOfView;
+		dest.aspect = src.aspect;
+		dest.orthographicSize = src.orthographicSize;
 	}
 
 	private void CreateMirrorObjects(Camera currentCamera, out Camera reflectionCamera)
 	{
 		reflectionCamera = null;
+		if (!m_ReflectionTexture || m_OldReflectionTextureSize != m_TextureSize)
+		{
+			if (m_ReflectionTexture != null)
+			{
+				Object.DestroyImmediate(m_ReflectionTexture);
+			}
+			m_ReflectionTexture = new RenderTexture(m_TextureSize, m_TextureSize, 16)
+			{
+				name = "__MirrorReflection" + GetInstanceID(),
+				isPowerOfTwo = true,
+				hideFlags = HideFlags.DontSave
+			};
+			m_OldReflectionTextureSize = m_TextureSize;
+		}
+		reflectionCamera = m_ReflectionCameras[currentCamera] as Camera;
+		if (!reflectionCamera)
+		{
+			GameObject go = new GameObject("Mirror Refl Camera id" + GetInstanceID() + " for " + currentCamera.GetInstanceID(), typeof(Camera), typeof(Skybox));
+			reflectionCamera = go.GetComponent<Camera>();
+			reflectionCamera.enabled = false;
+			reflectionCamera.transform.position = transform.position;
+			reflectionCamera.transform.rotation = transform.rotation;
+			go.hideFlags = HideFlags.HideAndDontSave;
+			m_ReflectionCameras[currentCamera] = reflectionCamera;
+		}
 	}
 
 	private static float sgn(float a)
 	{
+		if (a > 0f)
+		{
+			return 1f;
+		}
+		if (a < 0f)
+		{
+			return -1f;
+		}
 		return 0f;
 	}
 
 	private Vector4 CameraSpacePlane(Camera cam, Vector3 pos, Vector3 normal, float sideSign)
 	{
-		return default;
+		Vector3 offsetPos = pos + normal * m_ClipPlaneOffset;
+		Matrix4x4 m = cam.worldToCameraMatrix;
+		Vector3 cpos = m.MultiplyPoint(offsetPos);
+		Vector3 cnormal = m.MultiplyVector(normal).normalized * sideSign;
+		return new Vector4(cnormal.x, cnormal.y, cnormal.z, -Vector3.Dot(cpos, cnormal));
 	}
 
 	private static void CalculateReflectionMatrix(ref Matrix4x4 reflectionMat, Vector4 plane)
 	{
+		reflectionMat.m00 = 1f - 2f * plane[0] * plane[0];
+		reflectionMat.m01 = -2f * plane[0] * plane[1];
+		reflectionMat.m02 = -2f * plane[0] * plane[2];
+		reflectionMat.m03 = -2f * plane[3] * plane[0];
+		reflectionMat.m10 = -2f * plane[1] * plane[0];
+		reflectionMat.m11 = 1f - 2f * plane[1] * plane[1];
+		reflectionMat.m12 = -2f * plane[1] * plane[2];
+		reflectionMat.m13 = -2f * plane[3] * plane[1];
+		reflectionMat.m20 = -2f * plane[2] * plane[0];
+		reflectionMat.m21 = -2f * plane[2] * plane[1];
+		reflectionMat.m22 = 1f - 2f * plane[2] * plane[2];
+		reflectionMat.m23 = -2f * plane[3] * plane[2];
+		reflectionMat.m30 = 0f;
+		reflectionMat.m31 = 0f;
+		reflectionMat.m32 = 0f;
+		reflectionMat.m33 = 1f;
 	}
 }

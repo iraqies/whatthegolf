@@ -1,65 +1,84 @@
 using System.Collections;
-using System.Collections.Generic;
+using Core;
 using UnityEngine;
 
 namespace Arena
 {
-	public class RapidSpawnPhase : RockSpawnerPhase
+	public class RapidSpawnPhase : MonoBehaviour
 	{
-		[SerializeField]
-		private ArenaDroppable rockPrefab;
+		public AvoidStoneGameManager GameManager;
 
-		[SerializeField]
-		private float arenaRadius;
+		public Transform FollowPivot;
 
-		[SerializeField]
-		private float cellSize;
+		public Transform ProjectileOrigin;
 
-		[SerializeField]
-		private int minSpawnPerTick;
+		public Rigidbody ProjectilePrefab;
 
-		[SerializeField]
-		private int maxSpawnPerTick;
+		public float Interval = 0.5f;
 
-		[SerializeField]
-		private float spawnInterval;
+		public Vector2 MinMaxVerticalForce = new Vector2(5f, 10f);
 
-		[SerializeField]
-		private float gridCooldownTime;
+		public Vector2 MinMaxHorizontalForce = new Vector2(10f, 20f);
 
-		public int positionCount;
+		private Transform playerTransform;
 
-		public int onCooldownCount;
+		private bool active;
 
-		private List<Vector2> allValidPositions;
-
-		private List<Vector3> spawnPositions;
-
-		private HashSet<KeyValuePair<ArenaDroppableRock, float>> gridCooldown;
-
-		private WaitForSeconds _wait;
-
-		public override bool IsSpawning { get; set; }
+		private Coroutine spawnRoutine;
 
 		private void Start()
 		{
+			GolfBallController gbc = Object.FindObjectOfType<GolfBallController>();
+			if (gbc != null)
+			{
+				playerTransform = gbc.transform;
+			}
 		}
 
-		public override IEnumerator SpawnCoroutine()
+		public void SetActive(bool value)
 		{
-			return null;
+			if (active == value)
+			{
+				return;
+			}
+			active = value;
+			if (active)
+			{
+				spawnRoutine = StartCoroutine(SpawnPhaseCoroutine());
+			}
+			else if (spawnRoutine != null)
+			{
+				StopCoroutine(spawnRoutine);
+				spawnRoutine = null;
+			}
 		}
 
-		private void CheckCooldowns()
+		private void Update()
 		{
+			if (active && FollowPivot != null && playerTransform != null)
+			{
+				FollowPivot.LookAt(playerTransform);
+			}
 		}
 
-		private void CreateGrid()
+		private IEnumerator SpawnPhaseCoroutine()
 		{
-		}
-
-		private void OnDrawGizmosSelected()
-		{
+			while (active)
+			{
+				if (ProjectilePrefab != null && ProjectileOrigin != null)
+				{
+					Rigidbody proj = Object.Instantiate(ProjectilePrefab, ProjectileOrigin.position, Quaternion.identity);
+					Vector3 force = ProjectileOrigin.forward * Random.Range(MinMaxHorizontalForce.x, MinMaxHorizontalForce.y)
+						+ Vector3.up * Random.Range(MinMaxVerticalForce.x, MinMaxVerticalForce.y);
+					proj.AddForce(force, ForceMode.VelocityChange);
+					proj.AddTorque(Random.insideUnitSphere * 360f);
+					if (GameManager != null)
+					{
+						GameManager.RegisterRigidBody(proj);
+					}
+				}
+				yield return new WaitForSeconds(Interval);
+			}
 		}
 	}
 }

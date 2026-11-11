@@ -1,61 +1,70 @@
 using UnityEngine;
 
-public class BoatSail : OverworldBall2D
+public class BoatSail : MonoBehaviour
 {
-	public Transform MastPivot;
+	[SerializeField]
+	private Rigidbody rigid;
 
-	public float MastRotateSpeed;
+	[SerializeField]
+	private Transform frontVector;
 
-	public Transform SailControl;
+	[SerializeField]
+	private float turnTowardsMovementSpeed = 5f;
 
-	public Vector2 SailRange;
+	[SerializeField]
+	private float stopDistance = 1f;
 
-	public float SailSpeedMod;
+	private float moveForce = 10f;
 
-	public LineRenderer Line;
+	private Vector3 target;
 
-	public Rigidbody2D Rigid;
+	private bool moving;
 
-	public float BaseSpeed;
-
-	public float MaxSpeed;
-
-	public float BoatRotateSpeed;
-
-	public float sidewaysDrag;
-
-	private Vector3 boatDir;
-
-	private Vector3 dir;
-
-	private float curSpeed;
-
-	private Vector3 currentWindForce;
-
-	private Vector3 baseWindForce;
-
-	private float windDecrease;
-
-	private float sailCurrent;
-
-	protected override void Controller_OnCancel()
+	private void Awake()
 	{
+		if (rigid == null)
+		{
+			rigid = GetComponent<Rigidbody>();
+		}
 	}
 
-	protected override void Shooter_OnShoot(Vector3 dir)
+	private void FixedUpdate()
 	{
+		if (!moving || rigid == null)
+		{
+			return;
+		}
+		Vector3 curPos = rigid.position;
+		curPos.y = 0f;
+		Vector3 dstPos = target;
+		dstPos.y = 0f;
+		if (Vector3.Distance(curPos, dstPos) < stopDistance)
+		{
+			moving = false;
+			return;
+		}
+		Vector3 dir = (target - rigid.position).normalized;
+		dir.y = 0f;
+		rigid.AddForce(dir * moveForce, ForceMode.Acceleration);
+		if (rigid.velocity.sqrMagnitude > 0.01f && frontVector != null)
+		{
+			Vector3 velDir = rigid.velocity.normalized;
+			velDir.y = 0f;
+			Vector3 curForward = frontVector.forward;
+			curForward.y = 0f;
+			if (velDir.sqrMagnitude > 0.001f && curForward.sqrMagnitude > 0.001f)
+			{
+				Quaternion deltaRot = Quaternion.FromToRotation(curForward.normalized, velDir.normalized);
+				Quaternion targetRot = deltaRot * rigid.rotation;
+				rigid.MoveRotation(Quaternion.Lerp(rigid.rotation, targetRot, turnTowardsMovementSpeed * Time.fixedDeltaTime));
+			}
+		}
 	}
 
-	protected override void Controller_OnAimUpdate(Vector3 dir, bool arg2)
+	public void SailToTarget(Vector3 target, float force)
 	{
-	}
-
-	private void Update()
-	{
-	}
-
-	protected override void FixedUpdate()
-	{
-		base.FixedUpdate();
+		this.target = target;
+		moveForce = force;
+		moving = true;
 	}
 }

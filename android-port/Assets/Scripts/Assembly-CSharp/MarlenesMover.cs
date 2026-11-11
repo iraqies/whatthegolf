@@ -22,17 +22,36 @@ public class MarlenesMover : MonoBehaviour
 
 	private void Awake()
 	{
+		if (startTransform != null)
+		{
+			currPos = startTransform.position;
+			currTarget = currPos;
+		}
 	}
 
 	public void GoToPointA()
 	{
+		if (pointA != null)
+		{
+			currTarget = pointA.position;
+		}
 	}
 
 	public void GoToPointB()
 	{
+		if (pointB != null)
+		{
+			currTarget = pointB.position;
+		}
 	}
 
 	private void FixedUpdate()
 	{
+		if (mover == null)
+		{
+			return;
+		}
+		currPos = Vector3.SmoothDamp(currPos, currTarget, ref currVelocity, smoothTime, maxSpeed, Time.deltaTime);
+		mover.position = currPos;
 	}
 }

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class StepSequencer : MonoBehaviour
@@ -10,15 +9,12 @@ public class StepSequencer : MonoBehaviour
 	{
 		public bool Active;
 
-		public int MidiNoteNumber;
+		public int MidiNoteNumber = 60;
 
-		public double Duration;
+		public double Duration = 2.0;
 	}
 
 	public delegate void HandleTick(double tickTime, int midiNoteNumber, double duration);
-
-	[CompilerGenerated]
-	private HandleTick m_Ticked;
 
 	public bool Suspend;
 
@@ -30,27 +26,35 @@ public class StepSequencer : MonoBehaviour
 
 	private int _currentTick;
 
-	public event HandleTick Ticked
-	{
-		[CompilerGenerated]
-		add
-		{
-		}
-		[CompilerGenerated]
-		remove
-		{
-		}
-	}
+	public event HandleTick Ticked;
 
 	private void OnEnable()
 	{
+		if (_metronome != null)
+		{
+			_metronome.Ticked += HandleTicked;
+		}
 	}
 
 	private void OnDisable()
 	{
+		if (_metronome != null)
+		{
+			_metronome.Ticked -= HandleTicked;
+		}
 	}
 
 	public void HandleTicked(double tickTime)
 	{
+		if (_steps == null || _steps.Count == 0)
+		{
+			return;
+		}
+		Step step = _steps[_currentTick];
+		if (step != null && step.Active && !Suspend)
+		{
+			Ticked?.Invoke(tickTime, step.MidiNoteNumber, step.Duration);
+		}
+		_currentTick = (_currentTick + 1) % _steps.Count;
 	}
 }
