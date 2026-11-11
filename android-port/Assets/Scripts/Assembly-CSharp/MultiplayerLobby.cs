@@ -232,14 +232,14 @@ public class MultiplayerLobby : MonoBehaviour
 
 	private PlayerColors.AvatarData GetRandomAvatar()
 	{
-		if (AvatarData == null || AvatarData.Colors == null || AvatarData.Colors.Count == 0)
+		if (AvatarData == null || AvatarData.Avatars == null || AvatarData.Avatars.Count == 0)
 		{
 			return null;
 		}
-		List<PlayerColors.AvatarData> available = AvatarData.Colors.Where(a => a != null && a.AvailableByDefault).ToList();
+		List<PlayerColors.AvatarData> available = AvatarData.Avatars.Where(a => a != null && a.UnlockedAtStart).ToList();
 		if (available.Count == 0)
 		{
-			available = new List<PlayerColors.AvatarData>(AvatarData.Colors);
+			available = new List<PlayerColors.AvatarData>(AvatarData.Avatars);
 		}
 		return available[UnityEngine.Random.Range(0, available.Count)];
 	}
@@ -340,7 +340,7 @@ public class MultiplayerLobby : MonoBehaviour
 			Controller = ctrl,
 			Avatar = avatar,
 			PlayerIndex = id,
-			AvatarIndex = AvatarData != null && AvatarData.Colors != null ? AvatarData.Colors.IndexOf(avatar) : 0,
+			AvatarIndex = AvatarData != null && AvatarData.Avatars != null ? AvatarData.Avatars.IndexOf(avatar) : 0,
 			SpawnPointUsed = sp
 		};
 		lobbyPlayers.Add(lp);
@@ -428,11 +428,12 @@ public class MultiplayerLobby : MonoBehaviour
 		{
 			LobbyObjects.SetActive(false);
 		}
-		if (playList != null && playList.Levels != null)
+		if (playList != null)
 		{
-			for (int i = 0; i < playList.Levels.Count; i++)
+			List<LevelData> levelDatas = playList.GetLevelDatas();
+			for (int i = 0; i < levelDatas.Count; i++)
 			{
-				LevelData ld = playList.Levels[i];
+				LevelData ld = levelDatas[i];
 				if (ld == null)
 				{
 					continue;

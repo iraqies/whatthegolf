@@ -5,6 +5,8 @@ public class DollyCartController : MonoBehaviour
 {
 	public CinemachineDollyCart Cart;
 
+	public Transform LookAt;
+
 	public Vector2 WaitTimeBeforeChangeDirection = new Vector2(0.3f, 1f);
 
 	private float waitTimer;

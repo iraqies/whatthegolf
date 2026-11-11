@@ -174,7 +174,7 @@ public class MultiplayerLevelInfo : MonoBehaviour
 			{
 				follow.FollowTarget = go.transform;
 			}
-			ctrl.PlayPlane = player.Cam.MainCamera;
+			ctrl.mainCamera = player.Cam.MainCamera;
 		}
 		if (strokeCounter != null && ctrl != null && player.Avatar != null)
 		{
@@ -447,7 +447,7 @@ public class MultiplayerLevelInfo : MonoBehaviour
 					}
 					if (ctrl != null && p.Cam != null)
 					{
-						ctrl.PlayPlane = p.Cam.MainCamera;
+						ctrl.mainCamera = p.Cam.MainCamera;
 					}
 				}
 			}

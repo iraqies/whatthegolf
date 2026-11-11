@@ -14,14 +14,17 @@ namespace DanceOff
 
 		private Sequencer sequencer;
 
-		public double Time => 0.0;
+		public double Time => time;
 
-		public DanceMove DanceMove => null;
+		public DanceMove DanceMove => danceMove;
 
-		public Transform Transform => null;
+		public Transform Transform => _transform != null ? _transform : (_transform = transform);
 
 		public void Initialize(double time, DanceMove danceMove)
 		{
+			this.time = time;
+			this.danceMove = danceMove;
+			_transform = transform;
 		}
 	}
 }

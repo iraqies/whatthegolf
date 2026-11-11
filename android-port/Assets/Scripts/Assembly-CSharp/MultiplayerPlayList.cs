@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Core;
 
 public class MultiplayerPlayList : LevelDataContainerBase
@@ -25,7 +26,7 @@ public class MultiplayerPlayList : LevelDataContainerBase
 
 	public LevelDataContainer UnusedLevels;
 
-	public int LevelsToPlay;
+	public int LevelsToPlay = 5;
 
 	public LevelSelectionTypes LevelSelection;
 
@@ -33,26 +34,45 @@ public class MultiplayerPlayList : LevelDataContainerBase
 
 	public bool HasNextBatch()
 	{
-		return false;
+		return NextBatch != null && NextBatch.GetLevels().Count > 0;
 	}
 
 	public List<LevelData> GetNextBatch()
 	{
-		return null;
+		return NextBatch != null ? NextBatch.GetLevels() : new List<LevelData>();
 	}
 
 	public List<LevelData> GetAllLevels()
 	{
-		return null;
+		List<LevelData> all = new List<LevelData>();
+		if (IntroLevels != null)
+		{
+			all.AddRange(IntroLevels.GetLevels());
+		}
+		if (Levels != null)
+		{
+			for (int i = 0; i < Levels.Count; i++)
+			{
+				if (Levels[i] != null)
+				{
+					all.AddRange(Levels[i].GetLevels());
+				}
+			}
+		}
+		if (OutroLevels != null)
+		{
+			all.AddRange(OutroLevels.GetLevels());
+		}
+		return all;
 	}
 
 	public override List<LevelData> GetLevelDatas()
 	{
-		return null;
+		return GetAllLevels();
 	}
 
 	public override List<LevelDataAndChallenge> GetLevelDatasWithChallenges()
 	{
-		return null;
+		return GetAllLevels().Select(l => new LevelDataAndChallenge { level = l, challengeID = string.Empty }).ToList();
 	}
 }

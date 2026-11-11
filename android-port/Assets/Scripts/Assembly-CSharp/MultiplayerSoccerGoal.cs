@@ -1,4 +1,5 @@
 using Core;
+using GolfCourse;
 using UnityEngine;
 
 public class MultiplayerSoccerGoal : MonoBehaviour

@@ -44,6 +44,14 @@ public class SuperGolfShooter : GolfBallShooterExperimental
 
 	public Action<SuperGolfShooter> OnDeath;
 
+	public Action<SuperGolfShooter> OnPlayerDied
+	{
+		get => OnDeath;
+		set => OnDeath = value;
+	}
+
+	public Action<SuperGolfShooter> OnPlayerHit;
+
 	public Action<SuperGolfGun, Vector3> OnPlayerShot;
 
 	public Action<SuperGolfGun> OnWeaponPickUp;

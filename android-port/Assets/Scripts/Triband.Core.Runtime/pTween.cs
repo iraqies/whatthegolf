@@ -52,6 +52,11 @@ public static class pTween
 		return To(duration, 0f, 1f, callback, TimeMode.Realtime, false);
 	}
 
+	public static IEnumerator ToRealTime(float duration, float startValue, float endValue, Action<float> callback)
+	{
+		return To(duration, startValue, endValue, callback, TimeMode.Realtime, false);
+	}
+
 	public static IEnumerator Then(this IEnumerator coroutine, IEnumerator after)
 	{
 		if (coroutine != null)

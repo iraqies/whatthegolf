@@ -27,7 +27,16 @@ namespace CameraStack
 		public Camera MainCamera => GetComponent<Camera>() ?? (Cameras.Length > 0 ? Cameras[0] : Camera.main);
 		public CameraBehavior ActiveBehavior { get; private set; }
 		public CameraBehavior CurrentBehaviour => ActiveBehavior;
+		public CameraBehavior CurrentCameraBehavior => ActiveBehavior;
 		public bool Is2D { set => _is2D = value; }
+
+		public void FollowTarget(Transform target)
+		{
+			if (ActiveBehavior is CBFollow follow)
+			{
+				follow.FollowTarget = target;
+			}
+		}
 
 		public event Action<CameraBehavior> OnActiveBehaviourChanged
 		{

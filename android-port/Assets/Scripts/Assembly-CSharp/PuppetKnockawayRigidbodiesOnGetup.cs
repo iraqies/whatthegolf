@@ -10,7 +10,7 @@ public class PuppetKnockawayRigidbodiesOnGetup : MonoBehaviour
 	private BehaviourFall fallBehaviour;
 
 	[SerializeField]
-	private float radius;
+	private float radius = 2f;
 
 	[SerializeField]
 	private LayerMask layerMask;
@@ -25,7 +25,7 @@ public class PuppetKnockawayRigidbodiesOnGetup : MonoBehaviour
 	private float upwardModifier = 3f;
 
 	[SerializeField]
-	private ForceMode forceMode;
+	private ForceMode forceMode = ForceMode.Impulse;
 
 	private float timeInUnpinnedOrGetupState;
 
@@ -67,6 +67,32 @@ public class PuppetKnockawayRigidbodiesOnGetup : MonoBehaviour
 
 	private void FixedUpdate()
 	{
+		if (puppet == null)
+		{
+			return;
+		}
+		if (puppet.state == BehaviourPuppet.State.Unpinned || puppet.state == BehaviourPuppet.State.GetUp)
+		{
+			timeInUnpinnedOrGetupState += Time.fixedDeltaTime;
+			if (timeInUnpinnedOrGetupState >= startAfterTime)
+			{
+				Collider[] cols = Physics.OverlapSphere(transform.position, radius, layerMask);
+				if (cols != null)
+				{
+					for (int i = 0; i < cols.Length; i++)
+					{
+						if (cols[i] != null && cols[i].attachedRigidbody != null)
+						{
+							cols[i].attachedRigidbody.AddExplosionForce(knockAwayForce, transform.position, radius, upwardModifier, forceMode);
+						}
+					}
+				}
+			}
+		}
+		else
+		{
+			timeInUnpinnedOrGetupState = 0f;
+		}
 	}
 
 	private void OnDrawGizmosSelected()

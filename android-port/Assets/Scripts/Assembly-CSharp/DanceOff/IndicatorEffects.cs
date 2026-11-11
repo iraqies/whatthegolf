@@ -14,26 +14,26 @@ namespace DanceOff
 		private AnimationCurve rotationCurve;
 
 		[SerializeField]
-		private float rotationSpeed;
+		private float rotationSpeed = 180f;
 
 		[SerializeField]
-		private float initialVel;
+		private float initialVel = 5f;
 
 		[SerializeField]
-		private float drag;
+		private float drag = 1f;
 
 		[SerializeField]
-		private float gravity;
+		private float gravity = 9.8f;
 
 		[SerializeField]
-		private Vector3 leftPunchOutDir;
+		private Vector3 leftPunchOutDir = Vector3.left;
 
 		[SerializeField]
-		private Vector3 rightPunchOutDir;
+		private Vector3 rightPunchOutDir = Vector3.right;
 
-		private float duration;
+		private float duration = 0.5f;
 
-		private float radius;
+		private float radius = 1f;
 
 		private void Awake()
 		{
@@ -41,10 +41,18 @@ namespace DanceOff
 
 		public void IndicatorHit(DanceMoveIndicator indicator, Vector2 dir, bool wasCorrect)
 		{
+			if (indicator != null)
+			{
+				Object.Destroy(indicator.gameObject);
+			}
 		}
 
 		public void IndicatorMiss(DanceMoveIndicator indicator)
 		{
+			if (indicator != null)
+			{
+				Object.Destroy(indicator.gameObject);
+			}
 		}
 	}
 }

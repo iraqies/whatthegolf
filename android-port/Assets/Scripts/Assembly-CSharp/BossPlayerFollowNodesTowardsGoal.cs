@@ -104,7 +104,7 @@ public class BossPlayerFollowNodesTowardsGoal : MonoBehaviour
 			if (DeathTimer <= 0f && Level.Instance != null)
 			{
 				GolfBallController ctrl = GetComponentInParent<GolfBallController>();
-				Level.Instance.Fail(ctrl, "DeathTrigger");
+				Level.Instance.Fail(true, true, ctrl, 0f, true, "DeathTrigger");
 			}
 		}
 	}
