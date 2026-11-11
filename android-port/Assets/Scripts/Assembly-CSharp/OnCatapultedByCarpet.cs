@@ -8,5 +8,6 @@ public class OnCatapultedByCarpet : MonoBehaviour
 
 	public void Catapult()
 	{
+		_onCatapulted?.Invoke();
 	}
 }

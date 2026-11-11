@@ -9,15 +9,15 @@ public class DropPropOnShoot : MonoBehaviour
 
 	public GolfBallController Controller;
 
-	public float ForceMod;
+	public float ForceMod = 20f;
 
-	public float UpwardsForce;
+	public float UpwardsForce = 5f;
 
-	public bool UseAimVector;
+	public bool UseAimVector = true;
 
 	public bool UseObjectVelocity;
 
-	public float MinThrowForce;
+	public float MinThrowForce = 5f;
 
 	public bool UseAimCurve;
 
@@ -27,7 +27,7 @@ public class DropPropOnShoot : MonoBehaviour
 
 	public AnimationCurve AimCurve;
 
-	public float AngleThreshold;
+	public float AngleThreshold = 45f;
 
 	public Action<Vector3> OnPropDropped;
 
@@ -37,17 +37,47 @@ public class DropPropOnShoot : MonoBehaviour
 
 	private void Start()
 	{
+		if (Controller != null)
+		{
+			Controller.OnShoot += ControllerOnOnShoot;
+		}
 	}
 
 	private void FixedUpdate()
 	{
+		if (MuscleWithProp != null && MuscleWithProp.currentProp != null)
+		{
+			Rigidbody rb = MuscleWithProp.currentProp.GetRigidbody();
+			if (rb != null)
+			{
+				lastObjectVelocity = rb.velocity;
+			}
+		}
 	}
 
 	private void ControllerOnOnShoot(Vector3 boost)
 	{
+		lastAimVector = boost;
+		if (MuscleWithProp != null && MuscleWithProp.currentProp != null)
+		{
+			PuppetMasterProp prop = MuscleWithProp.currentProp;
+			MuscleWithProp.currentProp = null;
+			OnDropProp(prop);
+		}
+		OnPropDropped?.Invoke(boost);
 	}
 
 	private void OnDropProp(PuppetMasterProp prop)
 	{
+		if (prop == null)
+		{
+			return;
+		}
+		Rigidbody rb = prop.GetRigidbody();
+		if (rb != null)
+		{
+			Vector3 force = UseAimVector ? lastAimVector * ForceMod + Vector3.up * UpwardsForce : lastObjectVelocity * ForceMod;
+			rb.AddForce(force, ForceMode.Impulse);
+		}
 	}
 }

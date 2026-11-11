@@ -11,9 +11,9 @@ namespace Arena
 
 		public FinalLevel finalLevelManager;
 
-		public bool canSpawn;
+		public bool canSpawn = true;
 
-		public float initialStartDelay;
+		public float initialStartDelay = 1f;
 
 		public AudioClipSettings transitionSFX;
 
@@ -33,14 +33,81 @@ namespace Arena
 
 		private void Start()
 		{
+			if (playerCrabs != null)
+			{
+				for (int i = 0; i < playerCrabs.Length; i++)
+				{
+					if (playerCrabs[i] != null)
+					{
+						playerCrabs[i].OnCrabHit += OnCrabHit;
+					}
+				}
+			}
+			if (rockPrefab != null)
+			{
+				rockPool = new ObjectPool<ArenaDroppableRock>(rockPrefab.gameObject, 20);
+			}
+			if (phases != null)
+			{
+				for (int i = 0; i < phases.Length; i++)
+				{
+					if (phases[i] != null)
+					{
+						phases[i].RockPool = rockPool;
+					}
+				}
+			}
+			if (finalLevelManager != null)
+			{
+				finalLevelManager.PlayerHealthChanged += OnPlayerHealthChanged;
+			}
+			canSpawn = true;
+			StartCoroutine(SpawnCoroutine());
 		}
 
 		private void OnCrabHit(ArenaDroppable dropped, ArenaCrab hitCrab)
 		{
+			if (someoneLost || hitCrab == null || hitCrab.isSquashed)
+			{
+				return;
+			}
+			if (dropped != null && dropped.hitPlayerSFX != null && AudioManager.Instance != null)
+			{
+				dropped.hitPlayerSFX.Play(AudioManager.Instance.impactEffects, hitCrab.transform.position, 1f, 1f);
+			}
+			if (timeScaleFreeze != null)
+			{
+				timeScaleFreeze.StartFreeze();
+			}
+			hitCrab.Squash();
+			if (finalLevelManager != null)
+			{
+				finalLevelManager.PlayerHit(hitCrab.GetController());
+			}
 		}
 
 		private void OnPlayerHealthChanged(MultiplayerConfiguration.PlayerInfo player, int health)
 		{
+			if (health <= 0)
+			{
+				someoneLost = true;
+			}
+			if (finalLevelManager != null && finalLevelManager.playerHealth != null)
+			{
+				bool allAtOne = true;
+				foreach (var kvp in finalLevelManager.playerHealth)
+				{
+					if (kvp.Value > 1)
+					{
+						allAtOne = false;
+						break;
+					}
+				}
+				if (allAtOne)
+				{
+					allPlayersAtLastPoint = true;
+				}
+			}
 		}
 
 		private void MovePlayerOnHit(MultiplayerConfiguration.PlayerInfo player)
@@ -49,12 +116,49 @@ namespace Arena
 
 		private bool CheckTransition(RockSpawnerPhase.TransitionCondition condition)
 		{
-			return false;
+			return condition switch
+			{
+				RockSpawnerPhase.TransitionCondition.AllPlayerAtLastPoint => allPlayersAtLastPoint,
+				RockSpawnerPhase.TransitionCondition.SomeoneDied => someoneLost,
+				_ => false,
+			};
 		}
 
 		private IEnumerator SpawnCoroutine()
 		{
-			return null;
+			yield return new WaitForSeconds(initialStartDelay);
+			if (phases == null)
+			{
+				yield break;
+			}
+			for (int i = 0; i < phases.Length; i++)
+			{
+				currentPhase = phases[i];
+				if (currentPhase == null)
+				{
+					continue;
+				}
+				if (CheckTransition(currentPhase.transitionCondition))
+				{
+					continue;
+				}
+				StartCoroutine(currentPhase.SpawnCoroutine());
+				yield return new WaitUntil(() => currentPhase == null || !currentPhase.IsSpawning || CheckTransition(currentPhase.transitionCondition) || someoneLost);
+				if (currentPhase != null)
+				{
+					currentPhase.IsSpawning = false;
+				}
+				if (someoneLost)
+				{
+					yield break;
+				}
+				yield return new WaitForSeconds(0.5f);
+				if (transitionSFX != null && AudioManager.Instance != null)
+				{
+					transitionSFX.Play(AudioManager.Instance.impactEffects, Vector3.zero, 1f);
+				}
+				yield return new WaitForSeconds(0.5f);
+			}
 		}
 	}
 }
