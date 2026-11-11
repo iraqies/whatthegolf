@@ -38,13 +38,13 @@ public class PuppetKnockawayRigidbodiesOnGetup : MonoBehaviour
 		}
 		if (puppet != null)
 		{
-			if (puppet.onLoseBalanceFromGetUp != null)
+			if (puppet.onLoseBalanceFromGetUp.unityEvent != null)
 			{
-				puppet.onLoseBalanceFromGetUp.AddListener(OnLoseBalanceFromGetup);
+				puppet.onLoseBalanceFromGetUp.unityEvent.AddListener(OnLoseBalanceFromGetup);
 			}
-			if (puppet.onLoseBalance != null)
+			if (puppet.onLoseBalance.unityEvent != null)
 			{
-				puppet.onLoseBalance.AddListener(OnLoseBalance);
+				puppet.onLoseBalance.unityEvent.AddListener(OnLoseBalance);
 			}
 		}
 	}

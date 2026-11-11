@@ -46,8 +46,8 @@ public class OverworldLinkedGoal : GolfBehaviour
 		Manager = OverworldManager2d.Instance;
 		if (Manager != null)
 		{
-			Manager.OnLevelComplete = (Action<OverworldGoal, bool>)Delegate.Combine(Manager.OnLevelComplete, new Action<OverworldGoal, bool>(OnlevelCompleted));
-			Manager.OnLevelAbandoned = (Action<OverworldGoal>)Delegate.Combine(Manager.OnLevelAbandoned, new Action<OverworldGoal>(OnlevelAbandoned));
+			Manager.OnlevelCompleted = (Action<OverworldGoal, bool>)Delegate.Combine(Manager.OnlevelCompleted, new Action<OverworldGoal, bool>(OnlevelCompleted));
+			Manager.OnlevelAbandoned = (Action<OverworldGoal>)Delegate.Combine(Manager.OnlevelAbandoned, new Action<OverworldGoal>(OnlevelAbandoned));
 		}
 		goals = new Dictionary<Collider2D, Collider2D[]>();
 		if (Flags == null || OrderedLevels == null || OrderedLevels.Count == 0)

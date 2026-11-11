@@ -63,6 +63,12 @@ namespace Core
 
 		private TimeControl timeControl;
 		public ShootArrow shootArrow;
+		public ShootArrow arrow => shootArrow;
+		public bool isShooting
+		{
+			get => BlockShooting;
+			set => BlockShooting = value;
+		}
 		private Player player;
 		private ShooterBase m_Shooter;
 		public bool IsFPG;
