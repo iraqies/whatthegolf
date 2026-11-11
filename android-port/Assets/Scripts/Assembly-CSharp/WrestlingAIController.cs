@@ -34,8 +34,8 @@ public class WrestlingAIController : UserControlThirdPerson
 		}
 		if (fallBehaviour != null)
 		{
-			fallBehaviour.OnActivate = (BehaviourBase.BehaviourDelegate)System.Delegate.Combine(fallBehaviour.OnActivate, new BehaviourBase.BehaviourDelegate(OnFall));
-			fallBehaviour.OnDeactivate = (BehaviourBase.BehaviourDelegate)System.Delegate.Combine(fallBehaviour.OnDeactivate, new BehaviourBase.BehaviourDelegate(OnRecover));
+			fallBehaviour.OnPreActivate = (BehaviourBase.BehaviourDelegate)System.Delegate.Combine(fallBehaviour.OnPreActivate, new BehaviourBase.BehaviourDelegate(OnFall));
+			fallBehaviour.OnPreDeactivate = (BehaviourBase.BehaviourDelegate)System.Delegate.Combine(fallBehaviour.OnPreDeactivate, new BehaviourBase.BehaviourDelegate(OnRecover));
 		}
 	}
 

@@ -12,6 +12,11 @@ namespace CameraStack
 		[SerializeField] protected bool followGoalOnWin = true;
 		[SerializeField] public Vector3 rotation = new Vector3(30f, 0f, 0f);
 		[SerializeField] public float elevation = 40f;
+		public float Elevation
+		{
+			get => elevation;
+			set => elevation = value;
+		}
 		[SerializeField] public bool shouldFollow = true;
 		[SerializeField] protected float startSmoothTime = 1.2f;
 		[SerializeField] protected float continuousSmoothTime = 0.4f;

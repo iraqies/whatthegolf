@@ -11,9 +11,9 @@ public class HammerThrowingCamera : MonoBehaviour
 
 	public PuppetMasterProp Prop;
 
-	public float ResetTime;
+	public float ResetTime = 2f;
 
-	public bool ShowParticlesWhenReequipping;
+	public bool ShowParticlesWhenReequipping = true;
 
 	public ClipSettingsCollection particleSfx;
 
@@ -33,17 +33,49 @@ public class HammerThrowingCamera : MonoBehaviour
 
 	private void Start()
 	{
+		camera = GetComponent<CinemachineStateDrivenCamera>();
 	}
 
 	private void OnDropProp(PuppetMasterProp prop)
 	{
+		propThrown = true;
+		resetTimer = ResetTime;
+		if (CamAnimator != null)
+		{
+			CamAnimator.SetBool(followingPlayerName, false);
+		}
 	}
 
 	private void Update()
 	{
+		if (propThrown)
+		{
+			resetTimer -= Time.deltaTime;
+			if (resetTimer <= 0f)
+			{
+				ForceReset(ShowParticlesWhenReequipping);
+			}
+		}
 	}
 
 	public void ForceReset(bool showParticles)
 	{
+		propThrown = false;
+		this.showParticles = showParticles;
+		if (CamAnimator != null)
+		{
+			CamAnimator.SetBool(followingPlayerName, true);
+		}
+		if (showParticles)
+		{
+			if (Particles != null)
+			{
+				Particles.Play();
+			}
+			if (particleSfx != null)
+			{
+				particleSfx.Play(null, transform.position, 1f, 1f);
+			}
+		}
 	}
 }

@@ -9,10 +9,10 @@ public class MoveToTarget : MonoBehaviour
 	private Transform target;
 
 	[SerializeField]
-	private AnimationCurve _AnimationCurve;
+	private AnimationCurve _AnimationCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
 
 	[SerializeField]
-	private float duration;
+	private float duration = 1f;
 
 	[SerializeField]
 	private bool usePhysics;
@@ -48,22 +48,82 @@ public class MoveToTarget : MonoBehaviour
 
 	private void OnEnable()
 	{
+		if (enableOnStart)
+		{
+			Move();
+		}
 	}
 
 	public void Move()
 	{
+		if (isMoving || target == null)
+		{
+			return;
+		}
+		if (Vector3.Distance(transform.position, target.position) > 0.01f)
+		{
+			StartCoroutine(MoveCR());
+		}
 	}
 
 	private IEnumerator MoveCR()
 	{
-		return null;
+		isMoving = true;
+		if (delay > 0f)
+		{
+			yield return new WaitForSeconds(delay);
+		}
+		Vector3 startPos = transform.position;
+		yield return StartCoroutine(pTween.To(Mathf.Max(0.01f, duration), 0f, 1f, t =>
+		{
+			if (target == null)
+			{
+				return;
+			}
+			float eval = _AnimationCurve != null && _AnimationCurve.length > 0 ? Mathf.Clamp01(_AnimationCurve.Evaluate(t)) : t;
+			Vector3 nextPos = Vector3.Lerp(startPos, target.position, eval);
+			if (usePhysics && rigid != null)
+			{
+				rigid.MovePosition(nextPos);
+			}
+			else
+			{
+				transform.position = nextPos;
+			}
+		}));
+		OnObjectMoved?.Invoke();
+		isMoving = false;
 	}
 
 	private void OnTriggerEnter(Collider other)
 	{
+		if (!enabled || isMoving || !useTrigger || other == null || other.gameObject == null)
+		{
+			return;
+		}
+		if (Blacklist != null && Blacklist.Contains(other))
+		{
+			return;
+		}
+		if (useDefaultCollision || (AcceptedTags != null && AcceptedTags.Contains(other.gameObject.tag)))
+		{
+			Move();
+		}
 	}
 
 	private void OnCollisionEnter(Collision collision)
 	{
+		if (!enabled || isMoving || !useCollision || collision == null || collision.gameObject == null)
+		{
+			return;
+		}
+		if (Blacklist != null && Blacklist.Contains(collision.collider))
+		{
+			return;
+		}
+		if (useDefaultCollision || (AcceptedTags != null && AcceptedTags.Contains(collision.gameObject.tag)))
+		{
+			Move();
+		}
 	}
 }

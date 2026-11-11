@@ -7,6 +7,12 @@ public class LineRope : MonoBehaviour
 
 	public Transform LineEnd;
 
+	public Transform Target
+	{
+		get => LineEnd;
+		set => LineEnd = value;
+	}
+
 	public bool DoLineJiggle;
 
 	public int Segments;

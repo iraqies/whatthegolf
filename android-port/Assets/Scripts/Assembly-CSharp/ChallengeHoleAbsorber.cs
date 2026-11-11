@@ -7,5 +7,9 @@ public class ChallengeHoleAbsorber : MonoBehaviour
 
 	private void OnCollisionEnter(Collision other)
 	{
+		if (other != null && other.gameObject != null && other.gameObject.CompareTag("Obstacle"))
+		{
+			onStoneSwallow?.Invoke(other.gameObject);
+		}
 	}
 }

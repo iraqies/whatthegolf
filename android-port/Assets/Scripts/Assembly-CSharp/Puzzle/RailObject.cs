@@ -79,7 +79,7 @@ namespace Puzzle
 			StopAllCoroutines();
 			Vector3 target = active ? posB : posA;
 			routine = StartCoroutine(MoveToPoint(target));
-			isOn = active;
+			Active = active;
 		}
 
 		private IEnumerator MoveToPoint(Vector3 point)
