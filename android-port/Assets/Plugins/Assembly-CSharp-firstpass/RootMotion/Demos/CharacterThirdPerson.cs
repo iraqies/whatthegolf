@@ -38,55 +38,55 @@ namespace RootMotion.Demos
 
 		public MoveMode moveMode;
 
-		public bool smoothPhysics;
+		public bool smoothPhysics = true;
 
-		public float smoothAccelerationTime;
+		public float smoothAccelerationTime = 0.2f;
 
-		public float linearAccelerationSpeed;
+		public float linearAccelerationSpeed = 3f;
 
-		public float platformFriction;
+		public float platformFriction = 7f;
 
-		public float groundStickyEffect;
+		public float groundStickyEffect = 4f;
 
-		public float maxVerticalVelocityOnGround;
+		public float maxVerticalVelocityOnGround = 3f;
 
 		public float velocityToGroundTangentWeight;
 
 		public bool lookInCameraDirection;
 
-		public float turnSpeed;
+		public float turnSpeed = 5f;
 
-		public float stationaryTurnSpeedMlp;
+		public float stationaryTurnSpeedMlp = 1f;
 
-		public bool smoothJump;
+		public bool smoothJump = true;
 
-		public float airSpeed;
+		public float airSpeed = 6f;
 
-		public float airControl;
+		public float airControl = 2f;
 
-		public float jumpPower;
+		public float jumpPower = 12f;
 
 		public float jumpRepeatDelayTime;
 
 		public bool doubleJumpEnabled;
 
-		public float doubleJumpPowerMlp;
+		public float doubleJumpPowerMlp = 1f;
 
 		public LayerMask wallRunLayers;
 
-		public float wallRunMaxLength;
+		public float wallRunMaxLength = 1f;
 
-		public float wallRunMinMoveMag;
+		public float wallRunMinMoveMag = 0.6f;
 
-		public float wallRunMinVelocityY;
+		public float wallRunMinVelocityY = -1f;
 
-		public float wallRunRotationSpeed;
+		public float wallRunRotationSpeed = 1.5f;
 
-		public float wallRunMaxRotationAngle;
+		public float wallRunMaxRotationAngle = 70f;
 
-		public float wallRunWeightSpeed;
+		public float wallRunWeightSpeed = 5f;
 
-		public float crouchCapsuleScaleMlp;
+		public float crouchCapsuleScaleMlp = 0.6f;
 
 		public AnimState animState;
 
@@ -114,7 +114,7 @@ namespace RootMotion.Demos
 
 		private float stickyForce;
 
-		private Vector3 wallNormal;
+		private Vector3 wallNormal = Vector3.up;
 
 		private Vector3 moveDirectionVelocity;
 
@@ -122,11 +122,11 @@ namespace RootMotion.Demos
 
 		private float lastWallRunWeight;
 
-		private Vector3 fixedDeltaPosition;
+		protected Vector3 fixedDeltaPosition;
 
-		private Quaternion fixedDeltaRotation;
+		protected Quaternion fixedDeltaRotation = Quaternion.identity;
 
-		private bool fixedFrame;
+		protected bool fixedFrame;
 
 		private float wallRunEndTime;
 
@@ -146,67 +146,371 @@ namespace RootMotion.Demos
 
 		protected override void Start()
 		{
+			base.Start();
+			animator = GetComponent<Animator>();
+			if (animator == null && characterAnimation != null)
+			{
+				animator = characterAnimation.GetComponent<Animator>();
+			}
+			wallNormal = -gravity.normalized;
+			onGround = true;
+			animState.onGround = true;
+			if (cam != null)
+			{
+				cam.enabled = false;
+			}
 		}
 
 		private void OnAnimatorMove()
 		{
+			if (animator != null)
+			{
+				Move(animator.deltaPosition, animator.deltaRotation);
+			}
 		}
 
 		public override void Move(Vector3 deltaPosition, Quaternion deltaRotation)
 		{
+			fixedDeltaPosition += deltaPosition;
+			fixedDeltaRotation *= deltaRotation;
 		}
 
 		private void FixedUpdate()
 		{
+			gravity = GetGravity();
+			verticalVelocity = V3Tools.ExtractVertical(r.velocity, gravity, 1f);
+			velocityY = verticalVelocity.magnitude;
+			if (Vector3.Dot(verticalVelocity, gravity) > 0f)
+			{
+				velocityY = 0f - velocityY;
+			}
+			r.interpolation = (smoothPhysics ? RigidbodyInterpolation.Interpolate : RigidbodyInterpolation.None);
+			if (characterAnimation != null)
+			{
+				characterAnimation.smoothFollow = smoothPhysics;
+			}
+			MoveFixed(fixedDeltaPosition);
+			fixedDeltaPosition = Vector3.zero;
+			r.MoveRotation(base.transform.rotation * fixedDeltaRotation);
+			fixedDeltaRotation = Quaternion.identity;
+			Rotate();
+			GroundCheck();
+			if (userControl != null && userControl.state.move == Vector3.zero && groundDistance < airborneThreshold * 0.5f)
+			{
+				HighFriction();
+			}
+			else
+			{
+				ZeroFriction();
+			}
+			bool flag = onGround && userControl != null && userControl.state.move == Vector3.zero && r.velocity.magnitude < 0.5f && groundDistance < airborneThreshold * 0.5f;
+			if (gravityTarget != null)
+			{
+				r.useGravity = false;
+				if (!flag)
+				{
+					r.AddForce(gravity);
+				}
+			}
+			if (flag)
+			{
+				r.useGravity = false;
+				r.velocity = Vector3.zero;
+			}
+			else if (gravityTarget == null)
+			{
+				r.useGravity = true;
+			}
+			if (onGround)
+			{
+				animState.jump = Jump();
+				jumpReleased = false;
+				doubleJumped = false;
+			}
+			else if (userControl != null)
+			{
+				if (!userControl.state.jump)
+				{
+					jumpReleased = true;
+				}
+				if (jumpReleased && userControl.state.jump && !doubleJumped && doubleJumpEnabled)
+				{
+					jumpEndTime = Time.time + 0.1f;
+					animState.doubleJump = true;
+					Vector3 vector = userControl.state.move * airSpeed;
+					r.velocity = vector;
+					r.velocity += base.transform.up * jumpPower * doubleJumpPowerMlp;
+					doubleJumped = true;
+				}
+			}
+			if (userControl != null)
+			{
+				ScaleCapsule(userControl.state.crouch ? crouchCapsuleScaleMlp : 1f);
+			}
+			fixedFrame = true;
 		}
 
 		protected virtual void Update()
 		{
+			animState.onGround = onGround;
+			animState.moveDirection = GetMoveDirection();
+			animState.yVelocity = Mathf.Lerp(animState.yVelocity, velocityY, Time.deltaTime * 10f);
+			if (userControl != null)
+			{
+				animState.crouch = userControl.state.crouch;
+			}
+			animState.isStrafing = moveMode == MoveMode.Strafe;
 		}
 
 		protected virtual void LateUpdate()
 		{
+			if (cam == null)
+			{
+				return;
+			}
+			cam.UpdateInput();
+			if (fixedFrame || r.interpolation != RigidbodyInterpolation.None)
+			{
+				cam.UpdateTransform((r.interpolation == RigidbodyInterpolation.None) ? Time.fixedDeltaTime : Time.deltaTime);
+				fixedFrame = false;
+			}
 		}
 
 		private void MoveFixed(Vector3 deltaPosition)
 		{
+			WallRun();
+			Vector3 vector = (onGround ? (deltaPosition / Time.deltaTime) : Vector3.zero);
+			vector += V3Tools.ExtractHorizontal(platformVelocity, gravity, 1f);
+			if (onGround)
+			{
+				if (velocityToGroundTangentWeight > 0f)
+				{
+					Quaternion b = Quaternion.FromToRotation(base.transform.up, normal);
+					vector = Quaternion.Lerp(Quaternion.identity, b, velocityToGroundTangentWeight) * vector;
+				}
+			}
+			else if (userControl != null)
+			{
+				Vector3 b2 = V3Tools.ExtractHorizontal(userControl.state.move * airSpeed, gravity, 1f);
+				vector = Vector3.Lerp(r.velocity, b2, Time.deltaTime * airControl);
+			}
+			if (onGround && Time.time > jumpEndTime)
+			{
+				r.velocity -= base.transform.up * stickyForce * Time.deltaTime;
+			}
+			Vector3 vector2 = V3Tools.ExtractVertical(r.velocity, gravity, 1f);
+			Vector3 vector3 = V3Tools.ExtractHorizontal(vector, gravity, 1f);
+			if (onGround && Vector3.Dot(vector2, gravity) < 0f)
+			{
+				vector2 = Vector3.ClampMagnitude(vector2, maxVerticalVelocityOnGround);
+			}
+			r.velocity = vector3 + vector2;
+			forwardMlp = 1f;
 		}
 
 		private void WallRun()
 		{
+			bool flag = CanWallRun();
+			if (wallRunWeight > 0f && !flag)
+			{
+				wallRunEndTime = Time.time;
+			}
+			if (Time.time < wallRunEndTime + 0.5f)
+			{
+				flag = false;
+			}
+			wallRunWeight = Mathf.MoveTowards(wallRunWeight, flag ? 1f : 0f, Time.deltaTime * wallRunWeightSpeed);
+			if (wallRunWeight <= 0f && lastWallRunWeight > 0f)
+			{
+				Vector3 forward = V3Tools.ExtractHorizontal(base.transform.forward, gravity, 1f);
+				base.transform.rotation = Quaternion.LookRotation(forward, -gravity);
+				wallNormal = -gravity.normalized;
+			}
+			lastWallRunWeight = wallRunWeight;
+			if (wallRunWeight <= 0f)
+			{
+				return;
+			}
+			if (onGround && velocityY < 0f)
+			{
+				r.velocity = V3Tools.ExtractHorizontal(r.velocity, gravity, 1f);
+			}
+			Vector3 vector = V3Tools.ExtractHorizontal(base.transform.forward, gravity, 1f);
+			RaycastHit hitInfo = default(RaycastHit);
+			hitInfo.normal = -gravity.normalized;
+			Physics.Raycast(onGround ? base.transform.position : capsule.bounds.center, vector, out hitInfo, 3f, wallRunLayers);
+			wallNormal = Vector3.Lerp(wallNormal, hitInfo.normal, Time.deltaTime * wallRunRotationSpeed);
+			wallNormal = Vector3.RotateTowards(-gravity.normalized, wallNormal, wallRunMaxRotationAngle * 0.017453292f, 0f);
+			Vector3 tangent = base.transform.forward;
+			Vector3 vector2 = wallNormal;
+			Vector3.OrthoNormalize(ref vector2, ref tangent);
+			base.transform.rotation = Quaternion.Slerp(Quaternion.LookRotation(vector, -gravity), Quaternion.LookRotation(tangent, wallNormal), wallRunWeight);
 		}
 
 		private bool CanWallRun()
 		{
-			return false;
+			if (Time.time < jumpEndTime - 0.1f)
+			{
+				return false;
+			}
+			if (Time.time > jumpEndTime - 0.1f + wallRunMaxLength)
+			{
+				return false;
+			}
+			if (velocityY < wallRunMinVelocityY)
+			{
+				return false;
+			}
+			if (userControl == null || userControl.state.move.magnitude < wallRunMinMoveMag)
+			{
+				return false;
+			}
+			return true;
 		}
 
 		private Vector3 GetMoveDirection()
 		{
-			return default;
+			if (userControl == null)
+			{
+				return Vector3.zero;
+			}
+			switch (moveMode)
+			{
+			case MoveMode.Directional:
+				moveDirection = Vector3.SmoothDamp(moveDirection, new Vector3(0f, 0f, userControl.state.move.magnitude), ref moveDirectionVelocity, smoothAccelerationTime);
+				moveDirection = Vector3.MoveTowards(moveDirection, new Vector3(0f, 0f, userControl.state.move.magnitude), Time.deltaTime * linearAccelerationSpeed);
+				return moveDirection * forwardMlp;
+			case MoveMode.Strafe:
+				moveDirection = Vector3.SmoothDamp(moveDirection, userControl.state.move, ref moveDirectionVelocity, smoothAccelerationTime);
+				moveDirection = Vector3.MoveTowards(moveDirection, userControl.state.move, Time.deltaTime * linearAccelerationSpeed);
+				return base.transform.InverseTransformDirection(moveDirection);
+			default:
+				return Vector3.zero;
+			}
 		}
 
 		protected virtual void Rotate()
 		{
+			if (gravityTarget != null)
+			{
+				r.MoveRotation(Quaternion.FromToRotation(base.transform.up, base.transform.position - gravityTarget.position) * base.transform.rotation);
+			}
+			if (platformAngularVelocity != Vector3.zero)
+			{
+				r.MoveRotation(Quaternion.Euler(platformAngularVelocity) * base.transform.rotation);
+			}
+			float num = GetAngleFromForward(GetForwardDirection());
+			if (userControl != null && userControl.state.move == Vector3.zero)
+			{
+				num *= (1.01f - Mathf.Abs(num) / 180f) * stationaryTurnSpeedMlp;
+			}
+			r.MoveRotation(Quaternion.AngleAxis(num * Time.deltaTime * turnSpeed, base.transform.up) * r.rotation);
 		}
 
 		private Vector3 GetForwardDirection()
 		{
-			return default;
+			if (userControl == null)
+			{
+				return base.transform.forward;
+			}
+			bool flag = userControl.state.move != Vector3.zero;
+			switch (moveMode)
+			{
+			case MoveMode.Directional:
+				if (flag)
+				{
+					return userControl.state.move;
+				}
+				return lookInCameraDirection ? (userControl.state.lookPos - r.position) : base.transform.forward;
+			case MoveMode.Strafe:
+				if (flag)
+				{
+					return userControl.state.lookPos - r.position;
+				}
+				return lookInCameraDirection ? (userControl.state.lookPos - r.position) : base.transform.forward;
+			default:
+				return Vector3.zero;
+			}
 		}
 
 		protected virtual bool Jump()
 		{
-			return false;
+			if (userControl == null || !userControl.state.jump)
+			{
+				return false;
+			}
+			if (userControl.state.crouch)
+			{
+				return false;
+			}
+			if (characterAnimation != null && !characterAnimation.animationGrounded)
+			{
+				return false;
+			}
+			if (Time.time < lastAirTime + jumpRepeatDelayTime)
+			{
+				return false;
+			}
+			onGround = false;
+			jumpEndTime = Time.time + 0.1f;
+			Vector3 vector = userControl.state.move * airSpeed;
+			vector += base.transform.up * jumpPower;
+			if (smoothJump)
+			{
+				StopAllCoroutines();
+				StartCoroutine(JumpSmooth(vector - r.velocity));
+			}
+			else
+			{
+				r.velocity = vector;
+			}
+			return true;
 		}
 
 		private IEnumerator JumpSmooth(Vector3 jumpVelocity)
 		{
-			return null;
+			int steps = 0;
+			int stepsToTake = 3;
+			while (steps < stepsToTake)
+			{
+				r.AddForce(jumpVelocity / stepsToTake, ForceMode.VelocityChange);
+				steps++;
+				yield return new WaitForFixedUpdate();
+			}
 		}
 
 		private void GroundCheck()
 		{
+			Vector3 b = Vector3.zero;
+			platformAngularVelocity = Vector3.zero;
+			float num = 0f;
+			hit = GetSpherecastHit();
+			normal = base.transform.up;
+			groundDistance = Vector3.Project(r.position - hit.point, base.transform.up).magnitude;
+			if (Time.time > jumpEndTime && velocityY < jumpPower * 0.5f)
+			{
+				bool flag = onGround;
+				onGround = false;
+				float num2 = ((!flag) ? (airborneThreshold * 0.5f) : airborneThreshold);
+				Vector3 vector = V3Tools.ExtractHorizontal(r.velocity, gravity, 1f);
+				float magnitude = vector.magnitude;
+				if (groundDistance < num2)
+				{
+					num = groundStickyEffect * magnitude * num2;
+					if (hit.rigidbody != null)
+					{
+						b = hit.rigidbody.GetPointVelocity(hit.point);
+						platformAngularVelocity = Vector3.Project(hit.rigidbody.angularVelocity, base.transform.up);
+					}
+					onGround = true;
+				}
+			}
+			platformVelocity = Vector3.Lerp(platformVelocity, b, Time.deltaTime * platformFriction);
+			stickyForce = num;
+			if (!onGround)
+			{
+				lastAirTime = Time.time;
+			}
 		}
 	}
 }

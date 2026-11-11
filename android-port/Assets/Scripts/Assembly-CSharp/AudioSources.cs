@@ -200,4 +200,24 @@ public class AudioSources : MonoBehaviour
 			s.spatialBlend = 0f;
 		}, delay);
 	}
+
+	public UnityEngine.Audio.AudioMixerGroup GetMixerGroup()
+	{
+		if (audioSourcePrefab != null && audioSourcePrefab.outputAudioMixerGroup != null)
+		{
+			return audioSourcePrefab.outputAudioMixerGroup;
+		}
+		var src = GetLastAudioSource();
+		return src != null ? src.outputAudioMixerGroup : null;
+	}
+
+	public AudioSource PlayRandomClip(Audio.RandomAudioClips clips)
+	{
+		if (clips != null)
+		{
+			clips.PlayRandomClip();
+			return clips.GetCurrentAudioSource();
+		}
+		return null;
+	}
 }

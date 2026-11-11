@@ -9,5 +9,14 @@ public class MultiplayerSoccerGoal : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
+		if (other == null || other.gameObject != Football)
+		{
+			return;
+		}
+		GolfCoursePinGoal goal = GetComponent<GolfCoursePinGoal>();
+		if (goal != null && OpponentController != null)
+		{
+			goal.CheckObject(OpponentController.transform, false);
+		}
 	}
 }

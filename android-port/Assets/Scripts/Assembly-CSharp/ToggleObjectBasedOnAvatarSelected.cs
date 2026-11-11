@@ -12,4 +12,9 @@ public class ToggleObjectBasedOnAvatarSelected : MonoBehaviour
 			gameObject.SetActive(AllowedAvatar == player.Avatar.AvatarID);
 		}
 	}
+
+	public void UpdateBasedOnAvatar(MultiplayerConfiguration.PlayerInfo player)
+	{
+		CheckCurrentAvatar(player);
+	}
 }

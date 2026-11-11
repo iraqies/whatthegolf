@@ -6,15 +6,15 @@ namespace RootMotion.Demos
 	{
 		public Transform gravityTarget;
 
-		public float gravityMultiplier;
+		public float gravityMultiplier = 2f;
 
-		public float airborneThreshold;
+		public float airborneThreshold = 0.6f;
 
-		public float slopeStartAngle;
+		public float slopeStartAngle = 50f;
 
-		public float slopeEndAngle;
+		public float slopeEndAngle = 85f;
 
-		public float spherecastRadius;
+		public float spherecastRadius = 0.1f;
 
 		public LayerMask groundLayers;
 
@@ -36,42 +36,91 @@ namespace RootMotion.Demos
 
 		protected Vector3 GetGravity()
 		{
-			return default;
+			if (gravityTarget != null)
+			{
+				return (gravityTarget.position - base.transform.position).normalized * Physics.gravity.magnitude;
+			}
+			return Physics.gravity;
 		}
 
 		protected virtual void Start()
 		{
+			capsule = GetComponent<Collider>() as CapsuleCollider;
+			r = GetComponent<Rigidbody>();
+			if (capsule != null)
+			{
+				originalHeight = capsule.height;
+				originalCenter = capsule.center;
+			}
+			zeroFrictionMaterial = new PhysicMaterial();
+			zeroFrictionMaterial.dynamicFriction = 0f;
+			zeroFrictionMaterial.staticFriction = 0f;
+			zeroFrictionMaterial.frictionCombine = PhysicMaterialCombine.Minimum;
+			zeroFrictionMaterial.bounciness = 0f;
+			zeroFrictionMaterial.bounceCombine = PhysicMaterialCombine.Minimum;
+			highFrictionMaterial = new PhysicMaterial();
+			if (r != null)
+			{
+				r.constraints = RigidbodyConstraints.FreezeRotation;
+			}
 		}
 
 		protected virtual RaycastHit GetSpherecastHit()
 		{
-			return default;
+			Vector3 up = base.transform.up;
+			Ray ray = new Ray(r.position + up * airborneThreshold, -up);
+			RaycastHit hitInfo = default(RaycastHit);
+			hitInfo.point = base.transform.position - base.transform.transform.up * airborneThreshold;
+			hitInfo.normal = base.transform.up;
+			Physics.SphereCast(ray, spherecastRadius, out hitInfo, airborneThreshold * 2f, groundLayers);
+			return hitInfo;
 		}
 
 		public float GetAngleFromForward(Vector3 worldDirection)
 		{
-			return 0f;
+			Vector3 vector = base.transform.InverseTransformDirection(worldDirection);
+			return Mathf.Atan2(vector.x, vector.z) * 57.29578f;
 		}
 
 		protected void RigidbodyRotateAround(Vector3 point, Vector3 axis, float angle)
 		{
+			Quaternion quaternion = Quaternion.AngleAxis(angle, axis);
+			Vector3 vector = base.transform.position - point;
+			r.MovePosition(point + quaternion * vector);
+			r.MoveRotation(quaternion * base.transform.rotation);
 		}
 
 		protected void ScaleCapsule(float mlp)
 		{
+			if (capsule != null && capsule.height != originalHeight * mlp)
+			{
+				capsule.height = Mathf.MoveTowards(capsule.height, originalHeight * mlp, Time.deltaTime * 4f);
+				capsule.center = Vector3.MoveTowards(capsule.center, originalCenter * mlp, Time.deltaTime * 2f);
+			}
 		}
 
 		protected void HighFriction()
 		{
+			if (capsule != null)
+			{
+				capsule.material = highFrictionMaterial;
+			}
 		}
 
 		protected void ZeroFriction()
 		{
+			if (capsule != null)
+			{
+				capsule.material = zeroFrictionMaterial;
+			}
 		}
 
 		protected float GetSlopeDamper(Vector3 velocity, Vector3 groundNormal)
 		{
-			return 0f;
+			float num = 90f - Vector3.Angle(velocity, groundNormal);
+			num -= slopeStartAngle;
+			float num2 = slopeEndAngle - slopeStartAngle;
+			return 1f - Mathf.Clamp(num / num2, 0f, 1f);
 		}
 	}
 }
