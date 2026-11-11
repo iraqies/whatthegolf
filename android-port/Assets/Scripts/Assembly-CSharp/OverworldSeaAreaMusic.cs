@@ -48,7 +48,7 @@ public class OverworldSeaAreaMusic : OverworldMusicChanger
 		{
 			goals = IslandFlagContainer.GetComponentsInChildren<OverworldGoal>();
 		}
-		if (component.shape == Transmogrif.BALLSHAPES.boat || component.shape == Transmogrif.BALLSHAPES.submarine)
+		if (component.shape == Transmogrif.BALLSHAPES.boat || component.shape == Transmogrif.BALLSHAPES.speedboat)
 		{
 			DoSailBehaviour = true;
 			if (SailingMusic != null)
@@ -57,7 +57,7 @@ public class OverworldSeaAreaMusic : OverworldMusicChanger
 				TriggerMusic(SailingMusic, new List<OverworldGoal>());
 			}
 		}
-		else if (component.shape == (Transmogrif.BALLSHAPES)8)
+		else if (component.shape == Transmogrif.BALLSHAPES.islandBall)
 		{
 			DoIslandBehaviour = true;
 			if (SailingMusic != null)

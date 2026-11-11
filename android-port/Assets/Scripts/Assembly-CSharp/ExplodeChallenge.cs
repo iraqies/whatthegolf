@@ -41,7 +41,7 @@ public class ExplodeChallenge : Challenge
 		{
 			cameraBehaviourFollowing3.SetFollowTarget(_currentFlyingExplosion.transform);
 		}
-		AddressableSingleton<LevelManager>.Instance.InGameMenu.SetStrokeCounterSettings(destructionToWin, StrokeCounter.CounterTypes.ReverseCounting, true);
+		AddressableSingleton<LevelManager>.Instance.InGameMenu.SetStrokeCounterSettings(destructionToWin, StrokeCounter.CounterTypes.CardsDisappearing, true);
 	}
 
 	private void OnOnOutOfBounds(OutOfBoundsTrigger obj)

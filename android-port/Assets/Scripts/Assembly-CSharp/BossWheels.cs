@@ -42,7 +42,7 @@ public class BossWheels : MonoBehaviour
 		{
 			currentParticles.Stop();
 		}
-		if (state == currentState || currentState == BossCarState.CarStateEnum.None)
+		if (state == currentState || currentState == BossCarState.CarStateEnum.Resetting)
 		{
 			currentState = state;
 			WheelParticle wheelParticle = WheelParticles.FirstOrDefault((WheelParticle w) => w.State == state);
@@ -58,7 +58,7 @@ public class BossWheels : MonoBehaviour
 		}
 		else
 		{
-			currentState = BossCarState.CarStateEnum.None;
+			currentState = BossCarState.CarStateEnum.Resetting;
 			nextState = state;
 			StartCoroutine(WaitForReset());
 		}
@@ -91,7 +91,7 @@ public class BossWheels : MonoBehaviour
 			base.transform.localEulerAngles = new Vector3(0f, y, z);
 			break;
 		}
-		case BossCarState.CarStateEnum.None:
+		case BossCarState.CarStateEnum.Resetting:
 			base.transform.rotation = Quaternion.RotateTowards(base.transform.rotation, Quaternion.identity, Time.deltaTime * WheelStateChangeSpeed * 5f);
 			break;
 		}

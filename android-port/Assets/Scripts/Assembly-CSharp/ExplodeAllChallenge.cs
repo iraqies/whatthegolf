@@ -27,7 +27,7 @@ public class ExplodeAllChallenge : Challenge
 			maxCount++;
 		}
 		controller = Object.FindObjectOfType<GolfBallController>();
-		AddressableSingleton<LevelManager>.Instance.InGameMenu.SetStrokeCounterSettings(maxCount, StrokeCounter.CounterTypes.ReverseCounting, true);
+		AddressableSingleton<LevelManager>.Instance.InGameMenu.SetStrokeCounterSettings(maxCount, StrokeCounter.CounterTypes.CardsDisappearing, true);
 	}
 
 	private void B_OnExplode(Collider2D obj)

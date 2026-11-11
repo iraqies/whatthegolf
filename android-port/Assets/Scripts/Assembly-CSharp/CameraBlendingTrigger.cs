@@ -1,4 +1,5 @@
 using CameraStack;
+using Core;
 using UnityEngine;
 
 public class CameraBlendingTrigger : MonoBehaviour

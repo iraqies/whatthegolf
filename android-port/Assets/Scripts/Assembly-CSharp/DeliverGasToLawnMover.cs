@@ -16,7 +16,7 @@ public class DeliverGasToLawnMover : MonoBehaviour
 	private void Start()
 	{
 		PropMuscle propMuscle = PlayerPuppet.propMuscles[0];
-		propMuscle.onDropProp = (PropMuscle.PropDelegate)Delegate.Combine(propMuscle.onDropProp, new PropMuscle.PropDelegate(OnDropProp));
+		propMuscle.OnDropProp = (PropMuscle.PropDelegate)Delegate.Combine(propMuscle.OnDropProp, new PropMuscle.PropDelegate(OnDropProp));
 	}
 
 	private void OnDropProp(PuppetMasterProp prop)
