@@ -156,5 +156,10 @@ namespace Utility
 		{
 			return GetEnumerator();
 		}
+
+		public override string ToString()
+		{
+			return (prefabs != null && prefabs.Count > 0 && prefabs[0] != null) ? prefabs[0].name : base.ToString();
+		}
 	}
 }

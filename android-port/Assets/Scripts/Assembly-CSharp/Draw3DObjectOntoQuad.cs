@@ -22,13 +22,28 @@ public class Draw3DObjectOntoQuad : MonoBehaviour
 
 	private void Awake()
 	{
+		if (quad != null)
+		{
+			mesh = quad.GetComponent<MeshRenderer>();
+			renderTexture = new RenderTexture(renderTextureTemplate);
+			renderTexture.Create();
+			material = new Material(renderTextureMaterialTemplate);
+			material.mainTexture = renderTexture;
+			if (projectingCamera != null)
+			{
+				projectingCamera.targetTexture = renderTexture;
+			}
+			mesh.material = material;
+		}
 	}
 
 	private void OnValidate()
 	{
+		object3D.transform.rotation = masterObject.transform.rotation;
 	}
 
 	private void Update()
 	{
+		object3D.transform.rotation = masterObject.transform.rotation;
 	}
 }

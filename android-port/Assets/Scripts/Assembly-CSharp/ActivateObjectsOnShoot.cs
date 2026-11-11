@@ -14,13 +14,20 @@ public class ActivateObjectsOnShoot : MonoBehaviour
 
 	private void OnEnable()
 	{
+		controller.OnShoot += Controller_OnShoot;
 	}
 
 	private void OnDisable()
 	{
+		controller.OnShoot -= Controller_OnShoot;
 	}
 
 	private void Controller_OnShoot(Vector3 obj)
 	{
+		if (index < Objects.Count)
+		{
+			Objects[index].SetActive(true);
+			index++;
+		}
 	}
 }

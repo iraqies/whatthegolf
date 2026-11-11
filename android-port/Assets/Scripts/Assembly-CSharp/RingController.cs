@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using Core;
 using UnityEngine;
 
 public class RingController : MonoBehaviour
 {
 	public LobbySpawnPoint.SpawnPointPositions Side;
 
-	public float MoveSpeed;
+	public float MoveSpeed = 1f;
 
 	public List<SetMaterialColorToPlayerColor> Ring;
 
@@ -25,13 +26,38 @@ public class RingController : MonoBehaviour
 
 	private void Awake()
 	{
+		rigid = GetComponent<Rigidbody>();
+		Level.Instance.OnMultiplayerSetup += InstanceOnOnMultiplayerSetup;
 	}
 
 	private void InstanceOnOnMultiplayerSetup(MultiplayerLevelInfo obj)
 	{
+		foreach (MultiplayerConfiguration.PlayerInfo player in Level.Instance.GetMultiplayerConfiguration().Players)
+		{
+			if (player.SpawnSide == Side)
+			{
+				playerIndex = player.Index;
+				Ring.ForEach(delegate(SetMaterialColorToPlayerColor r)
+				{
+					r.UpdateMaterials(player.Colors);
+				});
+				Ball.UpdateMaterials(player.Colors);
+				Line.UpdateMaterials(player.Colors);
+			}
+		}
 	}
 
 	private void FixedUpdate()
 	{
+		rigid.transform.position = rigid.position + Vector3.up * rigid.angularVelocity.y * MoveSpeed * Time.deltaTime;
+		if (rigid.transform.position.y < Bottom.transform.position.y)
+		{
+			rigid.transform.position = new Vector3(rigid.transform.position.x, Bottom.transform.position.y, rigid.transform.position.z);
+		}
+		else if (rigid.transform.position.y > Top.transform.position.y - 2f)
+		{
+			goal.GoalProgress(playerIndex);
+			goal.Complete();
+		}
 	}
 }

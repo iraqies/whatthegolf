@@ -8,13 +8,17 @@ public class ChangeSolverIteration : MonoBehaviour
 
 	private void Awake()
 	{
+		defaultCount = Physics.defaultSolverIterations;
+		Physics.defaultSolverIterations = newIterationCount;
 	}
 
 	private void OnDestroy()
 	{
+		Physics.defaultSolverIterations = defaultCount;
 	}
 
 	private void BackToDefault()
 	{
+		Physics.defaultSolverIterations = defaultCount;
 	}
 }

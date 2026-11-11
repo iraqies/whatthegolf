@@ -11,13 +11,28 @@ public class ComputerCameraBlender : GolfBehaviour
 
 	public override void OnPrePlayOrPreCompile()
 	{
+		base.OnPrePlayOrPreCompile();
+		robots = FindObjectsInOverworld.Find<OverworldMainDoorRobot>();
 	}
 
 	private void Start()
 	{
+		foreach (OverworldMainDoorRobot robot in robots)
+		{
+			robot.OnBallExitedAndIsExploding += Robot_OnBallExitedAndIsExploding;
+		}
 	}
 
 	private void Robot_OnBallExitedAndIsExploding(OverworldMainDoorRobot obj)
 	{
+		if (current != null)
+		{
+			StopCoroutine(current);
+		}
+		robotSettings.SetValue(1f);
+		current = StartCoroutine(pTween.To(0.3f, delegate(float t)
+		{
+			robotSettings.SetValue(TweenFunctions.EaseIn(t));
+		}));
 	}
 }

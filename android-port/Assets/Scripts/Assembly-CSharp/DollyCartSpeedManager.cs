@@ -7,10 +7,10 @@ public class DollyCartSpeedManager : MonoBehaviour
 	private Transform Follower;
 
 	[SerializeField]
-	private float FollowThreshold;
+	private float FollowThreshold = 25f;
 
 	[SerializeField]
-	private bool useDistance;
+	private bool useDistance = true;
 
 	private float dollySpeed;
 
@@ -19,13 +19,17 @@ public class DollyCartSpeedManager : MonoBehaviour
 
 	private void Start()
 	{
+		dollySpeed = dolly.m_Speed;
 	}
 
 	internal void SetNewFollower(Transform newCamFollow)
 	{
+		Follower = newCamFollow;
 	}
 
 	public void SetNewSpeed(float s)
 	{
+		dolly.m_Speed = s;
+		dollySpeed = s;
 	}
 }

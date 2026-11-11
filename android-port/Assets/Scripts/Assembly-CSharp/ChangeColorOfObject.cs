@@ -13,13 +13,19 @@ public class ChangeColorOfObject : MonoBehaviour
 
 	private void Start()
 	{
+		if (m_inactiveColor.a == 0f)
+		{
+			m_inactiveColor = m_rendererToChange.material.GetColor("_Color");
+		}
 	}
 
 	public void SetActiveColor()
 	{
+		m_rendererToChange.material.SetColor("_Color", m_activeColor);
 	}
 
 	public void SetInactiveColor()
 	{
+		m_rendererToChange.material.SetColor("_Color", m_inactiveColor);
 	}
 }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class JetpackJoyrideBackgroundObject : MonoBehaviour
 {
-	public float MoveSpeedMod;
+	public float MoveSpeedMod = 1f;
 
 	public bool MoveWithPhysics;
 
@@ -14,5 +14,9 @@ public class JetpackJoyrideBackgroundObject : MonoBehaviour
 
 	private void Awake()
 	{
+		if (MoveWithPhysics)
+		{
+			Rigidbody = GetComponent<Rigidbody2D>();
+		}
 	}
 }

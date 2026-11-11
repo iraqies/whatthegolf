@@ -95,6 +95,16 @@ public class ChessBoard : MonoBehaviour
 
 	private void ControllerOnOnAimUpdate(Vector3 boost, bool isCancelled)
 	{
+		if (boost.magnitude >= 0.1f && (GetCellFromBoost(boost) - Vector2.zero).sqrMagnitude >= 1E-10f)
+		{
+			Vector3 vector = CellToWorldPos(GetCellFromBoost(boost) + playerPiece.CurrentCell);
+			MoveParticles.transform.position = vector;
+			playerPiece.transform.rotation = Quaternion.RotateTowards(playerPiece.transform.rotation, Quaternion.LookRotation(new Vector3(vector.x - playerPiece.transform.position.x, 0f, vector.z - playerPiece.transform.position.z)), Time.deltaTime * 500f);
+		}
+		else
+		{
+			MoveParticles.transform.position = new Vector3(-100f, 100f, 100f);
+		}
 	}
 
 	private void Controller_OnShoot(Vector3 boost)
@@ -122,6 +132,11 @@ public class ChessBoard : MonoBehaviour
 
 	private void Update()
 	{
+		if (Test)
+		{
+			Test = false;
+			StartCoroutine(StartMoving());
+		}
 	}
 
 	private IEnumerator StartMoving()
@@ -281,5 +296,17 @@ public class ChessBoard : MonoBehaviour
 
 	private void OnDrawGizmosSelected()
 	{
+		if (BoardCells == null)
+		{
+			return;
+		}
+		for (int i = 0; (float)i < BoardSize.y; i++)
+		{
+			for (int j = 0; (float)j < BoardSize.x; j++)
+			{
+				Gizmos.color = ((BoardCells[new Vector2(j, i)] != null) ? Color.green : Color.red);
+				Gizmos.DrawWireCube(CellToWorldPos(new Vector2(j, i)), new Vector3(CellSize.x, 1f, CellSize.y));
+			}
+		}
 	}
 }

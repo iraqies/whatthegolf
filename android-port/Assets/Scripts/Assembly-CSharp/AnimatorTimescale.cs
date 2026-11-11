@@ -10,14 +10,24 @@ public class AnimatorTimescale : MonoBehaviour, ITimedPuzzleObject
 
 	public float GetDeltaTime()
 	{
-		return 0f;
+		if (BallClock != null)
+		{
+			return BallClock.deltaTime;
+		}
+		return Time.deltaTime;
 	}
 
 	public void SetClock(LocalClock clock)
 	{
+		BallClock = clock;
+		animator = GetComponent<Animator>();
 	}
 
 	private void Update()
 	{
+		if (!(animator == null) && !(BallClock == null))
+		{
+			animator.speed = BallClock.localTimeScale;
+		}
 	}
 }
