@@ -32,22 +32,13 @@ public class SurviveTimeChallenge : Challenge
 		isActive = true;
 		if (PreplayCountdownTime >= 1)
 		{
-			if (LevelManager.Instance != null && LevelManager.Instance.InGameMenu != null)
-			{
-				LevelManager.Instance.InGameMenu.SetStrokeCounterSettings(PreplayCountdownTime, true, true, false);
-			}
+			LevelManager.Instance.InGameMenu.SetStrokeCounterSettings(PreplayCountdownTime, StrokeCounter.CounterTypes.CardsDisappearing, useExternalCountActivator: true);
 			currentState = TimeState.PrePlayCountdown;
-			if (controller != null)
-			{
-				controller.TimedBlockShot(PreplayCountdownTime);
-			}
+			controller.TimedBlockShot(PreplayCountdownTime);
 		}
 		else
 		{
-			if (LevelManager.Instance != null && LevelManager.Instance.InGameMenu != null)
-			{
-				LevelManager.Instance.InGameMenu.SetStrokeCounterSettings(TimeToSurvive, true, true, false);
-			}
+			LevelManager.Instance.InGameMenu.SetStrokeCounterSettings(TimeToSurvive, StrokeCounter.CounterTypes.CardsDisappearing, useExternalCountActivator: true);
 			currentState = TimeState.CountingDown;
 		}
 	}
@@ -60,13 +51,11 @@ public class SurviveTimeChallenge : Challenge
 
 	public override string GetDescription()
 	{
-		if (string.IsNullOrEmpty(DescriptionLocalizationID))
+		if (string.IsNullOrEmpty(DescriptionLocalizationId))
 		{
-			return Localization.Instance != null
-				? string.Format(Localization.Instance.GetString("ID_CHALLENGE_SURVIVE_TIME"), TimeToSurvive)
-				: string.Format("ID_CHALLENGE_SURVIVE_TIME", TimeToSurvive);
+			return string.Format(Localization.Instance.GetString("ID_CHALLENGE_SURVIVE_TIME"), TimeToSurvive);
 		}
-		return Localization.Instance != null ? Localization.Instance.GetString(DescriptionLocalizationID) : DescriptionLocalizationID;
+		return Localization.Instance.GetString(DescriptionLocalizationId);
 	}
 
 	protected override void ChallengeUpdate()
@@ -76,34 +65,24 @@ public class SurviveTimeChallenge : Challenge
 			return;
 		}
 		timer += Time.deltaTime;
-		int curSec = (int)timer;
-		if (curSec != lastSecond)
+		if ((int)timer != lastSecond)
 		{
-			if (LevelManager.Instance != null && LevelManager.Instance.InGameMenu != null)
-			{
-				LevelManager.Instance.InGameMenu.CountStroke(controller, lastSecond);
-			}
-			lastSecond = curSec;
+			LevelManager.Instance.InGameMenu.CountStroke(controller, lastSecond);
+			lastSecond = (int)timer;
 		}
 		if (currentState == TimeState.PrePlayCountdown)
 		{
-			if (timer >= PreplayCountdownTime)
+			if (timer >= (float)PreplayCountdownTime)
 			{
 				timer = -0.1f;
-				if (LevelManager.Instance != null && LevelManager.Instance.InGameMenu != null)
-				{
-					LevelManager.Instance.InGameMenu.SetStrokeCounterSettings(TimeToSurvive, true, true, false);
-				}
+				LevelManager.Instance.InGameMenu.SetStrokeCounterSettings(TimeToSurvive, StrokeCounter.CounterTypes.CardsDisappearing, useExternalCountActivator: true);
 				currentState = TimeState.CountingDown;
-				OnPrePlayCountdownDone?.Invoke();
+				UnityEvents.OnChallengeStart?.Invoke();
 			}
 		}
-		else if (currentState == TimeState.CountingDown)
+		else if (currentState == TimeState.CountingDown && timer >= (float)TimeToSurvive)
 		{
-			if (timer >= TimeToSurvive)
-			{
-				Complete();
-			}
+			Complete();
 		}
 	}
 }

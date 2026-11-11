@@ -18,46 +18,36 @@ public class ScareBirdChallenge : Challenge
 
 	protected override void Activate()
 	{
-		scareBirds = GetComponentsInChildren<BirdNPC>(true);
+		scareBirds = GetComponentsInChildren<BirdNPC>(includeInactive: true);
 		controller = Object.FindObjectOfType<GolfBallController>();
 		SFX = GetComponentInChildren<TiltChallengeSFX>();
-		if (scareBirds != null)
+		for (int i = 0; i < scareBirds.Length; i++)
 		{
-			for (int i = 0; i < scareBirds.Length; i++)
+			if (scareBirds[i] != null)
 			{
-				BirdNPC bird = scareBirds[i];
-				if (bird != null)
+				if (CustomScareTriggerRange > 0f)
 				{
-					if (CustomScareTriggerRange > 0f)
-					{
-						bird.SetTriggerRange(CustomScareTriggerRange);
-					}
-					bird.OnScared += OnBirdScared;
+					scareBirds[i].SetTriggerRange(CustomScareTriggerRange);
 				}
-			}
-			if (SFX != null)
-			{
-				SFX.Init(scareBirds.Length);
-			}
-			if (LevelManager.Instance != null && LevelManager.Instance.InGameMenu != null)
-			{
-				LevelManager.Instance.InGameMenu.SetStrokeCounterSettings(scareBirds.Length, false, true, false);
+				scareBirds[i].OnBirdScared += OnBirdScared;
 			}
 		}
+		if (SFX != null)
+		{
+			SFX.Init(scareBirds.Length);
+		}
+		LevelManager.Instance.InGameMenu.SetStrokeCounterSettings(scareBirds.Length, StrokeCounter.CounterTypes.CardsAppearing, useExternalCountActivator: true);
 	}
 
 	private void OnBirdScared(BirdNPC bird)
 	{
 		scareCount++;
-		if (LevelManager.Instance != null && LevelManager.Instance.InGameMenu != null)
-		{
-			LevelManager.Instance.InGameMenu.CountStroke(controller, scareCount);
-		}
+		LevelManager.Instance.InGameMenu.CountStroke(controller, scareCount);
 		if (SFX != null)
 		{
 			SFX.Play();
 		}
-		if (scareBirds != null && scareCount == scareBirds.Length && !GolfToFlagAfter)
+		if (scareCount == scareBirds.Length && !GolfToFlagAfter)
 		{
 			Complete();
 		}
@@ -65,7 +55,7 @@ public class ScareBirdChallenge : Challenge
 
 	public override void OnLevelComplete(Level.CompletedState completedState)
 	{
-		if (scareBirds != null && scareCount < scareBirds.Length)
+		if (scareCount < scareBirds.Length)
 		{
 			Fail();
 		}
@@ -77,12 +67,15 @@ public class ScareBirdChallenge : Challenge
 
 	public override string GetDescription()
 	{
-		string key = string.IsNullOrEmpty(DescriptionLocalizationID) ? "ID_CHALLENGE_SCAREBIRDS" : DescriptionLocalizationID;
-		return Localization.Instance != null ? Localization.Instance.GetString(key) : key;
+		if (string.IsNullOrEmpty(DescriptionLocalizationId))
+		{
+			return Localization.Instance.GetString("ID_CHALLENGE_SCAREBIRDS");
+		}
+		return Localization.Instance.GetString(DescriptionLocalizationId);
 	}
 
 	public override string GetWinMessageID()
 	{
-		return string.IsNullOrEmpty(CustomWinMessageLocalizationID) ? "ID_CHALLENGE_SCAREBIRDS_COMPLETION" : CustomWinMessageLocalizationID;
+		return string.IsNullOrEmpty(WinMessageLocalizationId) ? "ID_CHALLENGE_SCAREBIRDS_COMPLETION" : WinMessageLocalizationId;
 	}
 }

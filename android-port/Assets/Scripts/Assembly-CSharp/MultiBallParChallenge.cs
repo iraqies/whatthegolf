@@ -13,47 +13,40 @@ public class MultiBallParChallenge : Challenge
 
 	protected override void Activate()
 	{
-		CompleteOnHoleComplete = false;
+		ExitLevelOnComplete = false;
 		controllers = Object.FindObjectsOfType<GolfBallController>().ToList();
-		OutOfBoundsDestroyer destroyer = Object.FindObjectOfType<OutOfBoundsDestroyer>();
-		if (destroyer != null)
+		ObjectDestroyTrigger objectDestroyTrigger = Object.FindObjectOfType<ObjectDestroyTrigger>();
+		if (objectDestroyTrigger != null)
 		{
-			destroyer.OnObjectDestroyed += OnObjectDestroyed;
+			objectDestroyTrigger.onDestroyObject += OnObjectDestroyed;
 		}
-		if (controllers != null && controllers.Count > 0 && controllers[0] != null)
+		if (controllers[0] != null)
 		{
 			controllers[0].OnShoot += OnShoot;
 		}
-		if (LevelManager.Instance != null && LevelManager.Instance.InGameMenu != null)
-		{
-			LevelManager.Instance.InGameMenu.SetStrokeCounterSettings(ScoreToBeat, true, true, false);
-		}
+		LevelManager.Instance.InGameMenu.SetStrokeCounterSettings(ScoreToBeat, StrokeCounter.CounterTypes.CardsDisappearing, useExternalCountActivator: true);
 	}
 
 	private void OnObjectDestroyed(GameObject obj)
 	{
-		if (obj == null)
+		GolfBallController component = obj.GetComponent<GolfBallController>();
+		if (component != null)
 		{
-			return;
-		}
-		GolfBallController gbc = obj.GetComponent<GolfBallController>();
-		if (gbc != null && controllers != null)
-		{
-			if (controllers.Count > 0 && controllers[0] == gbc)
+			if (controllers[0] == component)
 			{
-				gbc.OnShoot -= OnShoot;
-				controllers.Remove(gbc);
-				if (controllers.Count >= 1 && controllers[0] != null)
+				component.OnShoot -= OnShoot;
+				controllers.Remove(component);
+				if (controllers.Count >= 1)
 				{
 					controllers[0].OnShoot += OnShoot;
 				}
 			}
 			else
 			{
-				controllers.Remove(gbc);
+				controllers.Remove(component);
 			}
 		}
-		if (controllers != null && controllers.Count == 0)
+		if (controllers.Count == 0)
 		{
 			Fail();
 		}
@@ -61,49 +54,33 @@ public class MultiBallParChallenge : Challenge
 
 	public override string GetDescription()
 	{
-		if (string.IsNullOrEmpty(DescriptionLocalizationID))
+		if (string.IsNullOrEmpty(DescriptionLocalizationId))
 		{
-			DescriptionLocalizationID = "CHALLENGE_PAR";
+			DescriptionLocalizationId = "ID_CHALLENGE_PAR_DESCRIPTION";
 		}
-		if (Localization.Instance != null)
-		{
-			return string.Format(Localization.Instance.GetString(DescriptionLocalizationID), ScoreToBeat);
-		}
-		return string.Format(DescriptionLocalizationID, ScoreToBeat);
+		return string.Format(Localization.Instance.GetString(DescriptionLocalizationId), ScoreToBeat);
 	}
 
 	private void OnShoot(Vector3 vector3)
 	{
 		strokeCount++;
-		if (LevelManager.Instance != null && LevelManager.Instance.InGameMenu != null && controllers != null && controllers.Count > 0)
+		LevelManager.Instance.InGameMenu.CountStroke(controllers[0], strokeCount);
+		if (controllers[0].NumberOfStrokes + 1 > ScoreToBeat)
 		{
-			LevelManager.Instance.InGameMenu.CountStroke(controllers[0], strokeCount);
-		}
-		if (controllers != null && controllers.Count > 0 && controllers[0] != null)
-		{
-			if (controllers[0].NumberOfStrokes + 1 > ScoreToBeat)
-			{
-				Fail();
-			}
+			Fail();
 		}
 	}
 
 	public override void OnLevelComplete(Level.CompletedState completedState)
 	{
-		if (completedState == null)
-		{
-			return;
-		}
-		if (completedState.NumberOfStrokes > ScoreToBeat)
+		if (completedState.Strokes > ScoreToBeat)
 		{
 			Fail();
+			return;
 		}
-		else
-		{
-			completedState.VictoryMessage = "CROWN!";
-			completedState.VictoryDuration = 2f;
-			completedState.IsChallengeCompleted = true;
-			Complete();
-		}
+		completedState.Message = "ID_EMPTY_STRING";
+		completedState.Delay = 2f;
+		completedState.LeaveLevel = true;
+		Complete();
 	}
 }

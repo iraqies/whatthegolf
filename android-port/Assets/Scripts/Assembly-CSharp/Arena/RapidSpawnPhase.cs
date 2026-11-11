@@ -1,83 +1,144 @@
 using System.Collections;
-using Core;
+using System.Collections.Generic;
 using UnityEngine;
+using Utility;
 
 namespace Arena
 {
-	public class RapidSpawnPhase : MonoBehaviour
+	public class RapidSpawnPhase : RockSpawnerPhase
 	{
-		public AvoidStoneGameManager GameManager;
+		[SerializeField]
+		private ArenaDroppable rockPrefab;
 
-		public Transform FollowPivot;
+		[SerializeField]
+		private float arenaRadius = 45f;
 
-		public Transform ProjectileOrigin;
+		[SerializeField]
+		private float cellSize = 2f;
 
-		public Rigidbody ProjectilePrefab;
+		[SerializeField]
+		private int minSpawnPerTick = 4;
 
-		public float Interval = 0.5f;
+		[SerializeField]
+		private int maxSpawnPerTick = 8;
 
-		public Vector2 MinMaxVerticalForce = new Vector2(5f, 10f);
+		[SerializeField]
+		private float spawnInterval = 0.25f;
 
-		public Vector2 MinMaxHorizontalForce = new Vector2(10f, 20f);
+		[SerializeField]
+		private float gridCooldownTime = 9f;
 
-		private Transform playerTransform;
+		public int positionCount;
 
-		private bool active;
+		public int onCooldownCount;
 
-		private Coroutine spawnRoutine;
+		private List<Vector2> allValidPositions;
+
+		private List<Vector3> spawnPositions;
+
+		private HashSet<KeyValuePair<ArenaDroppableRock, float>> gridCooldown;
+
+		private WaitForSeconds _wait;
+
+		public override bool IsSpawning { get; set; }
 
 		private void Start()
 		{
-			GolfBallController gbc = Object.FindObjectOfType<GolfBallController>();
-			if (gbc != null)
+			CreateGrid();
+			spawnPositions = new List<Vector3>();
+			gridCooldown = new HashSet<KeyValuePair<ArenaDroppableRock, float>>();
+			foreach (Vector2 allValidPosition in allValidPositions)
 			{
-				playerTransform = gbc.transform;
+				spawnPositions.Add(new Vector3(allValidPosition.x, allValidPosition.y, 0f));
+			}
+			base.RockPool = new ObjectPool<ArenaDroppableRock>(rockPrefab.gameObject, allValidPositions.Count - 100);
+			_wait = new WaitForSeconds(spawnInterval);
+		}
+
+		public override IEnumerator SpawnCoroutine()
+		{
+			IsSpawning = true;
+			while (IsSpawning)
+			{
+				CheckCooldowns();
+				int count = Random.Range(minSpawnPerTick, maxSpawnPerTick);
+				for (int i = 0; i < count; i++)
+				{
+					int index = Random.Range(0, spawnPositions.Count);
+					Vector3 vector = spawnPositions[index];
+					onCooldownCount = gridCooldown.Count;
+					spawnPositions.RemoveAt(index);
+					if (base.RockPool.Retrieve(new Vector3(vector.x, base.transform.position.y, vector.y), default(Quaternion)).TryGetComponent<ArenaDroppableRock>(out var component))
+					{
+						component.GridPosition = new Vector2(vector.x, vector.y);
+						gridCooldown.Add(new KeyValuePair<ArenaDroppableRock, float>(component, Time.time + gridCooldownTime));
+					}
+					yield return null;
+				}
+				yield return new WaitForSeconds(spawnInterval);
 			}
 		}
 
-		public void SetActive(bool value)
+		private void CheckCooldowns()
 		{
-			if (active == value)
+			if (gridCooldown.Count < 1)
 			{
 				return;
 			}
-			active = value;
-			if (active)
+			float time = Time.time;
+			HashSet<KeyValuePair<ArenaDroppableRock, float>> hashSet = new HashSet<KeyValuePair<ArenaDroppableRock, float>>();
+			foreach (KeyValuePair<ArenaDroppableRock, float> item in gridCooldown)
 			{
-				spawnRoutine = StartCoroutine(SpawnPhaseCoroutine());
-			}
-			else if (spawnRoutine != null)
-			{
-				StopCoroutine(spawnRoutine);
-				spawnRoutine = null;
-			}
-		}
-
-		private void Update()
-		{
-			if (active && FollowPivot != null && playerTransform != null)
-			{
-				FollowPivot.LookAt(playerTransform);
-			}
-		}
-
-		private IEnumerator SpawnPhaseCoroutine()
-		{
-			while (active)
-			{
-				if (ProjectilePrefab != null && ProjectileOrigin != null)
+				if (time >= item.Value)
 				{
-					Rigidbody proj = Object.Instantiate(ProjectilePrefab, ProjectileOrigin.position, Quaternion.identity);
-					Vector3 force = ProjectileOrigin.forward * Random.Range(MinMaxHorizontalForce.x, MinMaxHorizontalForce.y)
-						+ Vector3.up * Random.Range(MinMaxVerticalForce.x, MinMaxVerticalForce.y);
-					proj.AddForce(force, ForceMode.VelocityChange);
-					proj.AddTorque(Random.insideUnitSphere * 360f);
-					if (GameManager != null)
+					spawnPositions.Add(new Vector3(item.Key.GridPosition.x, item.Key.GridPosition.y, 0f));
+					hashSet.Add(item);
+				}
+			}
+			foreach (KeyValuePair<ArenaDroppableRock, float> item2 in hashSet)
+			{
+				base.RockPool.Release(item2.Key.gameObject);
+				gridCooldown.Remove(item2);
+			}
+		}
+
+		private void CreateGrid()
+		{
+			allValidPositions = new List<Vector2>();
+			float x = base.transform.position.x;
+			float z = base.transform.position.z;
+			Mathf.CeilToInt(arenaRadius + arenaRadius);
+			for (float num = 0f - arenaRadius; num <= arenaRadius; num += cellSize)
+			{
+				for (float num2 = 0f - arenaRadius; num2 <= arenaRadius; num2 += cellSize)
+				{
+					Vector2 vector = new Vector2(x + num, z + num2);
+					if (Vector2.Distance(vector, new Vector2(x, z)) <= arenaRadius)
 					{
-						GameManager.RegisterRigidBody(proj);
+						allValidPositions.Add(vector);
 					}
 				}
-				yield return new WaitForSeconds(Interval);
+			}
+			positionCount = allValidPositions.Count;
+		}
+
+		private void OnDrawGizmosSelected()
+		{
+			if (gridCooldown != null)
+			{
+				foreach (KeyValuePair<ArenaDroppableRock, float> item in gridCooldown)
+				{
+					Vector2 gridPosition = item.Key.GridPosition;
+					Gizmos.color = Color.red;
+					Gizmos.DrawCube(new Vector3(gridPosition.x, base.transform.position.y, gridPosition.y), Vector3.one);
+				}
+			}
+			if (allValidPositions != null && !Application.isPlaying)
+			{
+				foreach (Vector2 allValidPosition in allValidPositions)
+				{
+					Gizmos.DrawCube(new Vector3(allValidPosition.x, base.transform.position.y, allValidPosition.y), Vector3.one);
+				}
 			}
 		}
 	}

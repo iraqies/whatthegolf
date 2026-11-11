@@ -18,11 +18,7 @@ public class TargetShootingChallenge : Challenge
 
 		public void ThrowBottle(Rigidbody newBottle)
 		{
-			if (newBottle == null || m_LauncherContainer == null)
-			{
-				return;
-			}
-			newBottle.gameObject.SetActive(true);
+			newBottle.gameObject.SetActive(value: true);
 			newBottle.MovePosition(m_LauncherContainer.position);
 			newBottle.velocity = m_LauncherContainer.up * force;
 			newBottle.angularVelocity = m_LauncherContainer.right * angularForce;
@@ -55,56 +51,35 @@ public class TargetShootingChallenge : Challenge
 	{
 		timeAtStart = Time.time;
 		controller = UnityEngine.Object.FindObjectOfType<GolfBallController>();
-		if (launchers != null)
+		for (int i = 0; i < launchers.Length; i++)
 		{
-			for (int i = 0; i < launchers.Length; i++)
+			for (int j = 0; j < launchers[i].m_LaunchTimes.Count; j++)
 			{
-				Launcher l = launchers[i];
-				if (l != null && l.m_LaunchTimes != null)
-				{
-					for (int j = 0; j < l.m_LaunchTimes.Count; j++)
-					{
-						finalLaunchTime = (int)Mathf.Max(finalLaunchTime, l.m_LaunchTimes[j]);
-					}
-				}
+				finalLaunchTime = (int)Mathf.Max(finalLaunchTime, launchers[i].m_LaunchTimes[j]);
 			}
 		}
-		if (LevelManager.Instance != null && LevelManager.Instance.InGameMenu != null)
-		{
-			LevelManager.Instance.InGameMenu.SetStrokeCounterSettings(HitsToWin, true, true, false);
-		}
+		LevelManager.Instance.InGameMenu.SetStrokeCounterSettings(HitsToWin, StrokeCounter.CounterTypes.CardsDisappearing, useExternalCountActivator: true);
 	}
 
 	private void FixedUpdate()
 	{
-		if (finalLaunchTime <= 0 || launchers == null)
+		int num = Mathf.RoundToInt(Time.time - timeAtStart) % finalLaunchTime;
+		if (lastSecond == num)
 		{
 			return;
 		}
-		int elapsed = Mathf.RoundToInt(Time.time - timeAtStart) % finalLaunchTime;
-		if (elapsed == lastSecond)
-		{
-			return;
-		}
-		lastSecond = elapsed;
+		lastSecond = num;
 		for (int i = 0; i < launchers.Length; i++)
 		{
-			Launcher l = launchers[i];
-			if (l == null || l.m_LaunchTimes == null)
+			Launcher launcher = launchers[i];
+			foreach (float launchTime in launcher.m_LaunchTimes)
 			{
-				continue;
-			}
-			foreach (float lt in l.m_LaunchTimes)
-			{
-				if ((int)lt == elapsed && prefab != null)
+				if (num == (int)launchTime)
 				{
-					BreakableBottle b = UnityEngine.Object.Instantiate(prefab);
-					if (b != null)
-					{
-						IHitscanTarget ht = b;
-						ht.OnHitscanHit = (Action<IHitscanTarget>)Delegate.Combine(ht.OnHitscanHit, new Action<IHitscanTarget>(OnBottleHit));
-						l.ThrowBottle(b.GetComponent<Rigidbody>());
-					}
+					BreakableBottle breakableBottle = UnityEngine.Object.Instantiate(prefab);
+					IHitscanTarget hitscanTarget = breakableBottle;
+					hitscanTarget.OnHitscanHit = (Action<IHitscanTarget>)Delegate.Combine(hitscanTarget.OnHitscanHit, new Action<IHitscanTarget>(OnBottleHit));
+					launcher.ThrowBottle(breakableBottle.GetComponent<Rigidbody>());
 				}
 			}
 		}
@@ -112,21 +87,17 @@ public class TargetShootingChallenge : Challenge
 
 	public override string GetDescription()
 	{
-		string key = string.IsNullOrEmpty(DescriptionLocalizationID) ? "CHALLENGE_SHOOT_TARGETS" : DescriptionLocalizationID;
-		if (Localization.Instance != null)
+		if (string.IsNullOrEmpty(DescriptionLocalizationId))
 		{
-			return string.Format(Localization.Instance.GetString(key), HitsToWin);
+			return string.Format(Localization.Instance.GetString("ID_CHALLENGE_BOTTLESHOOTER"), HitsToWin);
 		}
-		return string.Format(key, HitsToWin);
+		return string.Format(Localization.Instance.GetString(DescriptionLocalizationId), HitsToWin);
 	}
 
 	private void OnBottleHit(IHitscanTarget target)
 	{
 		hitCount++;
-		if (LevelManager.Instance != null && LevelManager.Instance.InGameMenu != null)
-		{
-			LevelManager.Instance.InGameMenu.CountStroke(controller, hitCount);
-		}
+		LevelManager.Instance.InGameMenu.CountStroke(controller, hitCount);
 		if (hitCount >= HitsToWin)
 		{
 			Complete();

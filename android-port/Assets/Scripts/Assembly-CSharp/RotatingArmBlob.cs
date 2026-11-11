@@ -43,50 +43,34 @@ public class RotatingArmBlob : GolfBehaviour
 
 	private void Update()
 	{
-		if (isHoldingBall && currentBall != null && handPosition != null)
+		if (isHoldingBall)
 		{
 			timeWithBall += Time.deltaTime;
-			Vector3 targetLocal = transform.InverseTransformPoint(handPosition.position);
-			Vector3 nextLocal = Vector3.MoveTowards(localBallPosition, targetLocal, Time.deltaTime * moveToHandSpeed);
-			localBallPosition = new Vector2(nextLocal.x, nextLocal.y);
-			Vector3 worldPos = transform.TransformPoint(localBallPosition);
-			if (currentBall.Rigidbody2D != null)
+			Vector3 vector = Vector3.MoveTowards(localBallPosition, base.transform.InverseTransformPoint(handPosition.position), Time.deltaTime * moveToHandSpeed);
+			localBallPosition = new Vector2(vector.x, vector.y);
+			Vector3 vector2 = base.transform.TransformPoint(localBallPosition);
+			currentBall.rigidBody.MovePosition(vector2);
+			currentBall.transform.position = vector2;
+			Vector3 vector3 = currentBall.transform.position - throwFromPosition.position;
+			vector3.z = 0f;
+			if (timeWithBall > 1f && vector3.magnitude < 1f)
 			{
-				currentBall.Rigidbody2D.MovePosition(worldPos);
+				currentBall.rigidBody.isKinematic = false;
+				Vector3 normalized = (throwTarget.position - currentBall.transform.position).normalized;
+				currentBall.rigidBody.velocity = new Vector2(normalized.x * throwSpeed, normalized.y * throwSpeed);
+				isHoldingBall = false;
+				currentBall = null;
+				timeWithBall = 0f;
 			}
-			currentBall.transform.position = worldPos;
-			if (throwFromPosition != null)
-			{
-				Vector3 diff = currentBall.transform.position - throwFromPosition.position;
-				diff.z = 0f;
-				if (timeWithBall > 1f && diff.magnitude < 1f)
-				{
-					if (currentBall.Rigidbody2D != null)
-					{
-						currentBall.Rigidbody2D.isKinematic = false;
-						if (throwTarget != null)
-						{
-							Vector3 dir = (throwTarget.position - currentBall.transform.position).normalized;
-							currentBall.Rigidbody2D.velocity = new Vector2(dir.x * throwSpeed, dir.y * throwSpeed);
-						}
-					}
-					isHoldingBall = false;
-					currentBall = null;
-					timeWithBall = 0f;
-					nextCatchTime = Time.time + 0.1f;
-				}
-			}
+			nextCatchTime = Time.time + 0.1f;
 		}
 		rotation += Time.deltaTime;
 	}
 
 	private void FixedUpdate()
 	{
-		if (rigid != null)
-		{
-			rigid.MoveRotation(rotationSpeed * rotation);
-		}
-		if (col != null && col.isTrigger && Time.time > nextCatchTime)
+		rigid.MoveRotation(rotationSpeed * rotation);
+		if (col.isTrigger && Time.time > nextCatchTime)
 		{
 			col.isTrigger = false;
 		}
@@ -94,25 +78,18 @@ public class RotatingArmBlob : GolfBehaviour
 
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
-		if (isHoldingBall || Time.time < nextCatchTime || collision == null || collision.rigidbody == null)
+		if (!isHoldingBall && !(Time.time < nextCatchTime) && collision.rigidbody != null)
 		{
-			return;
-		}
-		OverworldBall2D ball = collision.rigidbody.GetComponent<OverworldBall2D>();
-		if (ball != null)
-		{
-			isHoldingBall = true;
-			currentBall = ball;
-			if (ball.Rigidbody2D != null)
+			OverworldBall2D component = collision.rigidbody.GetComponent<OverworldBall2D>();
+			if (component != null)
 			{
-				ball.Rigidbody2D.isKinematic = true;
-			}
-			if (col != null)
-			{
+				isHoldingBall = true;
+				currentBall = component;
+				component.rigidBody.isKinematic = true;
 				col.isTrigger = true;
+				Vector3 vector = base.transform.InverseTransformPoint(component.transform.position);
+				localBallPosition = new Vector2(vector.x, vector.y);
 			}
-			Vector3 inv = transform.InverseTransformPoint(ball.transform.position);
-			localBallPosition = new Vector2(inv.x, inv.y);
 		}
 	}
 }

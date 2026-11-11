@@ -7,29 +7,29 @@ using UnityEngine;
 
 public class KatamariBallSnake : MonoBehaviour
 {
-	public float CurrentSize = 1f;
+	public float CurrentSize;
 
-	public float BallCompression = 0.5f;
+	public float BallCompression = 2f;
 
-	public float GrowthMod = 0.1f;
+	public float GrowthMod = 1f;
 
-	public float ElevationMod = 1f;
+	public float ElevationMod = 1.5f;
 
-	public float MinCameraElevation = 5f;
+	public float MinCameraElevation = 20f;
 
-	public float ElevationChangeSpeed = 5f;
+	public float ElevationChangeSpeed = 3f;
 
-	public float RequiredSizeToWin = 10f;
+	public float RequiredSizeToWin = 300f;
 
-	public float MinShotSpeed = 10f;
+	public float MinShotSpeed = 40f;
 
-	public float ForceMod = -10f;
+	public float ForceMod = 1f;
 
-	public Vector2 ArrowScaleRange = new Vector2(1f, 3f);
+	public Vector2 ArrowScaleRange = new Vector2(1f, 12f);
 
-	public bool IncreaseMass = true;
+	public bool IncreaseMass;
 
-	public bool DestroyCollider = true;
+	public bool DestroyCollider;
 
 	public GameObject SphereCollider;
 
@@ -39,13 +39,13 @@ public class KatamariBallSnake : MonoBehaviour
 
 	public List<Transform> points;
 
-	public AnimationCurve swallowedObjectMovement = AnimationCurve.Linear(0f, 0f, 1f, 1f);
+	public AnimationCurve swallowedObjectMovement;
 
-	public float MoveSpeed = 5f;
+	public float MoveSpeed;
 
-	public float targetScale = 1f;
+	public float targetScale;
 
-	public float timeToLerp = 0.5f;
+	public float timeToLerp = 0.25f;
 
 	private GameObject currentObjectToMove;
 
@@ -69,93 +69,60 @@ public class KatamariBallSnake : MonoBehaviour
 	private void Awake()
 	{
 		rigidbody = GetComponent<Rigidbody>();
-		if (CameraManager.Instance != null)
-		{
-			followCam = CameraManager.Instance.gameObject.GetComponent<CBFollow>();
-		}
+		followCam = CameraManager.Instance.gameObject.GetComponent<CBFollow>();
 		force = GetComponent<ConstantForce>();
 		targetElevation = MinCameraElevation;
 		currentElevation = MinCameraElevation;
 		shooter = GetComponent<GolfBallShooterExperimental>();
 		controller = GetComponent<GolfBallController>();
-		if (controller != null)
-		{
-			controller.OnReset += Controller_OnReset;
-		}
+		controller.OnReset += Controller_OnReset;
 	}
 
 	private void Controller_OnReset()
 	{
-		transform.position += Vector3.up * CurrentSize;
+		base.transform.position += Vector3.up * CurrentSize * 0.5f;
 	}
 
 	private void OnCollisionEnter(Collision other)
 	{
-		if (other == null || other.transform == null || other.collider == null)
+		if (other.transform.tag == "Collectible")
 		{
-			return;
-		}
-		if (!other.transform.CompareTag("Obstacle"))
-		{
-			return;
-		}
-		float objSize = other.collider.bounds.size.magnitude;
-		if (objSize > CurrentSize * 1.5f)
-		{
-			return;
-		}
-		if (snakeMaterial != null)
-		{
-			Renderer[] rends = other.transform.GetComponentsInChildren<Renderer>();
-			if (rends != null)
+			List<MeshRenderer> list = new List<MeshRenderer>(other.transform.GetComponentInParent<Rigidbody>().transform.GetComponentsInChildren<MeshRenderer>());
+			for (int i = 0; i < list.Count; i++)
 			{
-				for (int i = 0; i < rends.Length; i++)
+				Material[] array = new Material[list[i].materials.Length];
+				for (int j = 0; j < list[i].materials.Length; j++)
 				{
-					if (rends[i] == null)
-					{
-						continue;
-					}
-					Material[] mats = rends[i].materials;
-					for (int j = 0; j < mats.Length; j++)
-					{
-						mats[j] = snakeMaterial;
-					}
-					rends[i].materials = mats;
+					array[j] = snakeMaterial;
 				}
+				list[i].materials = array;
 			}
-		}
-		if (audioClipSetting != null)
-		{
-			audioClipSetting.Play();
-		}
-		if (absorbClip != null)
-		{
-			absorbClip.Play(null, transform.position, 1f, 1f);
-		}
-		currentObjectToMove = other.gameObject;
-		StartCoroutine(MoveObjectInSnake(other.gameObject));
-		other.transform.SetParent(transform, true);
-		other.transform.tag = "Untagged";
-		if (other.rigidbody != null)
-		{
-			Object.Destroy(other.rigidbody);
-		}
-		if (DestroyCollider)
-		{
-			Collider[] cols = other.gameObject.GetComponentsInChildren<Collider>();
-			if (cols != null)
+			if (other.collider.bounds.size.magnitude <= CurrentSize)
 			{
-				for (int i = 0; i < cols.Length; i++)
+				audioClipSetting.Play();
+				currentObjectToMove = other.gameObject;
+				StartCoroutine(MoveObjectInSnake(other.gameObject));
+				other.transform.SetParent(base.transform, worldPositionStays: true);
+				other.transform.tag = "AdditionalGolfThing";
+				Object.Destroy(other.rigidbody);
+				if (DestroyCollider)
 				{
-					if (cols[i] != null)
+					Collider[] componentsInChildren = other.gameObject.GetComponentsInChildren<Collider>();
+					for (int k = 0; k < componentsInChildren.Length; k++)
 					{
-						Object.Destroy(cols[i]);
+						Object.Destroy(componentsInChildren[k]);
 					}
 				}
+				CurrentSize += other.collider.bounds.size.magnitude * GrowthMod;
+				targetElevation = Mathf.Max(CurrentSize * ElevationMod, MinCameraElevation);
+				absorbClip.Play(base.transform.position);
 			}
 		}
-		CurrentSize += objSize * GrowthMod;
-		targetElevation = Mathf.Max(MinCameraElevation, CurrentSize * ElevationMod);
+		if (CurrentSize >= RequiredSizeToWin && other.transform.tag == "GolfGoal")
+		{
+			other.gameObject.GetComponent<GolfGoal>().Complete();
+			base.enabled = false;
+		}
 	}
 
 	private void Update()
@@ -163,12 +130,9 @@ public class KatamariBallSnake : MonoBehaviour
 		currentElevation = Mathf.MoveTowards(currentElevation, targetElevation, Time.deltaTime * ElevationChangeSpeed);
 		if (shooter != null)
 		{
-			shooter.fullShootVelocity = Mathf.Max(MinShotSpeed, CurrentSize * 2f);
+			shooter.fullShootVelocity = Mathf.Max(CurrentSize, MinShotSpeed);
 		}
-		if (controller != null)
-		{
-			controller.Scale = Mathf.Lerp(ArrowScaleRange.x, ArrowScaleRange.y, CurrentSize / Mathf.Max(0.01f, RequiredSizeToWin));
-		}
+		controller.Scale = Mathf.Lerp(ArrowScaleRange.x, ArrowScaleRange.y, CurrentSize / RequiredSizeToWin);
 		if (followCam != null)
 		{
 			followCam.Elevation = currentElevation;
@@ -177,7 +141,7 @@ public class KatamariBallSnake : MonoBehaviour
 		{
 			force.force = new Vector3(0f, CurrentSize * ForceMod, 0f);
 		}
-		if (IncreaseMass && rigidbody != null)
+		if (IncreaseMass)
 		{
 			rigidbody.mass = CurrentSize;
 		}
@@ -185,29 +149,16 @@ public class KatamariBallSnake : MonoBehaviour
 
 	private IEnumerator MoveObjectInSnake(GameObject otherObject)
 	{
-		if (otherObject == null || points == null || points.Count == 0)
+		float time = 0f;
+		float duration = 1f;
+		int rand = Random.Range(3, points.Count - 1);
+		while (time < duration)
 		{
-			yield break;
-		}
-		Transform targetPt = points[Random.Range(0, points.Count)];
-		if (targetPt == null)
-		{
-			yield break;
-		}
-		float elapsed = 0f;
-		float dur = Mathf.Max(0.1f, timeToLerp);
-		Vector3 startPos = otherObject.transform.position;
-		while (elapsed < dur && otherObject != null && targetPt != null)
-		{
-			elapsed += Time.deltaTime;
-			float t = Mathf.Clamp01(elapsed / dur);
-			float eval = swallowedObjectMovement != null && swallowedObjectMovement.length > 0 ? Mathf.Clamp01(swallowedObjectMovement.Evaluate(t)) : t;
-			otherObject.transform.position = Vector3.Lerp(startPos, targetPt.position, eval);
+			otherObject.transform.position = Vector3.Lerp(points[0].position, points[rand].position, Mathf.Clamp01(swallowedObjectMovement.Evaluate(time / duration)));
+			time += Time.deltaTime;
 			yield return null;
 		}
-		if (otherObject != null && targetPt != null)
-		{
-			otherObject.transform.position = targetPt.position;
-		}
+		otherObject.transform.position = points[rand].position;
+		yield return null;
 	}
 }

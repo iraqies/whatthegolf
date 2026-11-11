@@ -3,6 +3,42 @@ using UnityEngine;
 
 public class Easing
 {
+	public class Quadratic
+	{
+		public static float In(float k) => k * k;
+	}
+
+	public class Cubic
+	{
+		public static float Out(float k) => 1f + (k -= 1f) * k * k;
+	}
+
+	public class Quartic
+	{
+		public static float In(float k) => k * k * k * k;
+	}
+
+	public class Back
+	{
+		private static float s = 1.70158f;
+
+		private static float s2 = 2.5949094f;
+
+		public static float InOut(float k)
+		{
+			if ((k *= 2f) < 1f)
+			{
+				return 0.5f * (k * k * ((s2 + 1f) * k - s2));
+			}
+			return 0.5f * ((k -= 2f) * k * ((s2 + 1f) * k + s2) + 2f);
+		}
+	}
+
+	public class Bounce
+	{
+		public static float Out(float k) => Easing.BounceOut(k);
+	}
+
 	public enum EasingType
 	{
 		Linear = 0,

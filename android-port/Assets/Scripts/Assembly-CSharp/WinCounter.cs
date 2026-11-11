@@ -14,30 +14,27 @@ public class WinCounter : MonoBehaviour
 
 	private void Start()
 	{
-		UpdateText();
+		ShowText.text = string.Format(message, currentCounter);
 	}
 
 	public void CountUp()
 	{
 		currentCounter++;
-		if (currentCounter >= Goal && Level.Instance != null && Level.Instance.Goal != null)
+		if (currentCounter >= Goal)
 		{
-			Level.Instance.Goal.GoalReached(gameObject);
+			Level.Instance.Goal.Complete("SHEEP");
 		}
-		UpdateText();
+		ShowText.text = string.Format(message, currentCounter);
 	}
 
 	public void CountDown()
 	{
 		currentCounter--;
-		UpdateText();
+		ShowText.text = string.Format(message, currentCounter);
 	}
 
 	private void UpdateText()
 	{
-		if (ShowText != null)
-		{
-			ShowText.text = string.Format(message, currentCounter);
-		}
+		ShowText.text = string.Format(message, currentCounter);
 	}
 }

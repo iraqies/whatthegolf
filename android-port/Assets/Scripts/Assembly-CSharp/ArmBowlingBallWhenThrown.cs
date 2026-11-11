@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Audio;
+using CameraStack;
 using Core;
 using UnityEngine;
 
@@ -85,7 +86,7 @@ public class ArmBowlingBallWhenThrown : MonoBehaviour, IAudioEvent
 				affectedRigidbodies.Add(collider.attachedRigidbody);
 			}
 		}
-		AudioManager.Instance.Sources.Play(Clips, delegate(AudioSource s)
+		AudioManager.Instance.shortEffects.Play(Clips, delegate(AudioSource s)
 		{
 			s.transform.position = base.transform.position;
 			s.volume = UnityEngine.Random.Range(Volume - VolumeDeviance, Volume + VolumeDeviance);

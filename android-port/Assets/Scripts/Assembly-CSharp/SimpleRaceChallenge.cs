@@ -36,49 +36,42 @@ public class SimpleRaceChallenge : Challenge
 			pinGoal = Object.FindObjectOfType<GolfCoursePinGoal>();
 		}
 		stopwatchSFX = GetComponentInChildren<StopwatchSFX>();
-		if (pinGoal != null)
+		if (!(pinGoal != null))
 		{
-			flagAudio = pinGoal.GetComponentInChildren<FlagAudio>();
-			pinGoal.AllowedLayers = ~0;
-			collisionInfo = RigidbodyCollisionInfo.GetOrAdd(pinGoal.gameObject);
-			if (collisionInfo != null)
+			return;
+		}
+		flagAudio = pinGoal.GetComponentInChildren<FlagAudio>();
+		pinGoal.RequiredBallsInGoal = int.MaxValue;
+		collisionInfo = RigidbodyCollisionInfo.GetOrAdd(pinGoal.gameObject);
+		collisionInfo.onCollision += OnFlagCollision;
+		if (preplayCountdownTime < 1)
+		{
+			return;
+		}
+		countdownTimer = preplayCountdownTime;
+		for (int i = 0; i < playerObjects.Length; i++)
+		{
+			if (playerObjects[i].TryGetComponent<GolfBallController>(out var component))
 			{
-				collisionInfo.OnHitEnter += OnFlagCollision;
-			}
-			if (preplayCountdownTime >= 1)
-			{
-				countdownTimer = preplayCountdownTime;
-				if (playerObjects != null)
-				{
-					for (int i = 0; i < playerObjects.Length; i++)
-					{
-						if (playerObjects[i] != null && playerObjects[i].TryGetComponent<GolfBallController>(out GolfBallController gbc))
-						{
-							gbc.TimedBlockShot(preplayCountdownTime);
-						}
-					}
-				}
+				component.TimedBlockShot(preplayCountdownTime);
 			}
 		}
 	}
 
 	protected override void ChallengeUpdate()
 	{
-		if (countdownTimer <= 0f)
+		if (!(countdownTimer > 0f))
 		{
 			return;
 		}
-		int sec = Mathf.RoundToInt(countdownTimer);
-		if (sec != wholeSecTimer)
+		int num = Mathf.RoundToInt(countdownTimer);
+		if (num != wholeSecTimer)
 		{
-			if (LevelManager.Instance != null && LevelManager.Instance.InGameMenu != null)
-			{
-				LevelManager.Instance.InGameMenu.ShowFullScreenText(sec.ToString(), 1f);
-			}
-			wholeSecTimer = sec;
+			LevelManager.Instance.InGameMenu.ShowFullScreenText(num.ToString(), 1f);
+			wholeSecTimer = num;
 			if (stopwatchSFX != null)
 			{
-				if (sec >= 1)
+				if (num >= 1)
 				{
 					stopwatchSFX.PlayCountdown();
 				}
@@ -93,34 +86,28 @@ public class SimpleRaceChallenge : Challenge
 
 	private void OnFlagCollision(HitInfo hitInfo)
 	{
-		if (playerObjects != null)
+		for (int i = 0; i < playerObjects.Length; i++)
 		{
-			for (int i = 0; i < playerObjects.Length; i++)
+			if (hitInfo.otherHit == playerObjects[i])
 			{
-				if (hitInfo.otherGameObject == playerObjects[i])
+				if (flagAudio != null)
 				{
-					if (flagAudio != null)
-					{
-						flagAudio.GoodHit();
-					}
-					Complete();
-					return;
+					flagAudio.GoodHit();
 				}
+				Complete();
+				return;
 			}
 		}
-		if (enemyObjects != null)
+		for (int j = 0; j < enemyObjects.Length; j++)
 		{
-			for (int i = 0; i < enemyObjects.Length; i++)
+			if (hitInfo.otherHit == enemyObjects[j])
 			{
-				if (hitInfo.otherGameObject == enemyObjects[i])
+				if (flagAudio != null)
 				{
-					if (flagAudio != null)
-					{
-						flagAudio.BadHit();
-					}
-					Fail();
-					return;
+					flagAudio.BadHit();
 				}
+				Fail();
+				return;
 			}
 		}
 	}

@@ -10,43 +10,30 @@ public class OfficeChairPlayerAnimator : MonoBehaviour
 
 	private void Start()
 	{
-		if (Controller != null)
-		{
-			Controller.OnShot += OnPlayerShot;
-			Controller.OnWeaponPickUp += OnWeaponPickUp;
-			Controller.OnDeath += OnDeath;
-		}
+		Controller.OnPlayerShot += OnPlayerShot;
+		Controller.OnWeaponPickUp += OnWeaponPickUp;
+		Controller.OnDeath += OnDeath;
 	}
 
 	private void OnWeaponPickUp(SuperGolfGun obj)
 	{
-		if (Animator != null)
-		{
-			Animator.SetBool("HasGun", true);
-		}
+		Animator.SetBool("HoldingBall", value: true);
 	}
 
 	public void OnDeath(SuperGolfShooter obj)
 	{
-		if (Animator != null)
-		{
-			Animator.SetTrigger("Death");
-		}
+		Animator.SetTrigger("TakeDamage");
 	}
 
 	private void OnPlayerShot(SuperGolfGun gun, Vector3 boost)
 	{
-		if (Animator == null)
-		{
-			return;
-		}
 		if (gun == null)
 		{
-			Animator.SetTrigger(boost.magnitude > HardThrowThreshold ? "ThrowHard" : "ThrowSoft");
+			Animator.SetTrigger((boost.magnitude > HardThrowThreshold) ? "ShootHeavy" : "ShootLight");
 		}
 		else
 		{
-			Animator.SetBool("HasGun", false);
+			Animator.SetBool("HoldingBall", value: false);
 		}
 	}
 }

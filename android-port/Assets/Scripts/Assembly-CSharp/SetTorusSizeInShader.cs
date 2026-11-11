@@ -46,28 +46,19 @@ public class SetTorusSizeInShader : MonoBehaviour
 
 	private void Awake()
 	{
-		if (Sizes != null)
+		for (int i = 0; i < Sizes.Count; i++)
 		{
-			for (int i = 0; i < Sizes.Count; i++)
-			{
-				GameObject go = new GameObject("TestPosition");
-				go.transform.SetParent(Bottom);
-				go.transform.localPosition = new Vector3(0f, TestPositionSpacing * i, 0f);
-				if (Sizes[i] != null)
-				{
-					Sizes[i].TestPosition = go.transform;
-					Sizes[i].Size = 1f;
-				}
-			}
-			if (Mat != null && Sizes.Count >= 1)
-			{
-				Mat.SetFloatArray("_Sizes", Sizes.Select(s => s.Size).ToArray());
-			}
+			GameObject gameObject = new GameObject("TestPosition");
+			gameObject.transform.SetParent(Bottom);
+			gameObject.transform.localPosition = new Vector3(0f, TestPositionSpacing * (float)i, 0f);
+			Sizes[i].TestPosition = gameObject.transform;
+			Sizes[i].Size = 1f;
 		}
-		if (Controller != null)
+		if (Mat != null && Sizes.Count >= 1)
 		{
-			Controller.OnShoot += ControllerOnOnShoot;
+			Mat.SetFloatArray("_Sizes", Sizes.Select((Shape s) => s.Size).ToArray());
 		}
+		Controller.OnShoot += ControllerOnOnShoot;
 	}
 
 	private void ControllerOnOnShoot(Vector3 obj)
@@ -77,59 +68,46 @@ public class SetTorusSizeInShader : MonoBehaviour
 
 	private void Update()
 	{
-		if (!hasShot || Sizes == null || GiraffeHand == null)
+		if (!hasShot || !Sizes.Any((Shape s) => Vector3.Distance(s.TestPosition.position, GiraffeHand.position) < DistanceThreshold))
 		{
 			return;
 		}
-		if (!Sizes.Any(s => s != null && s.TestPosition != null && Vector3.Distance(s.TestPosition.position, GiraffeHand.position) < DistanceThreshold))
-		{
-			return;
-		}
-		if (clayAudioSource != null && !clayAudioSource.isPlaying)
+		if (!clayAudioSource.isPlaying)
 		{
 			clayAudioSource.Play();
 		}
-		Shape closest = Sizes
-			.Where(s => s != null && s.TestPosition != null)
-			.OrderBy(s => Vector3.Distance(s.TestPosition.position, GiraffeHand.position))
-			.FirstOrDefault();
-		if (closest != null)
+		Shape shape = Sizes.OrderBy((Shape s) => Vector3.Distance(s.TestPosition.position, GiraffeHand.position)).FirstOrDefault();
+		if (shape != null)
 		{
-			float nextSize = Mathf.Max(closest.Size - Time.deltaTime * SculptSpeed, WinFat);
-			if (nextSize < closest.Size)
+			float num = Mathf.Max(shape.Size - Time.deltaTime * SculptSpeed, WinFat);
+			if (num < shape.Size)
 			{
 				targetVolume = 1f;
-				closest.Size = nextSize;
-				if (Particles != null)
-				{
-					Particles.Emit(UnityEngine.Random.value > 0.5f ? 1 : 0);
-				}
+				shape.Size = num;
+				Particles.Emit((UnityEngine.Random.value > 0.5f) ? 1 : 0);
 			}
 			else
 			{
 				targetVolume = 0f;
 			}
 		}
-		if (clayAudioSource != null)
-		{
-			clayAudioSource.volume = Mathf.MoveTowards(clayAudioSource.volume, targetVolume, Time.deltaTime * 4f);
-		}
-		bool allDone = true;
+		clayAudioSource.volume = Mathf.MoveTowards(clayAudioSource.volume, targetVolume, Time.deltaTime * 4f);
+		bool flag = true;
 		for (int i = 0; i < Sizes.Count; i++)
 		{
-			if (Sizes[i] != null && Sizes[i].Size > WinFat)
+			if (Sizes[i].Size > WinFat)
 			{
-				allDone = false;
+				flag = false;
 				break;
 			}
 		}
-		if (allDone && LevelManager.Instance != null && LevelManager.Instance.IsPlayingLevel && Level.Instance != null)
+		if (flag && LevelManager.Instance.getIsReallyInLevel)
 		{
 			Level.Instance.Complete();
 		}
 		if (Mat != null && Sizes.Count >= 1)
 		{
-			Mat.SetFloatArray("_Sizes", Sizes.Select(s => s.Size).ToArray());
+			Mat.SetFloatArray("_Sizes", Sizes.Select((Shape s) => s.Size).ToArray());
 		}
 	}
 
@@ -137,12 +115,12 @@ public class SetTorusSizeInShader : MonoBehaviour
 	{
 		if (!Application.isPlaying && Mat != null)
 		{
-			float[] arr = new float[10];
-			for (int i = 0; i < arr.Length; i++)
+			float[] array = new float[10];
+			for (int i = 0; i < array.Length; i++)
 			{
-				arr[i] = TestSize;
+				array[i] = TestSize;
 			}
-			Mat.SetFloatArray("_Sizes", arr);
+			Mat.SetFloatArray("_Sizes", array);
 		}
 	}
 }
