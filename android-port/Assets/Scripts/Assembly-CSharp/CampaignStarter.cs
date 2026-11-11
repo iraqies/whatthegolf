@@ -164,9 +164,9 @@ public class CampaignStarter : BasePackStarter
 
 	private IEnumerator WaitAfterLevelLoaded()
 	{
-		if (LevelManager.Instance != null && !LevelManager.Instance.IsPlayingLevel)
+		if (LevelManager.Instance != null && !LevelManager.Instance.IsInLevel())
 		{
-			yield return new WaitUntil(() => LevelManager.Instance != null && LevelManager.Instance.IsPlayingLevel);
+			yield return new WaitUntil(() => LevelManager.Instance != null && LevelManager.Instance.IsInLevel());
 		}
 		if (overworldCaller != null)
 		{

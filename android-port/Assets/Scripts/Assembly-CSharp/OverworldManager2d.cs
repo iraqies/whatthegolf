@@ -986,10 +986,9 @@ public class OverworldManager2d : GolfBehaviour
 	public void DisableInteraction(bool hide = true)
 	{
 		IsInteractionDisabled = true;
-		if (ui != null && ui.ReturnBtn != null)
+		if (ui != null && ui.ExitOverworldButton != null)
 		{
-			ui.ReturnBtn.gameObject.SetActive(false);
-			ui.returnButtonEnabled = false;
+			ui.ExitOverworldButton.gameObject.SetActive(false);
 		}
 		var b = BallOrIslandBall;
 		if (b != null)
@@ -1002,10 +1001,9 @@ public class OverworldManager2d : GolfBehaviour
 	public void EnableInteraction()
 	{
 		IsInteractionDisabled = false;
-		if (ui != null && ui.ReturnBtn != null)
+		if (ui != null && ui.ExitOverworldButton != null)
 		{
-			ui.ReturnBtn.gameObject.SetActive(true);
-			ui.returnButtonEnabled = true;
+			ui.ExitOverworldButton.gameObject.SetActive(true);
 		}
 		var b = BallOrIslandBall;
 		if (b != null && state == STATES.active)
@@ -1046,8 +1044,8 @@ public class OverworldManager2d : GolfBehaviour
 		if (display)
 		{
 			state = STATES.active;
-			if (AudioManager.Instance != null && AudioManager.Instance.ambient != null)
-				AudioManager.Instance.ambient.SetAmbients(new List<AudioClip>());
+			if (AudioManager.Instance != null && AudioManager.Instance.AmbientPlayer != null)
+				AudioManager.Instance.AmbientPlayer.SetAmbients(new List<AudioClip>());
 			if (overworldMusic != null)
 				overworldMusic.StartWithoutTransition();
 		}
@@ -1057,9 +1055,7 @@ public class OverworldManager2d : GolfBehaviour
 	{
 		if (ball != null)
 		{
-			var saver = ball.GetComponent<OverworldPositionSaver>();
-			if (saver != null)
-				ball.transform.position = saver.lastSavePosition;
+			ball.transform.position = ballStartPosition;
 		}
 	}
 

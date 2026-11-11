@@ -1,24 +1,15 @@
-using System.Collections.Generic;
+using Core;
 using UnityEngine;
 
 public class ToggleObjectBasedOnAvatarSelected : MonoBehaviour
 {
-	public PlayerColors.AvatarIDs AvatarIDThatEnablesObject;
+	public PlayerColors.AvatarIDs AllowedAvatar;
 
-	public List<Renderer> RenderersToDisableIfSeleceted;
-
-	public void UpdateBasedOnAvatar(MultiplayerConfiguration.PlayerInfo player)
+	public void CheckCurrentAvatar(MultiplayerConfiguration.PlayerInfo player)
 	{
-		if (player == null || player.color == null)
-			return;
-		gameObject.SetActive(player.color.AvatarID == AvatarIDThatEnablesObject);
-		if (RenderersToDisableIfSeleceted != null)
+		if (player != null && player.Avatar != null)
 		{
-			RenderersToDisableIfSeleceted.ForEach(r =>
-			{
-				if (r != null)
-					r.enabled = false;
-			});
+			gameObject.SetActive(AllowedAvatar == player.Avatar.AvatarID);
 		}
 	}
 }

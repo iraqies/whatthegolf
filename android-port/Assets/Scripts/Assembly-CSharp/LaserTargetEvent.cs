@@ -8,7 +8,7 @@ public class LaserTargetEvent : MonoBehaviour
 
 	private void Start()
 	{
-		var target = GetComponent<LaserTarget>();
+		var target = GetComponent<LaserSentryTarget>();
 		if (target != null)
 		{
 			target.OnLasered -= OnLasered;

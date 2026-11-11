@@ -17,7 +17,7 @@ public class DisableExteriorDecorationBasedOnSection : MonoBehaviour
 		{
 			fans = GetComponentsInChildren<RotateAxis2D>(true);
 			section.OnSectionCullingUpdate += Section_OnSectionCullingUpdate;
-			SetFanStatus(section.IsActive);
+			SetFanStatus(section.isActiveInCulling);
 		}
 	}
 

@@ -116,15 +116,15 @@ public class Fan : MonoBehaviour
 		{
 			foreach (Timeline tl in affectedTimelines)
 			{
-				if (tl == null || tl.rigidbody3D == null)
+				if (tl == null || tl.rigidbody == null || tl.rigidbody.component == null)
 					continue;
 				float factor = 1f;
 				if (ForceDependsOnDistance && SphereCastDistance > 0.001f)
 				{
-					float dist = Vector3.Distance(origin, tl.transform.position);
+					float dist = Vector3.Distance(origin, tl.rigidbody.component.position);
 					factor = Mathf.Clamp01(1f - dist / SphereCastDistance);
 				}
-				tl.rigidbody3D.AddForce(dir * (MaxForce * factor * Time.fixedDeltaTime), ForceMode);
+				tl.rigidbody.AddForce(dir * (MaxForce * factor * Time.fixedDeltaTime), ForceMode);
 			}
 			if (OnlyAddTimelines)
 				return;

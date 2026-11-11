@@ -7,6 +7,7 @@ public class RotateAxis : MonoBehaviour
 	public Vector3 Axis = Vector3.up;
 	public float Speed = 90f;
 	public float speed { get => Speed; set => Speed = value; }
+	public float rotateSpeed { get => Speed; set => Speed = value; }
 	private Rigidbody rigidbody;
 	private Timeline timeline;
 

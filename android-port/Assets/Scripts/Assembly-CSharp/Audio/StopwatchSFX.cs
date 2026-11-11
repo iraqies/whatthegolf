@@ -62,22 +62,22 @@ namespace Audio
 
 		public void PlayCountdown()
 		{
-			if (countdownSFX == null || AudioManager.Instance == null || AudioManager.Instance.ui == null)
+			if (countdownSFX == null || AudioManager.Instance == null || AudioManager.Instance.uiEffects == null)
 			{
 				return;
 			}
 			PlayClipInfo info = countdownSFX.GetPlayInfo();
-			AudioManager.Instance.ui.PlaySimple(info.clip, info.volume, info.pitch, false, 0f, Vector3.zero);
+			AudioManager.Instance.uiEffects.PlaySimple(info.clip, info.VolumeResult, info.PitchResult, false, 0f, Vector3.zero);
 		}
 
 		public void PlayStartSFX()
 		{
-			if (raceStartSFX == null || AudioManager.Instance == null || AudioManager.Instance.ui == null)
+			if (raceStartSFX == null || AudioManager.Instance == null || AudioManager.Instance.uiEffects == null)
 			{
 				return;
 			}
 			PlayClipInfo info = raceStartSFX.GetPlayInfo();
-			AudioManager.Instance.ui.PlaySimple(info.clip, info.volume, info.pitch, false, 0f, Vector3.zero);
+			AudioManager.Instance.uiEffects.PlaySimple(info.clip, info.VolumeResult, info.PitchResult, false, 0f, Vector3.zero);
 		}
 
 		private void Metronome_Ticked(double obj)

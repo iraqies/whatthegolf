@@ -41,7 +41,8 @@ public class TribuneWithSpectators : MonoBehaviour
 		int count = Mathf.Min(UnityEngine.Random.Range(MinSpectators, MaxSpectators + 1), SeatContainer.childCount);
 		for (int i = 0; i < count; i++)
 		{
-			Transform seat = seats.GetRandom();
+			if (seats.Count == 0) break;
+			Transform seat = seats[UnityEngine.Random.Range(0, seats.Count)];
 			seats.Remove(seat);
 			GameObject prefab = SpectatorPrefabs[UnityEngine.Random.Range(0, SpectatorPrefabs.Count)];
 			if (seat == null || prefab == null) continue;

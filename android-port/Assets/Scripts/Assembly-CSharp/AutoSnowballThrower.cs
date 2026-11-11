@@ -86,7 +86,7 @@ public class AutoSnowballThrower : MonoBehaviour
 		var valid = targets.FindAll(t => t != null && Vector3.Distance(transform.position, t.position) < ThrowDistance);
 		if (valid != null && valid.Count > 0)
 		{
-			target = valid.GetRandom();
+			target = valid[Random.Range(0, valid.Count)];
 			if (target != null)
 			{
 				targetRigid = target.GetComponent<Rigidbody>();

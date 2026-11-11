@@ -65,7 +65,7 @@ public class LivingBush : MonoBehaviour
 
 		GolfBallShooterBase shooter = ctrl.GetComponent<GolfBallShooterBase>();
 		if (shooter != null)
-			shooter.StopMagnitude = float.PositiveInfinity;
+			shooter.sqrVelocityShootingThreshold = float.PositiveInfinity;
 
 		ctrl.BlockShooting = true;
 		ctrl.CancelShooting();
