@@ -58,19 +58,19 @@ namespace Puzzle
 
 		public override void OnBallEnter(OverworldBall2D ball)
 		{
-			isBallInside = true;
+			isBallInArea = true;
 			SetEmission(true);
 		}
 
 		public override void OnBallLeave()
 		{
-			isBallInside = false;
+			isBallInArea = false;
 			SetEmission(false);
 		}
 
 		public void SetEmission(bool emit)
 		{
-			isEnabled = emit;
+			Active = emit;
 			if (emitterParticles != null)
 			{
 				emitterParticles.gameObject.SetActive(emit);
@@ -101,7 +101,7 @@ namespace Puzzle
 
 		private void Update()
 		{
-			if (lazers == null || !isEnabled || jointLimit < 1)
+			if (lazers == null || !Active || jointLimit < 1)
 			{
 				return;
 			}

@@ -124,9 +124,9 @@ public class DogToTruck : MonoBehaviour
 		if (controller != null)
 		{
 			controller.enabled = false;
-			if (controller.ShootArrow != null)
+			if (controller.arrow != null)
 			{
-				controller.ShootArrow.gameObject.SetActive(false);
+				controller.arrow.gameObject.SetActive(false);
 			}
 		}
 		yield return new WaitForSeconds(0.4f);
@@ -135,11 +135,11 @@ public class DogToTruck : MonoBehaviour
 			truck.SetActive(true);
 			if (FollowCam != null)
 			{
-				FollowCam.Target = truck.transform;
+				FollowCam.FollowTarget = truck.transform;
 			}
 			if (FollowCamDesktop != null)
 			{
-				FollowCamDesktop.Target = truck.transform;
+				FollowCamDesktop.FollowTarget = truck.transform;
 			}
 		}
 		if (poofParticles != null && controller != null)

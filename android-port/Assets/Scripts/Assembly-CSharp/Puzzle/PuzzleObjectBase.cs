@@ -16,22 +16,35 @@ namespace Puzzle
 
 		private void Start()
 		{
+			startPosition = base.transform.position;
+			startRotation = base.transform.rotation;
 		}
 
 		public virtual void ResetObject()
 		{
+			base.transform.position = startPosition;
+			base.transform.rotation = startRotation;
+			Rigidbody2D component = GetComponent<Rigidbody2D>();
+			if (component != null)
+			{
+				component.velocity = Vector2.zero;
+				component.angularVelocity = 0f;
+			}
 		}
 
 		public virtual void OnBallEnter(OverworldBall2D ball)
 		{
+			isBallInArea = true;
 		}
 
 		public virtual void OnBallLeave()
 		{
+			isBallInArea = false;
 		}
 
 		public virtual void Trigger(bool active)
 		{
+			Active = active;
 		}
 	}
 }

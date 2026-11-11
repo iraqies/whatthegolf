@@ -69,7 +69,8 @@ public class BikeEnterGoop : MonoBehaviour
 			}
 			if (EnterGoopSFX != null)
 			{
-				goopAudioSource = EnterGoopSFX.Play(null, Vector3.zero, 1f, 1f);
+				EnterGoopSFX.Play(null, Vector3.zero, 1f, 1f);
+				goopAudioSource = EnterGoopSFX.LastAudioSource;
 			}
 		}
 	}

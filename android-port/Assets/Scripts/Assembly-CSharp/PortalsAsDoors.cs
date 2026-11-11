@@ -22,7 +22,7 @@ public class PortalsAsDoors : GolfBehaviour
 	public override void OnPrePlayOrPreCompile()
 	{
 		goals = new List<OverworldGoal>();
-		goals = FindObjectsInOverworld.Find<OverworldGoal>(goals);
+		FindObjectsInOverworld.Find(goals);
 		Transform boundsTr = base.transform.Find("Bounds");
 		if (boundsTr != null)
 		{

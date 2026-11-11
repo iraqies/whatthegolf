@@ -85,9 +85,9 @@ public class PoleVaultController : GolfBallShooterBase
 		{
 			handJointGameObject = HandJoint.gameObject;
 		}
-		if (SpawnFakeArrowOnShoot && controller != null)
+		if (SpawnFakeArrowOnShoot && GolfBallController != null)
 		{
-			controller.OnShootArrowInitialized += OnShootArrowInitialized;
+			GolfBallController.OnShootArrowInitialized += OnShootArrowInitialized;
 		}
 	}
 
@@ -110,9 +110,9 @@ public class PoleVaultController : GolfBallShooterBase
 			fakeArrow.transform.SetParent(null, true);
 		}
 		hasShot = false;
-		if (controller != null)
+		if (GolfBallController != null)
 		{
-			controller.enabled = true;
+			GolfBallController.enabled = true;
 		}
 		base.transform.rotation = startRot;
 		if (puppet != null)
@@ -166,9 +166,9 @@ public class PoleVaultController : GolfBallShooterBase
 
 	private void OnShootArrowInitialized(ShootArrow arrow)
 	{
-		if (arrow != null && arrow.arrowRenderer != null)
+		if (arrow != null && arrow.arrowOutline != null)
 		{
-			arrow.arrowRenderer.enabled = false;
+			arrow.arrowOutline.enabled = false;
 		}
 	}
 
@@ -206,18 +206,18 @@ public class PoleVaultController : GolfBallShooterBase
 		{
 			return;
 		}
-		if (SpawnFakeArrowOnShoot && controller != null && controller.ShootArrow != null)
+		if (SpawnFakeArrowOnShoot && GolfBallController != null && GolfBallController.arrow != null)
 		{
-			GameObject obj = UnityEngine.Object.Instantiate(controller.ShootArrow.gameObject, controller.ShootArrow.transform.position, controller.ShootArrow.transform.rotation);
+			GameObject obj = UnityEngine.Object.Instantiate(GolfBallController.arrow.gameObject, GolfBallController.arrow.transform.position, GolfBallController.arrow.transform.rotation);
 			UnityEngine.Object.Destroy(obj.GetComponent<ShootArrow>());
 			fakeArrow = obj;
 		}
 		hasShot = true;
-		if (controller != null)
+		if (GolfBallController != null)
 		{
-			controller.StopAiming();
-			controller.enabled = false;
-			controller.isShooting = true;
+			GolfBallController.StopAiming();
+			GolfBallController.enabled = false;
+			GolfBallController.isShooting = true;
 		}
 		if (rigid != null)
 		{
@@ -288,7 +288,7 @@ public class PoleVaultController : GolfBallShooterBase
 			{
 				if (item.sfx != null)
 				{
-					item.sfx.PlayDelayed(null, base.transform.position, item.delay, 1f, 1f);
+					item.sfx.PlayDelayed(base.transform.position, null, item.delay, 1f, 1f);
 				}
 			}
 		}

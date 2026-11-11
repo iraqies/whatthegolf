@@ -16,13 +16,13 @@ public class PuppetKnockawayRigidbodiesOnGetup : MonoBehaviour
 	private LayerMask layerMask;
 
 	[SerializeField]
-	private float startAfterTime;
+	private float startAfterTime = 0.2f;
 
 	[SerializeField]
-	private float knockAwayForce;
+	private float knockAwayForce = 50f;
 
 	[SerializeField]
-	private float upwardModifier;
+	private float upwardModifier = 3f;
 
 	[SerializeField]
 	private ForceMode forceMode;
@@ -31,6 +31,22 @@ public class PuppetKnockawayRigidbodiesOnGetup : MonoBehaviour
 
 	private void Awake()
 	{
+		if (fallBehaviour != null)
+		{
+			fallBehaviour.OnPostMuscleHit = (BehaviourBase.HitDelegate)System.Delegate.Combine(fallBehaviour.OnPostMuscleHit, new BehaviourBase.HitDelegate(OnPostMuscleHitInFall));
+			fallBehaviour.OnPostMuscleCollision = (BehaviourBase.CollisionDelegate)System.Delegate.Combine(fallBehaviour.OnPostMuscleCollision, new BehaviourBase.CollisionDelegate(OnPostMuscleCollision));
+		}
+		if (puppet != null)
+		{
+			if (puppet.onLoseBalanceFromGetUp != null)
+			{
+				puppet.onLoseBalanceFromGetUp.AddListener(OnLoseBalanceFromGetup);
+			}
+			if (puppet.onLoseBalance != null)
+			{
+				puppet.onLoseBalance.AddListener(OnLoseBalance);
+			}
+		}
 	}
 
 	private void OnPostMuscleCollision(MuscleCollision collision)
@@ -55,5 +71,7 @@ public class PuppetKnockawayRigidbodiesOnGetup : MonoBehaviour
 
 	private void OnDrawGizmosSelected()
 	{
+		Gizmos.color = Color.red;
+		Gizmos.DrawWireSphere(base.transform.position, radius);
 	}
 }

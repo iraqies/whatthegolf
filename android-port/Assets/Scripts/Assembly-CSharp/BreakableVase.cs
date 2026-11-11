@@ -1,5 +1,6 @@
 using System;
 using Audio;
+using Core;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -73,7 +74,7 @@ public class BreakableVase : MonoBehaviour
 		{
 			shatter.transform.position = base.transform.position;
 			shatter.transform.rotation = base.transform.rotation;
-			shatter.Shatter(hit, ShatterForce, 0.1f, 0.1f, true);
+			shatter.Shatter(hit, ShatterForce, 0.1f, 0.1f, ForceMode.Impulse);
 		}
 		if (ShatterClips != null)
 		{

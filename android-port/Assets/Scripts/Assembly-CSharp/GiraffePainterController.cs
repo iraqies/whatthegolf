@@ -123,9 +123,9 @@ public class GiraffePainterController : GolfBallShooterBase
 			}
 		}
 		ChangeState(PaintStateEnum.NewPoseRoutine);
-		if (controller != null)
+		if (GolfBallController != null)
 		{
-			controller.enabled = false;
+			GolfBallController.enabled = false;
 		}
 		if (bluePrints != null && bluePrints.Length > 0 && bluePrints[0] != null)
 		{
@@ -183,9 +183,9 @@ public class GiraffePainterController : GolfBallShooterBase
 	{
 		if (PaintState == PaintStateEnum.PlayerControlled)
 		{
-			if (controller != null)
+			if (GolfBallController != null)
 			{
-				controller.enabled = true;
+				GolfBallController.enabled = true;
 			}
 			if (PlayerTarget != null)
 			{
@@ -257,10 +257,10 @@ public class GiraffePainterController : GolfBallShooterBase
 		}
 		else if (PaintState == PaintStateEnum.AutoPainting)
 		{
-			if (controller != null)
+			if (GolfBallController != null)
 			{
-				controller.StopAiming();
-				controller.enabled = false;
+				GolfBallController.StopAiming();
+				GolfBallController.enabled = false;
 			}
 			if (PaintingMat != null)
 			{
@@ -318,10 +318,10 @@ public class GiraffePainterController : GolfBallShooterBase
 	public void RedoPose()
 	{
 		OnRedoPose?.Invoke();
-		if (controller != null)
+		if (GolfBallController != null)
 		{
-			controller.StopAiming();
-			controller.enabled = false;
+			GolfBallController.StopAiming();
+			GolfBallController.enabled = false;
 		}
 		ChangeState(PaintStateEnum.NewPoseRoutine);
 		if (painter != null)
@@ -345,9 +345,9 @@ public class GiraffePainterController : GolfBallShooterBase
 					AutoPaintAnimator.SetBool("AutoPaint", false);
 				}
 				ChangeState(PaintStateEnum.PlayerControlled);
-				if (controller != null)
+				if (GolfBallController != null)
 				{
-					controller.enabled = true;
+					GolfBallController.enabled = true;
 				}
 				this.OnClear?.Invoke();
 				if (bluePrints != null && currentBlueprint < bluePrints.Length && bluePrints[currentBlueprint] != null && PlayerTarget != null)

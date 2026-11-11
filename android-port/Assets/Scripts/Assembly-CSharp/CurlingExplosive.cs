@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 using Audio;
+using CameraStack;
 using Core;
 using UnityEngine;
 using UnityEngine.Events;
