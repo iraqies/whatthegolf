@@ -37,7 +37,7 @@ public class GoopSpawner : MonoBehaviour
 		{
 			GameObject item = m_cachedGoops[num];
 			m_cachedGoops.Remove(item);
-			goopPool.Release(item, resetTransform: false);
+			goopPool.Release(item, false);
 		}
 	}
 

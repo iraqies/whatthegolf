@@ -55,7 +55,7 @@ public class FishStickSpawnOnColision : MonoBehaviour
 	{
 		if (_event != null)
 		{
-			_event.Play(isInOverworld: false, base.transform.position);
+			_event.Play(base.transform.position);
 		}
 	}
 

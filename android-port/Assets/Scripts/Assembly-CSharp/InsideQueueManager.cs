@@ -135,7 +135,7 @@ public class InsideQueueManager : MonoBehaviour
 			}
 			if (Vector3.Distance(spider.transform.position, Player.position) < KillDistance)
 			{
-				Level.Instance.Fail(doCameraTargetFocus: true, doExplode: true, null, 0f, showResetText: true, "");
+				Level.Instance.Fail(true, true, null, 0f, true, "");
 			}
 		}
 	}

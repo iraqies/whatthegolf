@@ -29,9 +29,10 @@ public class MovingCarAudio : MonoBehaviour
 			audioSource.Play();
 			StartCoroutine(pTween.To(1.3f, 0f, 1f, delegate(float s)
 			{
-				audioSource.volume = Mathf.Lerp(0f, volume, s);
-				audioSource.pitch = Mathf.Lerp(pitch - 0.3f, pitch, s);
-			}, Ease.EaseOutQuad).Then(delegate
+				float t = Easing.QuadraticOut(s);
+				audioSource.volume = Mathf.Lerp(0f, volume, t);
+				audioSource.pitch = Mathf.Lerp(pitch - 0.3f, pitch, t);
+			}).Then(delegate
 			{
 				audioSource.Stop();
 			}));
