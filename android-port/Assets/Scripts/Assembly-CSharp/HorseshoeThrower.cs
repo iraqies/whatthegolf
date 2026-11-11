@@ -53,7 +53,7 @@ public class HorseshoeThrower : GolfBallShooterBase
 			WinnableGolfBall component = g.GetComponent<WinnableGolfBall>();
 			if (component != null)
 			{
-				component.PlayerNumber = GolfBallController.PlayerID;
+				component.PlayerIndex = GolfBallController.PlayerID;
 			}
 		});
 	}

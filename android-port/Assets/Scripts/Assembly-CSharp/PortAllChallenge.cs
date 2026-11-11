@@ -19,7 +19,7 @@ public class PortAllChallenge : Challenge
 		flagAudio = Object.FindObjectOfType<FlagAudio>();
 		if (flagAudio != null)
 		{
-			flagAudio.PlayManually = true;
+			flagAudio.PlayAudioRemotely = true;
 		}
 		foreach (SimplePortal portal in Portals)
 		{
@@ -34,7 +34,7 @@ public class PortAllChallenge : Challenge
 
 	protected override void ChallengeUpdate()
 	{
-		if (golfBallController.Strokes >= 1 && allInOne && golfBallController.gameObject.GetComponent<Rigidbody>().velocity.magnitude <= 0.5f)
+		if (golfBallController.NumberOfStrokes >= 1 && allInOne && golfBallController.gameObject.GetComponent<Rigidbody>().velocity.magnitude <= 0.5f)
 		{
 			Fail();
 		}
@@ -53,8 +53,8 @@ public class PortAllChallenge : Challenge
 
 	public override void OnLevelComplete(Level.CompletedState completedState)
 	{
-		completedState.winMessageID = "ID_EMPTY_STRING";
-		completedState.delay = 2f;
+		completedState.Message = "ID_EMPTY_STRING";
+		completedState.Delay = 2f;
 		bool flag = true;
 		foreach (SimplePortal portal in Portals)
 		{

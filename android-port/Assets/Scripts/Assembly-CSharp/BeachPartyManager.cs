@@ -23,7 +23,7 @@ public class BeachPartyManager : MonoBehaviour
 			allStates[i].Init(controller, HintParticleSystem);
 		}
 		StartCoroutine(PartyRoutine());
-		if (AddressableSingleton<LevelManager>.Instance != null && AddressableSingleton<LevelManager>.Instance.CurrentLevel != null)
+		if (AddressableSingleton<LevelManager>.Instance != null && AddressableSingleton<LevelManager>.Instance.InGameMenu != null)
 		{
 			AddressableSingleton<LevelManager>.Instance.InGameMenu.SetChallengeInfoToShowForMinSeconds(true);
 		}
@@ -31,7 +31,7 @@ public class BeachPartyManager : MonoBehaviour
 
 	private void OnDisable()
 	{
-		if (AddressableSingleton<LevelManager>.Instance != null && AddressableSingleton<LevelManager>.Instance.CurrentLevel != null)
+		if (AddressableSingleton<LevelManager>.Instance != null && AddressableSingleton<LevelManager>.Instance.InGameMenu != null)
 		{
 			AddressableSingleton<LevelManager>.Instance.InGameMenu.SetChallengeInfoToShowForMinSeconds(false);
 		}
@@ -44,9 +44,9 @@ public class BeachPartyManager : MonoBehaviour
 		foreach (QuestState state in array)
 		{
 			state.OnStart();
-			if (AddressableSingleton<LevelManager>.Instance != null && AddressableSingleton<LevelManager>.Instance.CurrentLevel != null)
+			if (AddressableSingleton<LevelManager>.Instance != null && AddressableSingleton<LevelManager>.Instance.InGameMenu != null)
 			{
-				AddressableSingleton<LevelManager>.Instance.InGameMenu.ShowChallengeInfo(Localization.Instance.GetString(state.NameID));
+				AddressableSingleton<LevelManager>.Instance.InGameMenu.ShowChallengeInfo(Localization.Instance.GetString(state.DescriptionLocalizationID));
 			}
 			while (!state.HasCompletedState())
 			{

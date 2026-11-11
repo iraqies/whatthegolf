@@ -19,7 +19,7 @@ public class ExplodeOnCollision : MonoBehaviour
 	{
 		Explosion.gameObject.SetActive(true);
 		Explosion.transform.parent = null;
-		Explosion.Explode(Explosion.transform.position, collision.collider, Vector3.zero);
+		Explosion.Explode(collision.collider);
 		Object.Destroy(base.gameObject);
 	}
 

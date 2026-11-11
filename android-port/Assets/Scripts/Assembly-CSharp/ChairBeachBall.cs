@@ -59,7 +59,7 @@ public class ChairBeachBall : MonoBehaviour
 		CrabsController.CrabInfo crabWithRigid = CrabController.GetCrabWithRigid(collision.rigidbody);
 		if (crabWithRigid != null)
 		{
-			if (!crabWithRigid.Barrel.IsExploded)
+			if (!crabWithRigid.Barrel.HasExploded)
 			{
 				HitParticles.transform.position = collision.contacts[0].point + Vector3.up * 2f;
 				HitParticles.Play();

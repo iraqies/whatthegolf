@@ -12,7 +12,7 @@ public class ComputerCameraBlender : GolfBehaviour
 	public override void OnPrePlayOrPreCompile()
 	{
 		base.OnPrePlayOrPreCompile();
-		robots = FindObjectsInOverworld.Find<OverworldMainDoorRobot>();
+		FindObjectsInOverworld.Find(robots);
 	}
 
 	private void Start()

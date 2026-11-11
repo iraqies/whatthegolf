@@ -27,7 +27,7 @@ public class CageShooter : GolfBallShooterBase
 	public void BreakCage(Vector3 position)
 	{
 		GolfBallController c = FreePlayerObject.GetComponentInChildren<GolfBallController>();
-		c.PlayerID = GolfBallController.PlayerID;
+		c.PlayerIndex = GolfBallController.PlayerID;
 		c.enabled = false;
 		FreePlayerObject.transform.position = position;
 		FreePlayerObject.gameObject.SetActive(true);

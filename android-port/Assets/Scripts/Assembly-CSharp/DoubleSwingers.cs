@@ -156,7 +156,7 @@ public class DoubleSwingers : GolfBallShooterBase
 		Pole.constraints = RigidbodyConstraints.None;
 		Pole.useGravity = true;
 		FailClip.Play(base.transform.position, 1f, 1f);
-		if (AddressableSingleton<LevelManager>.Instance.IsSingleplayer)
+		if (Level.Instance != null && !Level.Instance.IsMultiplayer)
 		{
 			Level.Instance.Fail(true, true, null, 1f, true, "");
 		}

@@ -34,15 +34,15 @@ public class RingController : MonoBehaviour
 	{
 		foreach (MultiplayerConfiguration.PlayerInfo player in Level.Instance.GetMultiplayerConfiguration().Players)
 		{
-			if (player.SpawnSide == Side)
+			if (player.Side == Side)
 			{
-				playerIndex = player.Index;
+				playerIndex = player.InputIndex;
 				Ring.ForEach(delegate(SetMaterialColorToPlayerColor r)
 				{
-					r.UpdateMaterials(player.Colors);
+					r.UpdateMaterials(player.Avatar.Color);
 				});
-				Ball.UpdateMaterials(player.Colors);
-				Line.UpdateMaterials(player.Colors);
+				Ball.UpdateMaterials(player.Avatar.Color);
+				Line.UpdateMaterials(player.Avatar.Color);
 			}
 		}
 	}

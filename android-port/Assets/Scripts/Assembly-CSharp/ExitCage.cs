@@ -35,7 +35,7 @@ public class ExitCage : MonoBehaviour
 
 	private void Start()
 	{
-		switch (Level.Instance.GetMultiplayerConfiguration().GetPlayerWithIndex(ball.GolfBallController.PlayerID).SpawnSide)
+		switch (Level.Instance.GetMultiplayerConfiguration().GetPlayerWithIndex(ball.GolfBallController.PlayerID).Side)
 		{
 		case LobbySpawnPoint.SpawnPointPositions.Left:
 			foreach (ExplosionBarrel leftEscapeBarrel in leftEscapeBarrels)

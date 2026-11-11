@@ -46,7 +46,7 @@ public class TriggerObjectsChallenge : Challenge
 		controller = UnityEngine.Object.FindObjectOfType<GolfBallController>();
 		if (!hideStrokeCounter)
 		{
-			AddressableSingleton<LevelManager>.Instance.InGameMenu.SetStrokeCounterSettings(triggers.Count, true, true, false);
+			AddressableSingleton<LevelManager>.Instance.InGameMenu.SetStrokeCounterSettings(triggers.Count, StrokeCounter.CounterTypes.CardsDisappearing, true, 0);
 		}
 	}
 

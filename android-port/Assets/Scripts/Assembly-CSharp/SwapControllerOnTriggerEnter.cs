@@ -50,7 +50,7 @@ public class SwapControllerOnTriggerEnter : MonoBehaviour
 		if (componentInChildren != null && componentInChildren.name != NewController.name)
 		{
 			componentInChildren.gameObject.SetActive(false);
-			componentInChildren.CurrentArrow.gameObject.SetActive(false);
+			componentInChildren.shootArrow.gameObject.SetActive(false);
 			EnableThisController();
 		}
 	}
