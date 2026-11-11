@@ -39,10 +39,10 @@ public class RingController : MonoBehaviour
 				playerIndex = player.InputIndex;
 				Ring.ForEach(delegate(SetMaterialColorToPlayerColor r)
 				{
-					r.UpdateMaterials(player.Avatar.Color);
+					r.UpdateMaterials(player.Avatar);
 				});
-				Ball.UpdateMaterials(player.Avatar.Color);
-				Line.UpdateMaterials(player.Avatar.Color);
+				Ball.UpdateMaterials(player.Avatar);
+				Line.UpdateMaterials(player.Avatar);
 			}
 		}
 	}
