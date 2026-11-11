@@ -175,6 +175,7 @@ public class ParChallenge : Challenge
 		{
 			completedState.Message = GetWinMessageID();
 			completedState.Delay = 2f;
+			completedState.ShowCrown = true;
 		}
 		Complete();
 	}

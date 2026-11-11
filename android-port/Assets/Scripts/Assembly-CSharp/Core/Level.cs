@@ -148,8 +148,8 @@ namespace Core
 		}
 
 		public bool IsAiming => controllers.Any(c => c != null && c.IsAiming);
-		public static Level Instance => instance;
-		public static bool HasInstance => instance != null;
+		public static Level Instance => instance != null ? instance : (instance = FindObjectOfType<Level>());
+		public static bool HasInstance => Instance != null;
 		public TransitionTextEffects TransitionTextEffects => levelManager != null ? levelManager.TransitionTextEffects : null;
 
 		public event Action OnReset
@@ -252,6 +252,11 @@ namespace Core
 
 		public void ResetLevel()
 		{
+			foreach (var c in FindObjectsOfType<GolfBallController>())
+			{
+				if (c != null && c.gameObject.scene == gameObject.scene && !controllers.Contains(c))
+					controllers.Add(c);
+			}
 			foreach (var c in controllers)
 				c?.Reset();
 			Goal?.Reset();

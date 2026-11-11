@@ -159,6 +159,8 @@ public class AudioManager : MonoBehaviour
 		EnsureLevelManagerSubscription();
 		if (FindObjectOfType<AudioListener>() == null && Camera.main != null)
 			Camera.main.gameObject.AddComponent<AudioListener>();
+		if (LevelManager.Exists && LevelManager.Instance != null && LevelManager.Instance.getIsReallyInLevel)
+			return;
 		AmbientPlayer?.InitializeNewScene();
 		golfAudioManager?.InitializeNewScene();
 		music?.OnLevelLoaded();

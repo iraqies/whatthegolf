@@ -530,8 +530,6 @@ public class OverworldMainDoorRobot : MonoBehaviour
 
 			if (currentBall != null)
 			{
-				if (ballStartPosition != null)
-					currentBall.transform.position = ballStartPosition.position;
 				currentBall.ShowAndEnable();
 			}
 			yield return new WaitForSeconds(0.1f);

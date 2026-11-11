@@ -7,6 +7,8 @@ public class Gravity : MonoBehaviour
 	[SerializeField] private Vector3 extraGravity;
 
 	private void OnEnable() => UpdateGravity();
+	private void OnDisable() => RestoreGravity();
+	private void OnDestroy() => RestoreGravity();
 
 	public void UpdateGravity()
 	{
@@ -17,9 +19,20 @@ public class Gravity : MonoBehaviour
 
 	public bool IsFake2D() => twoD;
 
-	private void OnDestroy()
+	private static void RestoreGravity()
 	{
-		Physics.gravity = new Vector3(0f, -9.81f, 0f);
-		Physics2D.gravity = new Vector2(0f, -9.81f);
+		foreach (var g in FindObjectsOfType<Gravity>())
+		{
+			if (g != null && g.isActiveAndEnabled && g.gameObject.activeInHierarchy)
+			{
+				g.UpdateGravity();
+				return;
+			}
+		}
+		if (FindObjectOfType<PhysicsOverride>() == null)
+		{
+			Physics.gravity = new Vector3(0f, -50f, 0f);
+			Physics2D.gravity = new Vector2(0f, -50f);
+		}
 	}
 }

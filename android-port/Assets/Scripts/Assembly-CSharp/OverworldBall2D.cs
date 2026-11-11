@@ -282,7 +282,6 @@ public class OverworldBall2D : GolfBall2DShooterBase
 			if (c != null)
 			{
 				c.enabled = !c.enabled;
-				c.isTrigger = false;
 				last = c.enabled;
 			}
 		}
@@ -296,8 +295,6 @@ public class OverworldBall2D : GolfBall2DShooterBase
 			if (c != null)
 			{
 				c.enabled = state;
-				if (state)
-					c.isTrigger = false;
 			}
 		}
 	}

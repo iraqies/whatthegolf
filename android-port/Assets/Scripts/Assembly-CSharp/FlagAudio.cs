@@ -23,9 +23,10 @@ public class FlagAudio : MonoBehaviour
 	private void OnEnable()
 	{
 		if (goal == null)
-			goal = GetComponentInParent<GolfGoal>();
+			goal = GetComponent<GolfGoal>();
 		if (goal != null)
 		{
+			goal.OnGoal -= Goal_OnGoal;
 			goal.OnGoal += Goal_OnGoal;
 		}
 	}
@@ -45,30 +46,44 @@ public class FlagAudio : MonoBehaviour
 
 	private void Goal_OnGoal(string obj)
 	{
+		if (PlayAudioRemotely) return;
+		if (playAfterDelay > 0f)
+		{
+			StartCoroutine(PlayAfterDelay());
+			return;
+		}
 		GoodHit();
+		if (snapshot != null && AudioManager.Instance != null)
+			AudioManager.Instance.SetMixerSnapshot(snapshot, 0.42f);
 	}
 
 	public void GoodHit()
 	{
-		if (Time.unscaledTime < nextAudio) return;
-		nextAudio = Time.unscaledTime + 0.15f;
-		if (sfxHit != null && AudioManager.Instance != null && AudioManager.Instance.shortEffects != null)
-			AudioManager.Instance.shortEffects.PlaySimple(sfxHit, volume > 0f ? volume : 1f, 1f, transform.position);
+		if (Time.time < nextAudio) return;
+		nextAudio = Time.time + 1f;
 		if (hitFullApplauseSFX != null && hitFullApplauseSFX.Count > 0)
-			hitFullApplauseSFX.Play(transform.position, volume > 0f ? volume : 1f, 1f);
-		else if (hitNoApplauseSFX != null && hitNoApplauseSFX.Count > 0)
-			hitNoApplauseSFX.Play(transform.position, volume > 0f ? volume : 1f, 1f);
+			hitFullApplauseSFX.Play(Vector3.zero, 1f, 1f);
+		else if (sfxHit != null && AudioManager.Instance != null && AudioManager.Instance.uiEffects != null)
+			AudioManager.Instance.uiEffects.PlaySimple(sfxHit, volume > 0f ? volume : 1f, 1f, Vector3.zero);
+		if (rumble != null)
+			rumble.PlayOnAllDevices(1f);
 	}
 
 	public void BadHit()
 	{
+		if (Time.time < nextAudio) return;
+		nextAudio = Time.time + 1f;
 		if (hitNoApplauseSFX != null && hitNoApplauseSFX.Count > 0)
-			hitNoApplauseSFX.Play(transform.position, volume > 0f ? volume : 1f, 1f);
+			hitNoApplauseSFX.Play(Vector3.zero, 1f, 1f);
+		if (rumble != null)
+			rumble.PlayOnAllDevices(1f);
 	}
 
 	private IEnumerator PlayAfterDelay()
 	{
 		yield return new WaitForSecondsRealtime(playAfterDelay);
 		GoodHit();
+		if (snapshot != null && AudioManager.Instance != null)
+			AudioManager.Instance.SetMixerSnapshot(snapshot, 0.42f);
 	}
 }

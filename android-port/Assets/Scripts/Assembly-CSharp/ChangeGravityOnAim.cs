@@ -31,8 +31,8 @@ public class ChangeGravityOnAim : MonoBehaviour
 
 	private void OnDestroy()
 	{
-		Physics.gravity = origGravity3D.sqrMagnitude > 0.01f ? origGravity3D : new Vector3(0f, -9.81f, 0f);
-		Physics2D.gravity = origGravity2D.sqrMagnitude > 0.01f ? origGravity2D : new Vector2(0f, -9.81f);
+		Physics.gravity = origGravity3D.sqrMagnitude > 0.01f ? origGravity3D : new Vector3(0f, -50f, 0f);
+		Physics2D.gravity = origGravity2D.sqrMagnitude > 0.01f ? origGravity2D : new Vector2(0f, -50f);
 	}
 
 	private void OnAimUpdate(Vector3 dir, bool b)

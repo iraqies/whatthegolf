@@ -378,7 +378,18 @@ namespace Core
 			if (distToGround <= 0f) distToGround = 1f;
 			if (m_Shooter == null) m_Shooter = GetComponent<ShooterBase>();
 			timeControl = _timeControll != null ? _timeControll : FindObjectOfType<TimeControl>();
+			if (Level.Instance != null)
+			{
+				Level.Instance.OnReset -= OnLevelReset;
+				Level.Instance.OnReset += OnLevelReset;
+				Level.Instance.OnComplete -= OnComplete;
+				Level.Instance.OnComplete += OnComplete;
+				Level.Instance.OnRestart -= OnLevelReset;
+				Level.Instance.OnRestart += OnLevelReset;
+			}
 		}
+
+		private void OnLevelReset() => Reset(0f);
 
 		protected virtual void Start()
 		{
@@ -964,8 +975,18 @@ namespace Core
 			shooter?.OnReset();
 			m_OnReset?.Invoke();
 		}
-		private void OnEnable() { }
-		private void OnDisable() => StopAiming();
+		private void OnEnable()
+		{
+			if (Level.Instance != null)
+				Level.Instance.AddGolfballController(this);
+		}
+
+		private void OnDisable()
+		{
+			StopAiming();
+			if (Level.Instance != null)
+				Level.Instance.RemoveGolfballController(this);
+		}
 
 		public event Action<Vector3> OnBallShot
 		{
@@ -998,8 +1019,13 @@ namespace Core
 		private void OnDestroy()
 		{
 			isDestroyed = true;
-			if (Level.HasInstance)
+			if (Level.Instance != null)
+			{
 				Level.Instance.RemoveGolfballController(this);
+				Level.Instance.OnReset -= OnLevelReset;
+				Level.Instance.OnComplete -= OnComplete;
+				Level.Instance.OnRestart -= OnLevelReset;
+			}
 			if (shootArrow != null)
 				Destroy(shootArrow.gameObject);
 		}

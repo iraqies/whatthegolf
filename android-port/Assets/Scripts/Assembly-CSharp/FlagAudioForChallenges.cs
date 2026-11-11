@@ -30,14 +30,34 @@ public class FlagAudioForChallenges : MonoBehaviour
 
 	public void PlayFlagAudio()
 	{
+		if (PlayAudioRemotely) return;
+		if (playAfterDelay > 0f)
+		{
+			StartCoroutine(PlayAfterDelay());
+			return;
+		}
+		GoodHit();
+		if (snapshot != null && AudioManager.Instance != null)
+			AudioManager.Instance.SetMixerSnapshot(snapshot, 0.42f);
 	}
 
 	private void GoodHit()
 	{
+		if (Time.time < nextAudio) return;
+		nextAudio = Time.time + 1f;
+		if (hitFullApplauseSFX != null && hitFullApplauseSFX.Count > 0)
+			hitFullApplauseSFX.Play(Vector3.zero, 1f, 1f);
+		else if (sfxHit != null && AudioManager.Instance != null && AudioManager.Instance.uiEffects != null)
+			AudioManager.Instance.uiEffects.PlaySimple(sfxHit, volume > 0f ? volume : 1f, 1f, Vector3.zero);
+		if (rumble != null)
+			rumble.Play(0, 1f);
 	}
 
 	private IEnumerator PlayAfterDelay()
 	{
-		return null;
+		yield return new WaitForSecondsRealtime(playAfterDelay);
+		GoodHit();
+		if (snapshot != null && AudioManager.Instance != null)
+			AudioManager.Instance.SetMixerSnapshot(snapshot, 0.42f);
 	}
 }

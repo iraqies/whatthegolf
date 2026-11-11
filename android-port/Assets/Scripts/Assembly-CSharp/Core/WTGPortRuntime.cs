@@ -43,10 +43,20 @@ namespace Core
 
 		private void OnSceneUnloaded(Scene scene)
 		{
-			if (FindObjectOfType<Gravity>() == null && FindObjectOfType<PhysicsOverride>() == null)
+			bool restored = false;
+			foreach (var g in FindObjectsOfType<Gravity>())
 			{
-				Physics.gravity = new Vector3(0f, -9.81f, 0f);
-				Physics2D.gravity = new Vector2(0f, -9.81f);
+				if (g != null && g.isActiveAndEnabled && g.gameObject.activeInHierarchy && g.gameObject.scene != scene)
+				{
+					g.UpdateGravity();
+					restored = true;
+					break;
+				}
+			}
+			if (!restored && FindObjectOfType<PhysicsOverride>() == null)
+			{
+				Physics.gravity = new Vector3(0f, -50f, 0f);
+				Physics2D.gravity = new Vector2(0f, -50f);
 			}
 		}
 

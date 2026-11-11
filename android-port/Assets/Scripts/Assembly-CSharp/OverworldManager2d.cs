@@ -602,10 +602,10 @@ public class OverworldManager2d : GolfBehaviour
 	}
 	private IEnumerator ShowBallDelayed(OverworldGoal goalHit)
 	{
-		if (ball != null && goalHit != null)
+		if (ball != null)
 		{
 			ball.ShowAndEnable();
-			if (goalHit.MoveBallWhenHit)
+			if (goalHit == null || goalHit.MoveBallWhenHit)
 				ball.transform.position = ballStartPosition;
 			ball.StopAndSleep();
 			ball.StartAndWakeup();

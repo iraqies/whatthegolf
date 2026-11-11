@@ -39,7 +39,7 @@ public class RagdollReset : MonoBehaviour
 		SaveResetInfo();
 		if (!ManualReset)
 		{
-			GolfBallController gbc = GetComponentInParent<GolfBallController>();
+			GolfBallController gbc = GetComponentInChildren<GolfBallController>() ?? GetComponentInParent<GolfBallController>();
 			if (gbc != null)
 				gbc.OnReset += ResetRagdoll;
 		}

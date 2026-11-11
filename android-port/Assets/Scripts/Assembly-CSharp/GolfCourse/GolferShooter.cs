@@ -309,10 +309,18 @@ namespace GolfCourse
 						golfAnimator.SetFloat("Blend", 0f);
 					targetBlend = Vector3.zero;
 				}
-				else if (hips != null && GetComponentInChildren<RagdollReset>() == null)
+				else
 				{
-					hips.transform.position = oldPosition;
-					hips.transform.rotation = oldRotation;
+					var ragdollReset = GetComponentInParent<RagdollReset>() ?? GetComponentInChildren<RagdollReset>();
+					if (ragdollReset != null)
+					{
+						ragdollReset.ResetRagdoll();
+					}
+					else if (hips != null)
+					{
+						hips.transform.position = oldPosition;
+						hips.transform.rotation = oldRotation;
+					}
 				}
 			}
 		}

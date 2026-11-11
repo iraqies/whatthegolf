@@ -25,7 +25,7 @@ public class CowTippable : MonoBehaviour
 
 	private void Awake()
 	{
-		CowAnimator = GetComponent<Animator>();
+		CowAnimator = GetComponentInChildren<Animator>();
 		if (cowCollisionHandler == null)
 			cowCollisionHandler = GetComponentInChildren<OnCollisionEnter2DHandler>(true);
 		if (cowCollisionHandler != null)
@@ -56,27 +56,28 @@ public class CowTippable : MonoBehaviour
 		if (CowAnimator != null)
 			CowAnimator.SetBool("Tipped", isTipped);
 
+		if (switchClips != null && AudioManager.Instance != null)
+			switchClips.Play(AudioManager.Instance.sfx, transform.position, 0.1f);
+
+		yield return new WaitForSeconds(1f);
+
+		if (mooClips != null && AudioManager.Instance != null)
+			mooClips.Play(AudioManager.Instance.sfx, transform.position, 0f);
+
+		isTipping = false;
 		if (isTipped)
 		{
 			if (SpeechStanding != null)
 				SpeechStanding.Interrupt();
 			if (SpeechLying != null)
-				SpeechLying.enabled = true;
+				SpeechLying.ForceStartSpeechBubble();
 		}
 		else
 		{
 			if (SpeechLying != null)
 				SpeechLying.Interrupt();
 			if (SpeechStanding != null)
-				SpeechStanding.enabled = true;
+				SpeechStanding.ForceStartSpeechBubble();
 		}
-
-		if (mooClips != null)
-			mooClips.Play(null, transform.position, 1f, 1f);
-		if (switchClips != null)
-			switchClips.Play(null, transform.position, 1f, 1f);
-
-		yield return new WaitForSeconds(0.5f);
-		isTipping = false;
 	}
 }

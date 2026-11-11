@@ -30,7 +30,7 @@ public class ShowSpeechbubbleOnHit : ShowSpeechBubble
 	{
 		if (!isAbleToTalk || other == null)
 			return;
-		if (other.rigidbody != null && other.rigidbody.GetComponent<GolfBallController>() != null)
+		if (other.rigidbody != null && other.rigidbody.GetComponent<Confetti>() != null)
 			return;
 		if (TextList == null && conversation == null)
 			return;
