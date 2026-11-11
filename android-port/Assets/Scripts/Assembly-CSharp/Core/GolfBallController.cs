@@ -339,7 +339,6 @@ namespace Core
 			_startPos = transform.position;
 			_startRot = transform.rotation;
 			_lastBallPosition = transform.position;
-			if (Scale <= 0f) Scale = 1f;
 			var col = GetComponent<Collider>() ?? GetComponentInChildren<Collider>();
 			if (col != null) distToGround = col.bounds.extents.y;
 			if (distToGround <= 0f)

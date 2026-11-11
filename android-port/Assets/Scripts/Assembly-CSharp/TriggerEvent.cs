@@ -30,25 +30,36 @@ public class TriggerEvent : MonoBehaviour
 
 	private bool delayIsEnterInvoke;
 
-	private bool hasPendingInvoke;
-
 	private void Awake()
 	{
 		light = GetComponentInChildren<Light>();
+		if (MeshesToUpdate != null)
+		{
+			for (int i = 0; i < MeshesToUpdate.Count; i++)
+			{
+				if (MeshesToUpdate[i] != null && MeshesToUpdate[i].material != null)
+				{
+					MeshesToUpdate[i].material.color = OffColor;
+				}
+			}
+		}
 	}
 
 	private void Update()
 	{
-		if (hasPendingInvoke && Time.time >= delayTime)
+		if (delayTime > 0f)
 		{
-			hasPendingInvoke = false;
-			if (delayIsEnterInvoke)
+			delayTime -= Time.deltaTime;
+			if (delayTime <= 0f)
 			{
-				EnterInvoke();
-			}
-			else
-			{
-				ExitInvoke();
+				if (delayIsEnterInvoke)
+				{
+					EnterInvoke();
+				}
+				else
+				{
+					ExitInvoke();
+				}
 			}
 		}
 	}
@@ -64,18 +75,18 @@ public class TriggerEvent : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other == null || !MatchesTag(other.tag))
+		if (!enabled || other == null || !MatchesTag(other.tag))
 		{
 			return;
 		}
-		PlayersOnButton++;
-		if (PlayersOnButton == 1)
+		int prev = PlayersOnButton;
+		PlayersOnButton = prev + 1;
+		if (prev == 0)
 		{
 			if (Delay > 0f)
 			{
-				delayTime = Time.time + Delay;
+				delayTime = Delay;
 				delayIsEnterInvoke = true;
-				hasPendingInvoke = true;
 			}
 			else
 			{
@@ -86,18 +97,18 @@ public class TriggerEvent : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D other)
 	{
-		if (other == null || !MatchesTag(other.tag))
+		if (!enabled || other == null || !MatchesTag(other.tag))
 		{
 			return;
 		}
-		PlayersOnButton++;
-		if (PlayersOnButton == 1)
+		int prev = PlayersOnButton;
+		PlayersOnButton = prev + 1;
+		if (prev == 0)
 		{
 			if (Delay > 0f)
 			{
-				delayTime = Time.time + Delay;
+				delayTime = Delay;
 				delayIsEnterInvoke = true;
-				hasPendingInvoke = true;
 			}
 			else
 			{
@@ -108,7 +119,7 @@ public class TriggerEvent : MonoBehaviour
 
 	private void OnTriggerExit(Collider other)
 	{
-		if (other == null || !MatchesTag(other.tag))
+		if (!enabled || other == null || !MatchesTag(other.tag))
 		{
 			return;
 		}
@@ -117,9 +128,8 @@ public class TriggerEvent : MonoBehaviour
 		{
 			if (Delay > 0f)
 			{
-				delayTime = Time.time + Delay;
+				delayTime = Delay;
 				delayIsEnterInvoke = false;
-				hasPendingInvoke = true;
 			}
 			else
 			{
@@ -130,7 +140,7 @@ public class TriggerEvent : MonoBehaviour
 
 	private void OnTriggerExit2D(Collider2D other)
 	{
-		if (other == null || !MatchesTag(other.tag))
+		if (!enabled || other == null || !MatchesTag(other.tag))
 		{
 			return;
 		}
@@ -139,9 +149,8 @@ public class TriggerEvent : MonoBehaviour
 		{
 			if (Delay > 0f)
 			{
-				delayTime = Time.time + Delay;
+				delayTime = Delay;
 				delayIsEnterInvoke = false;
-				hasPendingInvoke = true;
 			}
 			else
 			{
@@ -152,13 +161,24 @@ public class TriggerEvent : MonoBehaviour
 
 	private void EnterInvoke()
 	{
-		if (ButtonAnimator != null)
-		{
-			ButtonAnimator.SetBool("Pressed", true);
-		}
+		OnEnter?.Invoke();
 		if (light != null)
 		{
 			light.color = OnColor;
+		}
+		if (MeshesToUpdate != null)
+		{
+			for (int i = 0; i < MeshesToUpdate.Count; i++)
+			{
+				if (MeshesToUpdate[i] != null && MeshesToUpdate[i].material != null)
+				{
+					MeshesToUpdate[i].material.color = OnColor;
+				}
+			}
+		}
+		if (ButtonAnimator != null)
+		{
+			ButtonAnimator.SetBool("Up", false);
 		}
 		if (OnTriggeredClips != null && OnTriggeredClips.Count > 0)
 		{
@@ -168,19 +188,28 @@ public class TriggerEvent : MonoBehaviour
 				AudioManager.PlaySFX(clip, transform.position);
 			}
 		}
-		OnEnter?.Invoke();
 	}
 
 	private void ExitInvoke()
 	{
-		if (ButtonAnimator != null)
-		{
-			ButtonAnimator.SetBool("Pressed", false);
-		}
+		OnExit?.Invoke();
 		if (light != null)
 		{
 			light.color = OffColor;
 		}
-		OnExit?.Invoke();
+		if (MeshesToUpdate != null)
+		{
+			for (int i = 0; i < MeshesToUpdate.Count; i++)
+			{
+				if (MeshesToUpdate[i] != null && MeshesToUpdate[i].material != null)
+				{
+					MeshesToUpdate[i].material.color = OffColor;
+				}
+			}
+		}
+		if (ButtonAnimator != null)
+		{
+			ButtonAnimator.SetBool("Up", true);
+		}
 	}
 }

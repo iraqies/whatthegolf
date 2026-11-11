@@ -6,5 +6,11 @@ public class ActivateObjects : MonoBehaviour
 
 	public void ActivateGameObjects()
 	{
+		if (objectsToActivate == null) return;
+		for (int i = 0; i < objectsToActivate.Length; i++)
+		{
+			if (objectsToActivate[i] != null)
+				objectsToActivate[i].SetActive(true);
+		}
 	}
 }

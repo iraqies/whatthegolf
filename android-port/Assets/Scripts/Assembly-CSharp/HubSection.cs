@@ -170,6 +170,21 @@ public class HubSection : GolfBehaviour
 				if (cb.Intersects(playerBounds))
 					return true;
 			}
+			// If serialized cullingBounds had stale world-space coordinates (e.g. after parent offset in Hub_Overworld),
+			// fall back to section bounds when none of cullingBounds overlap the section bounds itself.
+			bool anyInsideSection = false;
+			for (int i = 0; i < cullingBounds.Count; i++)
+			{
+				Bounds cb = cullingBounds[i];
+				Bounds b2d = new Bounds(new Vector3(b.center.x, b.center.y, cb.center.z), new Vector3(b.size.x, b.size.y, 100f));
+				if (cb.Intersects(b2d))
+				{
+					anyInsideSection = true;
+					break;
+				}
+			}
+			if (!anyInsideSection)
+				return true;
 			return false;
 		}
 		return b.Intersects(playerBounds);

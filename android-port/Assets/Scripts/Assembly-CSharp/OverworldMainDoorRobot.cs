@@ -174,6 +174,10 @@ public class OverworldMainDoorRobot : MonoBehaviour
 			initialState = State.Completed;
 			foreach (var p in plates)
 				if (p != null) p.SetState(true, true);
+			if (speech != null)
+				speech.isAbleToTalk = false;
+			if (achievement != null)
+				achievement.ManualUnlock();
 		}
 		else if (CanBeOpened())
 		{
@@ -387,7 +391,7 @@ public class OverworldMainDoorRobot : MonoBehaviour
 		if (overworldCamera != null)
 			overworldCamera.Shake(2f, 60f, 0.5f);
 		if (AnimatorFace != null)
-			AnimatorFace.SetBool("On", true);
+			AnimatorFace.SetBool("Scanlines", true);
 
 		if (overworldManager == null || !hasLevels || bossLevel == null)
 		{
@@ -425,7 +429,7 @@ public class OverworldMainDoorRobot : MonoBehaviour
 				currentBall.HideAndStop(true);
 			StartCoroutine(Explode(didComplete, 1.8f, 2.2f));
 			if (AnimatorFace != null)
-				AnimatorFace.SetBool("On", false);
+				AnimatorFace.SetBool("Scanlines", false);
 			if (overworldCamera != null)
 			{
 				if (overworldCamera.MainCamera != null)
@@ -469,39 +473,60 @@ public class OverworldMainDoorRobot : MonoBehaviour
 			if (currentBall != null)
 				currentBall.HideAndStop(true);
 			m_OnBallExitedAndIsExploding?.Invoke(this);
+			if (achievement != null)
+				achievement.ManualUnlock();
 			if (hintArrow != null)
 				hintArrow.SetActive(false);
+			if (speech != null)
+			{
+				speech.isAbleToTalk = false;
+				speech.Interrupt();
+			}
+			if (AnimatorFace != null)
+				AnimatorFace.SetTrigger("Destroy");
+			if (AnimatorDoor != null)
+				AnimatorDoor.SetTrigger("Destroy");
 
 			if (delayBeforeShake > 0f)
 				yield return new WaitForSeconds(delayBeforeShake);
 
 			if (overworldCamera != null)
-				overworldCamera.Shake(0.2f, 20f, 1f);
+				overworldCamera.Shake(2.5f, 40f, 0.15f);
 
-			float extraDelay = Mathf.Max(0f, delayBeforeExplosion - delayBeforeShake);
+			float extraDelay = Mathf.Max(0f, delayBeforeExplosion - 0.5f);
 			if (extraDelay > 0f)
 				yield return new WaitForSeconds(extraDelay);
+
+			var rumble = GetComponent<Audio.Rumble.OverworldMainComputerRumble>();
+			if (rumble != null)
+				rumble.PlayExplosion();
+
+			if (ExplosionsSmall != null && ExplosionsSmall.Length > 0 && ExplosionsSmall[0] != null)
+				ExplosionsSmall[0].Explode(0.5f);
+
+			yield return new WaitForSeconds(0.1f);
+
+			if (ExplosionsSmall != null && ExplosionsSmall.Length > 1 && ExplosionsSmall[1] != null)
+				ExplosionsSmall[1].Explode(1f);
+
+			yield return new WaitForSeconds(0.05f);
+
+			if (ExplosionsSmall != null && ExplosionsSmall.Length > 2 && ExplosionsSmall[2] != null)
+				ExplosionsSmall[2].Explode(1.5f);
+
+			yield return new WaitForSeconds(0.05f);
 
 			if (Explosion != null)
 				Explosion.Explode(2.5f);
 			if (overworldCamera != null)
 				overworldCamera.Shake(0.2f, 100f, 1f);
 			FadeOut(srcBootingUp, 1f);
+
+			yield return new WaitForSeconds(0.05f);
+
 			Change(State.Completed, false);
 
-			if (achievement != null)
-				achievement.ManualUnlock();
-
-			yield return new WaitForSeconds(0.1f);
-
-			if (ExplosionsSmall != null)
-			{
-				for (int i = 0; i < ExplosionsSmall.Length; i++)
-				{
-					if (ExplosionsSmall[i] != null)
-						ExplosionsSmall[i].Explode(UnityEngine.Random.Range(0f, 0.25f));
-				}
-			}
+			yield return new WaitForSeconds(0.3f);
 
 			if (currentBall != null)
 			{
@@ -509,7 +534,7 @@ public class OverworldMainDoorRobot : MonoBehaviour
 					currentBall.transform.position = ballStartPosition.position;
 				currentBall.ShowAndEnable();
 			}
-			yield return new WaitForSeconds(0.3f);
+			yield return new WaitForSeconds(0.1f);
 		}
 		else
 		{

@@ -9,14 +9,30 @@ public class DisableExteriorDecorationBasedOnSection : MonoBehaviour
 
 	private IEnumerator Start()
 	{
-		return null;
+		yield return null;
+		yield return null;
+		yield return null;
+		yield return null;
+		if (section != null && section.gameObject.activeInHierarchy)
+		{
+			fans = GetComponentsInChildren<RotateAxis2D>(true);
+			section.OnSectionCullingUpdate += Section_OnSectionCullingUpdate;
+			SetFanStatus(section.IsActive);
+		}
 	}
 
 	private void Section_OnSectionCullingUpdate(bool active)
 	{
+		SetFanStatus(active);
 	}
 
 	private void SetFanStatus(bool active)
 	{
+		if (fans == null) return;
+		for (int i = 0; i < fans.Length; i++)
+		{
+			if (fans[i] != null)
+				fans[i].enabled = active;
+		}
 	}
 }

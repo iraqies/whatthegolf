@@ -6,9 +6,13 @@ public class DestroyObject : MonoBehaviour
 
 	private void Start()
 	{
+		if (objectToDestroy == null)
+			objectToDestroy = gameObject;
 	}
 
 	public void Destroy()
 	{
+		if (objectToDestroy != null)
+			Object.Destroy(objectToDestroy);
 	}
 }

@@ -163,7 +163,8 @@ public class GridFiller : GolfBehaviour
 		}
 
 		// Preserve pre-baked Normal and Rotated tilemaps in built player when they already contain ground tiles
-		if (groundMap != null && groundMap.GetUsedTilesCount() > 0 && rotatedMap.transform.childCount > 0)
+		bool isHubScene = gameObject.scene.IsValid() && gameObject.scene.name == "Hub_Overworld";
+		if (!isHubScene && groundMap != null && groundMap.GetUsedTilesCount() > 0 && rotatedMap.transform.childCount > 0)
 		{
 			GridFilledTileMap rotGridPre = rotatedMap.GetComponent<GridFilledTileMap>();
 			GridFilledTileMap normGridPre = normalMap.GetComponent<GridFilledTileMap>();

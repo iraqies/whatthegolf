@@ -5,7 +5,7 @@ public class PlayAnimationRandomIntervals : MonoBehaviour
 {
 	private Animator animator;
 
-	private bool canBlink;
+	private bool canBlink = true;
 
 	public float minInterval;
 
@@ -13,14 +13,25 @@ public class PlayAnimationRandomIntervals : MonoBehaviour
 
 	private void Start()
 	{
+		animator = GetComponent<Animator>();
 	}
 
 	private void Update()
 	{
+		if (canBlink)
+		{
+			StartCoroutine(Blink());
+		}
 	}
 
 	private IEnumerator Blink()
 	{
-		return null;
+		canBlink = false;
+		if (animator != null)
+		{
+			animator.SetTrigger("blink");
+		}
+		yield return new WaitForSeconds(Random.Range(minInterval, maxInterval));
+		canBlink = true;
 	}
 }

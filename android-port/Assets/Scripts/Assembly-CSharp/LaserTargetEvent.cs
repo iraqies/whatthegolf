@@ -8,9 +8,16 @@ public class LaserTargetEvent : MonoBehaviour
 
 	private void Start()
 	{
+		var target = GetComponent<LaserTarget>();
+		if (target != null)
+		{
+			target.OnLasered -= OnLasered;
+			target.OnLasered += OnLasered;
+		}
 	}
 
 	private void OnLasered()
 	{
+		_OnLasered?.Invoke();
 	}
 }

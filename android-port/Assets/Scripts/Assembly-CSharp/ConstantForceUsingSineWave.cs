@@ -10,9 +10,9 @@ public class ConstantForceUsingSineWave : MonoBehaviour
 
 	public Vector3 RelativeTorqueAxis;
 
-	public float Speed;
+	public float Speed = 1f;
 
-	public float Strength;
+	public float Strength = 1f;
 
 	public float TimeOffset;
 
@@ -20,9 +20,16 @@ public class ConstantForceUsingSineWave : MonoBehaviour
 
 	private void Start()
 	{
+		force = GetComponent<ConstantForce>();
 	}
 
 	private void FixedUpdate()
 	{
+		if (force == null) return;
+		float s = Mathf.Sin((Time.time + TimeOffset) * Speed) * Strength;
+		force.relativeForce = RelativeForceAxis * s;
+		force.force = ForceAxis * s;
+		force.torque = TorqueAxis * s;
+		force.relativeTorque = RelativeTorqueAxis * s;
 	}
 }

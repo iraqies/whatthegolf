@@ -10,5 +10,10 @@ public class RotatingPlanet : MonoBehaviour
 
 	private void Update()
 	{
+		if (Time.timeScale == 0f || Time.deltaTime == 0f || targetPlanet == null)
+		{
+			return;
+		}
+		transform.RotateAround(targetPlanet.position, Vector3.forward, speed * Time.deltaTime);
 	}
 }

@@ -29,21 +29,22 @@ Shader "Custom/Arrow" {
 
 			struct v2f {
 				float4 pos : SV_POSITION;
-				float3 lnorm : TEXCOORD0;
+				fixed4 color : COLOR0;
 			};
 
 			v2f vert(appdata v) {
 				v2f o;
 				o.pos = UnityObjectToClipPos(v.vertex);
-				o.lnorm = v.normal;
+				float3 n = normalize(v.normal);
+				float3 l = length(_LocalLightDir.xyz) > 0.001 ? normalize(_LocalLightDir.xyz) : float3(0, 0, 1);
+				float sr = _ShadowRatio > 0.001 ? _ShadowRatio : 0.685;
+				float shade = abs(dot(n, l)) * (1.0 - sr) + sr;
+				o.color = fixed4(_Color.rgb * shade, 1.0);
 				return o;
 			}
 
 			fixed4 frag(v2f i) : SV_Target {
-				float3 n = normalize(i.lnorm);
-				float3 l = length(_LocalLightDir.xyz) > 0.001 ? normalize(_LocalLightDir.xyz) : float3(0, 0, 1);
-				float shade = dot(n, l) > 0.85 ? 1.0 : (_ShadowRatio > 0.001 ? _ShadowRatio : 0.685);
-				return fixed4(_Color.rgb * shade, 1.0);
+				return i.color;
 			}
 			ENDCG
 		}
@@ -59,23 +60,32 @@ Shader "Custom/Arrow" {
 			#include "UnityCG.cginc"
 
 			float4 _Color;
+			float4 _LocalLightDir;
+			float _ShadowRatio;
 
 			struct appdata {
 				float4 vertex : POSITION;
+				float3 normal : NORMAL;
 			};
 
 			struct v2f {
 				float4 pos : SV_POSITION;
+				fixed4 color : COLOR0;
 			};
 
 			v2f vert(appdata v) {
 				v2f o;
 				o.pos = UnityObjectToClipPos(v.vertex);
+				float3 n = normalize(v.normal);
+				float3 l = length(_LocalLightDir.xyz) > 0.001 ? normalize(_LocalLightDir.xyz) : float3(0, 0, 1);
+				float sr = _ShadowRatio > 0.001 ? _ShadowRatio : 0.685;
+				float shade = abs(dot(n, l)) * (1.0 - sr) + sr;
+				o.color = fixed4(_Color.rgb * shade, _Color.a * shade);
 				return o;
 			}
 
 			fixed4 frag(v2f i) : SV_Target {
-				return fixed4(_Color.rgb, _Color.a);
+				return i.color;
 			}
 			ENDCG
 		}

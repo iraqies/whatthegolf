@@ -15,13 +15,22 @@ public class OnShootAction : MonoBehaviour
 
 	private void OnEnable()
 	{
+		if (controller == null) return;
+		controller.OnShoot += Controller_OnShoot;
 	}
 
 	private void OnDisable()
 	{
+		if (controller == null) return;
+		controller.OnShoot -= Controller_OnShoot;
 	}
 
 	private void Controller_OnShoot(Vector3 obj)
 	{
+		action?.Invoke();
+		if (onlyOnce)
+		{
+			enabled = false;
+		}
 	}
 }

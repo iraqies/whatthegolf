@@ -62,12 +62,17 @@ public class Game : MonoBehaviour
 	private IEnumerator Start()
 	{
 		var sceneLevels = new List<HoleInOneLevel>();
-		if (gameObject.scene.IsValid())
+		var selfLevels = GetComponentsInChildren<HoleInOneLevel>(true);
+		if (selfLevels != null && selfLevels.Length > 0)
+		{
+			sceneLevels.AddRange(selfLevels);
+		}
+		else if (gameObject.scene.IsValid())
 		{
 			var roots = gameObject.scene.GetRootGameObjects();
 			for (int r = 0; r < roots.Length; r++)
 			{
-				if (roots[r] != null)
+				if (roots[r] != null && !roots[r].name.Contains("Maybe"))
 					sceneLevels.AddRange(roots[r].GetComponentsInChildren<HoleInOneLevel>(true));
 			}
 		}
@@ -105,7 +110,7 @@ public class Game : MonoBehaviour
 			if (info != null)
 				ShowSpeechBubble(info.ID);
 			if (faceAnim != null)
-				faceAnim.SetBool("IsTalking", true);
+				faceAnim.SetBool("Talk", true);
 			nextLostSpeechBubbleTime = Time.time;
 		}
 
@@ -123,7 +128,7 @@ public class Game : MonoBehaviour
 				if (info != null)
 					ShowSpeechBubble(info.ID);
 				if (faceAnim != null)
-					faceAnim.SetBool("IsTalking", true);
+					faceAnim.SetBool("Talk", true);
 				ResetLostSpeechBubbleTimeout();
 			}
 
@@ -137,8 +142,7 @@ public class Game : MonoBehaviour
 
 			if (faceAnim != null)
 			{
-				faceAnim.SetInteger("Personality", template.personalityState);
-				faceAnim.SetBool("IsHappy", false);
+				faceAnim.SetInteger("PersonalityState", template.personalityState);
 			}
 
 			if (levelDotsUI != null)
@@ -212,7 +216,7 @@ public class Game : MonoBehaviour
 				yield return null;
 
 			if (faceAnim != null)
-				faceAnim.SetBool("IsTalking", false);
+				faceAnim.SetBool("Talk", false);
 
 			float timer = 0f;
 			while (isPlaying)
@@ -244,7 +248,7 @@ public class Game : MonoBehaviour
 			if (didWin)
 			{
 				if (i == levels.Length - 1 && faceAnim != null)
-					faceAnim.SetBool("IsHappy", true);
+					faceAnim.SetBool("Scanlines", true);
 				yield return new WaitForSeconds(0.1f);
 				i++;
 				isFirstTryOfLevel = true;
@@ -261,7 +265,7 @@ public class Game : MonoBehaviour
 					if (info != null)
 						ShowSpeechBubble(info.ID);
 					if (faceAnim != null)
-						faceAnim.SetBool("IsTalking", true);
+						faceAnim.SetBool("Talk", true);
 					ResetLostSpeechBubbleTimeout();
 				}
 			}
@@ -287,6 +291,10 @@ public class Game : MonoBehaviour
 
 	private void OnShoot(Vector2 boost)
 	{
+		if (speechBubble != null)
+			speechBubble.Hide(true);
+		if (faceAnim != null)
+			faceAnim.SetBool("Talk", false);
 		strokes++;
 		if (retryRender != null)
 			retryRender.enabled = true;

@@ -7,9 +7,11 @@ public class OnDestroyCallback : MonoBehaviour
 
 	private void OnDestroy()
 	{
+		OnWillDestroy?.Invoke(gameObject);
 	}
 
 	private void OnDisable()
 	{
+		OnWillDestroy?.Invoke(gameObject);
 	}
 }

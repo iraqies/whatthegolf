@@ -39,17 +39,14 @@ public class SpeechBubbleTextEffect : ScriptableObject
 				yield return pTween.To(dur, 0f, 1f, t =>
 				{
 					sb.Length = 0;
-					sb.Append("<color=#000000FF>");
+					sb.Append("<alpha=#FF>");
 					sb.Append(text, 0, idx);
-					sb.Append("</color>");
-					sb.Append("<color=#000000");
+					sb.Append("<alpha=#");
 					sb.Append(RatioToHex(t));
 					sb.Append(">");
 					sb.Append(text[idx]);
-					sb.Append("</color>");
-					sb.Append("<color=#00000000>");
+					sb.Append("<alpha=#00>");
 					sb.Append(text, idx + 1, text.Length - idx - 1);
-					sb.Append("</color>");
 					changeTextCallback?.Invoke(sb.ToString());
 				});
 			}

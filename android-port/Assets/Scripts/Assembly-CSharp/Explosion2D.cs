@@ -21,7 +21,7 @@ public class Explosion2D : MonoBehaviour
 	{
 		if (explosionContainer != null)
 		{
-			explosionContainer.localScale = Vector3.one * Mathf.Max(0.25f, magnitude);
+			explosionContainer.localScale = new Vector3(magnitude, magnitude, magnitude);
 		}
 		if (animator != null)
 		{
@@ -29,17 +29,19 @@ public class Explosion2D : MonoBehaviour
 		}
 		if (fireballsSystem != null)
 		{
-			fireballsSystem.Play();
+			fireballsSystem.Emit(5);
 		}
-		FireRingParticles();
-		StartAftersmoke();
 	}
 
 	public void FireRingParticles()
 	{
 		if (smokeRingSystem != null)
 		{
-			smokeRingSystem.Play();
+			smokeRingSystem.Emit(50);
+		}
+		if (fireballsSystem != null)
+		{
+			fireballsSystem.Emit(5);
 		}
 	}
 
@@ -48,6 +50,8 @@ public class Explosion2D : MonoBehaviour
 		if (aftersmokeSystem != null)
 		{
 			aftersmokeSystem.Play();
+			var main = aftersmokeSystem.main;
+			main.stopAction = ParticleSystemStopAction.Destroy;
 		}
 	}
 }

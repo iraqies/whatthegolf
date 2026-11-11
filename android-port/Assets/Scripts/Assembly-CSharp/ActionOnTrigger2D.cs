@@ -7,5 +7,6 @@ public class ActionOnTrigger2D : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D other)
 	{
+		OnTriggerEnter?.Invoke();
 	}
 }

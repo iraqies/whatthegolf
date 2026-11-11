@@ -986,30 +986,51 @@ public class OverworldManager2d : GolfBehaviour
 	public void DisableInteraction(bool hide = true)
 	{
 		IsInteractionDisabled = true;
-		if (ball != null)
+		if (ui != null && ui.ReturnBtn != null)
 		{
-			if (hide) ball.HideAndStop();
-			else if (ball.Controller != null) ball.Controller.enabled = false;
+			ui.ReturnBtn.gameObject.SetActive(false);
+			ui.returnButtonEnabled = false;
+		}
+		var b = BallOrIslandBall;
+		if (b != null)
+		{
+			if (hide) b.HideAndStop(true);
+			else b.StopBall(false);
 		}
 	}
 
 	public void EnableInteraction()
 	{
 		IsInteractionDisabled = false;
-		if (ball != null && state == STATES.active)
+		if (ui != null && ui.ReturnBtn != null)
 		{
-			ball.ShowAndEnable();
-			if (ball.Controller != null)
+			ui.ReturnBtn.gameObject.SetActive(true);
+			ui.returnButtonEnabled = true;
+		}
+		var b = BallOrIslandBall;
+		if (b != null && state == STATES.active)
+		{
+			b.ShowAndEnable();
+			if (b.Controller != null)
 			{
-				ball.Controller.enabled = true;
-				ball.Controller.Activate();
+				b.Controller.enabled = true;
+				b.Controller.Activate();
 			}
 		}
 	}
 
 	public HubSection FindCurrentHubSection()
 	{
-		if (ball == null) return null;
+		if (state != STATES.active || ball == null || gridfiller == null || gridfiller.hubSectionContainer == null)
+			return null;
+		foreach (var hs in gridfiller.hubSectionContainer.GetComponentsInChildren<HubSection>(false))
+		{
+			if (hs == null || hs.Container == null || !hs.Container.activeSelf || hs.SectionTilemap == null)
+				continue;
+			Vector3Int cell = hs.SectionTilemap.WorldToCell(ball.transform.position);
+			if (hs.SectionTilemap.GetTile(cell) != null)
+				return hs;
+		}
 		Bounds b = new Bounds(ball.transform.position, new Vector3(1f, 1f, 100f));
 		foreach (var hs in FindObjectsOfType<HubSection>())
 		{
@@ -1019,7 +1040,28 @@ public class OverworldManager2d : GolfBehaviour
 		return null;
 	}
 
-	public void DisplayCampaignHub(bool display) { }
+	public void DisplayCampaignHub(bool display)
+	{
+		ToggleOverworld(display);
+		if (display)
+		{
+			state = STATES.active;
+			if (AudioManager.Instance != null && AudioManager.Instance.ambient != null)
+				AudioManager.Instance.ambient.SetAmbients(new List<AudioClip>());
+			if (overworldMusic != null)
+				overworldMusic.StartWithoutTransition();
+		}
+	}
+
+	public void ResetBallPositionToLastSave()
+	{
+		if (ball != null)
+		{
+			var saver = ball.GetComponent<OverworldPositionSaver>();
+			if (saver != null)
+				ball.transform.position = saver.lastSavePosition;
+		}
+	}
 
 	public IEnumerator CameraMoveCenter(Transform target, float duration)
 	{
