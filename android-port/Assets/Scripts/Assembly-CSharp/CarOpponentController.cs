@@ -1,73 +1,77 @@
-using Core;
 using UnityEngine;
 
-public class CarOpponentController : GolfBallController
+public class CarOpponentController : MonoBehaviour
 {
-	public Transform TargetContainer;
+	public float speed;
 
-	public Vector2 DelayBetweenShots;
+	public float rotationDamping = 40f;
 
-	public Vector2 HoldArrowDuration;
+	[SerializeField]
+	private Transform wayPointParent;
 
-	public float EdgeCheckDistanceMod;
+	public int curTargetIndex;
 
-	public float EdgeCheckDownwardsDistance;
+	public float waypointDistanceThreshold;
 
-	private float holdArrow;
+	private Transform[] wayPointTransforms;
 
-	private float holdArrowStartDuration;
+	private Vector3 targetPosition;
 
-	private Rigidbody rigid;
+	private Vector2 startPos;
 
-	private bool forceShot;
+	private Quaternion startRot;
 
-	private int target;
+	[SerializeField]
+	private Rigidbody2D rigid;
 
-	private int targetChild;
-
-	protected override void Start()
+	private void Awake()
 	{
+		startPos = base.transform.position;
+		startRot = base.transform.rotation;
+		if (wayPointParent != null)
+		{
+			wayPointTransforms = new Transform[wayPointParent.childCount];
+			for (int i = 0; i < wayPointParent.childCount; i++)
+			{
+				wayPointTransforms[i] = wayPointParent.GetChild(i);
+			}
+			if (curTargetIndex >= 0 && curTargetIndex < wayPointTransforms.Length && wayPointTransforms[curTargetIndex] != null)
+			{
+				targetPosition = wayPointTransforms[curTargetIndex].position;
+			}
+		}
+	}
+
+	private void OnEnable()
+	{
+		if (wayPointTransforms != null && wayPointTransforms.Length > 0 && wayPointTransforms[0] != null)
+		{
+			targetPosition = wayPointTransforms[0].position;
+		}
+		curTargetIndex = 0;
+		base.transform.position = startPos;
+		base.transform.rotation = startRot;
 	}
 
 	private void FixedUpdate()
 	{
-	}
-
-	protected override bool IsStartingToAim()
-	{
-		return false;
-	}
-
-	protected override Vector2 GetInputPosition()
-	{
-		return default;
-	}
-
-	public override bool GetShootButton(bool onlyController = false, string shootButtonName = "Shoot")
-	{
-		return false;
-	}
-
-	public override bool GetShootButtonDown(bool onlyController = false, string shootButtonName = "Shoot")
-	{
-		return false;
-	}
-
-	public override bool GetShootButtonUp(bool onlyController = false, string shootButtonName = "Shoot")
-	{
-		return false;
-	}
-
-	internal override Vector3 GetFinalAimVector()
-	{
-		return default;
-	}
-
-	private void LateUpdate()
-	{
-	}
-
-	private void OnTriggerEnter(Collider other)
-	{
+		if (wayPointTransforms == null || wayPointTransforms.Length == 0 || rigid == null)
+		{
+			return;
+		}
+		if (Vector3.Distance(base.transform.position, targetPosition) < waypointDistanceThreshold)
+		{
+			curTargetIndex = (curTargetIndex + 1) % wayPointTransforms.Length;
+			if (wayPointTransforms[curTargetIndex] != null)
+			{
+				targetPosition = wayPointTransforms[curTargetIndex].position;
+			}
+		}
+		Vector2 normalized = (targetPosition - base.transform.position).normalized;
+		rigid.AddForce(normalized * speed * Time.fixedDeltaTime, ForceMode2D.Force);
+		float angle = Mathf.Atan2(normalized.y, normalized.x) * 57.29578f - 90f;
+		Quaternion b = Quaternion.AngleAxis(angle, Vector3.forward);
+		Quaternion rotation = Quaternion.Slerp(base.transform.rotation, b, Time.fixedDeltaTime * rotationDamping);
+		rigid.MoveRotation(rotation.eulerAngles.z);
 	}
 }

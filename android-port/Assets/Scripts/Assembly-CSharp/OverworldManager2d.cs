@@ -1045,7 +1045,7 @@ public class OverworldManager2d : GolfBehaviour
 		{
 			state = STATES.active;
 			if (AudioManager.Instance != null && AudioManager.Instance.AmbientPlayer != null)
-				AudioManager.Instance.AmbientPlayer.SetAmbients(new List<AudioClip>());
+				AudioManager.Instance.AmbientPlayer.SetAmbients(new List<Audio.AmbientAudio>());
 			if (overworldMusic != null)
 				overworldMusic.StartWithoutTransition();
 		}

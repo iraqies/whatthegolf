@@ -35,7 +35,7 @@ public class VendingMachine : MonoBehaviour
 		{
 			return;
 		}
-		bool isPlayerBall = OverworldBallManager.Instance != null && OverworldBallManager.Instance.Ball != null && OverworldBallManager.Instance.Ball.Controller != null && collision.rigidbody == OverworldBallManager.Instance.Ball.Controller.rigid2D;
+		bool isPlayerBall = OverworldBallManager.Instance != null && OverworldBallManager.Instance.Ball != null && collision.rigidbody == OverworldBallManager.Instance.Ball.rigidBody;
 		if (!isPlayerBall && !collision.gameObject.CompareTag("Player"))
 		{
 			return;

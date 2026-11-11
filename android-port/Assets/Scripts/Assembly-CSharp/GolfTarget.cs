@@ -25,7 +25,7 @@ public class GolfTarget : MonoBehaviour
 		}
 		if (AudioManager.Instance != null && AudioManager.Instance.rumble != null && AudioManager.Instance.rumble.GolfBallBounce != null)
 		{
-			AudioManager.Instance.rumble.GolfBallBounce.Play(1f, 0);
+			AudioManager.Instance.rumble.GolfBallBounce.Play(0, 1f);
 		}
 		if (IncrementRTPC != null)
 		{

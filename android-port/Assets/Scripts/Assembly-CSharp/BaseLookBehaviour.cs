@@ -1,86 +1,74 @@
 using UnityEngine;
-using UnityEngine.Events;
 
 public class BaseLookBehaviour : MonoBehaviour
 {
 	[SerializeField]
-	protected Transform[] transformsLookingAt;
+	protected LookAtGolfBall pupil1;
 
 	[SerializeField]
-	protected Transform lookAtTargetBehind;
+	protected LookAtGolfBall pupil2;
 
 	[SerializeField]
-	protected Transform FOVtransform;
+	protected Transform lookAtObject;
 
 	[SerializeField]
-	protected float lookAtSpeed;
+	protected Animator animator;
 
 	[SerializeField]
-	protected float lookAwaySpeed;
+	protected string blinkAnimationTrigger;
 
+	[Range(1f, 30f)]
 	[SerializeField]
-	protected bool resetBackToDefault;
+	protected float minTimeBeforeNextBlink = 4f;
 
+	[Range(1f, 30f)]
 	[SerializeField]
-	protected bool detectCollisionOnlyInsideTrigger;
+	protected float maxTimeBeforeNextBlink = 12f;
 
-	[SerializeField]
-	protected bool ignoreY;
+	private float timeLeftToNextBlink;
 
-	[SerializeField]
-	protected bool needLineOfSightToDetect;
-
-	public UnityEvent<Transform> OnDetection;
-
-	public UnityEvent<Transform> OnCollision;
-
-	public UnityEvent<Transform> OnFollowPlayer;
-
-	public UnityEvent<Vector3> OnLostLineOfSight;
-
-	public UnityEvent<Transform> OnRestoredLineOfSight;
-
-	private Transform player;
-
-	private Quaternion[] defaultRotations;
-
-	private Vector3 lastKnownPlayerPos;
-
-	private bool hadLostLineOfSight;
-
-	protected virtual void Start()
+	protected void Start()
 	{
+		if (lookAtObject != null)
+		{
+			SetLookAtTarget(lookAtObject);
+		}
+		if (animator != null)
+		{
+			timeLeftToNextBlink = Random.Range(minTimeBeforeNextBlink, maxTimeBeforeNextBlink);
+		}
 	}
 
-	protected virtual void OnCollisionEnter(Collision collision)
+	protected void Update()
 	{
+		if (animator != null)
+		{
+			UpdateBlinking();
+		}
 	}
 
-	protected virtual void OnTriggerEnter(Collider other)
+	private void UpdateBlinking()
 	{
+		timeLeftToNextBlink -= Time.deltaTime;
+		if (timeLeftToNextBlink <= 0f)
+		{
+			timeLeftToNextBlink = Random.Range(minTimeBeforeNextBlink, maxTimeBeforeNextBlink);
+			if (animator != null)
+			{
+				animator.SetTrigger(blinkAnimationTrigger);
+			}
+		}
 	}
 
-	protected virtual void OnTriggerExit(Collider other)
+	protected void SetLookAtTarget(Transform target)
 	{
-	}
-
-	protected virtual void Update()
-	{
-	}
-
-	protected virtual void TryLookingAtPlayer()
-	{
-	}
-
-	protected virtual void LookAround()
-	{
-	}
-
-	private void MoveFovAround(bool reset = false)
-	{
-	}
-
-	protected virtual void LookAtPlayer()
-	{
+		if (pupil1 != null)
+		{
+			pupil1.SetNewLookTarget(target);
+		}
+		if (pupil2 != null)
+		{
+			pupil2.SetNewLookTarget(target);
+		}
 	}
 }

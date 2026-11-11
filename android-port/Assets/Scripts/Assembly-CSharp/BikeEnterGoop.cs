@@ -1,82 +1,149 @@
 using System.Collections;
-using Core;
+using Audio;
 using UnityEngine;
 
 public class BikeEnterGoop : MonoBehaviour
 {
-	private Vector3 _direction;
+	public Transform FrontWheel;
 
-	[SerializeField]
-	private GolfBallController _controller;
+	public Transform BackWheel;
 
-	[SerializeField]
-	private Rigidbody _rigidBody;
+	public float GoopAngularSpeed = -12f;
 
-	private bool _isSliding;
+	private Rigidbody bikeRigid;
 
-	[SerializeField]
-	private float _speedWhenSliding;
+	private Coroutine slideCR;
 
-	[SerializeField]
-	private float _speedMagniture;
+	public float ExtraDistanceSlide;
 
-	[SerializeField]
-	private AudioSource _SlimeLoop;
+	public float SpeedModifierOnEnter = 1f;
 
-	[SerializeField]
-	private bool _useTriggerExitInstead;
+	public bool inGoop;
 
-	private bool _exitingSlime;
+	private float enterMagnitude;
 
-	[SerializeField]
-	private double _extraSlideTime;
+	private Vector3 prevBikePos;
 
-	[SerializeField]
-	private float _force;
+	public double MaxDistanceSlide = 10.0;
 
-	[SerializeField]
-	private bool isball;
+	public float MaxEnterMagnitude = 12f;
 
-	[SerializeField]
-	private ParticleSystem _slideSystem;
+	public bool AllowShootOutOfGoop;
 
-	[SerializeField]
-	private bool _noSpinWhenSliding;
+	public ParticleSystem GoopParticleEffect;
 
-	private void Start()
+	public ClipSettingsCollection EnterGoopSFX;
+
+	public ClipSettingsCollection ExitGoopSFX;
+
+	private AudioSource goopAudioSource;
+
+	private void OnEnable()
 	{
+		inGoop = false;
+		bikeRigid = GetComponent<Rigidbody>();
+		if (GoopParticleEffect != null)
+		{
+			GoopParticleEffect.Stop();
+		}
 	}
 
-	private void OnTriggerEnter(Collider other)
+	public void EnterGoop()
 	{
+		if (slideCR != null)
+		{
+			StopCoroutine(slideCR);
+			if (goopAudioSource != null)
+			{
+				goopAudioSource.Stop();
+			}
+		}
+		if (!inGoop && bikeRigid != null)
+		{
+			enterMagnitude = Mathf.Clamp(bikeRigid.velocity.magnitude * SpeedModifierOnEnter, 0f, MaxEnterMagnitude);
+			inGoop = true;
+			prevBikePos = base.transform.position;
+			if (GoopParticleEffect != null)
+			{
+				GoopParticleEffect.Play();
+			}
+			if (EnterGoopSFX != null)
+			{
+				goopAudioSource = EnterGoopSFX.Play(null, Vector3.zero, 1f, 1f);
+			}
+		}
 	}
 
-	private void StartSlime(Collider other)
+	public void ExitGoop()
 	{
-	}
-
-	private void EndSlime(Collider other)
-	{
-	}
-
-	private void OnTriggerExit(Collider other)
-	{
-	}
-
-	private void OnDrawGizmos()
-	{
-	}
-
-	private IEnumerator EndSlideCR()
-	{
-		return null;
-	}
-
-	private void UpdateVelocity(float damper = 1f)
-	{
+		if (inGoop)
+		{
+			slideCR = StartCoroutine(EndSlideCR());
+			if (goopAudioSource != null)
+			{
+				goopAudioSource.Stop();
+			}
+			if (ExitGoopSFX != null)
+			{
+				ExitGoopSFX.Play(null, Vector3.zero, 1f, 1f);
+			}
+		}
 	}
 
 	private void FixedUpdate()
 	{
+		if (!inGoop)
+		{
+			return;
+		}
+		UpdateVelocity(1f);
+		if (Vector3.Distance(prevBikePos, base.transform.position) >= MaxDistanceSlide)
+		{
+			if (!AllowShootOutOfGoop && bikeRigid != null)
+			{
+				bikeRigid.velocity = Vector3.zero;
+				bikeRigid.angularVelocity = Vector3.zero;
+			}
+			if (goopAudioSource != null)
+			{
+				goopAudioSource.Stop();
+			}
+			inGoop = false;
+			if (GoopParticleEffect != null)
+			{
+				GoopParticleEffect.Stop();
+			}
+		}
+	}
+
+	private IEnumerator EndSlideCR()
+	{
+		Vector3 startSlidePos = base.transform.position;
+		while ((double)Vector3.Distance(startSlidePos, base.transform.position) < MaxDistanceSlide)
+		{
+			UpdateVelocity(0.5f);
+			yield return new WaitForFixedUpdate();
+		}
+		if (!AllowShootOutOfGoop && bikeRigid != null)
+		{
+			bikeRigid.velocity = Vector3.zero;
+			bikeRigid.angularVelocity = Vector3.zero;
+		}
+		inGoop = false;
+		if (GoopParticleEffect != null)
+		{
+			GoopParticleEffect.Stop();
+		}
+	}
+
+	private void UpdateVelocity(float mult = 1f)
+	{
+		if (bikeRigid == null || FrontWheel == null || BackWheel == null)
+		{
+			return;
+		}
+		Vector3 normalized = (FrontWheel.position - BackWheel.position).normalized;
+		bikeRigid.velocity = normalized * enterMagnitude * mult;
+		bikeRigid.angularVelocity = new Vector3(0f, 0f, GoopAngularSpeed * mult);
 	}
 }

@@ -67,7 +67,7 @@ namespace Audio
 				return;
 			}
 			PlayClipInfo info = countdownSFX.GetPlayInfo();
-			AudioManager.Instance.uiEffects.PlaySimple(info.clip, info.VolumeResult, info.PitchResult, false, 0f, Vector3.zero);
+			AudioManager.Instance.uiEffects.PlaySimple(info.clip, info.VolumeResult, info.PitchResult, Vector3.zero, 0f, false);
 		}
 
 		public void PlayStartSFX()
@@ -77,7 +77,7 @@ namespace Audio
 				return;
 			}
 			PlayClipInfo info = raceStartSFX.GetPlayInfo();
-			AudioManager.Instance.uiEffects.PlaySimple(info.clip, info.VolumeResult, info.PitchResult, false, 0f, Vector3.zero);
+			AudioManager.Instance.uiEffects.PlaySimple(info.clip, info.VolumeResult, info.PitchResult, Vector3.zero, 0f, false);
 		}
 
 		private void Metronome_Ticked(double obj)

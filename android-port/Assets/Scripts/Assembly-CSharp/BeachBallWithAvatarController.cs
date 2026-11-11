@@ -1,118 +1,207 @@
+using System;
 using System.Collections;
 using Audio;
 using Core;
+using Effects;
 using UnityEngine;
 
-public class BeachBallWithAvatarController : GolfBallShooterBase
+public class BeachBallWithAvatarController : GolfBallController
 {
-	public float RollSpeed;
+	[Header("Balloon Specific")]
+	public float MaxShots = 5f;
 
-	public float ForceSpeed;
+	public float ExplosionDelay = 0.7f;
 
-	public float ShootSpeed;
+	public float SizeIncrementPerShot = 0.05f;
 
-	public Animator Animator;
+	public Vector3 BallPopSpawnPieceRandomForceRange = new Vector3(5f, 5f, 0f);
 
-	public float AnimatorRotateSpeed;
+	public float AutoCompleteMaxSpeed;
 
-	public float AnimatorOffset;
+	[Header("Internal Settings")]
+	[SerializeField]
+	private Transform balloonParentObject;
 
-	public float AnimationSpeedMod;
+	[SerializeField]
+	private Transform balloonScaleObject;
 
-	public SphereCollider BallCollider;
+	[SerializeField]
+	private BalloonPopPieces balloonPiecesObject;
 
-	public float MaxSpeed;
+	[SerializeField]
+	private ParticleSystem airTrailParticles;
 
-	public bool AddForcesInFixedUpdate;
+	[SerializeField]
+	private ExplosionEffect explosionParticlesPrefab;
 
-	public bool SetAnimationSpeed;
+	[SerializeField]
+	private ClipSettingsCollection balloonAirTrailClip;
 
-	public bool CanDash;
+	[SerializeField]
+	private ClipSettingsCollection balloonExplodeClip;
 
-	public float DashTime;
+	[SerializeField]
+	private ClipSettingsCollection balloonInflateClip;
 
-	public ParticleSystem DashParticles;
+	private AudioSource airTrailAudioSource;
 
-	public float TimeToInflate;
+	private float shotsCounter;
 
-	public Vector2 InflateScaleRange;
+	private bool hasPopped;
 
-	public AnimationCurve inflationCurve;
+	private bool explosionTriggered;
 
-	public GameObject DashSphere;
-
-	public bool UseVelocityAsInflationTimer;
-
-	public ClipSettingsCollection ReadyToDash;
-
-	public ClipSettingsCollection DashSound;
-
-	private bool dashing;
-
-	private bool dashExplosionLock;
-
-	private float explosionY;
-
-	private Vector3 dashDirection;
-
-	private float dashTimer;
-
-	private Vector3 preDashVelocity;
-
-	private Vector3 preDashScale;
-
-	private float inflateTimer;
-
-	private Vector3 currentBoost;
-
-	private Vector3 lastPos;
-
-	private void Start()
+	public override void ResetGolfBall()
 	{
+		base.ResetGolfBall();
+		shotsCounter = 0f;
+		hasPopped = false;
+		explosionTriggered = false;
+		if (balloonParentObject != null)
+		{
+			balloonParentObject.gameObject.SetActive(true);
+		}
+		if (balloonPiecesObject != null)
+		{
+			balloonPiecesObject.gameObject.SetActive(false);
+		}
+		if (balloonScaleObject != null)
+		{
+			balloonScaleObject.localScale = Vector3.one;
+		}
+		Rigidbody component = GetComponent<Rigidbody>();
+		if (component != null)
+		{
+			component.constraints = (RigidbodyConstraints)56;
+		}
 	}
 
-	public override void OnAimUpdate(Vector3 boost, bool onlyAimArrow)
+	public override bool CanShoot(Vector3 pos, bool ignoreLayerMask)
 	{
+		if (!hasPopped)
+		{
+			return base.CanShoot(pos, ignoreLayerMask);
+		}
+		return false;
 	}
 
-	public void OnExplode()
+	public override void Shoot(Vector3 force, float charge = 1f)
 	{
+		shotsCounter += 1f;
+		if (shotsCounter < MaxShots)
+		{
+			base.Shoot(force, charge);
+			if (balloonScaleObject != null)
+			{
+				balloonScaleObject.localScale += Vector3.one * SizeIncrementPerShot;
+			}
+			if (airTrailParticles != null)
+			{
+				airTrailParticles.Play();
+			}
+			if (balloonAirTrailClip != null)
+			{
+				airTrailAudioSource = balloonAirTrailClip.Play(null, base.transform.position, 1f, 1f);
+			}
+			return;
+		}
+		hasPopped = true;
+		Invoke("Explode", ExplosionDelay);
+		float num = Math.Min(force.magnitude, 25f);
+		if (balloonScaleObject != null)
+		{
+			balloonScaleObject.localScale += Vector3.one * (SizeIncrementPerShot * num * 0.1f);
+		}
+		StartCoroutine(BallInflationSoundRoutine());
 	}
 
-	public void ExplosionLock()
+	protected override void DoneMoving()
 	{
+		base.DoneMoving();
+		if (airTrailParticles != null)
+		{
+			airTrailParticles.Stop();
+		}
+		if (airTrailAudioSource != null)
+		{
+			airTrailAudioSource.Stop();
+		}
 	}
 
-	public override void OnCancel()
+	protected override void OnCollisionEnter(Collision collision)
 	{
+		base.OnCollisionEnter(collision);
+		if (collision != null && collision.collider != null && collision.collider.CompareTag("Obstacle"))
+		{
+			Explode();
+		}
 	}
 
-	protected override void FixedUpdate()
+	private void OnTriggerEnter(Collider other)
 	{
-	base.FixedUpdate();
+		if (other != null && other.CompareTag("Obstacle"))
+		{
+			Explode();
+		}
 	}
 
-	private void StopDashing()
+	private void Explode()
 	{
-	}
-
-	public void OnCollision(Collision collision)
-	{
+		if (explosionTriggered)
+		{
+			return;
+		}
+		explosionTriggered = true;
+		if (balloonParentObject != null)
+		{
+			balloonParentObject.gameObject.SetActive(false);
+		}
+		if (balloonPiecesObject != null)
+		{
+			balloonPiecesObject.gameObject.SetActive(true);
+			balloonPiecesObject.ExplodePieces(BallPopSpawnPieceRandomForceRange);
+		}
+		if (explosionParticlesPrefab != null)
+		{
+			ExplosionEffect explosionEffect = UnityEngine.Object.Instantiate(explosionParticlesPrefab, base.transform.position, Quaternion.identity);
+			if (explosionEffect != null)
+			{
+				explosionEffect.Explode();
+			}
+		}
+		if (airTrailParticles != null)
+		{
+			airTrailParticles.Stop();
+		}
+		if (airTrailAudioSource != null)
+		{
+			airTrailAudioSource.Stop();
+		}
+		if (balloonExplodeClip != null)
+		{
+			balloonExplodeClip.Play(null, base.transform.position, 1f, 1f);
+		}
+		DoneMoving();
+		Rigidbody component = GetComponent<Rigidbody>();
+		if (component != null)
+		{
+			component.constraints = RigidbodyConstraints.FreezeAll;
+		}
+		StartCoroutine(RemoveExplosionLock());
 	}
 
 	private IEnumerator BallInflationSoundRoutine()
 	{
-		return null;
+		yield return new WaitForSecondsRealtime(0.02f);
+		if (balloonInflateClip != null)
+		{
+			balloonInflateClip.Play(null, base.transform.position, 1f, 1f);
+		}
 	}
 
 	private IEnumerator RemoveExplosionLock()
 	{
-		return null;
-	}
-
-	public override void OnShoot(Vector3 boost)
-	{
-	base.OnShoot(boost);
-		StandardShoot(boost, 15f, 5f, (ShootSpeed > 0f ? ShootSpeed : 22f), 5f);
+		yield return new WaitForSecondsRealtime(1f);
+		explosionTriggered = false;
 	}
 }

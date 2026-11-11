@@ -6,71 +6,132 @@ namespace Audio
 	public class GiraffePainterAudio : MonoBehaviour
 	{
 		[SerializeField]
-		private bool isSprayCan;
+		[Header("Continuous Sounds")]
+		private AudioSource paintLoopSource;
 
 		[SerializeField]
-		private GiraffePainterController painter;
+		private float paintLoopDelay = 1f;
 
 		[SerializeField]
-		private AudioSource audioSource;
+		[Header("Pose Change Sequence")]
+		private float poseChangeDelay = 0.5f;
 
 		[SerializeField]
-		private float sourcePlayDelay;
+		private ClipSettingsCollection giraffeMumbleClips;
 
 		[SerializeField]
-		private ClipSettingsCollection autoCompleteSfx;
+		private ClipSettingsCollection painterDisgruntledClips;
 
 		[SerializeField]
-		private ClipSettingsCollection newPoseReadySfx;
+		private ClipSettingsCollection clothShuffleClips;
 
 		[SerializeField]
-		private ClipSettingsCollection failPoseSfx;
+		[Header("Level Reset Sound")]
+		private ClipSettingsCollection paperRipClips;
 
-		[SerializeField]
-		private ClipSettingsCollection shakeCanSfx;
+		private float initialLoopVolume;
 
-		private bool didChangePose;
-
-		private GiraffePainterController.PaintStateEnum state;
-
-		private GolfGoal goal;
+		private Coroutine delayedPlayRoutine;
 
 		private void Awake()
 		{
+			if (paintLoopSource != null)
+			{
+				initialLoopVolume = paintLoopSource.volume;
+			}
 		}
 
-		private void OnAnyComplete()
+		private void OnEnable()
 		{
+			LevelReset();
 		}
 
-		private void OnGoal(string obj)
+		private void OnDisable()
 		{
+			StopAllCoroutines();
+			if (paintLoopSource != null && paintLoopSource.isPlaying)
+			{
+				paintLoopSource.Stop();
+			}
 		}
 
-		private void Instance_OnLevelWillUnload()
+		public void BallAiming()
 		{
+			StopDelayPlayRoutine();
+			if (paintLoopSource != null && paintLoopSource.isPlaying)
+			{
+				paintLoopSource.Stop();
+			}
 		}
 
-		private void OnRedoPose()
+		public void BallAimCancelled()
 		{
+			StopDelayPlayRoutine();
+			delayedPlayRoutine = StartCoroutine(DelayedPlay(0.1f));
 		}
 
-		private void OnNewPose()
+		public void BallMoving()
 		{
+			StopDelayPlayRoutine();
+			if (paintLoopSource != null && paintLoopSource.isPlaying)
+			{
+				paintLoopSource.Stop();
+			}
+			if (giraffeMumbleClips != null)
+			{
+				giraffeMumbleClips.Play(null, Vector3.zero, 1f, 1f);
+			}
 		}
 
-		private void OnChangeState(GiraffePainterController.PaintStateEnum newState)
+		public void BallDoneMoving()
 		{
+			StartCoroutine(RedoPoseSequence());
+			StopDelayPlayRoutine();
+			delayedPlayRoutine = StartCoroutine(DelayedPlay(paintLoopDelay));
 		}
 
-		private IEnumerator DelayedPlay(float duration)
+		private void LevelReset()
 		{
-			return null;
+			StopAllCoroutines();
+			if (paintLoopSource != null && paintLoopSource.isPlaying)
+			{
+				paintLoopSource.Stop();
+			}
+			if (paperRipClips != null)
+			{
+				paperRipClips.Play(null, Vector3.zero, 1f, 1f);
+			}
+			delayedPlayRoutine = StartCoroutine(DelayedPlay(paintLoopDelay));
+		}
+
+		private void StopDelayPlayRoutine()
+		{
+			if (delayedPlayRoutine != null)
+			{
+				StopCoroutine(delayedPlayRoutine);
+			}
+		}
+
+		private IEnumerator DelayedPlay(float delay)
+		{
+			yield return new WaitForSeconds(delay);
+			if (paintLoopSource != null)
+			{
+				paintLoopSource.Play();
+			}
 		}
 
 		private IEnumerator RedoPoseSequence()
 		{
-			return null;
+			if (painterDisgruntledClips != null)
+			{
+				painterDisgruntledClips.Play(null, Vector3.zero, 1f, 1f);
+			}
+			yield return new WaitForSeconds(poseChangeDelay);
+			if (clothShuffleClips != null)
+			{
+				clothShuffleClips.Play(null, Vector3.zero, 1f, 1f);
+			}
 		}
 	}
 }
