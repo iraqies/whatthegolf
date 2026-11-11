@@ -5,21 +5,30 @@ namespace CameraStack
 	public abstract class CameraBehaviorOrthographic : CameraBehavior
 	{
 		[SerializeField]
-		protected float orthographicSize = 8f;
+		protected float orthographicSize = 5f;
 
 		public override void Init()
 		{
-			base.Init();
 			if (Cameras != null)
 			{
-				foreach (var c in Cameras)
+				for (int i = 0; i < Cameras.Length; i++)
 				{
+					var c = Cameras[i];
 					if (c != null)
 					{
 						c.orthographic = true;
-						if (orthographicSize > 0.01f)
-							c.orthographicSize = orthographicSize;
+						float extra = c.aspect < 0.5f ? 3f : 0f;
+						c.orthographicSize = orthographicSize + extra;
 					}
+				}
+			}
+			if (VirtualCameras != null)
+			{
+				for (int i = 0; i < VirtualCameras.Length; i++)
+				{
+					var vc = VirtualCameras[i];
+					if (vc != null)
+						vc.m_Lens.OrthographicSize = orthographicSize;
 				}
 			}
 		}

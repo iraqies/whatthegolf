@@ -43,6 +43,10 @@ public class Localization
 		catch
 		{
 		}
+		if (fonts == null || fonts.Count == 0)
+		{
+			LoadFontCollection("Western");
+		}
 	}
 
 	public void ChangeLanguage(string languageId)
@@ -50,7 +54,7 @@ public class Localization
 		if (!string.IsNullOrEmpty(languageId))
 		{
 			_currentLang = languageId;
-			OnLanguageChangedEvent?.Invoke();
+			OnLanguageChanged();
 		}
 	}
 
@@ -98,8 +102,52 @@ public class Localization
 		return id;
 	}
 
-	public LocalizationFont GetFont(LocalizationFontStyle style) => null;
+	public LocalizationFont GetFont(LocalizationFontStyle style)
+	{
+		if (style == null) return null;
+		EnsureLoaded();
+		if (fonts == null || fonts.Count == 0)
+			LoadFontCollection("Western");
+		if (fonts != null && fonts.TryGetValue(style.name, out LocalizationFont font))
+			return font;
+		return null;
+	}
+
 	private void RegisterForLanguageChanges() { }
-	private void OnLanguageChanged() => OnLanguageChangedEvent?.Invoke();
-	private void LoadFontCollection(string fontCollectionName) { }
+
+	private void OnLanguageChanged()
+	{
+		string fontCollectionName = GetString("ID_SYSTEM_FONT_COLLECTION", true);
+		if (string.IsNullOrEmpty(fontCollectionName) || fontCollectionName == "ID_SYSTEM_FONT_COLLECTION" || fontCollectionName == "SYSTEM FONT COLLECTION")
+			fontCollectionName = "Western";
+		LoadFontCollection(fontCollectionName);
+		foreach (var tmp in UnityEngine.Object.FindObjectsOfType<TextMeshProLocalized>())
+		{
+			if (tmp != null && tmp.gameObject != null && tmp.gameObject.scene.IsValid())
+				tmp.NotifyLanguageChanged();
+		}
+		OnLanguageChangedEvent?.Invoke();
+	}
+
+	private void LoadFontCollection(string fontCollectionName)
+	{
+		if (string.IsNullOrEmpty(fontCollectionName))
+			fontCollectionName = "Western";
+		var col = Resources.Load<LocalizationFontCollection>("FontCollections/" + fontCollectionName)
+			?? Resources.Load<LocalizationFontCollection>("FontCollections/Western");
+		fonts = new Dictionary<string, LocalizationFont>(StringComparer.OrdinalIgnoreCase);
+		if (col != null && col.Fonts != null)
+		{
+			for (int i = 0; i < col.Fonts.Length; i++)
+			{
+				var lf = col.Fonts[i];
+				if (lf != null && lf.Style != null)
+				{
+					if (lf.MaterialUGUI == null)
+						lf.MaterialUGUI = lf.Material;
+					fonts[lf.Style.name] = lf;
+				}
+			}
+		}
+	}
 }

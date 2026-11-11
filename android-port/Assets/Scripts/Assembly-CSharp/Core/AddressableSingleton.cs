@@ -27,7 +27,8 @@ namespace Core
 							var go = new GameObject(typeof(T).Name);
 							_instance = go.AddComponent<T>();
 						}
-						Object.DontDestroyOnLoad(_instance.gameObject);
+						if (Application.isPlaying)
+							Object.DontDestroyOnLoad(_instance.gameObject);
 						if (_instance is AddressableSingleton<T> singleton)
 							singleton.Initialize();
 					}

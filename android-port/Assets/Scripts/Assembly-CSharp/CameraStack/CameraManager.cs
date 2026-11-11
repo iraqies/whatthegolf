@@ -23,8 +23,8 @@ namespace CameraStack
 		public float gyroSenseMagnitude;
 
 		public static CameraManager Instance => _instance ?? (_instance = FindObjectOfType<CameraManager>());
-		public Camera[] Cameras => _cameras ?? (_cameras = GetComponentsInChildren<Camera>(true));
-		public Camera MainCamera => GetComponent<Camera>() ?? (Cameras.Length > 0 ? Cameras[0] : Camera.main);
+		public Camera[] Cameras => (_cameras == null || _cameras.Length == 0) ? (_cameras = GetComponentsInChildren<Camera>(true)) : _cameras;
+		public Camera MainCamera => (Cameras != null && Cameras.Length > 0) ? Cameras[0] : Camera.main;
 		public CameraBehavior ActiveBehavior { get; private set; }
 		public CameraBehavior CurrentBehaviour => ActiveBehavior;
 		public CameraBehavior CurrentCameraBehavior => ActiveBehavior;
@@ -81,7 +81,7 @@ namespace CameraStack
 				for (int i = 0; i < _cameras.Length; i++)
 				{
 					if (_cameras[i] == null) continue;
-					_cameras[i].transform.SetParent(shakeGo.transform, true);
+					_cameras[i].transform.SetParent(shakeGo.transform, false);
 					_cameras[i].useOcclusionCulling = false;
 				}
 			}
@@ -151,7 +151,8 @@ namespace CameraStack
 
 		public void SetCurrentBehaviour()
 		{
-			bool useRot = PlatformSettings.Instance != null && PlatformSettings.Instance.GetCurrent() != null && PlatformSettings.Instance.GetCurrent().useRotatedOverworldAndCameraInLevels;
+			var cfg = PlatformSettings.Instance != null ? PlatformSettings.Instance.GetCurrent() : null;
+			bool useRot = cfg == null || cfg.useRotatedOverworldAndCameraInLevels;
 			CameraBehavior next = (useRot || DesktopCameraOverrideBehaviour == null) ? OnPlayCameraBehavior : DesktopCameraOverrideBehaviour;
 			if (next == null) next = OnPlayCameraBehavior ?? DesktopCameraOverrideBehaviour ?? GetComponent<CameraBehavior>();
 			if (next != null) SwitchBehavior(next);
@@ -203,7 +204,7 @@ namespace CameraStack
 			{
 				ActiveBehavior.IsAttachedToCameraManager = (ActiveBehavior.gameObject == gameObject);
 				if (!ActiveBehavior.IsAttachedToCameraManager)
-					ActiveBehavior.transform.SetParent(transform, true);
+					ActiveBehavior.transform.SetParent(transform, false);
 				ActiveBehavior.Cameras = Cameras;
 				ActiveBehavior.Init();
 				m_OnActiveBehaviourChanged?.Invoke(ActiveBehavior);

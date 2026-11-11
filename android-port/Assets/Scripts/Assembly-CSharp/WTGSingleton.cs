@@ -15,7 +15,8 @@ public abstract class WTGSingleton<T> : MonoBehaviour where T : MonoBehaviour
 				{
 					var go = new GameObject(typeof(T).Name);
 					instance = go.AddComponent<T>();
-					Object.DontDestroyOnLoad(go);
+					if (Application.isPlaying)
+						Object.DontDestroyOnLoad(go);
 				}
 			}
 			return instance;
@@ -30,7 +31,8 @@ public abstract class WTGSingleton<T> : MonoBehaviour where T : MonoBehaviour
 		if (instance == null)
 		{
 			instance = this as T;
-			Object.DontDestroyOnLoad(gameObject);
+			if (Application.isPlaying)
+				Object.DontDestroyOnLoad(gameObject);
 			OnInit();
 		}
 		else if (instance != this)

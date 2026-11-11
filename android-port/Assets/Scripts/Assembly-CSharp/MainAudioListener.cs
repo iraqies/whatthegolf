@@ -36,11 +36,17 @@ public class MainAudioListener : MonoBehaviour
 			for (int i = 0; i < existingListeners.Length; i++)
 			{
 				if (existingListeners[i] != null)
-					Destroy(existingListeners[i]);
+				{
+					if (Application.isPlaying)
+						Destroy(existingListeners[i]);
+					else
+						DestroyImmediate(existingListeners[i]);
+				}
 			}
 		}
 		var go = new GameObject("AudioListener");
-		DontDestroyOnLoad(go);
+		if (Application.isPlaying)
+			DontDestroyOnLoad(go);
 		go.AddComponent<AudioListener>();
 		instance = go.AddComponent<MainAudioListener>();
 		AudioListener.volume = 1f;

@@ -4,17 +4,21 @@ namespace CameraStack
 {
 	public abstract class CameraBehaviorPerspective : CameraBehavior
 	{
-		[SerializeField] private float fieldOfView = 60f;
-		public virtual float FOV => fieldOfView > 0f ? fieldOfView : 60f;
+		[SerializeField] private float fieldOfView = 35f;
+		public virtual float FOV => fieldOfView > 0f ? fieldOfView : 35f;
 
 		public override void Init()
 		{
 			if (Cameras != null)
 			{
-				foreach (var c in Cameras)
+				for (int i = 0; i < Cameras.Length; i++)
 				{
-					if (c != null && !c.orthographic && fieldOfView > 0f)
-						c.fieldOfView = fieldOfView;
+					if (Cameras[i] != null)
+					{
+						Cameras[i].orthographic = false;
+						if (fieldOfView > 0f)
+							Cameras[i].fieldOfView = fieldOfView;
+					}
 				}
 			}
 		}
@@ -24,10 +28,10 @@ namespace CameraStack
 			if (Cameras != null)
 			{
 				float fov = FOV;
-				foreach (var c in Cameras)
+				for (int i = 0; i < Cameras.Length; i++)
 				{
-					if (c != null)
-						c.fieldOfView = fov;
+					if (Cameras[i] != null)
+						Cameras[i].fieldOfView = fov;
 				}
 			}
 		}

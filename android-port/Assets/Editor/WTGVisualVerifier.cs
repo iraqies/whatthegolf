@@ -5,6 +5,8 @@ using System.Reflection;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using CameraStack;
+using Cinemachine;
 using Core;
 using GolfCourse;
 
@@ -19,9 +21,9 @@ public static class WTGVisualVerifier
 		try
 		{
 			Directory.CreateDirectory(OutDir);
-			Debug.Log("[WTGVisualVerifier] Starting comprehensive round & fix verification...");
+			Debug.Log("[WTGVisualVerifier] Starting comprehensive runtime-initialized visual verification...");
 
-			// 1. Overworld Section 8: Cow (Tippable)Standing vs Tipped + Main door Robot 08
+			// 1. Overworld Section 8: Cow (Tippable) Standing vs Tipped + LAB EXPERIMENT #462
 			EditorSceneManager.OpenScene("Assets/Scenes/GolfGames/1. GOLF IS BORING/main overworld new.unity", OpenSceneMode.Single);
 			var owGF = UnityEngine.Object.FindObjectOfType<GridFiller>();
 			if (owGF != null)
@@ -34,77 +36,93 @@ public static class WTGVisualVerifier
 				if (sec != null && sec.Container != null)
 					sec.Container.SetActive(true);
 			}
+			foreach (var de in UnityEngine.Object.FindObjectsOfType<DemoEnabler>(true))
+			{
+				if (de != null) de.SendMessage("Awake", SendMessageOptions.DontRequireReceiver);
+			}
+			// Run TextMeshProLocalized.Awake so Western NotoSans font + material are applied!
+			foreach (var tmpLoc in UnityEngine.Object.FindObjectsOfType<TextMeshProLocalized>(true))
+			{
+				if (tmpLoc != null && tmpLoc.gameObject.activeInHierarchy)
+					tmpLoc.SendMessage("Awake", SendMessageOptions.DontRequireReceiver);
+			}
 			Camera owCam = FindMainCamera();
 			var cow = UnityEngine.Object.FindObjectOfType<CowTippable>(true);
 			if (cow != null && owCam != null)
 			{
 				cow.SendMessage("Awake", SendMessageOptions.DontRequireReceiver);
 				Animator cowAnim = cow.GetComponentInChildren<Animator>(true);
-				Debug.Log($"[WTGVisualVerifier] CowTippable found on '{cow.name}', Animator in children: {(cowAnim != null ? cowAnim.name : "NULL")}");
 				Vector3 cowPos = cow.transform.position;
 				owCam.orthographic = true;
 				owCam.orthographicSize = 7.5f;
 				owCam.transform.rotation = Quaternion.identity;
 				owCam.transform.position = new Vector3(cowPos.x, cowPos.y, -20.0f);
-				if (cowAnim != null)
+
+				var standingClip = AssetDatabase.LoadAssetAtPath<AnimationClip>("Assets/AnimationClip/CowStandingIdle.anim");
+				var lyingClip = AssetDatabase.LoadAssetAtPath<AnimationClip>("Assets/AnimationClip/CowLyingIdle.anim");
+				if (standingClip != null && cowAnim != null)
 				{
-					cowAnim.SetBool("Tipped", false);
-					cowAnim.Update(0.5f);
+					standingClip.SampleAnimation(cowAnim.gameObject, 0.2f);
 				}
 				RenderCameraToPng(owCam, Path.Combine(OutDir, "01_sec8_cow_standing.png"));
 
-				if (cowAnim != null)
+				if (lyingClip != null && cowAnim != null)
 				{
-					cowAnim.SetBool("Tipped", true);
-					for (int i = 0; i < 30; i++) cowAnim.Update(0.05f);
-				}
-				if (cow.SpeechLying != null)
-				{
-					cow.SpeechLying.gameObject.SetActive(true);
+					lyingClip.SampleAnimation(cowAnim.gameObject, 0.2f);
 				}
 				RenderCameraToPng(owCam, Path.Combine(OutDir, "02_sec8_cow_tipped.png"));
 			}
 
-			// 2. Section 8 Round: EvilFlag 2 Furthest ("LAB EXPERIMENT #462: ANNOYANCE")
+			// 2. Render 20 representative rounds with full CameraManager & TextMeshProLocalized initialization
 			VerifyAndRenderRound("Assets/Scenes/GolfGames/GOLF VS EVIL/EvilFlag 2 Furthest.unity", "03_sec8_evilflag_furthest.png");
-
-			// 3. Section 1: Tutorial & CatBall & ManBall (Ragdoll Golfer)
 			VerifyAndRenderRound("Assets/Scenes/GolfGames/1. GOLF IS BORING/Tutorial.unity", "04_sec1_tutorial.png");
 			VerifyAndRenderRound("Assets/Scenes/GolfGames/1. GOLF IS BORING/CatBall.unity", "05_sec1_catball.png");
 			VerifyAndRenderRound("Assets/Scenes/GolfGames/1. GOLF IS BORING/ManBall.unity", "06_sec1_manball_ragdoll.png");
-
-			// 4. Section 2: 2DBall Donkey Kong & 2DBall mario 1
 			VerifyAndRenderRound("Assets/Scenes/GolfGames/2. 2D IS GREAT/2DBall Donkey Kong.unity", "07_sec2_donkey_kong.png");
 			VerifyAndRenderRound("Assets/Scenes/GolfGames/2. 2D IS GREAT/2DBall mario 1.unity", "08_sec2_mario1.png");
-
-			// 5. Section 3 / Livingroom & Explosions: Livingroom couch & 2D Explosions Sticky 1
 			VerifyAndRenderRound("Assets/Scenes/GolfGames/Livingroom/Livingroom couch.unity", "09_sec3_livingroom_couch.png");
 			VerifyAndRenderRound("Assets/Scenes/GolfGames/2D Explosions/2D Explosions Sticky 1.unity", "10_sec3_explosions_sticky.png");
-
-			// 6. Section 4 / Space & FPG: 2D Moon Lander & FPG Ordinary Golf 1
 			VerifyAndRenderRound("Assets/Scenes/GolfGames/2. 2D IS GREAT/2D Moon Lander.unity", "11_sec4_moon_lander.png");
 			VerifyAndRenderRound("Assets/Scenes/GolfGames/4. FPG/FPG Ordinary Golf 1.unity", "12_sec4_fpg_golf.png");
-
-			// 7. Section 5 / SUPERGOLF & Competitions: SUPERGOLF0 & car monstertruck
 			VerifyAndRenderRound("Assets/Scenes/GolfGames/SUPERGOLF/SUPERGOLF0.unity", "13_sec5_supergolf.png");
 			VerifyAndRenderRound("Assets/Scenes/GolfGames/Competitions/car monstertruck.unity", "14_sec5_monstertruck.png");
-
-			// 8. Section 6 / Stealth & Clone Wars: MetalGearSolid01 & AngryGolf
 			VerifyAndRenderRound("Assets/Scenes/GolfGames/1. GOLF IS BORING/MetalGearSolid01.unity", "15_sec6_metal_gear.png");
 			VerifyAndRenderRound("Assets/Scenes/GolfGames/7. CLONE WARS/AngryGolf.unity", "16_sec6_angry_golf.png");
-
-			// 9. Section 7 / Portal & Bowling: 2D Portal Gun 1 & Bowling
 			VerifyAndRenderRound("Assets/Scenes/GolfGames/9. The rest/2D Portal Gun 1.unity", "17_sec7_portal_gun.png");
 			VerifyAndRenderRound("Assets/Scenes/GolfGames/9. The rest/Bowling/Bowling.unity", "18_sec7_bowling.png");
-
-			// 10. Section 8/9/10: Western, Water, Boss HoleInOne 08, Final Boss
 			VerifyAndRenderRound("Assets/Scenes/GolfGames/Western/2D Western Train.unity", "19_sec9_western_train.png");
 			VerifyAndRenderRound("Assets/Scenes/GolfGames/Water/BeachVolleyGolf.unity", "20_sec9_beach_volley.png");
 			VerifyAndRenderRound("Assets/Scenes/GolfGames/Hole In One/2D HoleInOne 08 flying ball.unity", "21_boss_08_flying_ball.png");
 			VerifyAndRenderRound("Assets/Scenes/GolfGames/Boss Battles/Final boss.unity", "22_final_boss.png");
 
-			Debug.Log($"[WTGVisualVerifier] Final Global Physics.gravity={Physics.gravity}, Physics2D.gravity={Physics2D.gravity}");
-			Debug.Log("[WTGVisualVerifier] Completed all 22 verification renders and round audits successfully.");
+			// 3. Full Audit of ALL 194 .unity scenes in Assets/Scenes
+			string[] allScenes = Directory.GetFiles("Assets/Scenes", "*.unity", SearchOption.AllDirectories);
+			Array.Sort(allScenes);
+			int totalScenes = 0;
+			int zeroControllerRounds = 0;
+			int zeroCameraRounds = 0;
+			foreach (string sp in allScenes)
+			{
+				string sname = Path.GetFileNameWithoutExtension(sp);
+				if (sname == "_Start" || sname == "Loading" || sname == "MissingLevel" || sname.Contains("overworld") || sname.Contains("transition"))
+					continue;
+				totalScenes++;
+				EditorSceneManager.OpenScene(sp, OpenSceneMode.Single);
+				var ctrls = UnityEngine.Object.FindObjectsOfType<GolfBallController>(true);
+				var cams = UnityEngine.Object.FindObjectsOfType<Camera>(true);
+				var goals = UnityEngine.Object.FindObjectsOfType<GolfGoal>(true);
+				if (ctrls.Length == 0)
+				{
+					zeroControllerRounds++;
+					Debug.LogWarning($"[SCENE AUDIT WARN] 0 GolfBallControllers in {sp}");
+				}
+				if (cams.Length == 0)
+				{
+					zeroCameraRounds++;
+					Debug.LogWarning($"[SCENE AUDIT WARN] 0 Cameras in {sp}");
+				}
+			}
+			Debug.Log($"[FULL 194-SCENE AUDIT SUMMARY] Audited {totalScenes} gameplay rounds: zeroControllerRounds={zeroControllerRounds}, zeroCameraRounds={zeroCameraRounds}");
 			EditorApplication.Exit(0);
 		}
 		catch (Exception ex)
@@ -123,13 +141,35 @@ public static class WTGVisualVerifier
 		}
 		EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
 
-		// Hide any full-screen black transition overlays in editor preview
 		foreach (var tr in UnityEngine.Object.FindObjectsOfType<HoleInOneTransition>(true))
 		{
 			if (tr != null) tr.gameObject.SetActive(false);
 		}
+		foreach (var tmpLoc in UnityEngine.Object.FindObjectsOfType<TextMeshProLocalized>(true))
+		{
+			if (tmpLoc != null && tmpLoc.gameObject.activeInHierarchy)
+				tmpLoc.SendMessage("Awake", SendMessageOptions.DontRequireReceiver);
+		}
 
-		// Audit Level, GolfBallController, GolfGoal, OutOfBoundsTrigger, Gravity
+		// Disable CinemachineBrain in static editor preview so it doesn't snap Main Camera to (-7607, 7609, -6626)
+		foreach (var brain in UnityEngine.Object.FindObjectsOfType<CinemachineBrain>(true))
+		{
+			if (brain != null)
+			{
+				brain.enabled = false;
+				brain.transform.localPosition = Vector3.zero;
+				brain.transform.localRotation = Quaternion.identity;
+			}
+		}
+		if (scenePath.Contains("Final boss"))
+		{
+			foreach (var t in UnityEngine.Object.FindObjectsOfType<Transform>(true))
+			{
+				if (t != null && t.name == "Boss stages")
+					t.gameObject.SetActive(true);
+			}
+		}
+
 		var level = Level.Instance;
 		var controllers = UnityEngine.Object.FindObjectsOfType<GolfBallController>(true);
 		var goals = UnityEngine.Object.FindObjectsOfType<GolfGoal>(true);
@@ -140,7 +180,6 @@ public static class WTGVisualVerifier
 			grav.UpdateGravity();
 		}
 
-		// Verify Level.Instance lazy resolution & GolfBallController registration
 		int registeredCount = 0;
 		foreach (var gbc in controllers)
 		{
@@ -152,17 +191,34 @@ public static class WTGVisualVerifier
 			}
 		}
 
-		Debug.Log($"[ROUND AUDIT] {Path.GetFileNameWithoutExtension(scenePath)} | Level={(level != null ? level.name : "NULL")} | Controllers={controllers.Length} (Active={registeredCount}) | Goals={goals.Length} | OOB={oobs.Length} | Gravity3D={Physics.gravity.y:F1} | Gravity2D={Physics2D.gravity.y:F1}");
-
+		var cm = UnityEngine.Object.FindObjectOfType<CameraManager>(true);
 		Camera cam = FindMainCamera();
+		RenderTexture rt = new RenderTexture(Width, Height, 24, RenderTextureFormat.ARGB32);
 		if (cam != null)
 		{
-			RenderCameraToPng(cam, Path.Combine(OutDir, outFileName));
+			cam.targetTexture = rt;
 		}
-		else
+		if (cm != null)
 		{
-			Debug.LogWarning($"[ROUND AUDIT] No camera found in {scenePath}");
+			foreach (var cb in cm.GetComponentsInChildren<CBOrthographicStatic>(true))
+			{
+				if (cb != null) cb.SendMessage("Awake", SendMessageOptions.DontRequireReceiver);
+			}
+			cm.SendMessage("Awake", SendMessageOptions.DontRequireReceiver);
+			cm.SetCurrentBehaviour();
+			cm.Reset();
+			cam = cm.MainCamera ?? cam;
+			if (cam != null) cam.targetTexture = rt;
+			cm.Reset();
 		}
+
+		Debug.Log($"[ROUND AUDIT] {Path.GetFileNameWithoutExtension(scenePath)} | Level={(level != null ? level.name : "NULL")} | Controllers={controllers.Length} (Active={registeredCount}) | Goals={goals.Length} | OOB={oobs.Length} | Gravity3D={Physics.gravity.y:F1} | Cam={(cam != null ? cam.transform.eulerAngles.ToString() : "NULL")}");
+
+		if (cam != null)
+		{
+			RenderCameraWithRtToPng(cam, rt, Path.Combine(OutDir, outFileName));
+		}
+		UnityEngine.Object.DestroyImmediate(rt);
 
 		if (grav != null)
 		{
@@ -190,6 +246,12 @@ public static class WTGVisualVerifier
 	private static void RenderCameraToPng(Camera cam, string outPath)
 	{
 		RenderTexture rt = new RenderTexture(Width, Height, 24, RenderTextureFormat.ARGB32);
+		RenderCameraWithRtToPng(cam, rt, outPath);
+		UnityEngine.Object.DestroyImmediate(rt);
+	}
+
+	private static void RenderCameraWithRtToPng(Camera cam, RenderTexture rt, string outPath)
+	{
 		RenderTexture prevTarget = cam.targetTexture;
 		RenderTexture prevActive = RenderTexture.active;
 
@@ -203,7 +265,6 @@ public static class WTGVisualVerifier
 
 		cam.targetTexture = prevTarget;
 		RenderTexture.active = prevActive;
-		UnityEngine.Object.DestroyImmediate(rt);
 
 		byte[] png = tex.EncodeToPNG();
 		UnityEngine.Object.DestroyImmediate(tex);

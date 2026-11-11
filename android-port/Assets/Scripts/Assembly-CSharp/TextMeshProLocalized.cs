@@ -23,32 +23,46 @@ public class TextMeshProLocalized : MonoBehaviour
 
 	private void Awake()
 	{
-		CheckForComponent();
-		Retranslate();
+		_tmp = GetComponent<TMP_Text>();
+		if (_tmp != null)
+			_originalAlignment = _tmp.alignment;
+		if (!string.IsNullOrEmpty(_textId))
+		{
+			CheckForComponent();
+			TryTranslate(_textId, out string translated);
+			ChangeTextAfterTranslation(translated);
+		}
 	}
 
-	public void NotifyLanguageChanged() => Retranslate();
+	public void NotifyLanguageChanged()
+	{
+		if (!string.IsNullOrEmpty(_textId) && Localization.Instance != null && Localization.Instance.HasTerm(_textId))
+		{
+			CheckForComponent();
+			TryTranslate(_textId, out string translated);
+			ChangeTextAfterTranslation(translated);
+		}
+	}
 
 	private void Retranslate()
 	{
 		CheckForComponent();
-		if (TryTranslate(_textId, out string translated))
-			ChangeTextAfterTranslation(translated);
+		TryTranslate(_textId, out string translated);
+		ChangeTextAfterTranslation(translated);
 	}
 
 	public void ChangeText(string text)
 	{
 		_textId = text;
 		CheckForComponent();
-		if (TryTranslate(_textId, out string translated))
-			ChangeTextAfterTranslation(translated);
-		else
-			ChangeTextAfterTranslation(_textId);
+		TryTranslate(_textId, out string translated);
+		ChangeTextAfterTranslation(translated);
 	}
 
 	private void CheckForComponent()
 	{
-		if (_tmp == null) _tmp = GetComponent<TMP_Text>();
+		if (_tmp == null)
+			_tmp = GetComponent<TMP_Text>();
 	}
 
 	private static bool TryTranslate(string textOrTerm, out string translated)
@@ -56,18 +70,18 @@ public class TextMeshProLocalized : MonoBehaviour
 		translated = textOrTerm;
 		if (string.IsNullOrEmpty(textOrTerm))
 			return false;
-		if (Localization.Instance != null && (Localization.Instance.HasTerm(textOrTerm) || textOrTerm.StartsWith("ID_")))
+		if (Localization.Instance != null && Localization.Instance.HasTerm(textOrTerm))
 		{
 			translated = Localization.Instance.GetString(textOrTerm);
-			return !string.IsNullOrEmpty(translated);
+			return true;
 		}
 		return false;
 	}
 
 	public void ClearText()
 	{
-		CheckForComponent();
-		if (_tmp != null) _tmp.text = string.Empty;
+		if (_tmp != null)
+			_tmp.text = string.Empty;
 	}
 
 	public virtual void ChangeTextAfterTranslation(string textOrTerm)
@@ -81,8 +95,49 @@ public class TextMeshProLocalized : MonoBehaviour
 			onTextChanged?.Invoke();
 		}
 	}
-	public void UpdateAlignment() { }
-	public void UpdateFont() { }
-	private bool IsUGUI() => _tmp is TextMeshProUGUI;
-	private static TextAlignmentOptions GetOppositeAlignment(TextAlignmentOptions a) => a;
+
+	public void UpdateAlignment()
+	{
+		if (_tmp == null) return;
+		_tmp.isRightToLeftText = false;
+		if (HorizontalAlignment == HorizontalTextAlignment.FontBased)
+		{
+			_tmp.alignment = _tmp.isRightToLeftText ? GetOppositeAlignment(_originalAlignment) : _originalAlignment;
+		}
+	}
+
+	public void UpdateFont()
+	{
+		if (style == null || Localization.Instance == null) return;
+		var lf = Localization.Instance.GetFont(style);
+		if (lf == null || _tmp == null) return;
+		if (lf.Font != null)
+			_tmp.font = lf.Font;
+		if (IsUGUI() && lf.MaterialUGUI != null)
+			_tmp.fontSharedMaterial = lf.MaterialUGUI;
+		else if (lf.Material != null)
+			_tmp.fontSharedMaterial = lf.Material;
+	}
+
+	private bool IsUGUI() => GetComponent<TextMeshProUGUI>() != null;
+
+	private static TextAlignmentOptions GetOppositeAlignment(TextAlignmentOptions a)
+	{
+		switch (a)
+		{
+			case TextAlignmentOptions.TopLeft: return TextAlignmentOptions.TopRight;
+			case TextAlignmentOptions.TopRight: return TextAlignmentOptions.TopLeft;
+			case TextAlignmentOptions.Left: return TextAlignmentOptions.Right;
+			case TextAlignmentOptions.Right: return TextAlignmentOptions.Left;
+			case TextAlignmentOptions.BottomLeft: return TextAlignmentOptions.BottomRight;
+			case TextAlignmentOptions.BottomRight: return TextAlignmentOptions.BottomLeft;
+			case TextAlignmentOptions.BaselineLeft: return TextAlignmentOptions.BaselineRight;
+			case TextAlignmentOptions.BaselineRight: return TextAlignmentOptions.BaselineLeft;
+			case TextAlignmentOptions.MidlineLeft: return TextAlignmentOptions.MidlineRight;
+			case TextAlignmentOptions.MidlineRight: return TextAlignmentOptions.MidlineLeft;
+			case TextAlignmentOptions.CaplineLeft: return TextAlignmentOptions.CaplineRight;
+			case TextAlignmentOptions.CaplineRight: return TextAlignmentOptions.CaplineLeft;
+			default: return a;
+		}
+	}
 }

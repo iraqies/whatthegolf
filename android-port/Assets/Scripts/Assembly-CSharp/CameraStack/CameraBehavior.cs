@@ -7,20 +7,44 @@ namespace CameraStack
 {
 	public abstract class CameraBehavior : MonoBehaviour
 	{
-		public string PlatformName;
+		public string PlatformName = string.Empty;
 		[NonSerialized] public Camera[] cameras;
-		public bool IsAttachedToCameraManager;
+		public bool IsAttachedToCameraManager = true;
 		private CinemachineVirtualCamera[] virtualCameras;
 
 		public Camera[] Cameras
 		{
-			get => cameras ?? (cameras = GetComponentsInChildren<Camera>(true));
+			get
+			{
+				if (cameras == null)
+				{
+					if (IsAttachedToCameraManager)
+						cameras = GetComponents<Camera>();
+					else if (CameraManager.Instance != null)
+						cameras = CameraManager.Instance.gameObject.GetComponentsInChildren<Camera>(true);
+					if (cameras == null || cameras.Length == 0)
+						cameras = GetComponentsInChildren<Camera>(true);
+				}
+				return cameras;
+			}
 			set => cameras = value;
 		}
 
 		public CinemachineVirtualCamera[] VirtualCameras
 		{
-			get => virtualCameras ?? (virtualCameras = GetComponentsInChildren<CinemachineVirtualCamera>(true));
+			get
+			{
+				if (virtualCameras == null)
+				{
+					if (IsAttachedToCameraManager)
+						virtualCameras = GetComponents<CinemachineVirtualCamera>();
+					else if (CameraManager.Instance != null)
+						virtualCameras = CameraManager.Instance.gameObject.GetComponentsInChildren<CinemachineVirtualCamera>(true);
+					if (virtualCameras == null || virtualCameras.Length == 0)
+						virtualCameras = GetComponentsInChildren<CinemachineVirtualCamera>(true);
+				}
+				return virtualCameras;
+			}
 			set => virtualCameras = value;
 		}
 
@@ -29,17 +53,18 @@ namespace CameraStack
 		{
 			get
 			{
-				if (Level.HasInstance && Level.Instance.Ball != null && Level.Instance.Ball.gameObject.activeInHierarchy)
+				if (Level.Instance != null && Level.Instance.Ball != null && Level.Instance.Ball.gameObject.activeInHierarchy)
 					return Level.Instance.Ball;
 				if (_cachedBall == null || !_cachedBall.gameObject.activeInHierarchy)
 					_cachedBall = FindObjectOfType<GolfBallController>();
 				return _cachedBall;
 			}
 		}
+
 		public Vector3 Position => CalculatePosition();
 		public Quaternion Rotation => CalculateRotation();
 
-		public void ResetCameras() { }
+		public void ResetCameras() => cameras = null;
 		public virtual void Init() { }
 		public virtual void Cleanup() { }
 		public virtual void PreUpdate() { }
