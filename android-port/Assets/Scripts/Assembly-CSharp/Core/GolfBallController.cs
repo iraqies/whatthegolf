@@ -64,6 +64,11 @@ namespace Core
 		private TimeControl timeControl;
 		public ShootArrow shootArrow;
 		public ShootArrow arrow => shootArrow;
+		public ShootArrow ShootArrow
+		{
+			get => shootArrow;
+			set => shootArrow = value;
+		}
 		public bool isShooting
 		{
 			get => BlockShooting;

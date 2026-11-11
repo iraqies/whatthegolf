@@ -8,6 +8,11 @@ public class TimeControl : MonoBehaviour
 	public delegate void PauseDelegate(bool state);
 
 	public float aimTimeScale = 0.15f;
+	public float AimTimeScale
+	{
+		get => aimTimeScale;
+		set => aimTimeScale = value;
+	}
 	public float upSpeed = 8f;
 	public float downSpeed = 12f;
 	[SerializeField] private float baseFixedTimeStep = 0.02f;

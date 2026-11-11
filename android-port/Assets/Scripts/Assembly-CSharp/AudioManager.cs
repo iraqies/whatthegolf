@@ -66,6 +66,7 @@ public class AudioManager : MonoBehaviour
 	}
 
 	public AudioSources sfx => shortEffects;
+	public AudioSources golf => shortEffects;
 	public AudioSources SFXAudioGroup => shortEffects;
 	public AudioSources AudioSources => shortEffects;
 	public RumbleManager rumble => rumbleManager;

@@ -9,6 +9,8 @@ namespace RootMotion.Demos
 
 		public BehaviourPuppet puppet { get; private set; }
 
+		public BehaviourPuppet propeller => puppet;
+
 		protected override void Start()
 		{
 		}

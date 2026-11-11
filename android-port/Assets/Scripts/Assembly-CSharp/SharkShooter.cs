@@ -170,7 +170,7 @@ public class SharkShooter : GolfBallShooterBase
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (!(currentlyGrabbed != null) && Controller != null && Controller.IsAiming && other != null && other.TryGetComponent<SharkGrab>(out var component))
+		if (currentlyGrabbed == null && Controller != null && Controller.IsAiming && other != null && other.TryGetComponent<SharkGrab>(out var component))
 		{
 			Grab(component);
 		}

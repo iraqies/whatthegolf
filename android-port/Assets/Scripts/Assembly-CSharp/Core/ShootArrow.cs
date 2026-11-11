@@ -73,7 +73,7 @@ namespace Core
 
 		private Camera GetCam() => cam != null ? cam : (cam = (CameraManager.Instance != null ? CameraManager.Instance.MainCamera : Camera.main));
 
-		public void Initialize(GolfBallController ballController, bool showArrowOnTop)
+		public void Initialize(GolfBallController ballController, bool showArrowOnTop = false)
 		{
 			ball = ballController;
 			if (ball != null)

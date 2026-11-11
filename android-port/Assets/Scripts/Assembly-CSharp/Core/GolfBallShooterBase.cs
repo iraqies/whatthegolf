@@ -12,6 +12,11 @@ namespace Core
 		[SerializeField] private Rigidbody rigidbodyOverride;
 		[SerializeField] public bool isblockedIfNotGrounded;
 		public float sqrVelocityShootingThreshold = float.PositiveInfinity;
+		public float shootingThreshold
+		{
+			get => sqrVelocityShootingThreshold;
+			set => sqrVelocityShootingThreshold = value;
+		}
 		public float shootThresholdMinimumTime = 0.2f;
 		protected float lastUnderVelocityShootingThreshold;
 		private float currentStillTime;

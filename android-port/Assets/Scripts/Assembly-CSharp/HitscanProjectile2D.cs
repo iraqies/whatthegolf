@@ -96,13 +96,13 @@ public class HitscanProjectile2D : SuperGolfBullet
 						IHitscanTarget hitscanTarget = components[i];
 						if (hitscanTarget != null)
 						{
-							Action<IHitscanTarget> onHitscanTriggered = hitscanTarget.OnHitscanTriggered;
+							Action<IHitscanTarget> onHitscanTriggered = hitscanTarget.OnHitscanHit;
 							if (onHitscanTriggered != null)
 							{
 								action = onHitscanTriggered;
 								action(hitscanTarget);
 							}
-							hitscanTarget.TriggerHitscan(raycastHit2D.point);
+							hitscanTarget.OnHit(raycastHit2D.point);
 						}
 					}
 				}
@@ -151,9 +151,9 @@ public class HitscanProjectile2D : SuperGolfBullet
 
 	protected override void KillBullet(Vector3 point)
 	{
-		if (pool != null)
+		if (BulletPool != null)
 		{
-			pool.Release(base.gameObject, true);
+			BulletPool.Return(base.gameObject, true);
 		}
 	}
 

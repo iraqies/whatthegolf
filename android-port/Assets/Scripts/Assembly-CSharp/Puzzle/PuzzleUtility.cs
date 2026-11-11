@@ -20,5 +20,10 @@ namespace Puzzle
 			Vector3 axis = Vector3.Cross(Vector3.up, v3);
 			return Quaternion.AngleAxis(deltaAngle, axis) * v3;
 		}
+
+		public static Vector3 SnapTo(Vector3 v3, float offset, float snapAngle)
+		{
+			return SnapTo(v3, snapAngle);
+		}
 	}
 }

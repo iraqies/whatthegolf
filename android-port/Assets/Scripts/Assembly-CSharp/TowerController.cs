@@ -152,7 +152,7 @@ public class TowerController : MonoBehaviour
 				if (Sphere != null)
 				{
 					Vector3 localPosition = Sphere.transform.localPosition;
-					localPosition.y = Mathf.Lerp(startY, endY, Bounce.Out(t));
+					localPosition.y = Mathf.Lerp(startY, endY, EasingFunction.EaseOutBounce(0f, 1f, t));
 					Sphere.transform.localPosition = localPosition;
 				}
 			}));

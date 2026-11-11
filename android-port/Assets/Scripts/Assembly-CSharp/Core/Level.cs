@@ -67,6 +67,12 @@ namespace Core
 			public string Message;
 			public float Delay;
 			public int Strokes;
+			public int NumberOfStrokes
+			{
+				get => Strokes;
+				set => Strokes = value;
+			}
+			public bool ShowCrown;
 			public TransitionTextEffect TransitionTextEffect;
 			public int LevelSkips;
 			public bool LeaveLevel;

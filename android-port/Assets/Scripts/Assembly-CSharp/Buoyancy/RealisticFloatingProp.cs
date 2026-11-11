@@ -68,6 +68,12 @@ namespace Buoyancy
 
 		public bool IsActive { get; set; } = true;
 
+		public bool active
+		{
+			get => IsActive;
+			set => IsActive = value;
+		}
+
 		private void Awake()
 		{
 			Initialize();

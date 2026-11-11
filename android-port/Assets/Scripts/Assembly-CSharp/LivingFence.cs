@@ -85,10 +85,10 @@ public class LivingFence : MonoBehaviour
 			{
 				num += 1f;
 			}
-			SplinePoint splinePoint = _spline.Evaluate(num, true);
+			SplineValue splinePoint = _spline.Evaluate(num, true);
 			if (_rbs[i] != null)
 			{
-				_rbs[i].transform.position = splinePoint.point;
+				_rbs[i].transform.position = splinePoint.position;
 				_rbs[i].transform.rotation = splinePoint.rotation * Quaternion.Euler(_rotationOffSet);
 			}
 		}
@@ -118,7 +118,7 @@ public class LivingFence : MonoBehaviour
 			if (component != null)
 			{
 				CollisionEvents collisionEvents = component;
-				collisionEvents.OnTriggerEnterRigidbody = (Action<Rigidbody>)Delegate.Combine(collisionEvents.OnTriggerEnterRigidbody, (Action<Rigidbody>)delegate(Rigidbody rigidbody1)
+				collisionEvents.OnTriggerEnterTrigger = (Action<Rigidbody>)Delegate.Combine(collisionEvents.OnTriggerEnterTrigger, (Action<Rigidbody>)delegate(Rigidbody rigidbody1)
 				{
 					if (!(rigidbody1 == null))
 					{
@@ -134,10 +134,10 @@ public class LivingFence : MonoBehaviour
 			{
 				num += 1f;
 			}
-			SplinePoint splinePoint = _spline.Evaluate(num, true);
+			SplineValue splinePoint = _spline.Evaluate(num, true);
 			if (_rbs[i] != null)
 			{
-				_rbs[i].position = splinePoint.point;
+				_rbs[i].position = splinePoint.position;
 				_rbs[i].rotation = splinePoint.rotation * Quaternion.Euler(_rotationOffSet);
 			}
 		}
@@ -227,10 +227,10 @@ public class LivingFence : MonoBehaviour
 			{
 				num += 1f;
 			}
-			SplinePoint splinePoint = _spline.Evaluate(num, true);
+			SplineValue splinePoint = _spline.Evaluate(num, true);
 			if (_rbs[i] != null)
 			{
-				_rbs[i].position = splinePoint.point;
+				_rbs[i].position = splinePoint.position;
 				_rbs[i].rotation = splinePoint.rotation * Quaternion.Euler(_rotationOffSet);
 			}
 		}

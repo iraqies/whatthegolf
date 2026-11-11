@@ -142,6 +142,8 @@ namespace RootMotion.Demos
 
 		public bool onGround { get; private set; }
 
+		public bool isJumping => Time.time < jumpEndTime;
+
 		protected override void Start()
 		{
 		}
