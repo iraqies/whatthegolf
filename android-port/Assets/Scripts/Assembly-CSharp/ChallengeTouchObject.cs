@@ -9,13 +9,22 @@ public class ChallengeTouchObject : MonoBehaviour
 
 	public void SetTouchTarget(GameObject target)
 	{
+		_toughTarget = target;
 	}
 
 	private void OnCollisionEnter(Collision other)
 	{
+		if (other != null && other.gameObject == _toughTarget)
+		{
+			onToughTarget?.Invoke(this);
+		}
 	}
 
 	private void OnTriggerEnter(Collider other)
 	{
+		if (other != null && other.gameObject == _toughTarget)
+		{
+			onToughTarget?.Invoke(this);
+		}
 	}
 }

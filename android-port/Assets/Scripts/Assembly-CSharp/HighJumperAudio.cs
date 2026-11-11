@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class HighJumperAudio : MonoBehaviour
@@ -6,10 +7,10 @@ public class HighJumperAudio : MonoBehaviour
 	private AudioClip boardClip;
 
 	[SerializeField]
-	private float basePitch;
+	private float basePitch = 1.2f;
 
 	[SerializeField]
-	private float incrementPitch;
+	private float incrementPitch = 0.2f;
 
 	private HighJumper jumper;
 
@@ -17,9 +18,21 @@ public class HighJumperAudio : MonoBehaviour
 
 	private void Start()
 	{
+		jumper = GetComponent<HighJumper>();
+		if (jumper != null)
+		{
+			HighJumper highJumper = jumper;
+			highJumper.onJump = (Action)Delegate.Combine(highJumper.onJump, new Action(PlaySpringBoardSound));
+		}
 	}
 
 	private void PlaySpringBoardSound()
 	{
+		if (AudioManager.Instance != null && AudioManager.Instance.golf != null)
+		{
+			AudioManager.Instance.golf.Play(boardClip, delegate
+			{
+			});
+		}
 	}
 }

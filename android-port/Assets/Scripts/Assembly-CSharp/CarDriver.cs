@@ -169,5 +169,25 @@ public class CarDriver : MonoBehaviour
 
 	private void OnDrawGizmos()
 	{
+		if (targets == null)
+		{
+			return;
+		}
+		Gizmos.color = gizmosColor;
+		for (int i = 0; i < targets.Length; i++)
+		{
+			if (targets[i] != null)
+			{
+				Gizmos.DrawWireSphere(targets[i].position, checkpointDist);
+				if (i == 0)
+				{
+					Gizmos.DrawLine(base.transform.position, targets[i].position);
+				}
+				if (i < targets.Length - 1 && targets[i + 1] != null)
+				{
+					Gizmos.DrawLine(targets[i].position, targets[i + 1].position);
+				}
+			}
+		}
 	}
 }
