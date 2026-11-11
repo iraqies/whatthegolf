@@ -7,5 +7,13 @@ public class BeamPoint : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
+		if (other != null && other.attachedRigidbody != null)
+		{
+			BeamableObject component = other.attachedRigidbody.GetComponent<BeamableObject>();
+			if (component != null)
+			{
+				OnEnterBeamPoint?.Invoke(component);
+			}
+		}
 	}
 }
