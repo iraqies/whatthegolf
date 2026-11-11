@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 public class DoEventOnIntervals : MonoBehaviour
 {
-	public bool canFire;
+	public bool canFire = true;
 
 	public float minInterval;
 
@@ -14,18 +14,27 @@ public class DoEventOnIntervals : MonoBehaviour
 
 	private void Update()
 	{
+		if (canFire)
+		{
+			StartCoroutine(DoEvent());
+		}
 	}
 
 	private IEnumerator DoEvent()
 	{
-		return null;
+		canFire = false;
+		yield return new WaitForSeconds(Random.Range(minInterval, maxInterval));
+		eventToCall.Invoke();
+		canFire = true;
 	}
 
 	public void SetBoolTrue()
 	{
+		canFire = true;
 	}
 
 	public void SetBoolFalse()
 	{
+		canFire = false;
 	}
 }

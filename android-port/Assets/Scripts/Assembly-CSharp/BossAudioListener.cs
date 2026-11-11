@@ -15,9 +15,20 @@ public class BossAudioListener : MonoBehaviour
 
 	private void OnStageStarted(BossStage bossStage)
 	{
+		Debug.Log("Started stage " + bossStage);
+		currentController = bossStage.Egg.PlayerController;
+		foundController = true;
+		if (MainAudioListener.Instance != null)
+		{
+			MainAudioListener.Instance.SetFollowTarget(base.transform);
+		}
 	}
 
 	private void Update()
 	{
+		if (foundController)
+		{
+			base.transform.position = currentController.transform.position;
+		}
 	}
 }

@@ -7,7 +7,7 @@ public class FillHoleWithWater : MonoBehaviour
 
 	private Vector3 startPos;
 
-	public float waterSpeed;
+	public float waterSpeed = 0.1f;
 
 	private float waterCount;
 
@@ -33,17 +33,37 @@ public class FillHoleWithWater : MonoBehaviour
 
 	private void Start()
 	{
+		startPos = base.transform.position;
+		boatController = boat.GetComponent<GolfBallController>();
+		cannonController = cannon.GetComponent<GolfBallController>();
 	}
 
 	public void OnParticleCollided()
 	{
+		waterCount += waterSpeed;
+		if (waterCount >= 1f && !hasSwapped)
+		{
+			hasSwapped = true;
+			waterCount = 1f;
+			SwitchControllers();
+		}
 	}
 
 	private void Update()
 	{
+		base.transform.position = Vector3.Lerp(startPos, endposition.position, Mathf.Clamp01(waterCount));
 	}
 
 	private void SwitchControllers()
 	{
+		boatController.enabled = true;
+		cannonController.shootArrow.gameObject.SetActive(false);
+		cannonController.enabled = false;
+		flagToEnable.SetActive(true);
+		waterParticles.Stop();
+		controllerSwitchParticle.Play();
+		controllerSwitchAudio.Play();
+		boat.GetComponent<Rigidbody>().isKinematic = false;
+		ColliderToDisable.enabled = false;
 	}
 }

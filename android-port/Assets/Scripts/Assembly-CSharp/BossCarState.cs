@@ -22,6 +22,8 @@ public class BossCarState : MonoBehaviour
 
 	private void Awake()
 	{
+		Stage.OnChallengeBegin += OnChallengeBegin;
+		Stage.OnChallengeEnd += OnChallengeEnd;
 	}
 
 	private void OnChallengeEnd()
@@ -30,9 +32,14 @@ public class BossCarState : MonoBehaviour
 
 	private void OnChallengeBegin()
 	{
+		SetState(CarState);
 	}
 
 	public void SetState(CarStateEnum state)
 	{
+		foreach (BossWheels wheel in Wheels)
+		{
+			wheel.SetState(state);
+		}
 	}
 }

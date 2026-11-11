@@ -1,4 +1,5 @@
 using System;
+using Audio;
 using UnityEngine;
 
 public class EndAreaMusicZone : MonoBehaviour
@@ -27,17 +28,37 @@ public class EndAreaMusicZone : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
+		OverworldBall2D component = collision.GetComponent<OverworldBall2D>();
+		if (component != null)
+		{
+			OnZoneEntered?.Invoke(this);
+			ball = component;
+			m_maxDistance = Vector2.Distance(StartTarget.position, EndTarget.position);
+			AreaActive = true;
+			m_lastUpdateTime = -2f;
+		}
 	}
 
 	private void OnTriggerExit2D(Collider2D collision)
 	{
+		if (collision.GetComponent<OverworldBall2D>() != null)
+		{
+			AreaActive = false;
+		}
 	}
 
 	private void Update()
 	{
+		if (AreaActive && ball != null && Time.time > m_lastUpdateTime + 0.12f)
+		{
+			SetByDistance(120);
+		}
 	}
 
 	private void SetByDistance(int ms)
 	{
+		float num = Mathf.Clamp01(Vector2.Distance(ball.transform.position, EndTarget.position) / m_maxDistance);
+		float rtcpValue = Mathf.Lerp(startValue, endValue, 1f - num);
+		AudioManager.Instance.music.setRTCPRaw(OnEnterRTPC, rtcpValue, ms);
 	}
 }

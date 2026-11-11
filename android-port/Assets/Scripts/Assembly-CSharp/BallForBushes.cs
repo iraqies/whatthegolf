@@ -4,7 +4,7 @@ using UnityEngine;
 public class BallForBushes : MonoBehaviour
 {
 	[SerializeField]
-	public float sqrMagnitudeThreshold;
+	public float sqrMagnitudeThreshold = 50f;
 
 	[SerializeField]
 	private Rigidbody rigidbody;
@@ -20,18 +20,34 @@ public class BallForBushes : MonoBehaviour
 
 	private void OnCollisionEnter(Collision collision)
 	{
+		if (collision.gameObject.CompareTag("Ground"))
+		{
+			sqrMagnitudeThreshold = _orgSqrVelocity;
+			controller.AffectTime = false;
+		}
 	}
 
 	private void Awake()
 	{
+		_orgSqrVelocity = sqrMagnitudeThreshold;
+		controller = GetComponent<GolfBallController>();
+		controller.AddBlockingFunction(IsBlocking);
+		controller.OnShoot += ControllerOnOnShoot;
+		if (rigidbody == null)
+		{
+			rigidbody = GetComponent<Rigidbody>();
+		}
 	}
 
 	private void ControllerOnOnShoot(Vector3 obj)
 	{
+		controller.AffectTime = false;
 	}
 
 	public bool IsBlocking()
 	{
-		return false;
+		sqrVelocity = 0f;
+		sqrVelocity = rigidbody.velocity.sqrMagnitude;
+		return sqrVelocity > sqrMagnitudeThreshold;
 	}
 }

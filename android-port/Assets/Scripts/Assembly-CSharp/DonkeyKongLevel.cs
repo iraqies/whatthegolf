@@ -1,4 +1,5 @@
 using System.Collections;
+using Core;
 using UnityEngine;
 
 public class DonkeyKongLevel : MonoBehaviour
@@ -22,18 +23,27 @@ public class DonkeyKongLevel : MonoBehaviour
 
 	private void Start()
 	{
+		StartCoroutine(SpawnBarrelRoutine());
 	}
 
 	private IEnumerator SpawnBarrelRoutine()
 	{
-		return null;
+		FrogeyKongController.SetTrigger("Throw");
+		yield return new WaitForSeconds(BarrelSpawnDelay);
+		SpawnBarrel();
+		yield return new WaitForSeconds(DelayBetweenBarrels);
+		StartCoroutine(SpawnBarrelRoutine());
 	}
 
 	private void SpawnBarrel()
 	{
+		ExplosionBarrel2D explosionBarrel2D = Object.Instantiate(barrelPrefab, barrelSpawnPoint.position, Quaternion.identity);
+		explosionBarrel2D.OnExplode += OnExplode;
+		activeBarrel = explosionBarrel2D.transform;
 	}
 
 	private void OnExplode(Collider2D col)
 	{
+		Level.Instance.Fail(true, true, null, 0f, true, "");
 	}
 }

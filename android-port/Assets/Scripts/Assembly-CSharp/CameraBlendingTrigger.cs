@@ -5,7 +5,7 @@ public class CameraBlendingTrigger : MonoBehaviour
 {
 	public CBBlend Blender;
 
-	public float BlendSpeed;
+	public float BlendSpeed = 1f;
 
 	private float targetBlend;
 
@@ -13,13 +13,23 @@ public class CameraBlendingTrigger : MonoBehaviour
 
 	private void Update()
 	{
+		currentBlend = Mathf.MoveTowards(currentBlend, targetBlend, Time.unscaledDeltaTime * BlendSpeed);
+		Blender.AtoBBlend = TweenFunctions.SmootherStep(currentBlend);
 	}
 
 	private void OnTriggerEnter(Collider other)
 	{
+		if (other.GetComponent<GolfBallController>() != null)
+		{
+			targetBlend = 1f;
+		}
 	}
 
 	private void OnTriggerExit(Collider other)
 	{
+		if (other.GetComponent<GolfBallController>() != null)
+		{
+			targetBlend = 0f;
+		}
 	}
 }
