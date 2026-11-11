@@ -1,120 +1,78 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(LineRenderer))]
 public class CoastLine : MonoBehaviour
 {
 	[Serializable]
-	public class LineContainer
+	public class Point
 	{
-		public LineRenderer Line;
+		public Vector3 position;
 
-		public List<Vector3> Points = new List<Vector3>();
+		public Vector3 normal;
 
-		public List<Vector3> Directions = new List<Vector3>();
-
-		public Color StartColor;
-
-		public Color EndColor;
+		public float distance;
 	}
 
-	public float Distance = 1f;
+	[SerializeField]
+	private float lineWidth;
 
-	public float Spacing = 0.5f;
+	[SerializeField]
+	private float frequency;
 
-	public bool ConnectEndAndStart;
+	[SerializeField]
+	private float amplitude;
 
-	public AnimationCurve PositionEvaluation = AnimationCurve.Linear(0f, 0f, 1f, 1f);
+	[SerializeField]
+	private float timeShiftOverDistance;
 
-	public AnimationCurve AlphaEvaluation = AnimationCurve.Linear(0f, 1f, 1f, 0f);
+	[SerializeField]
+	private AnimationCurve waveCurve;
 
-	public int Count = 2;
+	[SerializeField]
+	private float normalSize;
 
-	public float TimeDuration = 3f;
+	public Point[] points;
 
-	public int CornerVertices = 2;
+	private LineRenderer lineRenderer;
 
-	private LineRenderer originalLineRenderer;
-
-	private List<LineContainer> copies = new List<LineContainer>();
+	private Vector3[] positions;
 
 	private void Awake()
 	{
-		originalLineRenderer = GetComponent<LineRenderer>();
-		if (originalLineRenderer == null)
+		lineRenderer = GetComponent<LineRenderer>();
+		if (lineRenderer != null && points != null && points.Length > 0)
 		{
-			return;
+			positions = new Vector3[points.Length];
+			lineRenderer.positionCount = points.Length;
+			lineRenderer.widthMultiplier = lineWidth;
 		}
-		Vector3[] origPositions = new Vector3[originalLineRenderer.positionCount];
-		originalLineRenderer.GetPositions(origPositions);
-		copies = new List<LineContainer>();
-		for (int i = 0; i < Count; i++)
-		{
-			LineContainer container = new LineContainer();
-			GameObject go = new GameObject("CoastLine Copy " + i);
-			go.transform.SetParent(transform, false);
-			LineRenderer lr = go.AddComponent<LineRenderer>();
-			lr.sharedMaterial = originalLineRenderer.sharedMaterial;
-			lr.widthMultiplier = originalLineRenderer.widthMultiplier;
-			lr.widthCurve = originalLineRenderer.widthCurve;
-			lr.colorGradient = originalLineRenderer.colorGradient;
-			lr.numCapVertices = originalLineRenderer.numCapVertices;
-			lr.alignment = originalLineRenderer.alignment;
-			lr.textureMode = originalLineRenderer.textureMode;
-			lr.sortingLayerID = originalLineRenderer.sortingLayerID;
-			lr.sortingOrder = originalLineRenderer.sortingOrder;
-			lr.useWorldSpace = originalLineRenderer.useWorldSpace;
-			lr.loop = ConnectEndAndStart;
-			lr.numCornerVertices = CornerVertices;
-
-			container.Line = lr;
-			container.StartColor = lr.startColor;
-			container.EndColor = lr.endColor;
-			container.Points = new List<Vector3>(origPositions);
-			container.Directions = new List<Vector3>(origPositions.Length);
-			for (int j = 0; j < origPositions.Length; j++)
-			{
-				Vector3 prev = origPositions[(j - 1 + origPositions.Length) % origPositions.Length];
-				Vector3 next = origPositions[(j + 1) % origPositions.Length];
-				Vector3 tangent = (next - prev).normalized;
-				Vector3 normal = new Vector3(-tangent.z, 0f, tangent.x).normalized;
-				container.Directions.Add(normal);
-			}
-			lr.positionCount = origPositions.Length;
-			lr.SetPositions(origPositions);
-			copies.Add(container);
-		}
-		originalLineRenderer.enabled = false;
 	}
 
 	private void Update()
 	{
-		if (copies == null || copies.Count == 0 || TimeDuration <= 0.001f)
+		if (lineRenderer == null || points == null || positions == null || points.Length == 0 || waveCurve == null)
 		{
 			return;
 		}
-		for (int i = 0; i < copies.Count; i++)
+		for (int i = 0; i < points.Length; i++)
 		{
-			LineContainer c = copies[i];
-			if (c == null || c.Line == null)
-			{
-				continue;
-			}
-			float phase = ((Time.time + i * (TimeDuration / Mathf.Max(1, copies.Count))) % TimeDuration) / TimeDuration;
-			float posEval = PositionEvaluation != null ? PositionEvaluation.Evaluate(phase) : phase;
-			float alphaEval = AlphaEvaluation != null ? AlphaEvaluation.Evaluate(phase) : 1f - phase;
-			float offsetDist = posEval * Distance + i * Spacing;
-			for (int j = 0; j < c.Points.Count; j++)
-			{
-				c.Line.SetPosition(j, c.Points[j] + c.Directions[j] * offsetDist);
-			}
-			Color sc = c.StartColor;
-			sc.a = alphaEval;
-			Color ec = c.EndColor;
-			ec.a = alphaEval;
-			c.Line.startColor = sc;
-			c.Line.endColor = ec;
+			Point p = points[i];
+			float t = (Time.time * frequency + p.distance * timeShiftOverDistance) % 1f;
+			if (t < 0f) t += 1f;
+			positions[i] = p.position + p.normal * (waveCurve.Evaluate(t) * amplitude);
 		}
+		lineRenderer.SetPositions(positions);
+	}
+
+	private void OnDrawGizmos()
+	{
+	}
+
+	public void SavePoints()
+	{
+	}
+
+	public void GenerateNormals()
+	{
 	}
 }

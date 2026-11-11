@@ -36,7 +36,11 @@ public class TimeScaleChangeEffect : MonoBehaviour
 
 	private void InstanceOnOnLevelWillUnload()
 	{
-		sepia = null;
+		if (sepia != null)
+		{
+			Object.Destroy(sepia);
+			sepia = null;
+		}
 		inLevel = false;
 	}
 
@@ -47,13 +51,12 @@ public class TimeScaleChangeEffect : MonoBehaviour
 
 	private void InstanceOnOnLevelLoaded(LevelData levelData)
 	{
-		TimeControl tc = Object.FindObjectOfType<TimeControl>();
-		if (tc != null && tc.showVisualEffect && (Level.Instance == null || !Level.Instance.IsMultiplayer) && Camera.main != null)
+		if (sepia != null)
 		{
-			sepia = Camera.main.gameObject.AddComponent<CameraFilterPack_Color_Sepia>();
-			sepia._Fade = 0f;
-			inLevel = true;
+			Object.Destroy(sepia);
+			sepia = null;
 		}
+		inLevel = false;
 	}
 
 	private void Update()

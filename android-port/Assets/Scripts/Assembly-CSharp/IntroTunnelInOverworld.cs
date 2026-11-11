@@ -56,6 +56,9 @@ public class IntroTunnelInOverworld : MonoBehaviour
 	private bool startAtLogo;
 	private bool startedMusic;
 	private bool didListen;
+	private Vector3 _initialBulgeScale = new Vector3(0.15410566f, 0.15410566f, 0.15410566f);
+	private bool _capturedBulgeScale;
+	private bool _preparedBulgeRenderer;
 	public UnityEvent OnLogoBreak = new UnityEvent();
 
 	public event Action OnAtLogo
@@ -90,9 +93,84 @@ public class IntroTunnelInOverworld : MonoBehaviour
 		remove => m_OnPreAtLogo = (Action)Delegate.Remove(m_OnPreAtLogo, value);
 	}
 
+	private void EnsureBulgeRendererReady()
+	{
+		if (ballBulge == null)
+			return;
+		if (!_capturedBulgeScale && ballBulge.localScale.sqrMagnitude > 1e-6f)
+		{
+			_initialBulgeScale = ballBulge.localScale;
+			_capturedBulgeScale = true;
+		}
+		ballBulge.gameObject.SetActive(true);
+		var sr = ballBulge.GetComponentInChildren<SpriteRenderer>(true);
+		if (sr != null)
+		{
+			sr.gameObject.SetActive(true);
+			sr.enabled = true;
+			sr.color = new Color(0.29411766f, 0.67058825f, 0.49411768f, 1f);
+			Shader defSh = Shader.Find("Sprites/Default");
+			if (defSh != null && (sr.sharedMaterial == null || sr.sharedMaterial.shader != defSh))
+				sr.sharedMaterial = new Material(defSh);
+			if (!_preparedBulgeRenderer)
+			{
+				_preparedBulgeRenderer = true;
+				if (sr.drawMode != SpriteDrawMode.Simple)
+				{
+					Vector2 targetSize = sr.size;
+					sr.drawMode = SpriteDrawMode.Simple;
+					float spriteWorldSize = (sr.sprite != null && sr.sprite.pixelsPerUnit > 0f && sr.sprite.rect.width > 0f)
+						? (sr.sprite.rect.width / sr.sprite.pixelsPerUnit)
+						: 0.5f;
+					float factor = spriteWorldSize > 0.001f ? (targetSize.x / spriteWorldSize) : 20f;
+					Vector3 ls = sr.transform.localScale;
+					if (ls.sqrMagnitude < 1e-6f)
+						ls = new Vector3(0.8633f, 0.8633f, 0.8633f);
+					sr.transform.localScale = new Vector3(ls.x * factor, ls.y * factor, 1f);
+				}
+				Vector3 lp = sr.transform.localPosition;
+				sr.transform.localPosition = new Vector3(lp.x, lp.y, 0f);
+			}
+		}
+	}
+
+	private void CaptureAndHideBulges()
+	{
+		EnsureBulgeRendererReady();
+		if (ballBulge != null)
+			ballBulge.localScale = Vector3.zero;
+		Shader defSh = Shader.Find("Sprites/Default");
+		foreach (var tr in GetComponentsInChildren<Transform>(true))
+		{
+			if (tr == null) continue;
+			if (tr.name.StartsWith("MarioShortcutPipeEntryNorth"))
+			{
+				var sr = tr.GetComponent<SpriteRenderer>();
+				if (sr != null && sr.sortingOrder < 235)
+					sr.sortingOrder = 235;
+			}
+			else if (tr.name.StartsWith("MarioPipeShine"))
+			{
+				var sr = tr.GetComponent<SpriteRenderer>();
+				if (sr != null)
+				{
+					sr.sortingOrder = 112;
+					if (defSh != null && sr.sharedMaterial != null && sr.sharedMaterial.shader != defSh)
+						sr.sharedMaterial = new Material(defSh);
+				}
+			}
+		}
+	}
+
+	private void Awake()
+	{
+		CaptureAndHideBulges();
+	}
+
 	public void Init(bool _startAtLogo = false)
 	{
 		startAtLogo = _startAtLogo;
+		EnsureBulgeRendererReady();
 		ball = GetBall();
 		if (ball != null)
 		{
@@ -102,6 +180,7 @@ public class IntroTunnelInOverworld : MonoBehaviour
 			var col = ball.GetComponent<Collider2D>();
 			if (col != null)
 				col.isTrigger = true;
+			ball.Hide();
 			SetCameraCenter(ball.transform.position);
 		}
 		StartCoroutine(ListenForNewBalls());
@@ -134,6 +213,7 @@ public class IntroTunnelInOverworld : MonoBehaviour
 	public IEnumerator PlayAnimationRoutine(Action OnCompleted, Func<bool> OnReachedLogo, Func<bool> OnABitBeforeLogo)
 	{
 		yield return null;
+		EnsureBulgeRendererReady();
 
 		if (followCamera != null)
 			followCamera.isInPipeIntro = true;
@@ -141,8 +221,12 @@ public class IntroTunnelInOverworld : MonoBehaviour
 		Collider2D ballCol = ball != null ? ball.GetComponent<Collider2D>() : null;
 		if (ballCol != null)
 			ballCol.isTrigger = true;
-		if (ball != null && ball.rigidBody != null)
-			ball.rigidBody.simulated = false;
+		if (ball != null)
+		{
+			if (ball.rigidBody != null)
+				ball.rigidBody.simulated = false;
+			ball.Hide();
+		}
 
 		if (introSnapshot != null)
 			introSnapshot.TransitionTo(0.1f);
@@ -159,9 +243,7 @@ public class IntroTunnelInOverworld : MonoBehaviour
 				srcOnMove.volume = t * moveLoopVolume;
 		}));
 
-		Vector3 bulgeStartScale = (ballBulge != null && ballBulge.localScale.sqrMagnitude > 1e-6f)
-			? ballBulge.localScale
-			: new Vector3(0.15410566f, 0.15410566f, 0.15410566f);
+		Vector3 bulgeStartScale = _initialBulgeScale;
 		if (ballBulge != null)
 			ballBulge.localScale = bulgeStartScale;
 
@@ -169,6 +251,7 @@ public class IntroTunnelInOverworld : MonoBehaviour
 		if (!startAtLogo && pathToLogo != null && pathToLogo.Count > 0 && tweenTimeToLogo > 0f)
 		{
 			float currentToLogoTime = 0f;
+			bool hasGapBeforeLogo = pathToLogo.Count >= 4;
 			StartCoroutine(pTween.To(tweenTimeToLogo, t =>
 			{
 				currentToLogoTime = t * tweenTimeToLogo;
@@ -181,8 +264,10 @@ public class IntroTunnelInOverworld : MonoBehaviour
 				SetPositionOnPath(pathToLogo, TweenFunctions.EaseOut(t), i =>
 				{
 					Vector3 curScale = ballBulge != null ? ballBulge.localScale : bulgeStartScale;
-					if (i == 2)
+					if (i == 2 && hasGapBeforeLogo)
 					{
+						if (ball != null)
+							ball.Show();
 						if (SFX_OnPopOut != null)
 							SFX_OnPopOut.Play(null, Vector3.zero, 1f, 1f);
 						if (AudioManager.Instance != null && AudioManager.Instance.rumbleManager != null && AudioManager.Instance.rumbleManager.Explosion != null)
@@ -199,12 +284,14 @@ public class IntroTunnelInOverworld : MonoBehaviour
 					}
 					else
 					{
+						if (ball != null)
+							ball.Hide();
 						StartCoroutine(pTween.ToRealTime(0.05f, pt =>
 						{
 							if (ballBulge != null)
 								ballBulge.localScale = Vector3.Lerp(curScale, bulgeStartScale, Mathf.Clamp01(pt));
 						}));
-						if (i == 3)
+						if (i == 3 && hasGapBeforeLogo)
 						{
 							if (SFX_OnPopIn != null)
 								SFX_OnPopIn.Play(null, Vector3.zero, 1f, 1f);
@@ -256,8 +343,11 @@ public class IntroTunnelInOverworld : MonoBehaviour
 			}));
 		}
 
+		EnsureBulgeRendererReady();
 		if (ballBulge != null)
 			ballBulge.localScale = bulgeStartScale;
+		if (ball != null)
+			ball.Hide();
 		if (srcOnMove != null)
 		{
 			if (!srcOnMove.isPlaying)
@@ -298,6 +388,8 @@ public class IntroTunnelInOverworld : MonoBehaviour
 				ballBulge.localScale = Vector3.Lerp(bulgeEndScale, Vector3.zero, Mathf.Clamp01(t));
 		}));
 		m_OnAtEndOfTunnel?.Invoke();
+		if (ball != null)
+			ball.Show();
 		if (AudioManager.Instance != null && AudioManager.Instance.rumbleManager != null && AudioManager.Instance.rumbleManager.Explosion != null)
 			AudioManager.Instance.rumbleManager.Explosion.Play(0, 1f);
 		if (AudioManager.Instance != null && AudioManager.Instance.sfx != null && sfxOnShootOut != null)
@@ -412,7 +504,7 @@ public class IntroTunnelInOverworld : MonoBehaviour
 					float segPct = segDist > 0.0001f ? Mathf.Clamp01((targetDist - accum) / segDist) : 0f;
 					pos = Vector3.Lerp(path[i].position, path[nextIdx].position, segPct);
 					if (ballBulge != null)
-						ballBulge.position = pos;
+						ballBulge.position = new Vector3(pos.x, pos.y, 0f);
 					if (OnChangedIndex != null && lastPipeIndex != nextIdx)
 						OnChangedIndex(nextIdx);
 					lastPipeIndex = nextIdx;

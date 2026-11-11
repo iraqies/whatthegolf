@@ -36,7 +36,7 @@ public class CameraFilterPack_Color_Sepia : MonoBehaviour
 
 	private void OnRenderImage(RenderTexture sourceTexture, RenderTexture destTexture)
 	{
-		if (SCShader != null && material != null)
+		if (_Fade > 0.001f && SCShader != null && material != null)
 		{
 			TimeX += Time.deltaTime;
 			if (TimeX > 100f)

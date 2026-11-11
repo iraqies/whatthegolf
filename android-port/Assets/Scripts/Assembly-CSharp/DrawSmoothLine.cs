@@ -31,14 +31,6 @@ public class DrawSmoothLine : MonoBehaviour
 
 	private void Awake()
 	{
-		if (gameObject.scene.IsValid() && gameObject.scene.name == "Hub_Overworld" && (name == "Path" || name.StartsWith("Path ")))
-		{
-			if (brush != null)
-			{
-				brush.enabled = false;
-			}
-			return;
-		}
 		if (UpdateAutomatically && UseBezier)
 		{
 			UpdateLine();
