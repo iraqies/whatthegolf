@@ -82,8 +82,8 @@ namespace Core
 		}
 		public bool Is2D
 		{
-			get => AimPlane == AimPlanes.XY;
-			set { if (value) AimPlane = AimPlanes.XY; }
+			get => AimPlane == AimPlanes.TwoD;
+			set { if (value) AimPlane = AimPlanes.TwoD; }
 		}
 		public bool isShooting
 		{
